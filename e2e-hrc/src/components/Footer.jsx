@@ -1,16 +1,12 @@
 import { FiPhone, FiMail, FiMapPin } from 'react-icons/fi';
-import { useScrollReveal } from '../hooks/useScrollReveal';
 import mapImage from '../assets/assets/image/image/map.png';
 import footerLogo from '../assets/assets/image/image/logo.png';
 
 const navLinks = ['Home', 'About Us', 'Our Services', 'Latest Jobs', 'Expert Blogs'];
 
 export default function Footer() {
-  const [ref, visible] = useScrollReveal();
-
   return (
     <footer
-      className={`reveal ${visible ? 'visible' : ''}`}
       style={{
         display: 'flex',
         flexDirection: 'column',
