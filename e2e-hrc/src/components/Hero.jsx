@@ -39,7 +39,8 @@ export default function Hero() {
         .hero-h1 {
           margin: 0; display: flex; flex-direction: column;
           font-family: 'Poppins', sans-serif; font-weight: 800;
-          line-height: 1.15; letter-spacing: -0.5px; color: #0F172A;
+          font-size: 52px; line-height: 1.15;
+          letter-spacing: -0.5px; color: #0F172A;
         }
         .hero-h1 .blue { color: #003679; display: block; line-height: 1.15; }
         .hero-h1 .orange { color: #F97316; display: block; line-height: 1.15; }
