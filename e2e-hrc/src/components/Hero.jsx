@@ -25,8 +25,8 @@ export default function Hero() {
         }
         .hero-left {
           flex: 1; display: flex; flex-direction: column;
-          justify-content: center; gap: 20px; min-width: 0;
-          max-width: 580px;
+          justify-content: flex-start; gap: 20px; min-width: 0;
+          max-width: 580px; padding-top: 10px;
         }
         .hero-badge {
           display: inline-flex; align-self: flex-start; white-space: nowrap;
