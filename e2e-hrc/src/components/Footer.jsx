@@ -1,6 +1,7 @@
 import { FiPhone, FiMail, FiMapPin } from 'react-icons/fi';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import mapImage from '../assets/assets/image/image/map.png';
+import footerLogo from '../assets/assets/image/image/logo.png';
 
 const navLinks = ['Home', 'About Us', 'Our Services', 'Latest Jobs', 'Expert Blogs'];
 
@@ -40,12 +41,13 @@ export default function Footer() {
           width: '255px',
         }}>
           <img
-            src="/e2e-logo.png"
+            src={footerLogo}
             alt="E2E HRC Logo"
             style={{
               width: '255px',
               height: '96.43px',
               opacity: 1,
+              objectFit: 'contain',
             }}
           />
           <div style={{
