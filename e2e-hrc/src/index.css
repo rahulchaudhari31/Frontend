@@ -16,9 +16,9 @@
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-accent rounded-sm;
   }
-  /* Anchor scroll offset for sticky navbar (64px) */
+  /* Anchor scroll offset for sticky navbar */
   section[id] {
-    scroll-margin-top: 64px;
+    scroll-margin-top: 81px;
   }
 }
 
