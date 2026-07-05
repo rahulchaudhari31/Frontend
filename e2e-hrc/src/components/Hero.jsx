@@ -75,6 +75,14 @@ export default function Hero() {
           <h1
             style={{
               margin: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              padding: 0,
+              width: '752px',
+              height: '180px',
+              flexShrink: 0,
+              alignSelf: 'stretch',
               fontFamily: "'Poppins', sans-serif",
               fontSize: '52px',
               fontWeight: 800,
@@ -83,23 +91,29 @@ export default function Hero() {
               color: '#0F172A',
             }}
           >
-            Workforce Solutions
-            <br />
-            That Drive
-            <br />
-            <span style={{ color: '#F97316' }}>Business Growth</span>
+            <span style={{ color: '#003679', display: 'block', lineHeight: 1.15 }}>Workforce Solutions</span>
+            <span style={{ color: '#003679', display: 'block', lineHeight: 1.15 }}>That Drive</span>
+            <span style={{ color: '#F97316', display: 'block', lineHeight: 1.15 }}>Business Growth</span>
           </h1>
 
           {/* Paragraph */}
           <p
             style={{
               margin: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              padding: 0,
+              width: '576px',
+              maxWidth: '576px',
+              height: '84px',
+              flexShrink: 0,
+              alignSelf: 'stretch',
               fontFamily: "'Inter', sans-serif",
               fontSize: '15px',
               fontWeight: 400,
               lineHeight: 1.75,
               color: '#64748B',
-              maxWidth: '480px',
             }}
           >
             At E2E Human Resource Consultancy, we provide end-to-end workforce
@@ -108,23 +122,47 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* RIGHT column — image */}
+        {/* RIGHT column — image pinned to right edge */}
         <div
           style={{
-            flex: 1,
-            minWidth: 0,
-            height: '100%',
+            position: 'absolute',
+            right: '-64px',
+            top: 0,
+            bottom: 0,
+            width: '620px',
             display: 'flex',
             alignItems: 'flex-start',
-            paddingBottom: '72px',
+            justifyContent: 'flex-end',
           }}
         >
+          {/* Overlay shadow */}
           <div
             style={{
-              width: '100%',
-              height: '100%',
-              borderRadius: '20px',
+              position: 'absolute',
+              left: '-80px',
+              right: 0,
+              top: '60px',
+              bottom: '-30px',
+              background: 'rgba(0, 54, 121, 0.05)',
+              borderRadius: '100px 0px 0px 100px',
+              zIndex: 0,
+              pointerEvents: 'none',
+            }}
+          />
+          <div
+            style={{
+              width: '620px',
+              height: '420px',
+              borderTopLeftRadius: '100px',
+              borderBottomLeftRadius: '100px',
+              borderTopRightRadius: '0px',
+              borderBottomRightRadius: '0px',
               overflow: 'hidden',
+              opacity: 1,
+              flexShrink: 0,
+              position: 'relative',
+              zIndex: 1,
+              marginTop: '50px',
             }}
           >
             <img
@@ -144,74 +182,97 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Stats card — anchored to bottom, full width */}
+      {/* Stats card — Figma overlay+shadow spec */}
       <div
         style={{
           position: 'absolute',
-          bottom: '40px',
           left: '64px',
           right: '64px',
-          background: '#FFFFFF',
+          bottom: '40px',
+          background: 'rgba(255, 255, 255, 0.002)',
+          boxShadow: '0px 10px 15px -3px rgba(0,0,0,0.1), 0px 4px 6px -4px rgba(0,0,0,0.1)',
           borderRadius: '16px',
-          boxShadow: '0 8px 40px rgba(15, 42, 82, 0.12)',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          padding: '20px 32px',
-          boxSizing: 'border-box',
-          zIndex: 10,
+          zIndex: 20,
+          flexGrow: 0,
+          /* solid white behind the near-transparent bg */
+          backdropFilter: 'none',
+          overflow: 'hidden',
         }}
       >
-        {stats.map(({ icon: Icon, value, label, color }, i) => (
-          <div
-            key={label}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center',
-              gap: '6px',
-              padding: '8px 16px',
-              borderRight: i < stats.length - 1 ? '1px solid #E8EDF3' : 'none',
-            }}
-          >
-            <span
+        {/* Solid white fill layer so card is visible */}
+        <div
+          style={{
+            position: 'absolute',
+            left: 0, right: 0, top: 0, bottom: 0,
+            background: '#FFFFFF',
+            borderRadius: '16px',
+            zIndex: 0,
+          }}
+        />
+
+        {/* Stats grid */}
+        <div
+          style={{
+            position: 'relative',
+            zIndex: 1,
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            padding: '20px 32px',
+            boxSizing: 'border-box',
+          }}
+        >
+          {stats.map(({ icon: Icon, value, label, color }, i) => (
+            <div
+              key={label}
               style={{
                 display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
-                justifyContent: 'center',
-                width: '42px',
-                height: '42px',
-                borderRadius: '50%',
-                background: '#FFF3DC',
-                marginBottom: '2px',
+                textAlign: 'center',
+                gap: '6px',
+                padding: '8px 16px',
+                borderRight: i < stats.length - 1 ? '1px solid #E8EDF3' : 'none',
               }}
             >
-              <Icon size={20} color={color} strokeWidth={2.2} />
-            </span>
-            <span
-              style={{
-                fontFamily: "'Poppins', sans-serif",
-                fontSize: '24px',
-                fontWeight: 700,
-                color: '#0F172A',
-                lineHeight: 1,
-              }}
-            >
-              {value}
-            </span>
-            <span
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: '12px',
-                fontWeight: 400,
-                color: '#64748B',
-                lineHeight: 1.4,
-              }}
-            >
-              {label}
-            </span>
-          </div>
-        ))}
+              <span
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '42px',
+                  height: '42px',
+                  borderRadius: '50%',
+                  background: '#FFF3DC',
+                  marginBottom: '2px',
+                }}
+              >
+                <Icon size={20} color={color} strokeWidth={2.2} />
+              </span>
+              <span
+                style={{
+                  fontFamily: "'Poppins', sans-serif",
+                  fontSize: '24px',
+                  fontWeight: 700,
+                  color: '#0F172A',
+                  lineHeight: 1,
+                }}
+              >
+                {value}
+              </span>
+              <span
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: '12px',
+                  fontWeight: 400,
+                  color: '#64748B',
+                  lineHeight: 1.4,
+                }}
+              >
+                {label}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
 
     </section>
