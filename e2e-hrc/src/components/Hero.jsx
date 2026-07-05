@@ -129,30 +129,33 @@ export default function Hero() {
             right: '-64px',
             top: 0,
             bottom: 0,
-            width: '620px',
+            width: '695.87px',
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'flex-end',
           }}
         >
-          {/* Overlay shadow */}
+          {/* Overlay — same shape, offset behind */}
           <div
             style={{
               position: 'absolute',
-              left: '-80px',
-              right: 0,
-              top: '60px',
-              bottom: '-30px',
+              width: '695.87px',
+              height: '481px',
+              borderTopLeftRadius: '100px',
+              borderBottomLeftRadius: '100px',
+              borderTopRightRadius: '0px',
+              borderBottomRightRadius: '0px',
               background: 'rgba(0, 54, 121, 0.05)',
-              borderRadius: '100px 0px 0px 100px',
+              top: '70px',
+              right: '-20px',
               zIndex: 0,
               pointerEvents: 'none',
             }}
           />
           <div
             style={{
-              width: '620px',
-              height: '420px',
+              width: '695.87px',
+              height: '481px',
               borderTopLeftRadius: '100px',
               borderBottomLeftRadius: '100px',
               borderTopRightRadius: '0px',
@@ -162,7 +165,7 @@ export default function Hero() {
               flexShrink: 0,
               position: 'relative',
               zIndex: 1,
-              marginTop: '50px',
+              marginTop: '30px',
             }}
           >
             <img
@@ -182,97 +185,83 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Stats card — Figma overlay+shadow spec */}
+      {/* Stats card */}
       <div
         style={{
           position: 'absolute',
-          left: '64px',
-          right: '64px',
+          left: '50%',
+          transform: 'translateX(-50%)',
           bottom: '40px',
-          background: 'rgba(255, 255, 255, 0.002)',
-          boxShadow: '0px 10px 15px -3px rgba(0,0,0,0.1), 0px 4px 6px -4px rgba(0,0,0,0.1)',
+          width: '952px',
+          height: '110px',
+          boxSizing: 'border-box',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '32px',
+          gap: '32px',
+          isolation: 'isolate',
+          background: '#FFFFFF',
+          border: '1px solid rgba(195, 198, 212, 0.3)',
           borderRadius: '16px',
           zIndex: 20,
-          flexGrow: 0,
-          /* solid white behind the near-transparent bg */
-          backdropFilter: 'none',
-          overflow: 'hidden',
+          boxShadow: '0px 10px 15px -3px rgba(0,0,0,0.1), 0px 4px 6px -4px rgba(0,0,0,0.1)',
         }}
       >
-        {/* Solid white fill layer so card is visible */}
-        <div
-          style={{
-            position: 'absolute',
-            left: 0, right: 0, top: 0, bottom: 0,
-            background: '#FFFFFF',
-            borderRadius: '16px',
-            zIndex: 0,
-          }}
-        />
+        {stats.map(({ icon: Icon, value, label, color }, i) => (
+          <div
+            key={label}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              padding: 0,
+              gap: '16px',
+              width: '197.5px',
+              height: '44px',
+              flex: '1 1 0',
+              zIndex: i + 1,
+              borderRight: i < stats.length - 1 ? '1px solid rgba(195,198,212,0.3)' : 'none',
+              paddingRight: i < stats.length - 1 ? '32px' : '0',
+            }}
+          >
+            {/* Icon */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', flexShrink: 0 }}>
+              <Icon size={28} color="#FDAB0C" strokeWidth={2} />
+            </div>
 
-        {/* Stats grid */}
-        <div
-          style={{
-            position: 'relative',
-            zIndex: 1,
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            padding: '20px 32px',
-            boxSizing: 'border-box',
-          }}
-        >
-          {stats.map(({ icon: Icon, value, label, color }, i) => (
-            <div
-              key={label}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center',
-                gap: '6px',
-                padding: '8px 16px',
-                borderRight: i < stats.length - 1 ? '1px solid #E8EDF3' : 'none',
-              }}
-            >
+            {/* Text */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: 0 }}>
               <span
                 style={{
+                  fontFamily: "'Hanken Grotesk', 'Poppins', sans-serif",
+                  fontWeight: 700,
+                  fontSize: '16px',
+                  lineHeight: '24px',
+                  color: '#003679',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '42px',
-                  height: '42px',
-                  borderRadius: '50%',
-                  background: '#FFF3DC',
-                  marginBottom: '2px',
-                }}
-              >
-                <Icon size={20} color={color} strokeWidth={2.2} />
-              </span>
-              <span
-                style={{
-                  fontFamily: "'Poppins', sans-serif",
-                  fontSize: '24px',
-                  fontWeight: 700,
-                  color: '#0F172A',
-                  lineHeight: 1,
                 }}
               >
                 {value}
               </span>
               <span
                 style={{
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: '12px',
+                  fontFamily: "'Source Sans 3', 'Inter', sans-serif",
                   fontWeight: 400,
-                  color: '#64748B',
-                  lineHeight: 1.4,
+                  fontSize: '14px',
+                  lineHeight: '20px',
+                  color: '#424752',
+                  display: 'flex',
+                  alignItems: 'center',
                 }}
               >
                 {label}
               </span>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
 
     </section>
