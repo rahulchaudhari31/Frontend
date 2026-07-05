@@ -10,34 +10,49 @@ const socialLinks = [
 
 export default function AnnouncementBar() {
   return (
-    <div className="w-full bg-black" style={{ height: '48px' }}>
-      <div
-        className="relative flex h-full items-center"
-        style={{ maxWidth: '1440px', margin: '0 auto', paddingLeft: '64px', paddingRight: '64px' }}
-      >
-        {/* Centered announcement link */}
-        <a
-          href="#"
-          className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 whitespace-nowrap text-[14px] font-medium text-[#0073CF] transition-colors hover:text-[#1C93F3]"
-        >
-          Looking to hire exceptional talent? Submit a Vacancy
-          <FiArrowRight size={16} aria-hidden="true" />
-        </a>
-
-        {/* Social icons — right aligned */}
-        <div className="ml-auto flex items-center gap-5">
-          {socialLinks.map(({ label, href, Icon }) => (
-            <a
-              key={label}
-              href={href}
-              aria-label={label}
-              className="text-white transition-colors hover:text-[#0073CF]"
-            >
-              <Icon size={14} aria-hidden="true" />
-            </a>
-          ))}
+    <>
+      <style>{`
+        .ann-bar { height: 48px; width: 100%; background: #000; }
+        .ann-bar-inner {
+          display: flex; align-items: center; height: 100%;
+          max-width: 1440px; margin: 0 auto;
+          padding: 0 64px; position: relative;
+        }
+        .ann-link {
+          position: absolute; left: 50%; transform: translateX(-50%);
+          display: flex; align-items: center; gap: 8px;
+          white-space: nowrap; font-size: 14px; font-weight: 500;
+          color: #0073CF; text-decoration: none;
+        }
+        .ann-link:hover { color: #1C93F3; }
+        .ann-social { margin-left: auto; display: flex; align-items: center; gap: 20px; }
+        .ann-social a { color: #fff; transition: color 0.15s; }
+        .ann-social a:hover { color: #0073CF; }
+        @media (max-width: 1024px) {
+          .ann-bar-inner { padding: 0 32px; }
+          .ann-link { font-size: 12px; }
+        }
+        @media (max-width: 768px) {
+          .ann-bar-inner { padding: 0 16px; }
+          .ann-link { font-size: 11px; position: static; transform: none; margin: 0 auto; }
+          .ann-social { display: none; }
+        }
+      `}</style>
+      <div className="ann-bar">
+        <div className="ann-bar-inner">
+          <a href="#" className="ann-link">
+            Looking to hire exceptional talent? Submit a Vacancy
+            <FiArrowRight size={16} aria-hidden="true" />
+          </a>
+          <div className="ann-social">
+            {socialLinks.map(({ label, href, Icon }) => (
+              <a key={label} href={href} aria-label={label}>
+                <Icon size={14} aria-hidden="true" />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

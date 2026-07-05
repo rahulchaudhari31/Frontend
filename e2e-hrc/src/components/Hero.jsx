@@ -10,260 +10,160 @@ const stats = [
 
 export default function Hero() {
   return (
-    <section
-      style={{
-        width: '100%',
-        maxWidth: '1440px',
-        height: '626px',
-        margin: '0 auto',
-        background: '#FFFFFF',
-        opacity: 1,
-        paddingTop: '4px',
-        paddingRight: '64px',
-        paddingBottom: '40px',
-        paddingLeft: '64px',
-        boxSizing: 'border-box',
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-      }}
-    >
-      {/* Two-column row — gap: 64px */}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: '64px',
-          flex: 1,
-          minHeight: 0,
-        }}
-      >
-        {/* LEFT column */}
-        <div
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            gap: '20px',
-            minWidth: 0,
-          }}
-        >
-          {/* Badge */}
-          <span
-            style={{
-              display: 'inline-flex',
-              alignSelf: 'flex-start',
-              padding: '7px 18px',
-              borderRadius: '999px',
-              border: '1.5px solid #F5A623',
-              background: '#FFF8EE',
-              color: '#F5A623',
-              fontFamily: "'Poppins', sans-serif",
-              fontSize: '11px',
-              fontWeight: 600,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            STRATEGIC • FLEXIBLE • GLOBAL
-          </span>
+    <>
+      <style>{`
+        .hero-sec {
+          width: 100%; max-width: 1440px; margin: 0 auto;
+          background: #FFFFFF; position: relative;
+          padding: 4px 64px 40px; box-sizing: border-box;
+          display: flex; flex-direction: column;
+          min-height: 626px;
+        }
+        .hero-row {
+          display: flex; flex-direction: row; align-items: center;
+          gap: 64px; flex: 1; min-height: 0;
+        }
+        .hero-left {
+          flex: 1; display: flex; flex-direction: column;
+          justify-content: center; gap: 20px; min-width: 0;
+          max-width: 580px;
+        }
+        .hero-badge {
+          display: inline-flex; align-self: flex-start; white-space: nowrap;
+          padding: 7px 18px; border-radius: 999px;
+          border: 1.5px solid #F5A623; background: #FFF8EE;
+          color: #F5A623; font-family: 'Poppins', sans-serif;
+          font-size: 11px; font-weight: 600; letter-spacing: 0.15em;
+          text-transform: uppercase;
+        }
+        .hero-h1 {
+          margin: 0; display: flex; flex-direction: column;
+          font-family: 'Poppins', sans-serif; font-weight: 800;
+          font-size: 52px; line-height: 1.15;
+          letter-spacing: -0.5px; color: #0F172A;
+        }
+        .hero-h1 .blue { color: #003679; display: block; line-height: 1.15; }
+        .hero-h1 .orange { color: #F97316; display: block; line-height: 1.15; }
+        .hero-p {
+          margin: 0; font-family: 'Inter', sans-serif;
+          font-size: 15px; font-weight: 400; line-height: 1.75;
+          color: #64748B; max-width: 576px;
+        }
+        .hero-right-wrap {
+          position: absolute; right: -64px; top: 0; bottom: 0;
+          width: 695.87px; display: flex; align-items: flex-start;
+          justify-content: flex-end;
+        }
+        .hero-overlay {
+          position: absolute; width: 775.87px; height: 501px;
+          border-radius: 100px 0px 0px 100px;
+          background: #0036790D; top: 20px; right: -20px;
+          z-index: 0; pointer-events: none;
+        }
+        .hero-img-box {
+          width: 695.87px; height: 481px;
+          border-radius: 100px 0px 0px 100px; overflow: hidden;
+          position: relative; z-index: 1; margin-top: 30px; flex-shrink: 0;
+        }
+        .hero-img-box img {
+          width: 100%; height: 100%; object-fit: cover;
+          object-position: center top; display: block;
+        }
+        .hero-stats {
+          position: absolute; left: 50%; transform: translateX(-50%);
+          bottom: 40px; width: 952px; height: 110px;
+          box-sizing: border-box; display: flex; flex-direction: row;
+          justify-content: center; align-items: center;
+          padding: 32px; gap: 32px; isolation: isolate;
+          background: #FFFFFF; border: 1px solid rgba(195,198,212,0.3);
+          border-radius: 16px; z-index: 20;
+          box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1), 0px 4px 6px -4px rgba(0,0,0,0.1);
+        }
+        .hero-stat-item {
+          display: flex; flex-direction: row; align-items: center;
+          gap: 16px; flex: 1 1 0;
+        }
+        .hero-stat-value {
+          font-family: 'Hanken Grotesk', 'Poppins', sans-serif;
+          font-weight: 700; font-size: 16px; line-height: 24px;
+          color: #003679;
+        }
+        .hero-stat-label {
+          font-family: 'Source Sans 3', 'Inter', sans-serif;
+          font-weight: 400; font-size: 14px; line-height: 20px;
+          color: #424752;
+        }
 
-          {/* H1 */}
-          <h1
-            style={{
-              margin: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              padding: 0,
-              width: '752px',
-              height: '180px',
-              flexShrink: 0,
-              alignSelf: 'stretch',
-              fontFamily: "'Poppins', sans-serif",
-              fontSize: '52px',
-              fontWeight: 800,
-              lineHeight: 1.15,
-              letterSpacing: '-0.5px',
-              color: '#0F172A',
-            }}
-          >
-            <span style={{ color: '#003679', display: 'block', lineHeight: 1.15 }}>Workforce Solutions</span>
-            <span style={{ color: '#003679', display: 'block', lineHeight: 1.15 }}>That Drive</span>
-            <span style={{ color: '#F97316', display: 'block', lineHeight: 1.15 }}>Business Growth</span>
-          </h1>
+        @media (max-width: 1200px) {
+          .hero-sec { padding: 4px 32px 40px; min-height: auto; }
+          .hero-right-wrap { width: 50%; right: 0; position: relative; }
+          .hero-img-box { width: 100%; height: 380px; margin-top: 0; }
+          .hero-overlay { display: none; }
+          .hero-row { gap: 32px; }
+          .hero-stats { position: static; transform: none; width: 100%; height: auto; margin-top: 24px; flex-wrap: wrap; padding: 24px; }
+          .hero-h1 { font-size: 40px; }
+          .hero-left { max-width: none; }
+        }
+        @media (max-width: 768px) {
+          .hero-sec { padding: 24px 20px 32px; }
+          .hero-row { flex-direction: column; gap: 24px; }
+          .hero-right-wrap { width: 100%; }
+          .hero-img-box { height: 260px; border-radius: 16px; }
+          .hero-h1 { font-size: 32px; }
+          .hero-p { font-size: 14px; }
+          .hero-stats { gap: 16px; padding: 20px 16px; }
+          .hero-stat-item { flex: 1 1 calc(50% - 8px); border-right: none; }
+          .hero-stat-value { font-size: 14px; }
+          .hero-stat-label { font-size: 12px; }
+        }
+      `}</style>
+      <section className="hero-sec">
+        <div className="hero-row">
+          {/* LEFT column */}
+          <div className="hero-left">
+            <span className="hero-badge">STRATEGIC • FLEXIBLE • GLOBAL</span>
+            <h1 className="hero-h1">
+              <span className="blue">Workforce Solutions<br />That Drive</span>
+              <span className="orange">Business Growth</span>
+            </h1>
+            <p className="hero-p">
+              At E2E Human Resource Consultancy, we provide end-to-end workforce
+              solutions that help organisations attract, recruit, manage, and
+              retain exceptional talent.
+            </p>
+          </div>
 
-          {/* Paragraph */}
-          <p
-            style={{
-              margin: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              padding: 0,
-              width: '576px',
-              maxWidth: '576px',
-              height: '84px',
-              flexShrink: 0,
-              alignSelf: 'stretch',
-              fontFamily: "'Inter', sans-serif",
-              fontSize: '15px',
-              fontWeight: 400,
-              lineHeight: 1.75,
-              color: '#64748B',
-            }}
-          >
-            At E2E Human Resource Consultancy, we provide end-to-end workforce
-            solutions that help organisations attract, recruit, manage, and
-            retain exceptional talent.
-          </p>
+          {/* RIGHT column */}
+          <div className="hero-right-wrap">
+            <div className="hero-overlay" />
+            <div className="hero-img-box">
+              <img src={heroImage} alt="Team collaborating in a modern office" />
+            </div>
+          </div>
         </div>
 
-        {/* RIGHT column — image pinned to right edge */}
-        <div
-          style={{
-            position: 'absolute',
-            right: '-64px',
-            top: 0,
-            bottom: 0,
-            width: '695.87px',
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'flex-end',
-          }}
-        >
-          {/* Overlay — same shape, offset behind */}
-          <div
-            style={{
-              position: 'absolute',
-              width: '775.87px',
-              height: '501px',
-              borderTopLeftRadius: '100px',
-              borderBottomLeftRadius: '100px',
-              borderTopRightRadius: '0px',
-              borderBottomRightRadius: '0px',
-              background: '#0036790D',
-              top: '20px',
-              right: '-20px',
-              zIndex: 0,
-              pointerEvents: 'none',
-            }}
-          />
-          <div
-            style={{
-              width: '695.87px',
-              height: '481px',
-              borderTopLeftRadius: '100px',
-              borderBottomLeftRadius: '100px',
-              borderTopRightRadius: '0px',
-              borderBottomRightRadius: '0px',
-              overflow: 'hidden',
-              opacity: 1,
-              flexShrink: 0,
-              position: 'relative',
-              zIndex: 1,
-              marginTop: '30px',
-            }}
-          >
-            <img
-              src={heroImage}
-              alt="Team collaborating in a modern office"
+        {/* Stats card */}
+        <div className="hero-stats">
+          {stats.map(({ icon: Icon, value, label }, i) => (
+            <div
+              key={label}
+              className="hero-stat-item"
               style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                objectPosition: 'center top',
-                display: 'block',
-                filter: 'none',
-                mixBlendMode: 'normal',
+                borderRight: i < stats.length - 1 ? '1px solid rgba(195,198,212,0.3)' : 'none',
+                paddingRight: i < stats.length - 1 ? '32px' : '0',
               }}
-            />
-          </div>
+            >
+              <div style={{ flexShrink: 0 }}>
+                <Icon size={28} color="#FDAB0C" strokeWidth={2} />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                <span className="hero-stat-value">{value}</span>
+                <span className="hero-stat-label">{label}</span>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-
-      {/* Stats card */}
-      <div
-        style={{
-          position: 'absolute',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          bottom: '40px',
-          width: '952px',
-          height: '110px',
-          boxSizing: 'border-box',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '32px',
-          gap: '32px',
-          isolation: 'isolate',
-          background: '#FFFFFF',
-          border: '1px solid rgba(195, 198, 212, 0.3)',
-          borderRadius: '16px',
-          zIndex: 20,
-          boxShadow: '0px 10px 15px -3px rgba(0,0,0,0.1), 0px 4px 6px -4px rgba(0,0,0,0.1)',
-        }}
-      >
-        {stats.map(({ icon: Icon, value, label, color }, i) => (
-          <div
-            key={label}
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              padding: 0,
-              gap: '16px',
-              width: '197.5px',
-              height: '44px',
-              flex: '1 1 0',
-              zIndex: i + 1,
-              borderRight: i < stats.length - 1 ? '1px solid rgba(195,198,212,0.3)' : 'none',
-              paddingRight: i < stats.length - 1 ? '32px' : '0',
-            }}
-          >
-            {/* Icon */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', flexShrink: 0 }}>
-              <Icon size={28} color="#FDAB0C" strokeWidth={2} />
-            </div>
-
-            {/* Text */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: 0 }}>
-              <span
-                style={{
-                  fontFamily: "'Hanken Grotesk', 'Poppins', sans-serif",
-                  fontWeight: 700,
-                  fontSize: '16px',
-                  lineHeight: '24px',
-                  color: '#003679',
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                {value}
-              </span>
-              <span
-                style={{
-                  fontFamily: "'Source Sans 3', 'Inter', sans-serif",
-                  fontWeight: 400,
-                  fontSize: '14px',
-                  lineHeight: '20px',
-                  color: '#424752',
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                {label}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-    </section>
+      </section>
+    </>
   );
 }
