@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import logoImage from "../assets/assets/image/image/logo.png";
 import { FiMenu, FiX } from 'react-icons/fi';
 
 const navLinks = [
@@ -20,7 +21,7 @@ function Logo() {
       className="flex shrink-0 items-center no-underline"
     >
       <img
-        src="src/assets/assets/image/image/logo.png"
+        src={logoImage}
         alt="E2E Human Resource Consultancy"
         width="146"
         height="58"
