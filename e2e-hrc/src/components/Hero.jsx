@@ -75,6 +75,14 @@ export default function Hero() {
           <h1
             style={{
               margin: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              padding: 0,
+              width: '752px',
+              height: '180px',
+              flexShrink: 0,
+              alignSelf: 'stretch',
               fontFamily: "'Poppins', sans-serif",
               fontSize: '52px',
               fontWeight: 800,
@@ -83,23 +91,29 @@ export default function Hero() {
               color: '#0F172A',
             }}
           >
-            Workforce Solutions
-            <br />
-            That Drive
-            <br />
-            <span style={{ color: '#F97316' }}>Business Growth</span>
+            <span style={{ color: '#003679', display: 'block', lineHeight: 1.15 }}>Workforce Solutions</span>
+            <span style={{ color: '#003679', display: 'block', lineHeight: 1.15 }}>That Drive</span>
+            <span style={{ color: '#F97316', display: 'block', lineHeight: 1.15 }}>Business Growth</span>
           </h1>
 
           {/* Paragraph */}
           <p
             style={{
               margin: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              padding: 0,
+              width: '576px',
+              maxWidth: '576px',
+              height: '84px',
+              flexShrink: 0,
+              alignSelf: 'stretch',
               fontFamily: "'Inter', sans-serif",
               fontSize: '15px',
               fontWeight: 400,
               lineHeight: 1.75,
               color: '#64748B',
-              maxWidth: '480px',
             }}
           >
             At E2E Human Resource Consultancy, we provide end-to-end workforce
@@ -108,23 +122,50 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* RIGHT column — image */}
+        {/* RIGHT column — image pinned to right edge */}
         <div
           style={{
-            flex: 1,
-            minWidth: 0,
-            height: '100%',
+            position: 'absolute',
+            right: '-64px',
+            top: 0,
+            bottom: 0,
+            width: '695.87px',
             display: 'flex',
             alignItems: 'flex-start',
-            paddingBottom: '72px',
+            justifyContent: 'flex-end',
           }}
         >
+          {/* Overlay — same shape, offset behind */}
           <div
             style={{
-              width: '100%',
-              height: '100%',
-              borderRadius: '20px',
+              position: 'absolute',
+              width: '775.87px',
+              height: '501px',
+              borderTopLeftRadius: '100px',
+              borderBottomLeftRadius: '100px',
+              borderTopRightRadius: '0px',
+              borderBottomRightRadius: '0px',
+              background: '#0036790D',
+              top: '20px',
+              right: '-20px',
+              zIndex: 0,
+              pointerEvents: 'none',
+            }}
+          />
+          <div
+            style={{
+              width: '695.87px',
+              height: '481px',
+              borderTopLeftRadius: '100px',
+              borderBottomLeftRadius: '100px',
+              borderTopRightRadius: '0px',
+              borderBottomRightRadius: '0px',
               overflow: 'hidden',
+              opacity: 1,
+              flexShrink: 0,
+              position: 'relative',
+              zIndex: 1,
+              marginTop: '30px',
             }}
           >
             <img
@@ -144,21 +185,28 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Stats card — anchored to bottom, full width */}
+      {/* Stats card */}
       <div
         style={{
           position: 'absolute',
+          left: '50%',
+          transform: 'translateX(-50%)',
           bottom: '40px',
-          left: '64px',
-          right: '64px',
-          background: '#FFFFFF',
-          borderRadius: '16px',
-          boxShadow: '0 8px 40px rgba(15, 42, 82, 0.12)',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          padding: '20px 32px',
+          width: '952px',
+          height: '110px',
           boxSizing: 'border-box',
-          zIndex: 10,
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '32px',
+          gap: '32px',
+          isolation: 'isolate',
+          background: '#FFFFFF',
+          border: '1px solid rgba(195, 198, 212, 0.3)',
+          borderRadius: '16px',
+          zIndex: 20,
+          boxShadow: '0px 10px 15px -3px rgba(0,0,0,0.1), 0px 4px 6px -4px rgba(0,0,0,0.1)',
         }}
       >
         {stats.map(({ icon: Icon, value, label, color }, i) => (
@@ -166,50 +214,52 @@ export default function Hero() {
             key={label}
             style={{
               display: 'flex',
-              flexDirection: 'column',
+              flexDirection: 'row',
               alignItems: 'center',
-              textAlign: 'center',
-              gap: '6px',
-              padding: '8px 16px',
-              borderRight: i < stats.length - 1 ? '1px solid #E8EDF3' : 'none',
+              padding: 0,
+              gap: '16px',
+              width: '197.5px',
+              height: '44px',
+              flex: '1 1 0',
+              zIndex: i + 1,
+              borderRight: i < stats.length - 1 ? '1px solid rgba(195,198,212,0.3)' : 'none',
+              paddingRight: i < stats.length - 1 ? '32px' : '0',
             }}
           >
-            <span
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '42px',
-                height: '42px',
-                borderRadius: '50%',
-                background: '#FFF3DC',
-                marginBottom: '2px',
-              }}
-            >
-              <Icon size={20} color={color} strokeWidth={2.2} />
-            </span>
-            <span
-              style={{
-                fontFamily: "'Poppins', sans-serif",
-                fontSize: '24px',
-                fontWeight: 700,
-                color: '#0F172A',
-                lineHeight: 1,
-              }}
-            >
-              {value}
-            </span>
-            <span
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: '12px',
-                fontWeight: 400,
-                color: '#64748B',
-                lineHeight: 1.4,
-              }}
-            >
-              {label}
-            </span>
+            {/* Icon */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', flexShrink: 0 }}>
+              <Icon size={28} color="#FDAB0C" strokeWidth={2} />
+            </div>
+
+            {/* Text */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: 0 }}>
+              <span
+                style={{
+                  fontFamily: "'Hanken Grotesk', 'Poppins', sans-serif",
+                  fontWeight: 700,
+                  fontSize: '16px',
+                  lineHeight: '24px',
+                  color: '#003679',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                {value}
+              </span>
+              <span
+                style={{
+                  fontFamily: "'Source Sans 3', 'Inter', sans-serif",
+                  fontWeight: 400,
+                  fontSize: '14px',
+                  lineHeight: '20px',
+                  color: '#424752',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                {label}
+              </span>
+            </div>
           </div>
         ))}
       </div>
