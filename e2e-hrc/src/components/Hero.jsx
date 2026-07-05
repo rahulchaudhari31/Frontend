@@ -139,14 +139,14 @@ export default function Hero() {
           <div
             style={{
               position: 'absolute',
-              width: '695.87px',
-              height: '481px',
+              width: '775.87px',
+              height: '501px',
               borderTopLeftRadius: '100px',
               borderBottomLeftRadius: '100px',
               borderTopRightRadius: '0px',
               borderBottomRightRadius: '0px',
-              background: 'rgba(0, 54, 121, 0.05)',
-              top: '70px',
+              background: '#0036790D',
+              top: '20px',
               right: '-20px',
               zIndex: 0,
               pointerEvents: 'none',
