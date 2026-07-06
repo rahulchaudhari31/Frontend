@@ -11,38 +11,67 @@ export default function Footer() {
         .footer-wrap {
           display: flex;
           flex-direction: column;
-          align-items: flex-start;
+          align-items: center;
           padding: 96px 98px 48px;
           gap: 80px;
           width: 100%;
-          height: 548px;
           background: #000000;
           color: #ffffff;
           box-sizing: border-box;
         }
         .footer-inner {
-          display: flex;
-          flex-direction: row;
-          gap: 64px;
-          width: 100%;
-          max-width: 1244px;
-          align-self: center;
-          flex-wrap: wrap;
+          position: relative;
+          width: 1245px;
+          max-width: 1280px;
+          height: 259px;
         }
         .footer-col {
+          position: absolute;
+          top: 0;
+        }
+        .footer-col.brand {
+          left: 16px;
+          right: 973.75px;
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          gap: 32px;
-          width: 255px;
-        }
-        .footer-col.brand {
+          padding: 0px;
           gap: 31.1px;
+          height: 242.5px;
+        }
+        .footer-col.contact {
+          left: 335.25px;
+          right: 654.5px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 0px 0px 63px;
+          gap: 32px;
+          height: 251px;
+        }
+        .footer-col.nav {
+          left: 654.5px;
+          right: 335.25px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 0px 0px 35px;
+          gap: 32px;
+          height: 259px;
+        }
+        .footer-col.locations {
+          left: 973.75px;
+          right: 16px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 0px 0px 35px;
+          gap: 32px;
+          height: 333px;
         }
         .footer-brand-logo {
-          width: 255px;
-          height: 96.43px;
-          opacity: 1;
+          width: 255.25px;
+          height: 96.52px;
           object-fit: contain;
         }
         .footer-brand-text-wrap {
@@ -50,14 +79,19 @@ export default function Footer() {
           flex-direction: column;
           align-items: flex-start;
           padding: 0px 0px 0.875px;
-          width: 255px;
+          width: 255.25px;
+          max-width: 320px;
+          height: 114.88px;
         }
         .footer-brand-text {
-          width: 255px;
+          width: 255.25px;
+          height: 114px;
           font-family: Inter, sans-serif;
           font-weight: 400;
           font-size: 14px;
           line-height: 23px;
+          display: flex;
+          align-items: center;
           color: #DBEAFE;
           margin: 0;
         }
@@ -70,19 +104,29 @@ export default function Footer() {
           text-transform: uppercase;
           color: #F39308;
           margin: 0;
-          width: 255px;
+        }
+        .footer-heading.locations {
+          height: 56px;
         }
         .footer-contact {
           font-style: normal;
           display: flex;
           flex-direction: column;
+          align-items: flex-start;
+          padding: 0px;
           gap: 24px;
-          width: 255px;
+          width: 255.25px;
         }
         .footer-contact-row {
           display: flex;
           flex-direction: row;
+          align-items: flex-start;
+          padding: 0px;
           gap: 16px;
+          width: 255.25px;
+        }
+        .footer-contact-row.center {
+          align-items: center;
         }
         .footer-contact-icon {
           color: #F39308;
@@ -100,27 +144,40 @@ export default function Footer() {
           margin: 0;
           display: flex;
           flex-direction: column;
+          align-items: flex-start;
+          padding: 0px;
           gap: 16px;
-          width: 255px;
+          width: 255.25px;
+        }
+        .footer-nav-item {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 0px;
+          width: 255.25px;
+          height: 20px;
         }
         .footer-nav-link {
+          width: 255.25px;
+          height: 20px;
           font-family: Inter, sans-serif;
           font-weight: 400;
           font-size: 14px;
           line-height: 20px;
+          display: flex;
+          align-items: center;
           color: #DBEAFE;
           text-decoration: none;
         }
         .footer-map {
-          width: 255px;
+          width: 255.25px;
           height: 210px;
           opacity: 1;
         }
         .footer-bottom {
           border-top: 1px solid rgba(255,255,255,0.1);
           width: 100%;
-          max-width: 1244px;
-          align-self: center;
+          max-width: 1245px;
           padding-top: 48px;
         }
         .footer-copy {
@@ -133,22 +190,28 @@ export default function Footer() {
           color: rgba(191, 219, 254, 0.6);
           margin: 0;
         }
-        @media (max-width: 1024px) {
+        @media (max-width: 1280px) {
           .footer-wrap {
             padding: 60px 32px 40px;
-            height: auto;
             gap: 48px;
           }
           .footer-inner {
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-wrap: wrap;
             gap: 40px;
+            position: static;
           }
           .footer-col {
+            position: static;
             width: calc(50% - 20px);
+            height: auto;
+            padding: 0;
           }
           .footer-col.brand { width: 100%; }
-          .footer-heading { width: 100%; }
           .footer-brand-logo { width: 200px; height: auto; }
-          .footer-brand-text-wrap { width: 100%; }
+          .footer-brand-text-wrap { width: 100%; max-width: 100%; }
           .footer-brand-text { width: 100%; max-width: 400px; }
           .footer-contact { width: 100%; }
           .footer-nav-list { width: 100%; }
@@ -172,7 +235,6 @@ export default function Footer() {
       `}</style>
       <footer className="footer-wrap">
         <div className="footer-inner">
-          {/* Col 1 — Brand */}
           <div className="footer-col brand">
             <img src={footerLogo} alt="E2E HRC Logo" className="footer-brand-logo" />
             <div className="footer-brand-text-wrap">
@@ -182,21 +244,20 @@ export default function Footer() {
               </p>
             </div>
           </div>
-          {/* Col 2 — UK Head Office */}
-          <div className="footer-col">
-            <h3 className="footer-heading">UK Head Office</h3>
+          <div className="footer-col contact">
+            <h3 className="footer-heading">UK HEAD OFFICE</h3>
             <address className="footer-contact">
-              <div className="footer-contact-row" style={{ alignItems: 'flex-start' }}>
+              <div className="footer-contact-row">
                 <FiMapPin size={16} className="footer-contact-icon" style={{ marginTop: '2px' }} aria-hidden="true" />
                 <span className="footer-contact-text">Unit 2, 1204B Stratford Road, Hall Green, Birmingham, B28 8HN, UK</span>
               </div>
-              <div className="footer-contact-row" style={{ alignItems: 'center' }}>
+              <div className="footer-contact-row center">
                 <FiPhone size={18} className="footer-contact-icon" aria-hidden="true" />
                 <a href="tel:+441217782400" className="footer-contact-text" style={{ textDecoration: 'none' }}>
                   +44 (0) 121 778 2400
                 </a>
               </div>
-              <div className="footer-contact-row" style={{ alignItems: 'center' }}>
+              <div className="footer-contact-row center">
                 <FiMail size={20} className="footer-contact-icon" aria-hidden="true" />
                 <a href="mailto:info@e2ehrc.co.uk" className="footer-contact-text" style={{ textDecoration: 'none' }}>
                   info@e2ehrc.co.uk
@@ -204,26 +265,23 @@ export default function Footer() {
               </div>
             </address>
           </div>
-          {/* Col 3 — Navigation */}
-          <div className="footer-col">
-            <h3 className="footer-heading">Navigation</h3>
+          <div className="footer-col nav">
+            <h3 className="footer-heading">NAVIGATION</h3>
             <nav aria-label="Footer navigation">
               <ul className="footer-nav-list">
                 {navLinks.map((link) => (
-                  <li key={link}>
+                  <li key={link} className="footer-nav-item">
                     <a href="#" className="footer-nav-link">{link}</a>
                   </li>
                 ))}
               </ul>
             </nav>
           </div>
-          {/* Col 4 — Office Locations */}
-          <div className="footer-col">
-            <h3 className="footer-heading">Our Office Locations</h3>
+          <div className="footer-col locations">
+            <h3 className="footer-heading locations">Our Office Locations</h3>
             <img src={mapImage} alt="Office locations map" className="footer-map" />
           </div>
         </div>
-        {/* Bottom bar */}
         <div className="footer-bottom">
           <p className="footer-copy">
             Copyright &copy; 2026 by E2E Human Resource Consultancy Ltd | All Rights Reserved
