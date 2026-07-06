@@ -27,7 +27,7 @@ export default function Navbar({ variant = 'home' }) {
   const isEmployer = variant === 'employer';
 
   const activeStyle = isEmployer ? 'text-[#0085d5]' : 'text-navy';
-  const ctaBg = isEmployer ? 'bg-accent hover:bg-orange-500' : 'bg-navy hover:bg-navy/90';
+  const ctaBg = 'bg-[#F39308] hover:bg-[#E07D00]';
 
   const activePage = isEmployer ? '/employer' : variant === 'employee' ? '/employee' : '#solutions';
 
