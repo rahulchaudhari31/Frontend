@@ -139,10 +139,10 @@ export default function LatestInsights({
           <div className="flex flex-col gap-5 flex-1 min-w-0">
             {posts.map((post) => (
               <div key={post.title} className="flex flex-col sm:flex-row rounded-2xl overflow-hidden cursor-pointer group bg-[#FAFAFA] sm:h-[134px]">
-                <div className="w-full sm:w-[144px] h-[200px] sm:h-full shrink-0 overflow-hidden">
+                <div className="w-full sm:w-[144px] h-[180px] sm:h-full shrink-0 overflow-hidden">
                   <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 </div>
-                <div className="flex-1 flex flex-col justify-center gap-2 p-5 pr-5 pl-0 min-w-0">
+                <div className="flex-1 flex flex-col justify-center gap-2 p-5 sm:pl-0 min-w-0">
                   <span
                     className="self-start inline-flex items-center font-body font-semibold text-[12px] leading-[16px] px-2.5 py-1 rounded-full"
                     style={{ background: post.categoryBg, color: post.categoryColor }}
