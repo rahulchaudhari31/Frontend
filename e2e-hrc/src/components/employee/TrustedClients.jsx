@@ -51,7 +51,7 @@ export default function TrustedClients({ logos = defaultLogos }) {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-4 min-w-0">
+          <div className="flex flex-nowrap gap-4 min-w-0">
             {logos.map((logo) => (
               <LogoPill key={logo.name} {...logo} />
             ))}
