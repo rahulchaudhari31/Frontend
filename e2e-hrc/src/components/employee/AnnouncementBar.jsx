@@ -37,6 +37,9 @@ export default function AnnouncementBar() {
           .eann-link { font-size: 11px; position: static; transform: none; margin: 0 auto; }
           .eann-social { display: none; }
         }
+        @media (max-width: 480px) {
+          .eann-link { font-size: 10px; white-space: normal; text-align: center; }
+        }
       `}</style>
       <div className="eann-bar">
         <div className="eann-bar-inner">

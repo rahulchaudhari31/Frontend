@@ -22,7 +22,7 @@ const heroStats = [
 
 export default function Employee() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       <AnnouncementBar />
       <Navbar variant="employee" />
       <Hero
