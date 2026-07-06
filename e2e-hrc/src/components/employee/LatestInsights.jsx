@@ -19,7 +19,7 @@ const defaultPosts = [
     date: '20 May 2025',
   },
   {
-    image: '/images/placeholder-2.jpg',
+    image: '/src/assets/assets/Professionals/workforce planning.jpg',
     category: 'Workforce Planning',
     categoryBg: '#EFF5D6',
     categoryColor: '#5A7A00',
@@ -28,7 +28,7 @@ const defaultPosts = [
     date: '12 May 2025',
   },
   {
-    image: '/images/placeholder-3.jpg',
+    image: '/src/assets/assets/Professionals/leadership.jpg',
     category: 'Leadership',
     categoryBg: '#004CA5',
     categoryColor: '#C8D96F',
