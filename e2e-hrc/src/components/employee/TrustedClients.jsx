@@ -34,13 +34,13 @@ function LogoPill({ name, tagline, image }) {
 
 export default function TrustedClients({ logos = defaultLogos }) {
   return (
-    <section className="w-full bg-white border-y border-[#EAEAEA] py-10 px-[38px]">
+    <section className="w-full bg-white border-y border-[#EAEAEA] py-10 px-4 lg:px-[38px]">
       <div
         className="mx-auto flex flex-col items-start gap-10"
         style={{ maxWidth: '1364px' }}
       >
         <div className="flex flex-col lg:flex-row items-start lg:items-center gap-10 w-full">
-          <div className="shrink-0" style={{ width: '224px' }}>
+          <div className="shrink-0 w-full lg:w-[224px]">
             <p
               className="font-body font-semibold text-[12px] leading-[16px] tracking-[1.2px] uppercase text-[#004CA5] mb-2"
             >
@@ -51,7 +51,7 @@ export default function TrustedClients({ logos = defaultLogos }) {
             </p>
           </div>
 
-          <div className="flex flex-nowrap gap-4 min-w-0">
+          <div className="flex flex-nowrap gap-4 min-w-0 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             {logos.map((logo) => (
               <LogoPill key={logo.name} {...logo} />
             ))}

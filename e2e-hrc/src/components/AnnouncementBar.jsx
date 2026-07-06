@@ -37,6 +37,9 @@ export default function AnnouncementBar() {
           .ann-link { font-size: 11px; position: static; transform: none; margin: 0 auto; }
           .ann-social { display: none; }
         }
+        @media (max-width: 480px) {
+          .ann-link { font-size: 10px; white-space: normal; text-align: center; }
+        }
       `}</style>
       <div className="ann-bar">
         <div className="ann-bar-inner">

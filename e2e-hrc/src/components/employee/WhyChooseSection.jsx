@@ -75,7 +75,7 @@ const rows = [
 export default function WhyChooseSection() {
   return (
     <section className="px-4 bg-white lg:pt-[46px] lg:pb-[6px]">
-      <div className="mx-auto flex flex-col lg:gap-[30px]" style={{ maxWidth: '1440px', padding: '0px 54px 0px 61px' }}>
+      <div className="mx-auto flex flex-col lg:gap-[30px]" style={{ maxWidth: '1440px' }}>
         <div className="flex flex-col items-center text-center lg:w-[1325px] lg:h-[83.99px] mx-auto">
           <span className="inline-flex items-center bg-[#E8EDF5] text-[#004CA5] font-body font-semibold text-[12px] leading-[16px] tracking-[0px] px-3 py-[6px] rounded-full">
             Why Choose E2E HRC
