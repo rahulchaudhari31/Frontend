@@ -9,6 +9,7 @@ export default function Hero({
   statsType = 'text',
   image = null,
   imageStyle = '',
+  imageMaxWidth = 'max-w-lg',
   decorativeCircles = null,
   containerClass = '',
   textColor = '#004CA5',
@@ -77,7 +78,7 @@ export default function Hero({
             )}
           </div>
 
-          <div className="relative flex items-center justify-center h-full py-12 lg:py-16">
+          <div className="relative flex items-center justify-center h-full py-12 lg:py-16 overflow-hidden">
             {decorativeCircles && decorativeCircles.map((circle, i) => (
               <div key={i} className="absolute" style={circle} />
             ))}
@@ -85,7 +86,7 @@ export default function Hero({
               <img
                 src={image}
                 alt="Hero"
-                className={`relative z-10 shadow-2xl w-full max-w-lg object-cover ${imageStyle}`}
+                className={`relative z-10 w-full ${imageMaxWidth} object-cover ${imageStyle}`}
                 style={{ aspectRatio: '4/3' }}
               />
             )}

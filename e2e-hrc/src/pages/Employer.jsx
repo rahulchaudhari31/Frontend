@@ -3,12 +3,12 @@ import Navbar from '../components/shared/Navbar';
 import Hero from '../components/shared/Hero';
 import DualCTA from '../components/employer/DualCTA';
 import IndustriesCarousel from '../components/employer/IndustriesCarousel';
-import HowWeWork from '../components/employer/HowWeWork';
+import HowWeWork from '../components/shared/HowWeWork';
 import WhyChooseUs from '../components/employer/WhyChooseUs';
 import TrustedBy from '../components/employer/TrustedBy';
 import OfficeLocations from '../components/shared/OfficeLocations';
 import BlogSection from '../components/employer/BlogSection';
-import ContactCTA from '../components/shared/ContactCTA';
+import ContactCTA from '../components/employer/ContactCTA';
 import Footer from '../components/shared/Footer';
 
 const employerStats = [

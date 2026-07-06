@@ -1,74 +1,166 @@
-const featured = {
-  tag: 'Career Advice',
-  title: 'Career Growth Strategies for Professionals in 2026',
-  desc: 'Discover the top strategies to accelerate your career growth, build valuable skills, and position yourself for success in a competitive job market.',
-  readTime: '8 min read',
-  date: 'Jun 28, 2026',
-  image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80',
+const defaultFeatured = {
+  image: '/src/assets/assets/Professionals/UK.jpg',
+  category: 'Hiring Trends',
+  title: 'Hiring Trends in the UK: What Employers Need to Know in 2025',
+  description: 'From AI-driven screening to flexible working demands, the UK recruitment landscape is shifting rapidly. Here\'s what the data tells us about the year ahead.',
+  author: 'Sarah Mitchell',
+  readTime: '5 min read',
+  date: '28 May 2025',
 };
 
-const posts = [
-  { tag: 'Interview Tips', title: 'How to Ace Your Virtual Interview', readTime: '5 min read', date: 'Jun 25, 2026' },
-  { tag: 'Industry Insights', title: 'Top Hiring Trends in Manufacturing 2026', readTime: '6 min read', date: 'Jun 22, 2026' },
-  { tag: 'Career Growth', title: 'Upskilling: The Key to Future-Proofing Your Career', readTime: '4 min read', date: 'Jun 20, 2026' },
+const defaultPosts = [
+  {
+    image: '/src/assets/assets/Professionals/strategy.jpg',
+    category: 'Strategy',
+    categoryBg: '#FDECD2',
+    categoryColor: '#C17800',
+    title: 'Talent Acquisition Strategies That Actually Work',
+    readTime: '4 min read',
+    date: '20 May 2025',
+  },
+  {
+    image: '/images/placeholder-2.jpg',
+    category: 'Workforce Planning',
+    categoryBg: '#EFF5D6',
+    categoryColor: '#5A7A00',
+    title: 'Future Workforce Planning: Building Teams for Tomorrow',
+    readTime: '6 min read',
+    date: '12 May 2025',
+  },
+  {
+    image: '/images/placeholder-3.jpg',
+    category: 'Leadership',
+    categoryBg: '#004CA5',
+    categoryColor: '#C8D96F',
+    title: 'Building High Performing Teams From Day One',
+    readTime: '5 min read',
+    date: '5 May 2025',
+  },
 ];
 
-export default function LatestInsights() {
+function PersonIcon() {
   return (
-    <section className="py-16 md:py-20 px-4 bg-[#F8FAFC]">
-      <div className="max-w-[1440px] mx-auto">
-        <div className="flex items-end justify-between mb-10">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6 6C7.38071 6 8.5 4.88071 8.5 3.5C8.5 2.11929 7.38071 1 6 1C4.61929 1 3.5 2.11929 3.5 3.5C3.5 4.88071 4.61929 6 6 6Z" fill="currentColor" />
+      <path d="M6 7C3.79086 7 2 8.79086 2 11H10C10 8.79086 8.20914 7 6 7Z" fill="currentColor" />
+    </svg>
+  );
+}
+
+function ClockIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="1.2" />
+      <path d="M6 3.5V6L7.5 7.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function ArrowIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2.5 6.5H10.5M10.5 6.5L6.5 2.5M10.5 6.5L6.5 10.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+export default function LatestInsights({
+  featured = defaultFeatured,
+  posts = defaultPosts,
+  eyebrow = 'Latest Blog',
+  heading = 'Career Growth Strategies for Professionals',
+  ctaLabel = 'View All Blog',
+  ctaHref = '#',
+}) {
+  return (
+    <section className="py-16 md:py-20 bg-[#F8FAFC]">
+      <div className="mx-auto pl-[24px] pr-[24px] lg:pl-[124px] lg:pr-[32px]" style={{ maxWidth: '1440px' }}>
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 lg:gap-0 mb-10">
           <div>
-            <p className="text-[#F39308] text-xs font-semibold tracking-widest uppercase mb-2">Our Blog</p>
-            <h2 className="font-heading font-bold text-3xl md:text-4xl text-[#004CA5]">
-              Career Growth Strategies for Professionals
+            <span className="inline-flex items-center bg-[#EAF1FB] text-[#004CA5] font-body font-semibold text-[12px] leading-[16px] px-3 py-[6px] rounded-full mb-2">
+              {eyebrow}
+            </span>
+            <h2 className="font-heading font-[800] text-[32px] lg:text-[36px] leading-[40px] text-[#004CA5]" style={{ maxWidth: '793px' }}>
+              {heading}
             </h2>
           </div>
           <a
-            href="#"
-            className="hidden sm:inline-flex items-center justify-center border-2 border-[#004CA5] text-[#004CA5] font-semibold text-sm px-6 py-2.5 rounded-[999px] hover:bg-[#004CA5] hover:text-white transition-colors duration-200"
+            href={ctaHref}
+            className="inline-flex items-center justify-center gap-2 shrink-0 border-[1.6px] border-[#004CA5] text-[#004CA5] font-heading font-semibold text-[14px] leading-[20px] px-6 py-3 rounded-[999px] bg-transparent hover:bg-[#004CA5]/10 transition-colors duration-200 self-start lg:self-auto"
           >
-            View All Articles
+            {ctaLabel}
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="#004CA5" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </a>
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-8">
-          <div className="lg:col-span-3 relative group rounded-2xl overflow-hidden cursor-pointer lg:w-[532px] lg:h-[480px]">
+        <div className="flex flex-col lg:flex-row gap-8" style={{ maxWidth: '1284px' }}>
+          <div className="relative group rounded-2xl overflow-hidden cursor-pointer w-full lg:w-[532px] h-[400px] lg:h-[480px] shrink-0">
             <img src={featured.image} alt={featured.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-            <div className="absolute bottom-6 left-6 right-6">
-              <span className="inline-block bg-[#F39308] text-white text-[10px] font-semibold tracking-widest uppercase px-3 py-1 rounded-full mb-3">
-                {featured.tag}
+            <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
+              <span className="inline-flex items-center bg-[#004CA5] text-white font-body font-semibold text-[12px] leading-[16px] px-3 py-1 rounded-full mb-3">
+                {featured.category}
               </span>
-              <h3 className="text-white font-heading font-bold text-xl md:text-2xl leading-snug mb-2">{featured.title}</h3>
-              <p className="text-gray-300 text-sm line-clamp-2 mb-3">{featured.desc}</p>
-              <div className="flex items-center gap-4 text-gray-400 text-xs">
-                <span>{featured.readTime}</span>
-                <span>{featured.date}</span>
+              <h3 className="text-white font-heading font-bold text-[24px] leading-[33px] mb-3" style={{ maxWidth: '460px' }}>
+                {featured.title}
+              </h3>
+              <p className="text-[rgba(255,255,255,0.7)] font-body font-normal text-[14px] leading-[22.75px] mb-6" style={{ maxWidth: '460px' }}>
+                {featured.description}
+              </p>
+              <div className="flex items-center justify-between w-full" style={{ maxWidth: '460px' }}>
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 text-[rgba(255,255,255,0.7)] font-body text-[12px]">
+                    <PersonIcon />
+                    <span>{featured.author}</span>
+                  </div>
+                  <span className="text-[rgba(255,255,255,0.7)]">·</span>
+                  <div className="flex items-center gap-1.5 text-[rgba(255,255,255,0.7)] font-body text-[12px]">
+                    <ClockIcon />
+                    <span>{featured.readTime}</span>
+                  </div>
+                  <span className="text-[rgba(255,255,255,0.7)]">·</span>
+                  <span className="text-[rgba(255,255,255,0.7)] font-body text-[12px]">{featured.date}</span>
+                </div>
+                <a href="#" className="inline-flex items-center gap-1 font-heading font-semibold text-[12px] leading-[16px] text-[#C8D96F] hover:underline">
+                  Read More
+                  <ArrowIcon />
+                </a>
               </div>
             </div>
           </div>
 
-          <div className="lg:col-span-2 flex flex-col gap-6">
-            {posts.map(({ tag, title, readTime, date }) => (
-              <div key={title} className="flex flex-col gap-2 pb-6 border-b border-gray-200 last:border-b-0 cursor-pointer group lg:w-[532px] lg:h-[134.48px]">
-                <span className="self-start bg-[#004CA5]/10 text-[#004CA5] text-[10px] font-semibold tracking-widest uppercase px-3 py-1 rounded-full">
-                  {tag}
-                </span>
-                <h4 className="font-heading font-semibold text-[#004CA5] text-base leading-snug group-hover:text-[#F39308] transition-colors">
-                  {title}
-                </h4>
-                <div className="flex items-center gap-4 text-[#64748B] text-xs">
-                  <span>{readTime}</span>
-                  <span>{date}</span>
+          <div className="flex flex-col gap-5 flex-1 min-w-0">
+            {posts.map((post) => (
+              <div key={post.title} className="flex flex-col sm:flex-row rounded-2xl overflow-hidden cursor-pointer group bg-[#FAFAFA] sm:h-[134px]">
+                <div className="w-full sm:w-[144px] h-[200px] sm:h-full shrink-0 overflow-hidden">
+                  <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                </div>
+                <div className="flex-1 flex flex-col justify-center gap-2 p-5 pr-5 pl-0 min-w-0">
+                  <span
+                    className="self-start inline-flex items-center font-body font-semibold text-[12px] leading-[16px] px-2.5 py-1 rounded-full"
+                    style={{ background: post.categoryBg, color: post.categoryColor }}
+                  >
+                    {post.category}
+                  </span>
+                  <h4 className="font-heading font-bold text-[16px] leading-[22px] text-[#004CA5] line-clamp-2">
+                    {post.title}
+                  </h4>
+                  <div className="flex items-center gap-1.5 text-[#6B6B6B] font-body text-[12px]">
+                    <ClockIcon />
+                    <span>{post.readTime}</span>
+                    <span>·</span>
+                    <span>{post.date}</span>
+                  </div>
                 </div>
               </div>
             ))}
             <a
-              href="#"
-              className="sm:hidden inline-flex items-center justify-center border-2 border-[#004CA5] text-[#004CA5] font-semibold text-sm px-6 py-2.5 rounded-[999px] hover:bg-[#004CA5] hover:text-white transition-colors duration-200 mt-2"
+              href={ctaHref}
+              className="lg:hidden inline-flex items-center justify-center gap-2 border-[1.6px] border-[#004CA5] text-[#004CA5] font-heading font-semibold text-[14px] px-6 py-3 rounded-[999px] hover:bg-[#004CA5]/10 transition-colors duration-200 mt-2"
             >
-              View All Articles
+              {ctaLabel}
             </a>
           </div>
         </div>

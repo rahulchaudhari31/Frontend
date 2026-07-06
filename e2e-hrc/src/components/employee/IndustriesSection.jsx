@@ -1,13 +1,20 @@
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import manufacturingImg from '../../assets/assets/sectors/manuifacturing.jpg';
+import healthcareImg from '../../assets/assets/sectors/healthcare.jpg';
+import engineeringImg from '../../assets/assets/sectors/engineering.jpg';
+import constructionImg from '../../assets/assets/sectors/construction.jpg';
+import logisticsImg from '../../assets/assets/sectors/logistics.jpg';
+import financeImg from '../../assets/assets/sectors/finance.jpg';
+import educationImg from '../../assets/assets/sectors/education.jpg';
 
 const industries = [
-  { name: 'Manufacturing', image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&q=80' },
-  { name: 'Healthcare', image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&q=80' },
-  { name: 'Engineering', image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&q=80' },
-  { name: 'Construction', image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=400&q=80' },
-  { name: 'Logistics', image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&q=80' },
-  { name: 'Finance', image: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&q=80' },
-  { name: 'Education', image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&q=80' },
+  { name: 'Manufacturing', image: manufacturingImg },
+  { name: 'Healthcare', image: healthcareImg },
+  { name: 'Engineering', image: engineeringImg },
+  { name: 'Construction', image: constructionImg },
+  { name: 'Logistics', image: logisticsImg },
+  { name: 'Finance', image: financeImg },
+  { name: 'Education', image: educationImg },
 ];
 
 export default function IndustriesSection() {

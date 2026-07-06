@@ -16,11 +16,10 @@ const employeeSteps = [
   { num: '06', title: 'Career Support', desc: 'Ongoing guidance to help you grow and advance your career.' },
 ];
 
-export default function RecruitmentProcess() {
+export default function HowWeWork({ variant = 'employee' }) {
   return (
     <section className="py-16 md:py-20 px-4 bg-[#F8FAFC]">
-      <div className="mx-auto lg:w-[1393px] lg:h-[672.99px] lg:max-w-[1440px] lg:pr-[60px] lg:pl-[4px] lg:gap-[6px]">
-        {/* SECTION HEADER */}
+      <div className="mx-auto lg:w-[1393px] lg:max-w-[1440px] lg:pr-[60px] lg:pl-[4px]">
         <div className="flex flex-col items-center text-center mb-14">
           <span className="inline-flex items-center bg-[#E8EDF5] text-[#004CA5] font-body font-semibold text-[12px] px-3 py-[6px] rounded-full">
             Our Process
@@ -33,9 +32,8 @@ export default function RecruitmentProcess() {
           </p>
         </div>
 
-        {/* TWO-COLUMN JOURNEY LAYOUT */}
         <div className="relative flex flex-col lg:flex-row items-start justify-center gap-8 lg:gap-6">
-          {/* EMPLOYER JOURNEY - LEFT */}
+          {/* EMPLOYER JOURNEY */}
           <div className="w-full lg:w-[416px] bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="bg-[#004CA5] px-6 py-4 flex items-center gap-4">
               <span className="shrink-0 w-9 h-9 rounded-full bg-[#C8D96F] flex items-center justify-center font-heading font-bold text-sm text-[#004CA5]">
@@ -79,7 +77,6 @@ export default function RecruitmentProcess() {
                   E2E
                 </span>
               </div>
-              {/* Dot accents */}
               <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-[#F5A300]" />
               <span className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-[#C8D96F]" />
               <span className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-3 h-3 rounded-full bg-[#F5A300]" />
@@ -89,7 +86,7 @@ export default function RecruitmentProcess() {
             <p className="font-heading font-bold text-[#004CA5] text-sm text-center">Both Journeys</p>
           </div>
 
-          {/* EMPLOYEE JOURNEY - RIGHT */}
+          {/* EMPLOYEE JOURNEY */}
           <div className="w-full lg:w-[416px] bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="bg-[#C8D96F] px-6 py-4 flex items-center gap-4">
               <span className="shrink-0 w-9 h-9 rounded-full bg-[#004CA5] flex items-center justify-center font-heading font-bold text-sm text-[#F39308]">
