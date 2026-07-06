@@ -1,5 +1,10 @@
+import ukImg from '../../assets/assets/Professionals/UK.jpg';
+import strategyImg from '../../assets/assets/Professionals/strategy.jpg';
+import workforceImg from '../../assets/assets/Professionals/workforceplanning.jpg';
+import leadershipImg from '../../assets/assets/Professionals/leadership.jpg';
+
 const defaultFeatured = {
-  image: '/src/assets/assets/Professionals/UK.jpg',
+  image: ukImg,
   category: 'Hiring Trends',
   title: 'Hiring Trends in the UK: What Employers Need to Know in 2025',
   description: 'From AI-driven screening to flexible working demands, the UK recruitment landscape is shifting rapidly. Here\'s what the data tells us about the year ahead.',
@@ -10,7 +15,7 @@ const defaultFeatured = {
 
 const defaultPosts = [
   {
-    image: '/src/assets/assets/Professionals/strategy.jpg',
+    image: strategyImg,
     category: 'Strategy',
     categoryBg: '#FDECD2',
     categoryColor: '#C17800',
@@ -19,7 +24,7 @@ const defaultPosts = [
     date: '20 May 2025',
   },
   {
-    image: '/src/assets/assets/Professionals/workforce planning.jpg',
+    image: workforceImg,
     category: 'Workforce Planning',
     categoryBg: '#EFF5D6',
     categoryColor: '#5A7A00',
@@ -28,7 +33,7 @@ const defaultPosts = [
     date: '12 May 2025',
   },
   {
-    image: '/src/assets/assets/Professionals/leadership.jpg',
+    image: leadershipImg,
     category: 'Leadership',
     categoryBg: '#004CA5',
     categoryColor: '#C8D96F',

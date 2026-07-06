@@ -53,29 +53,28 @@ export default function OfficeLocations({
   }
 
   return (
-    <section className="w-full pt-[37px] pb-[3px]" style={{ background: bgColor, height: sectionHeight }}>
-      <div className="mx-auto" style={{ maxWidth: '1396px' }}>
+    <section className="w-full pt-[37px] pb-[3px] lg:h-auto" style={{ background: bgColor, height: sectionHeight }}>
+      <div className="mx-auto px-4 lg:px-0" style={{ maxWidth: '1396px' }}>
         <div className="flex flex-col items-center">
           <span
             className="inline-flex items-center justify-center bg-[#E8EDF5] text-[#004CA5] font-body font-semibold text-[12px] leading-[16px] text-center gap-1.5 rounded-full"
-            style={{ width: '125.08px', height: '27.99px', padding: '6px 12px' }}
+            style={{ padding: '6px 12px' }}
           >
             <FiMapPin size={12} strokeWidth={2} color="#004CA5" />
             {badgeText}
           </span>
           <h2
-            className="font-heading font-[800] text-[36px] leading-[40px] tracking-[0px] text-[#004CA5] text-center mt-3"
-            style={{ width: '375px', height: '40px' }}
+            className="font-heading font-[800] text-[24px] sm:text-[36px] leading-[40px] tracking-[0px] text-[#004CA5] text-center mt-3"
           >
             {heading}
           </h2>
         </div>
 
-        <div className="flex gap-[46.46px] overflow-x-auto pb-4 snap-x snap-mandatory mt-8" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+        <div className="flex gap-4 sm:gap-[46.46px] overflow-x-auto pb-4 snap-x snap-mandatory mt-8" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           {locations.map(({ name, image, pinColor, label }) => (
             <div
               key={name}
-              className="relative w-[344.59px] h-[309.74px] rounded-[12.91px] overflow-hidden group cursor-pointer snap-start shrink-0"
+              className="relative w-[280px] sm:w-[344.59px] h-[240px] sm:h-[309.74px] rounded-[12.91px] overflow-hidden group cursor-pointer snap-start shrink-0"
               style={{ boxShadow: '0px 2.58px 12.91px rgba(0,0,0,0.08)' }}
             >
               <img src={image} alt={name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
