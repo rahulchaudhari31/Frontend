@@ -1,0 +1,47 @@
+/* ================================================================
+   TestimonialsCarousel.css
+   - Infinite seamless marquee scroll right-to-left
+   - Pause on hover
+   - No scrollbars
+   ================================================================ */
+
+.testimonials-carousel {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.testimonials-track {
+  display: flex;
+  gap: 44px;
+  width: max-content;
+  animation: marquee-scroll var(--scroll-speed, 30s) linear infinite;
+}
+
+/* Pause on hover */
+.testimonials-carousel:hover .testimonials-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    /* Move left by exactly half the width (the duplicate half) */
+    transform: translateX(-50%);
+  }
+}
+
+/* Responsive gap */
+@media (max-width: 1024px) {
+  .testimonials-track {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .testimonials-track {
+    gap: 16px;
+  }
+}
