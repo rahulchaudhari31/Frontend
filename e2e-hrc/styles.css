@@ -1,0 +1,229 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.hero-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 1439px) {
+  .hero-wrapper {
+    justify-content: flex-start;
+  }
+}
+
+.hero-container {
+  position: relative;
+  width: 1440px;
+  height: 520px;
+  background: #FFFFFF;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* --- Dashed Accent Boxes (z-index: 1) --- */
+
+.dashed-box-left {
+  position: absolute;
+  width: 170px;
+  height: 120px;
+  top: 130px;
+  left: 115px;
+  border: 2px dashed #F39308;
+  background: transparent;
+  z-index: 1;
+}
+
+.dashed-box-right-1 {
+  position: absolute;
+  width: 100px;
+  height: 145px;
+  top: 315px;
+  left: 1340px;
+  border: 2px dashed #F39308;
+  background: transparent;
+  z-index: 1;
+}
+
+.dashed-box-right-2 {
+  position: absolute;
+  width: 285px;
+  height: 220px;
+  top: 250px;
+  left: 1120px;
+  border: 2px dashed #C4CBD8;
+  background: transparent;
+  z-index: 1;
+}
+
+/* --- Gradient Hexagon Backgrounds (z-index: 2) --- */
+
+.hex-bg-1 {
+  position: absolute;
+  width: 182px;
+  height: 210px;
+  top: 42px;
+  left: 60px;
+  background: linear-gradient(135deg, #E9E4FF 0%, #CFE7FF 100%);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  z-index: 2;
+}
+
+.hex-bg-2 {
+  position: absolute;
+  width: 290px;
+  height: 335px;
+  top: 185px;
+  left: 150px;
+  background: linear-gradient(135deg, #D9EDFF 0%, #BFD8FF 100%);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  z-index: 2;
+}
+
+.hex-bg-3 {
+  position: absolute;
+  width: 290px;
+  height: 335px;
+  top: 42px;
+  left: 1120px;
+  background: linear-gradient(135deg, #FFE3A9 0%, #FFC04A 100%);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  z-index: 2;
+}
+
+/* --- Hexagon Photo Images (z-index: 3) --- */
+
+.hero-img-1 {
+  position: absolute;
+  width: 130px;
+  height: 189px;
+  top: 61px;
+  left: 86px;
+  object-fit: cover;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  z-index: 3;
+}
+
+.hero-img-2 {
+  position: absolute;
+  width: 238px;
+  height: 293px;
+  top: 227px;
+  left: 190px;
+  object-fit: cover;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  z-index: 3;
+}
+
+.hero-img-3 {
+  position: absolute;
+  width: 275px;
+  height: 326px;
+  top: 51px;
+  left: 1125px;
+  object-fit: cover;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  z-index: 3;
+}
+
+/* --- Solid Green & Gradient Hex Dots (z-index: 4) --- */
+
+.hex-dot {
+  position: absolute;
+  width: 40px;
+  height: 46px;
+  background: #C9DB82;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  z-index: 4;
+}
+
+.hex-dot-1 {
+  top: 250px;
+  left: 65px;
+}
+
+.hex-dot-2 {
+  top: 352px;
+  left: 65px;
+}
+
+.hex-dot-gradient {
+  position: absolute;
+  width: 36px;
+  height: 41.6px;
+  background: linear-gradient(49.52deg, #1295D4 -4.12%, #7EC443 85.04%);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  z-index: 4;
+}
+
+.hex-dot-gradient-1 {
+  top: 470px;
+  left: 1288px;
+}
+
+.hex-dot-gradient-2 {
+  top: 470px;
+  left: 1336px;
+}
+
+/* --- Center Text Content (z-index: 5) --- */
+
+.hero-eyebrow {
+  position: absolute;
+  width: 294px;
+  height: 26px;
+  top: 237px;
+  left: 607px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
+  text-align: center;
+  color: #004CA5;
+  z-index: 5;
+}
+
+.hero-heading-wrap {
+  position: absolute;
+  width: 750px;
+  height: 180px;
+  top: 263px;
+  left: 364px;
+  padding-top: 19.4px;
+  padding-bottom: 30.6px;
+  box-sizing: border-box;
+  z-index: 5;
+}
+
+.hero-heading {
+  width: 750px;
+  height: 130px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 60px;
+  line-height: 65px;
+  letter-spacing: 2.5px;
+  text-align: center;
+  color: #2A343E;
+  margin: 0;
+}
+
+.hero-subtext {
+  position: absolute;
+  width: 565px;
+  height: 72px;
+  top: 436px;
+  left: 518px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 36px;
+  text-align: center;
+  color: #000000;
+  z-index: 5;
+}

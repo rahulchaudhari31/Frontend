@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee | E2E Human Resource Consultancy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;600;700;800&family=Montserrat:wght@700&family=Roboto:wght@500;600&family=Hanken+Grotesk:wght@700&family=DM+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ===== A. ANNOUNCEMENT BAR ===== -->
+  <div class="ann-bar">
+    <div class="ann-bar-inner">
+      <a href="#" class="ann-link">
+        Looking to hire exceptional talent? Submit a Vacancy
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <div class="ann-social">
+        <a href="#" aria-label="LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="#" aria-label="Twitter">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="#" aria-label="Facebook">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="#" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== B. HEADER / NAV ===== -->
+  <header class="main-header">
+    <div class="header-inner">
+      <a href="#" class="header-logo" aria-label="E2E HRC home">
+        <img src="images/logo-e2e-hrc.png" alt="E2E HRC" width="146" height="58">
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#">Home</a>
+        <a href="#">About Us</a>
+        <a href="#">Employer</a>
+        <a href="#" class="active">Employee</a>
+        <a href="#">Workforce Solutions</a>
+        <a href="#">Become a Partner</a>
+        <a href="#">Blogs</a>
+        <a href="#">Contact Us</a>
+      </nav>
+
+      <a href="#" class="cta-btn">Submit Vacancy / CV</a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="mobile-nav" id="mobileNav">
+      <nav aria-label="Mobile navigation">
+        <a href="#">Home</a>
+        <a href="#">About Us</a>
+        <a href="#">Employer</a>
+        <a href="#" class="active">Employee</a>
+        <a href="#">Workforce Solutions</a>
+        <a href="#">Become a Partner</a>
+        <a href="#">Blogs</a>
+        <a href="#">Contact Us</a>
+      </nav>
+      <a href="#" class="mobile-cta">Submit Vacancy / CV</a>
+    </div>
+  </header>
+
+  <!-- ===== C. HERO SECTION ===== -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <p class="hero-eyebrow">Find Jobs That Match Your Skills</p>
+        <h1 class="hero-heading">Connecting Talent with Opportunity</h1>
+        <p class="hero-paragraph">Find your ideal role, upload your CV, and connect with leading employers across multiple industries.</p>
+
+        <div class="hero-hex-grid">
+          <!-- Left hex collage -->
+          <div class="hero-hex-left">
+            <div style="position:relative;">
+              <div class="hex-bg-outline" style="width:140px;height:160px;top:-4px;left:-4px;"></div>
+              <img src="images/hero-woman-1.jpg" alt="" class="hex-clip hex-sm" loading="lazy">
+            </div>
+            <div style="position:relative;margin-top:-20px;">
+              <div class="hex-bg-outline" style="width:220px;height:250px;top:-4px;left:-4px;"></div>
+              <img src="images/hero-man-1.jpg" alt="" class="hex-clip hex-lg" loading="lazy">
+            </div>
+            <div class="hex-dot" style="width:12px;height:12px;background:var(--color-third);top:60%;right:-20px;"></div>
+          </div>
+
+          <!-- Center spacer -->
+          <div></div>
+
+          <!-- Right hex -->
+          <div class="hero-hex-right">
+            <div style="position:relative;">
+              <div class="hex-bg-outline" style="width:240px;height:270px;top:-5px;left:-5px;border-color:var(--color-first);border-style:dashed;"></div>
+              <img src="images/hero-woman-2.jpg" alt="" class="hex-clip" style="width:240px;height:270px;" loading="lazy">
+            </div>
+            <div class="hex-dot" style="width:16px;height:16px;background:var(--color-second);top:15%;left:-10px;"></div>
+            <div class="hex-dot" style="width:10px;height:10px;background:var(--color-third);bottom:10%;right:10px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== D. WHY CHOOSE OUR EMPLOYEE JOURNEY SERVICES ===== -->
+  <section class="dark-services">
+    <div class="container">
+      <p class="services-eyebrow">TRUSTED DIGITAL SOLUTIONS FOR YOUR BUSINESS</p>
+      <h2 class="services-heading">Why choose Our Employee Journey Services?</h2>
+
+      <div class="services-grid">
+        <!-- 1. Register -->
+        <div class="service-item">
+          <div class="service-icon">
+            <svg viewBox="0 0 32 32" fill="none">
+              <rect x="4" y="6" width="24" height="20" rx="2" stroke="#0C6FFF" stroke-width="1.5"/>
+              <line x1="10" y1="12" x2="22" y2="12" stroke="#0C6FFF" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="10" y1="16" x2="18" y2="16" stroke="#0C6FFF" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="10" y1="20" x2="14" y2="20" stroke="#0C6FFF" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="service-label">Register</span>
+        </div>
+
+        <!-- 2. Interview Preparation -->
+        <div class="service-item">
+          <div class="service-icon">
+            <svg viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="10" r="4" stroke="#0C6FFF" stroke-width="1.5"/>
+              <path d="M6 26c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke="#0C6FFF" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M22 14l4-4" stroke="#0C6FFF" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="24" cy="8" r="3" stroke="#0C6FFF" stroke-width="1.2" fill="#0C6FFF" fill-opacity="0.2"/>
+            </svg>
+          </div>
+          <span class="service-label">Interview Preparation</span>
+        </div>
+
+        <!-- 3. CV Review -->
+        <div class="service-item">
+          <div class="service-icon">
+            <svg viewBox="0 0 32 32" fill="none">
+              <rect x="6" y="4" width="20" height="24" rx="2" stroke="#0C6FFF" stroke-width="1.5"/>
+              <line x1="10" y1="10" x2="22" y2="10" stroke="#0C6FFF" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="10" y1="14" x2="22" y2="14" stroke="#0C6FFF" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="10" y1="18" x2="18" y2="18" stroke="#0C6FFF" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M20 20l4 4" stroke="#0C6FFF" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="22" cy="22" r="4" stroke="#0C6FFF" stroke-width="1.2" fill="#0C6FFF" fill-opacity="0.15"/>
+            </svg>
+          </div>
+          <span class="service-label">CV Review</span>
+        </div>
+
+        <!-- 4. Placement -->
+        <div class="service-item">
+          <div class="service-icon">
+            <svg viewBox="0 0 32 32" fill="none">
+              <rect x="4" y="8" width="24" height="18" rx="2" stroke="#0C6FFF" stroke-width="1.5"/>
+              <path d="M16 4v4" stroke="#0C6FFF" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M8 14h16" stroke="#0C6FFF" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M8 18h12" stroke="#0C6FFF" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M8 22h8" stroke="#0C6FFF" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="service-label">Placement</span>
+        </div>
+
+        <!-- 5. Job Matching -->
+        <div class="service-item">
+          <div class="service-icon">
+            <svg viewBox="0 0 32 32" fill="none">
+              <circle cx="14" cy="10" r="5" stroke="#0C6FFF" stroke-width="1.5"/>
+              <path d="M22 10l6 6" stroke="#0C6FFF" stroke-width="1.5" stroke-linecap="round"/>
+              <rect x="4" y="18" width="24" height="10" rx="2" stroke="#0C6FFF" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <span class="service-label">Job Matching</span>
+        </div>
+
+        <!-- 6. Career Support -->
+        <div class="service-item">
+          <div class="service-icon">
+            <svg viewBox="0 0 32 32" fill="none">
+              <path d="M6 28c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke="#0C6FFF" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="16" cy="10" r="5" stroke="#0C6FFF" stroke-width="1.5"/>
+              <path d="M24 8l3-3" stroke="#0C6FFF" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="26" cy="6" r="2.5" stroke="#0C6FFF" stroke-width="1.2" fill="#0C6FFF" fill-opacity="0.15"/>
+            </svg>
+          </div>
+          <span class="service-label">Career Support</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== E. WHAT MAKES US DIFFERENT ===== -->
+  <section class="different-section">
+    <div class="container">
+      <p class="diff-eyebrow">WHY CHOOSE E2E HRC</p>
+      <h2 class="diff-heading">What makes us different</h2>
+
+      <!-- Feature Card 1 -->
+      <div class="feature-card">
+        <div class="feature-image">
+          <img src="images/candidate-approach.jpg" alt="Candidate-Centric Approach" loading="lazy">
+        </div>
+        <div class="feature-panel">
+          <p class="feature-eyebrow">CAREER FIRST, ALWAYS</p>
+          <h3 class="feature-title">Candidate-Centric Approach</h3>
+          <p class="feature-text">We view your career journey as more than just a job search. Every candidate is a professional with unique goals; every role is an opportunity for growth. We partner with you to find a culture where you can thrive.</p>
+          <div class="feature-stats">
+            <div class="stat-item">
+              <span class="stat-number">500+</span>
+              <span class="stat-label">ACTIVE CLIENTS</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">98%</span>
+              <span class="stat-label">SATISFACTION RATE</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Card 2 (mirrored) -->
+      <div class="feature-card mirrored">
+        <div class="feature-panel">
+          <div class="bg-letter">R</div>
+          <p class="feature-eyebrow blue">YOUR GROWTH, OUR GOAL</p>
+          <h3 class="feature-title">A Career That Moves You</h3>
+          <p class="feature-text">Our success is defined by yours. We don't just place you in a role; we ensure it's the right fit for your long-term career trajectory. From CV polishing to interview prep, we are invested in your professional advancement.</p>
+          <div class="feature-stats">
+            <div class="stat-item">
+              <span class="stat-number blue">10K+</span>
+              <span class="stat-label">PLACEMENTS MADE</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number blue">25+</span>
+              <span class="stat-label">INDUSTRIES SERVED</span>
+            </div>
+          </div>
+        </div>
+        <div class="feature-image">
+          <img src="images/career-moves.jpg" alt="A Career That Moves You" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== F. OUR PLACEMENTS ===== -->
+  <section class="placements-section">
+    <div class="container">
+      <p class="placements-eyebrow">OUR Placements</p>
+      <h2 class="placements-heading">Network with the best in the HR industry</h2>
+
+      <img src="images/leading-employers.jpg" alt="Leading employers" class="leading-employers-img" loading="lazy">
+    </div>
+  </section>
+
+  <!-- ===== G. TESTIMONIALS ===== -->
+  <section class="testimonials-section">
+    <div class="container testimonials-inner">
+      <span class="testi-pill">Testimonials</span>
+      <h2 class="testi-heading">What our candidates say</h2>
+      <p class="testi-subtext">Discover the stories and experiences of individuals and companies who have found success and excellence through Applyfier</p>
+
+      <div class="testi-controls">
+        <button class="testi-arrow prev" id="testiPrev" aria-label="Previous testimonial">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="testi-arrow next" id="testiNext" aria-label="Next testimonial">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+
+      <div class="testi-carousel-wrapper">
+        <div class="testi-carousel" id="testiCarousel">
+          <!-- Card 1 -->
+          <div class="testi-card">
+            <h3 class="testi-card-title">Efficient and Effective Hiring Process!</h3>
+            <p class="testi-card-quote">The efficiency of Applyfier's hiring process is commendable. The platform's intuitive interface, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.</p>
+            <div class="testi-card-divider"></div>
+            <img src="images/logo-ford.png" alt="Ford" class="testi-card-logo" loading="lazy">
+          </div>
+
+          <!-- Card 2 -->
+          <div class="testi-card">
+            <h3 class="testi-card-title">Top-Notch Talent at Our Fingertips!</h3>
+            <p class="testi-card-quote">As an employer, finding top-notch talent is crucial for our success. Applyfier has been our go-to platform for hiring. The automated candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.</p>
+            <div class="testi-card-divider"></div>
+            <img src="images/logo-disney.png" alt="Disney" class="testi-card-logo" loading="lazy">
+          </div>
+
+          <!-- Card 3 -->
+          <div class="testi-card">
+            <h3 class="testi-card-title">Top-Notch Talent at Our Fingertips!</h3>
+            <p class="testi-card-quote">As an employer, finding top-notch talent is crucial for our success. Applyfier has been our go-to platform for hiring. The automated candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.</p>
+            <div class="testi-card-divider"></div>
+            <img src="images/logo-disney.png" alt="Disney" class="testi-card-logo" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== H. FOOTER ===== -->
+  <footer class="main-footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <!-- Brand Column -->
+        <div class="footer-brand">
+          <img src="images/logo-e2e-hrc-white.png" alt="E2E HRC Logo" loading="lazy">
+          <p class="footer-desc">Connecting exceptional talent with exceptional businesses across the UK, Europe, South Asia, and the GCC since 2007.</p>
+        </div>
+
+        <!-- Navigation Column -->
+        <div>
+          <h3 class="footer-heading">NAVIGATION</h3>
+          <nav class="footer-nav">
+            <a href="#">Home</a>
+            <a href="#">About Us</a>
+            <a href="#">Our Services</a>
+            <a href="#">Latest Jobs</a>
+            <a href="#">Expert Blogs</a>
+          </nav>
+        </div>
+
+        <!-- UK Head Office Column -->
+        <div>
+          <h3 class="footer-heading">UK HEAD OFFICE</h3>
+          <div class="footer-contact">
+            <div class="footer-contact-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F39308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>Unit 2, 1204B Stratford Road, Hall Green, Birmingham, B28 8HN, UK</span>
+            </div>
+            <div class="footer-contact-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F39308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <a href="tel:+441217782400">+44 (0) 121 778 2400</a>
+            </div>
+            <div class="footer-contact-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F39308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <a href="mailto:info@e2ehrc.co.uk">info@e2ehrc.co.uk</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Office Locations Column -->
+        <div>
+          <h3 class="footer-heading">OUR OFFICE LOCATIONS</h3>
+          <div class="footer-map">
+            <img src="images/world-map-locations.png" alt="World map with office locations" loading="lazy">
+            <div class="map-pin">
+              <svg viewBox="0 0 24 24" fill="#EF4444"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3" fill="white"/></svg>
+            </div>
+            <span class="map-label">India</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">COPYRIGHT &copy; 2024 BY E2E HUMAN RESOURCE CONSULTANCY LTD | ALL RIGHTS RESERVED</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

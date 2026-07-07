@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero Section – Connecting Talent with Opportunity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&family=Roboto:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="hero-wrapper">
+    <div class="hero-container" id="heroContainer">
+
+      <!-- LEFT IMAGE CLUSTER -->
+      <div class="hex-frame-left"></div>
+      <img src="images/girl-employee.png" alt="Professional woman" class="hero-img-1">
+      <div class="dashed-box-left"></div>
+      <div class="hex-dot hex-dot-1"></div>
+      <div class="hex-dot hex-dot-2"></div>
+      <div class="hex-dot hex-dot-3"></div>
+      <div class="hex-dot hex-dot-4"></div>
+      <div class="hex-frame-mid"></div>
+      <img src="images/man-employee.png" alt="Professional man" class="hero-img-2">
+
+      <!-- RIGHT IMAGE CLUSTER -->
+      <div class="hex-frame-right"></div>
+      <img src="images/office-girl.png" alt="Professional woman in orange blazer" class="hero-img-3">
+      <div class="dashed-box-right-1"></div>
+      <div class="dashed-box-right-2"></div>
+      <div class="hex-dot-gradient hex-dot-gradient-1"></div>
+      <div class="hex-dot-gradient hex-dot-gradient-2"></div>
+
+      <!-- CENTER TEXT -->
+      <div class="hero-eyebrow">Find Jobs That Match Your Skills</div>
+      <div class="hero-heading-wrap"><h1 class="hero-heading">Connecting Talent with Opportunity</h1></div>
+      <p class="hero-subtext">Find your ideal role, upload your CV, and connect with leading employers across multiple industries.</p>
+
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      var container = document.getElementById('heroContainer');
+      var DESIGN_WIDTH = 1440;
+
+      function scaleHero() {
+        var vw = window.innerWidth;
+        var s = vw < DESIGN_WIDTH ? vw / DESIGN_WIDTH : 1;
+        if (s < 0.35) s = 0.35;
+        container.style.transform = 'scale(' + s + ')';
+      }
+
+      scaleHero();
+      window.addEventListener('resize', scaleHero);
+    })();
+  </script>
+
+</body>
+</html>
