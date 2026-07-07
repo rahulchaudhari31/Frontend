@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
 import AnnouncementBar from '../components/AnnouncementBar';
 import Navbar from '../components/shared/Navbar';
 import Footer from '../components/shared/Footer';
 import HeroSection from '../components/employee/HeroSection';
+import TestimonialsCarousel from '../components/employee/TestimonialsCarousel';
 import './Employee.css';
 
 const testimonialsData = [
@@ -27,62 +27,6 @@ const testimonialsData = [
 ];
 
 export default function Employee() {
-  const [testiIndex, setTestiIndex] = useState(1);
-  const isTransitioning = useRef(false);
-  const carouselRef = useRef(null);
-  const cardCount = testimonialsData.length;
-
-  const cards = [testimonialsData[cardCount - 1], ...testimonialsData, testimonialsData[0]];
-
-  const getStep = useCallback(() => 530 + 44, []);
-
-  const jumpTo = useCallback((target) => {
-    const el = carouselRef.current;
-    if (!el) return;
-    el.style.transition = 'none';
-    el.style.transform = `translateX(-${target * getStep()}px)`;
-  }, [getStep]);
-
-  useEffect(() => {
-    const el = carouselRef.current;
-    if (!el) return;
-    el.style.transition = 'transform 0.4s ease-in-out';
-    el.style.transform = `translateX(-${testiIndex * getStep()}px)`;
-  }, [testiIndex, getStep]);
-
-  useEffect(() => {
-    const el = carouselRef.current;
-    if (!el) return;
-    const onEnd = () => {
-      isTransitioning.current = false;
-      if (testiIndex === 0) {
-        jumpTo(cardCount);
-        setTestiIndex(cardCount);
-      } else if (testiIndex === cardCount + 1) {
-        jumpTo(1);
-        setTestiIndex(1);
-      }
-    };
-    el.addEventListener('transitionend', onEnd);
-    return () => el.removeEventListener('transitionend', onEnd);
-  }, [testiIndex, cardCount, jumpTo]);
-
-  const goToPrev = () => {
-    if (isTransitioning.current) return;
-    isTransitioning.current = true;
-    const el = carouselRef.current;
-    if (el) el.style.transition = 'transform 0.4s ease-in-out';
-    setTestiIndex((i) => i - 1);
-  };
-
-  const goToNext = () => {
-    if (isTransitioning.current) return;
-    isTransitioning.current = true;
-    const el = carouselRef.current;
-    if (el) el.style.transition = 'transform 0.4s ease-in-out';
-    setTestiIndex((i) => i + 1);
-  };
-
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
       <AnnouncementBar />
@@ -284,48 +228,10 @@ export default function Employee() {
               <p className="emp-testimonials-desc font-[Inter] text-white m-0" style={{ width: '580px', fontSize: '16px', lineHeight: '19px', fontWeight: 400, display: 'flex', alignItems: 'flex-end' }}>
                 Discover the stories and experiences of individuals and companies who have found success and excellence through Applyfier
               </p>
-              <div className="emp-testimonials-nav flex items-center shrink-0" style={{ width: '91.93px', height: '40.97px', gap: '10px' }}>
-                <button onClick={goToPrev} className="flex items-center justify-center cursor-pointer hover:opacity-85 transition-opacity shrink-0" style={{ width: '40.97px', height: '40.97px', borderRadius: '58.52px', background: '#EBEEF8', border: '1px solid #004CA5', padding: '11.7px 17.56px', gap: '11.7px', transform: 'scaleX(-1)' }} aria-label="Previous testimonial">
-                  <svg width="8.98" height="15.58" viewBox="0 0 8.98 15.58" fill="none">
-                    <path d="M7.98 1L1 7.79L7.98 14.58" fill="#004CA5" />
-                  </svg>
-                </button>
-                <button onClick={goToNext} className="flex items-center justify-center cursor-pointer hover:opacity-85 transition-opacity shrink-0 border-none" style={{ width: '40.97px', height: '40.97px', borderRadius: '58.52px', background: '#FFFFFF', padding: '11.7px 17.56px', gap: '11.7px' }} aria-label="Next testimonial">
-                  <svg width="8.98" height="15.58" viewBox="0 0 8.98 15.58" fill="none">
-                    <path d="M7.98 1L1 7.79L7.98 14.58" fill="#004CA5" />
-                  </svg>
-                </button>
-              </div>
             </div>
           </div>
 
-          <div className="emp-testimonials-carousel overflow-hidden" style={{ width: '1255px' }}>
-            <div
-              ref={carouselRef}
-              className="emp-testimonials-track flex" style={{ gap: '44px' }}
-            >
-              {cards.map((t, i) => (
-                <div
-                  key={i}
-                  className="emp-testimonials-card bg-white shrink-0 flex flex-col items-center"
-                  style={{ width: '530px', minHeight: '388px', borderRadius: '12px', gap: '10px', padding: '0px' }}
-                >
-                  <div className="emp-testimonials-card-inner flex flex-col items-center" style={{ width: '400px', gap: '30px', paddingTop: '55px' }}>
-                    <div className="flex flex-col" style={{ width: '368px', gap: '30px' }}>
-                      <h3 className="font-[Poppins] font-medium text-black m-0" style={{ fontSize: '20px', lineHeight: '30px', letterSpacing: '0%' }}>
-                        {t.title}
-                      </h3>
-                      <p className="font-[Inter] text-black m-0" style={{ width: '362px', fontSize: '16px', lineHeight: '19px', fontWeight: 400 }}>
-                        {t.quote}
-                      </p>
-                    </div>
-                    <div style={{ width: '400px', borderTop: '1px solid rgba(0,0,0,0.25)', transform: 'rotate(0.27deg)' }} />
-                    <img src={t.logo} alt={t.alt} className="h-auto object-contain" style={{ width: '128.65px', maxHeight: '45.95px' }} loading="lazy" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <TestimonialsCarousel data={testimonialsData} speed={30} />
         </div>
       </section>
 

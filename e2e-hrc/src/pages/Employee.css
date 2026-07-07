@@ -113,41 +113,6 @@
   .emp-testimonials-desc {
     width: 100% !important;
   }
-  .emp-testimonials-carousel {
-    width: 100% !important;
-    overflow: hidden !important;
-  }
-  .emp-testimonials-track {
-    gap: 20px !important;
-  }
-  .emp-testimonials-card {
-    width: calc(100vw - 60px) !important;
-    min-width: 0 !important;
-  }
-  .emp-testimonials-card > div {
-    width: 100% !important;
-    padding: 30px 20px !important;
-  }
-  .emp-testimonials-card-inner {
-    width: 100% !important;
-    padding: 30px 20px !important;
-  }
-  .emp-testimonials-card-inner > div {
-    width: 100% !important;
-  }
-  .emp-testimonials-card-inner > div p {
-    width: 100% !important;
-  }
-  .emp-testimonials-card-inner > div:first-child {
-    width: 100% !important;
-  }
-  .emp-testimonials-card-inner > div:first-child h3 {
-    font-size: 18px !important;
-    line-height: 26px !important;
-  }
-  .emp-testimonials-card-inner > div:last-child {
-    width: 100% !important;
-  }
 }
 
 @media (max-width: 600px) {
