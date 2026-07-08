@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { FiGlobe, FiHome, FiLayers } from 'react-icons/fi';
 import AnnouncementBar from '../components/AnnouncementBar';
 import Navbar from '../components/shared/Navbar';
@@ -83,7 +83,15 @@ export default function BecomePartner() {
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
   const [activeOfficeCard, setActiveOfficeCard] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
   const cardTimers = useRef({});
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const makeHandleEnter = (id) => () => {
     if (cardTimers.current[id]) clearTimeout(cardTimers.current[id]);
@@ -544,7 +552,7 @@ export default function BecomePartner() {
                     style={{ background: m.color, boxShadow: `0 0 0 4px ${m.shadow}`, outlineColor: m.focus }}
                     aria-label={m.label}
                     onMouseEnter={makeHandleEnter(m.id)}
-                    onMouseLeave={makeHandleLeave(m.id)}
+                    onMouseLeave={isMobile ? undefined : makeHandleLeave(m.id)}
                     onFocus={() => setActiveOfficeCard(m.id)}
                   >
                     <span className="sr-only">{m.label}</span>
@@ -552,10 +560,11 @@ export default function BecomePartner() {
                   <OfficeInfoCard
                     data={officeData[m.id]}
                     isVisible={activeOfficeCard === m.id}
+                    isModal={isMobile}
                     style={{ right: 'calc(100% + 12px)', top: m.cardTop, zIndex: 100 }}
                     onClose={hideCard}
-                    onMouseEnter={makeHandleEnter(m.id)}
-                    onMouseLeave={makeHandleLeave(m.id)}
+                    onMouseEnter={isMobile ? undefined : makeHandleEnter(m.id)}
+                    onMouseLeave={isMobile ? undefined : makeHandleLeave(m.id)}
                   />
                 </div>
               ))}

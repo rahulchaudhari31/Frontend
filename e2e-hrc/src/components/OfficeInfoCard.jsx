@@ -45,31 +45,44 @@ export default function OfficeInfoCard({
   };
 
   return (
-    <div
-      role={isModal ? 'dialog' : 'tooltip'}
-      aria-label={officeName}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      style={{
-        position: isModal ? 'fixed' : 'absolute',
-        zIndex: 50,
-        width: 380,
-        maxWidth: '90vw',
-        background: '#FFFFFF',
-        borderRadius: 24,
-        padding: '40px 32px',
-        boxShadow: '0 20px 40px rgba(0,0,0,0.18)',
-        opacity: 1,
-        transition: 'opacity 0.2s ease, transform 0.2s ease',
-        ...(isModal
-          ? {
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-            }
-          : style),
-      }}
-    >
+    <>
+      {isModal && (
+        <div
+          onClick={onClose}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.4)',
+            zIndex: 49,
+          }}
+        />
+      )}
+      <div
+        role={isModal ? 'dialog' : 'tooltip'}
+        aria-label={officeName}
+        aria-modal={isModal ? 'true' : undefined}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        style={{
+          position: isModal ? 'fixed' : 'absolute',
+          zIndex: 50,
+          width: 380,
+          maxWidth: '90vw',
+          background: '#FFFFFF',
+          borderRadius: 24,
+          padding: '40px 32px',
+          boxShadow: '0 20px 40px rgba(0,0,0,0.18)',
+          opacity: 1,
+          transition: 'opacity 0.2s ease, transform 0.2s ease',
+          ...(isModal
+            ? {
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+              }
+            : style),
+        }}
+      >
       {onClose && (
         <button
           onClick={onClose}
@@ -182,6 +195,7 @@ export default function OfficeInfoCard({
         Get Directions
       </button>
     </div>
+    </>
   );
 }
 
