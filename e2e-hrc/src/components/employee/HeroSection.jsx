@@ -11,10 +11,20 @@ export default function HeroSection() {
     const updateScale = () => {
       const wrapper = container.parentElement;
       if (!wrapper) return;
+      if (window.innerWidth < 768) {
+        container.style.transform = '';
+        container.style.marginBottom = '';
+        return;
+      }
       const wrapperWidth = wrapper.clientWidth;
       const scale = Math.min(1, wrapperWidth / 1440);
-      container.style.transform = scale < 1 ? `scale(${scale})` : '';
-      container.style.height = scale < 1 ? `${520 * scale}px` : '520px';
+      if (scale < 1) {
+        container.style.transform = `scale(${scale})`;
+        container.style.marginBottom = `${-520 * (1 - scale)}px`;
+      } else {
+        container.style.transform = '';
+        container.style.marginBottom = '';
+      }
     };
 
     updateScale();
