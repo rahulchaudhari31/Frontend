@@ -38,7 +38,7 @@ export default function Employee() {
       {/* ===== D. WHY CHOOSE OUR EMPLOYEE JOURNEY SERVICES ===== */}
       <section className="emp-journey" style={{ background: 'linear-gradient(135deg, #E6BA67 0%, #EAD47A 14.28%, #C9C456 28.57%, #DDCA6A 42.85%, #AEBD54 57.14%, #D0D66B 71.42%, #D5DE80 85.71%, #95B755 100%)' }}>
         <div className="emp-journey-inner mx-auto flex flex-col items-center" style={{ maxWidth: '1220px', height: '566px', padding: '0px 15px', gap: '20px' }}>
-          <div className="emp-journey-header flex flex-col items-center" style={{ width: '1220px', height: '160px', padding: '20px 0px 0px' }}>
+          <div className="emp-journey-header flex flex-col items-center" style={{ width: '100%', height: '160px', padding: '20px 0px 0px' }}>
             <p className="font-['DM_Sans'] font-medium text-[17px] leading-[30px] text-center tracking-[1px] uppercase text-[#7A777E] m-0" style={{ width: '446px' }}>
               TRUSTED DIGITAL SOLUTIONS FOR YOUR BUSINESS
             </p>
@@ -47,7 +47,7 @@ export default function Employee() {
             </h2>
           </div>
 
-          <div className="emp-journey-grid grid grid-cols-1 md:grid-cols-2" style={{ width: '1190px' }}>
+          <div className="emp-journey-grid grid grid-cols-1 md:grid-cols-2" style={{ width: '100%' }}>
             {[
               { label: 'Register', file: 'register.png' },
               { label: 'Interview Preparation', file: 'interview%20preparation.png' },
@@ -212,20 +212,20 @@ export default function Employee() {
         <div className="emp-testimonials-inner relative z-10 mx-auto flex flex-col" style={{ maxWidth: '1240px', gap: '50px' }}>
 
           <div className="emp-testimonials-top flex flex-col" style={{ width: '100%', gap: '40px' }}>
-            <div className="emp-testimonials-header flex flex-col" style={{ width: '1008px', gap: '30px' }}>
+            <div className="emp-testimonials-header flex flex-col" style={{ width: '100%', gap: '30px' }}>
               <div className="emp-testimonials-badge flex items-center" style={{ gap: '20px', height: '32px' }}>
                 <div style={{ width: '80px', borderTop: '1px solid #FFFFFF' }} />
                 <span className="bg-white inline-flex items-center justify-center" style={{ width: '135px', height: '32px', padding: '10px 20px', borderRadius: '20px', gap: '10px' }}>
                   <span className="font-[Inter] text-[16px] leading-[19px] text-[#F39308]" style={{ fontWeight: 400 }}>Testimonials</span>
                 </span>
               </div>
-              <h2 className="emp-testimonials-heading font-[Poppins] font-semibold text-[36px] text-white m-0" style={{ width: '1008px', lineHeight: '76px', letterSpacing: '0%' }}>
+              <h2 className="emp-testimonials-heading font-[Poppins] font-semibold text-[36px] text-white m-0" style={{ width: '100%', lineHeight: '76px', letterSpacing: '0%' }}>
                 What our candidates say
               </h2>
             </div>
 
             <div className="emp-testimonials-controls flex items-start" style={{ width: '100%', gap: '568px' }}>
-              <p className="emp-testimonials-desc font-[Inter] text-white m-0" style={{ width: '580px', fontSize: '16px', lineHeight: '19px', fontWeight: 400, display: 'flex', alignItems: 'flex-end' }}>
+              <p className="emp-testimonials-desc font-[Inter] text-white m-0" style={{ width: '100%', maxWidth: '580px', fontSize: '16px', lineHeight: '19px', fontWeight: 400, display: 'flex', alignItems: 'flex-end' }}>
                 Discover the stories and experiences of individuals and companies who have found success and excellence through Applyfier
               </p>
             </div>

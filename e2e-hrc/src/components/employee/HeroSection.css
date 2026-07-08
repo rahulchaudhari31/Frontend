@@ -7,7 +7,7 @@
 
 .hero-scroll-wrap {
   width: 100%;
-  overflow-x: auto;
+  overflow-x: hidden;
   display: flex;
   justify-content: center;
 }
