@@ -371,7 +371,7 @@
 
     /* ============ SIDEBAR ============ */
     .posts-sidebar {
-      width: 427px;
+      width: 377px;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
@@ -387,8 +387,9 @@
     .sidebar-card-header {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 7.99px;
       margin-bottom: 20px;
+      height: 28px;
     }
     .sidebar-card-header svg {
       width: 20px;
@@ -439,70 +440,66 @@
     .category-row {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 12px 8px;
+      justify-content: space-between;
+      padding: 12px;
       border-radius: 8px;
       cursor: pointer;
       transition: background 0.15s;
     }
     .category-row:hover { background: var(--c-bgpage); }
-    .category-row svg.cat-icon {
-      width: 8px;
-      height: 8px;
-      fill: var(--c-orange);
-      flex-shrink: 0;
+    .category-row .cat-left {
+      display: flex;
+      align-items: center;
+      gap: 11.99px;
     }
     .category-row .cat-label {
-      flex: 1;
-      font-family: 'Hanken Grotesk', sans-serif;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
       font-size: 14px;
-      color: var(--c-heading);
+      line-height: 20px;
+      color: #1B1C1C;
     }
-    .category-row .cat-chevron {
-      width: 16px;
-      height: 16px;
-      fill: none;
-      stroke: #94A3B8;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
+
 
     .resource-row {
       display: flex;
       align-items: center;
-      gap: 16px;
-      padding: 8px 0;
+      gap: 12px;
+      height: 62px;
     }
     .resource-icon-box {
-      width: 48px;
-      height: 48px;
+      width: 32.67px;
+      height: 35.67px;
       background: rgba(0,54,121,0.1);
       border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      padding: 8px 8px 11px 8px;
     }
-    .resource-icon-box svg {
-      width: 22px;
-      height: 22px;
-      fill: none;
-      stroke: var(--c-linkblue);
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+    .resource-icon-box img {
+      width: 16.67px;
+      height: 16.67px;
+    }
+    .resource-text {
+      width: 161px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .resource-title {
-      font-family: 'Hanken Grotesk', sans-serif;
-      font-weight: 400;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
       font-size: 14px;
-      color: var(--c-heading);
+      line-height: 20px;
+      color: #1B1C1C;
     }
     .resource-subtitle {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Source Sans 3', sans-serif;
       font-size: 12px;
-      color: #94A3B8;
+      line-height: 16px;
+      color: #424752;
     }
 
     /* ============ FOOTER ============ */
@@ -895,44 +892,54 @@
           </div>
           <p class="sidebar-desc">Explore deeper insights across our core consultancy pillars.</p>
           <div class="category-row">
-            <svg class="cat-icon" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5"/></svg>
-            <span class="cat-label">Recruitment Strategy</span>
-            <svg class="cat-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            <div class="cat-left">
+              <img src="src/assets/assets/exepert categories/reqirtement.png" alt="Recruitment Strategy" style="width:20px;height:20px" />
+              <span class="cat-label">Recruitment Strategy</span>
+            </div>
+            <img src="src/assets/assets/exepert categories/arrow.png" alt="arrow" style="width:9.33px;height:9.33px" />
           </div>
           <div class="category-row">
-            <svg class="cat-icon" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5"/></svg>
-            <span class="cat-label">Executive Search</span>
-            <svg class="cat-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            <div class="cat-left">
+              <img src="src/assets/assets/exepert categories/executive.png" alt="Executive Search" style="width:20.5px;height:19.5px" />
+              <span class="cat-label">Executive Search</span>
+            </div>
+            <img src="src/assets/assets/exepert categories/arrow.png" alt="arrow" style="width:9.33px;height:9.33px" />
           </div>
           <div class="category-row">
-            <svg class="cat-icon" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5"/></svg>
-            <span class="cat-label">HR Compliance</span>
-            <svg class="cat-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            <div class="cat-left">
+              <img src="src/assets/assets/exepert categories/HR compliance.png" alt="HR Compliance" style="width:18px;height:19px" />
+              <span class="cat-label">HR Compliance</span>
+            </div>
+            <img src="src/assets/assets/exepert categories/arrow.png" alt="arrow" style="width:9.33px;height:9.33px" />
           </div>
           <div class="category-row">
-            <svg class="cat-icon" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5"/></svg>
-            <span class="cat-label">Talent Analytics</span>
-            <svg class="cat-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            <div class="cat-left">
+              <img src="src/assets/assets/exepert categories/talent analytics.png" alt="Talent Analytics" style="width:18px;height:18px" />
+              <span class="cat-label">Talent Analytics</span>
+            </div>
+            <img src="src/assets/assets/exepert categories/arrow.png" alt="arrow" style="width:9.33px;height:9.33px" />
           </div>
           <div class="category-row">
-            <svg class="cat-icon" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5"/></svg>
-            <span class="cat-label">Leadership Development</span>
-            <svg class="cat-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            <div class="cat-left">
+              <img src="src/assets/assets/exepert categories/leadership.png" alt="Leadership Development" style="width:24px;height:12px" />
+              <span class="cat-label">Leadership Development</span>
+            </div>
+            <img src="src/assets/assets/exepert categories/arrow.png" alt="arrow" style="width:9.33px;height:9.33px" />
           </div>
         </div>
 
         <div class="sidebar-card">
           <div class="sidebar-card-header">
-            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <img src="src/assets/assets/icon trending now/industry resources.png" alt="Industry Resources" style="width:21.5px;height:16px" />
             <h3>Industry Resources</h3>
           </div>
           <div class="resource-row">
             <div class="resource-icon-box">
-              <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              <img src="src/assets/assets/icon trending now/tech salary guide.png" alt="Tech Salary Guide" />
             </div>
-            <div>
+            <div class="resource-text">
               <div class="resource-title">2026 Tech Salary Guide</div>
-              <div class="resource-subtitle">PDF Guide</div>
+              <div class="resource-subtitle">PDF &bull; 4.2 MB</div>
             </div>
           </div>
         </div>

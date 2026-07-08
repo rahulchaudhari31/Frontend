@@ -1,4 +1,4 @@
-import { FiCalendar, FiClock, FiTrendingUp, FiChevronRight, FiFile } from 'react-icons/fi';
+import { FiCalendar, FiClock } from 'react-icons/fi';
 import AnnouncementBar from '../components/AnnouncementBar';
 import Navbar from '../components/shared/Navbar';
 import Footer from '../components/shared/Footer';
@@ -11,6 +11,14 @@ import cultureImg from '../assets/assets/our blog images/culture.jpg';
 import datadrivenImg from '../assets/assets/our blog images/requirement.jpg';
 import trendingIcon from '../assets/assets/icon trending now/trendinng now.png';
 import expertIcon from '../assets/assets/icon trending now/expert categories.png';
+import industryIcon from '../assets/assets/icon trending now/industry resources.png';
+import techSalaryIcon from '../assets/assets/icon trending now/tech salary guide.png';
+import recruitmentIcon from '../assets/assets/exepert categories/reqirtement.png';
+import executiveCatIcon from '../assets/assets/exepert categories/executive.png';
+import complianceCatIcon from '../assets/assets/exepert categories/HR compliance.png';
+import talentIcon from '../assets/assets/exepert categories/talent analytics.png';
+import leadershipIcon from '../assets/assets/exepert categories/leadership.png';
+import arrowIcon from '../assets/assets/exepert categories/arrow.png';
 
 const articles = [
   {
@@ -48,11 +56,11 @@ const articles = [
 ];
 
 const categories = [
-  'Recruitment Strategy',
-  'Executive Search',
-  'HR Compliance',
-  'Talent Analytics',
-  'Leadership Development',
+  { name: 'Recruitment Strategy', icon: recruitmentIcon, w: 20, h: 20, gap: '83.62px' },
+  { name: 'Executive Search', icon: executiveCatIcon, w: 20.5, h: 19.5, gap: '108.16px' },
+  { name: 'HR Compliance', icon: complianceCatIcon, w: 18, h: 19, gap: '119.15px' },
+  { name: 'Talent Analytics', icon: talentIcon, w: 18, h: 18, gap: '116.46px' },
+  { name: 'Leadership Development', icon: leadershipIcon, w: 24, h: 12, gap: '59.57px' },
 ];
 
 export default function Blogs() {
@@ -190,9 +198,9 @@ export default function Blogs() {
               </div>
             </div>
 
-            <aside className="w-[427px] shrink-0 max-lg:w-full flex flex-col gap-8">
+            <aside className="w-[377px] shrink-0 max-lg:w-full flex flex-col gap-8">
               <div className="bg-white border border-[#EAE8E7] rounded-2xl p-6 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
-                <div className="flex items-center gap-2.5 mb-5">
+                <div className="flex items-center gap-[7.99px] mb-5 h-7">
                   <img src={trendingIcon} alt="Trending Now" style={{ width: 16, height: 19 }} />
                   <h3 className="font-heading font-semibold text-xl text-[#1B1C1C]">Trending Now</h3>
                 </div>
@@ -215,43 +223,51 @@ export default function Blogs() {
               </div>
 
               <div className="bg-white border border-[#EAE8E7] rounded-2xl p-6 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
-                <div className="flex items-center gap-2.5 mb-5">
+                <div className="flex items-center gap-[7.99px] mb-5 h-7">
                   <img src={expertIcon} alt="Expert Categories" style={{ width: 19, height: 20 }} />
                   <h3 className="font-heading font-semibold text-xl text-[#1B1C1C]">Expert Categories</h3>
                 </div>
                 <p className="font-body text-sm leading-5 text-[#424752] mb-4">
                   Explore deeper insights across our core consultancy pillars.
                 </p>
-                <div className="flex flex-col">
+                <div className="flex flex-col gap-3">
                   {categories.map((cat) => (
                     <div
-                      key={cat}
-                      className="flex items-center gap-3 px-2 py-3 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[#F7F9FB]"
+                      key={cat.name}
+                      className="flex items-center justify-between p-3 rounded-lg cursor-pointer transition-colors duration-150 hover:bg-[#F7F9FB]"
                     >
-                      <span className="w-2 h-2 rounded-full bg-[#F39308] shrink-0" />
-                      <span className="flex-1 font-['Hanken_Grotesk',sans-serif] text-sm text-[#1B1C1C]">
-                        {cat}
-                      </span>
-                      <FiChevronRight size={16} className="text-[#94A3B8]" />
+                      <div className="flex items-center" style={{ gap: '11.99px' }}>
+                        <img
+                          src={cat.icon}
+                          alt={cat.name}
+                          style={{ width: cat.w, height: cat.h }}
+                        />
+                        <span className="font-['Inter',sans-serif] font-medium text-sm leading-5 text-[#1B1C1C]">
+                          {cat.name}
+                        </span>
+                      </div>
+                      <img src={arrowIcon} alt="arrow" style={{ width: 9.33, height: 9.33 }} />
                     </div>
                   ))}
                 </div>
               </div>
 
               <div className="bg-white border border-[#EAE8E7] rounded-2xl p-6 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
-                <div className="flex items-center gap-2.5 mb-5">
-                  <FiFile size={20} className="text-[#003679]" />
+                <div className="flex items-center gap-[7.99px] mb-5 h-7">
+                  <img src={industryIcon} alt="Industry Resources" style={{ width: 21.5, height: 16 }} />
                   <h3 className="font-heading font-semibold text-xl text-[#1B1C1C]">Industry Resources</h3>
                 </div>
-                <div className="flex items-center gap-4 py-2">
-                  <div className="w-12 h-12 bg-[rgba(0,54,121,0.1)] rounded-md flex items-center justify-center shrink-0">
-                    <FiFile size={22} className="text-[#003679]" />
+                <div className="flex items-center gap-3 h-[62px]">
+                  <div className="w-[32.67px] h-[35.67px] bg-[rgba(0,54,121,0.1)] rounded-md flex items-center justify-center shrink-0" style={{ padding: '8px 8px 11px 8px' }}>
+                    <img src={techSalaryIcon} alt="Tech Salary Guide" style={{ width: 16.67, height: 16.67 }} />
                   </div>
-                  <div>
-                    <p className="font-['Hanken_Grotesk',sans-serif] text-sm text-[#1B1C1C]">
+                  <div className="w-[161px] h-9 flex flex-col justify-center">
+                    <p className="font-['Inter',sans-serif] font-medium text-sm leading-5 text-[#1B1C1C]">
                       2026 Tech Salary Guide
                     </p>
-                    <p className="font-body text-xs text-[#94A3B8]">PDF Guide</p>
+                    <p className="font-['Source_Sans_3',sans-serif] text-xs leading-4 text-[#424752]">
+                      PDF &bull; 4.2 MB
+                    </p>
                   </div>
                 </div>
               </div>
