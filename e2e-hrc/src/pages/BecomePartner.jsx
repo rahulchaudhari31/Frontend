@@ -5,7 +5,7 @@ import Navbar from '../components/shared/Navbar';
 import Footer from '../components/shared/Footer';
 
 import heroBg from '../assets/assets/background coonecting reqrirment/background become a partner.jpg';
-import teamPhoto from '../assets/assets/background coonecting reqrirment/connecting recruitment1.png';
+import teamPhoto from '../assets/assets/background coonecting reqrirment/background connectivity.jpeg';
 import nameIcon from '../assets/assets/background coonecting reqrirment/NAME.png';
 import mailIcon from '../assets/assets/background coonecting reqrirment/MAIL ICON.png';
 import callIcon from '../assets/assets/background coonecting reqrirment/call.png';
@@ -72,14 +72,26 @@ export default function BecomePartner() {
 
       {/* ===== 1. HERO ===== */}
       <section
-        className="relative flex items-center min-h-[201px]"
+        className="relative flex items-center"
         style={{
-          background: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${heroBg}) center / cover no-repeat`,
+          height: 201,
+          background: `linear-gradient(0deg, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${heroBg}) center / cover no-repeat`,
           borderTop: '1px solid #EAE8E7',
           padding: '55px 0 55px 64px',
         }}
       >
-        <div className="relative z-10 max-w-[1440px] mx-auto w-full px-6">
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+            padding: 0,
+            gap: 16,
+            width: 1344,
+            height: 48,
+          }}
+        >
           <h1
             className="text-white"
             style={{
@@ -90,7 +102,7 @@ export default function BecomePartner() {
               margin: 0,
             }}
           >
-            Become Our <span style={{ color: '#F39308' }}>Trusted</span> Recruitment Partner
+            Become Our Trusted Recruitment Partner
           </h1>
         </div>
       </section>
@@ -107,7 +119,56 @@ export default function BecomePartner() {
                 backgroundPosition: 'center',
               }}
             >
-
+              <div
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: -127,
+                  padding: '0 64px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                  zIndex: 2,
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    padding: 0,
+                    gap: 24,
+                    width: 576,
+                    maxWidth: 576,
+                    position: 'relative',
+                  }}
+                >
+                  <h1
+                    style={{
+                      position: 'absolute',
+                      width: 647,
+                      height: 212,
+                      left: -0.17,
+                      top: -26.11,
+                      fontFamily: "'Inter', sans-serif",
+                      fontWeight: 800,
+                      fontSize: 60,
+                      lineHeight: '70.4px',
+                      letterSpacing: '-1.28px',
+                      color: '#FFFFFF',
+                      display: 'flex',
+                      alignItems: 'center',
+                      filter: 'drop-shadow(0 4px 3px rgba(0,0,0,0.1)) drop-shadow(0 10px 8px rgba(0,0,0,0.04))',
+                      margin: 0,
+                    }}
+                  >
+                    Connecting Recruitment Partners Worldwide
+                  </h1>
+                </div>
+              </div>
             </div>
 
             <div
@@ -232,7 +293,7 @@ export default function BecomePartner() {
                             value={formData.phoneCode}
                             onChange={handleChange}
                             className="bg-white"
-                            style={{ width: '100%', height: '44px', padding: '12px 12px 12px 40px', border: '1px solid #F1F2F9', borderRadius: '16px', outline: 'none', boxSizing: 'border-box', fontFamily: "'Inter', sans-serif", fontSize: '16px', color: '#1B1C1C' }}
+                            style={{ width: '100%', height: '44px', padding: '12px 12px 12px 40px', border: '1px solid #F1F2F9', borderRadius: '16px', outline: 'none', boxSizing: 'border-box', fontFamily: "'Inter', sans-serif", fontSize: '16px', lineHeight: '24px', color: '#1B1C1C' }}
                           >
                             <option value="UAE +971">UAE +971</option>
                             <option value="UK +44">UK +44</option>
@@ -254,7 +315,7 @@ export default function BecomePartner() {
                             value={formData.phone}
                             onChange={handleChange}
                             className="w-full bg-white"
-                            style={{ height: '44px', padding: '13px 16px 13px 48px', border: '1px solid #F1F2F9', borderRadius: '16px', outline: 'none', boxSizing: 'border-box', fontFamily: "'Source Sans 3', sans-serif", fontSize: '16px' }}
+                            style={{ height: '44px', padding: '13px 16px 13px 48px', border: '1px solid #F1F2F9', borderRadius: '16px', outline: 'none', boxSizing: 'border-box', fontFamily: "'Source Sans 3', sans-serif", fontSize: '16px', lineHeight: '16px' }}
                           />
                         </div>
                       </div>
@@ -394,12 +455,12 @@ export default function BecomePartner() {
       </section>
 
       {/* ===== 4. OUR RECRUITMENT NETWORK MAP ===== */}
-      <section className="bg-white py-16 md:py-20 lg:py-28">
+      <section className="bg-white py-10">
         <div className="max-w-[1440px] mx-auto px-6 xl:px-16">
           <div className="flex flex-col items-center gap-12">
             {/* Map heading + subtext */}
             <div className="text-center max-w-[1072px]">
-              <h2 className="font-['Hanken_Grotesk',sans-serif] font-bold text-[48px] leading-[56px] tracking-[-0.96px] text-navy mb-4">
+              <h2 className="font-['Hanken_Grotesk',sans-serif] font-bold text-[48px] leading-[56px] tracking-[-0.96px] text-[#004CA5] mb-4">
                 Connecting Recruitment Partners Worldwide
               </h2>
               <p className="font-['Source_Sans_3',sans-serif] font-normal text-base leading-6 text-[#424752] max-w-[672px] mx-auto">
@@ -407,11 +468,11 @@ export default function BecomePartner() {
               </p>
             </div>
 
-            <div className="relative w-full h-auto overflow-hidden rounded-[24px] border border-[rgba(194,198,212,0.2)] bg-[#F2F4F6]">
+            <div className="relative w-full h-[385px] overflow-hidden rounded-[24px] border border-[rgba(194,198,212,0.2)] bg-[#F2F4F6]">
               <img
                 src={mapBg}
                 alt="Our Recruitment Network Map"
-                className="w-full h-auto object-contain block"
+                className="absolute inset-0 w-full h-full object-cover"
                 style={{ opacity: '0.3' }}
               />
 
@@ -468,7 +529,7 @@ export default function BecomePartner() {
             <div className="w-full max-w-[1072px] flex flex-row justify-center items-start gap-8">
               {statsData.map((stat, i) => (
                 <div key={i} className="flex-1 text-center" style={{ maxWidth: '244px' }}>
-                  <p className="font-['Hanken_Grotesk'] font-bold text-[48px] leading-[56px] tracking-[-0.96px] text-navy">
+                  <p className="font-['Hanken_Grotesk'] font-bold text-[48px] leading-[56px] tracking-[-0.96px] text-[#004CA5]">
                     {stat.value}
                   </p>
                   <p className="font-['Hanken_Grotesk'] font-normal text-base leading-6 text-[#424752]">
