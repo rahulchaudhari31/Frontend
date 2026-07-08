@@ -12,11 +12,11 @@ const socialLinks = [
 ];
 
 const navLinks = [
-  { label: 'Home', to: '/' },
+  { label: 'Home', to: '#' },
   { label: 'About Us', to: '#' },
   { label: 'Employer', to: '/employer' },
   { label: 'Employee', to: '/employee' },
-  { label: 'Workforce Solutions', to: '#solutions' },
+  { label: 'Workforce Solutions', to: '/' },
   { label: 'Become a Partner', to: '#' },
   { label: 'Blogs', to: '/blogs' },
   { label: 'Contact Us', to: '#' },
@@ -29,7 +29,7 @@ export default function Navbar({ variant = 'home' }) {
   const activeStyle = isEmployer ? 'text-[#0085d5]' : 'text-navy';
   const ctaBg = 'bg-[#F39308] hover:bg-[#E07D00]';
 
-  const activePage = isEmployer ? '/employer' : variant === 'employee' ? '/employee' : variant === 'blog' ? '/blogs' : '#solutions';
+  const activePage = isEmployer ? '/employer' : variant === 'employee' ? '/employee' : variant === 'blog' ? '/blogs' : '/';
 
   function renderLink({ label, to }, extraCls = '', onClick) {
     const isActive = to === activePage;
