@@ -1,6 +1,12 @@
 import { useState } from 'react';
-import { FiPlus, FiX, FiUsers, FiGlobe, FiZap } from 'react-icons/fi';
+import { motion } from 'framer-motion';
+import { FiArrowRight } from 'react-icons/fi';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+
+import plusIcon from '../assets/assets/icons of field/\+.png';
+import browseIcon from '../assets/assets/icons of field/browse.png';
+import communityIcon from '../assets/assets/icons of field/community.png';
+import searchIcon from '../assets/assets/icons of field/search.png';
 
 const faqs = [
   {
@@ -40,7 +46,7 @@ export default function FAQAndCTA() {
 
         {/* LEFT — FAQ */}
         <div>
-          <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-6">
+          <p className="text-xs font-semibold tracking-widest uppercase mb-6" style={{ color: '#003679' }}>
             Frequently Asked Questions
           </p>
           <div className="flex flex-col gap-3" role="list">
@@ -55,28 +61,49 @@ export default function FAQAndCTA() {
                     aria-expanded={isOpen}
                     aria-controls={panelId}
                     onClick={() => toggle(i)}
-                    className="w-full flex items-center justify-between px-5 py-4 text-left
-                               text-primary font-heading font-semibold text-sm gap-4
-                               hover:text-accent transition-colors duration-150"
+                    className="w-full flex items-center justify-between px-5 py-4 text-left gap-4 transition-colors duration-150"
+                    style={{
+                      fontFamily: '"Source Sans 3", sans-serif',
+                      fontWeight: 700,
+                      fontSize: 14,
+                      lineHeight: '20px',
+                      color: '#003679',
+                    }}
                   >
                     <span>{q}</span>
-                    <span
+                    <img
+                      src={plusIcon}
+                      alt=""
                       aria-hidden="true"
-                      className="shrink-0 w-7 h-7 rounded-full border border-gray-200
-                                 flex items-center justify-center text-accent"
-                    >
-                      {isOpen ? <FiX size={14} /> : <FiPlus size={14} />}
-                    </span>
+                      className="shrink-0"
+                      style={{
+                        width: 14,
+                        height: 14,
+                        transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+                        transition: 'transform 0.2s',
+                      }}
+                    />
                   </button>
                   {isOpen && (
-                    <div
+                    <motion.div
                       id={panelId}
                       role="region"
                       aria-labelledby={btnId}
-                      className="px-5 pb-4 text-text-body text-sm leading-relaxed border-t border-gray-100 pt-3"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      transition={{ duration: 0.25, ease: 'easeOut' }}
+                      className="px-5 pb-4 pt-3 border-t border-gray-100"
+                      style={{
+                        fontFamily: '"Source Sans 3", sans-serif',
+                        fontWeight: 400,
+                        fontSize: 14,
+                        lineHeight: '22.75px',
+                        color: '#003679',
+                        opacity: 0.8,
+                      }}
                     >
                       {a}
-                    </div>
+                    </motion.div>
                   )}
                 </div>
               );
@@ -85,32 +112,103 @@ export default function FAQAndCTA() {
         </div>
 
         {/* RIGHT — CTA Card */}
-        <div className="bg-primary rounded-2xl p-8 md:p-10 relative overflow-hidden flex flex-col gap-6">
-          <div className="absolute top-4 right-4 flex gap-3 opacity-10" aria-hidden="true">
-            <FiUsers size={40} className="text-white" />
-            <FiGlobe size={32} className="text-white" />
-            <FiZap size={24} className="text-white" />
+        <motion.div
+          initial={{ opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="rounded-[32px] relative overflow-hidden flex"
+          style={{
+            background: 'linear-gradient(128.18deg, #004CA5 0%, #003375 100%)',
+            boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)',
+            minHeight: 414,
+          }}
+        >
+          {/* Content */}
+          <div className="flex flex-col gap-6 p-6 md:p-10 flex-1 z-10 justify-center items-center md:items-start text-center md:text-left">
+            <div className="flex flex-col gap-4">
+              <h3
+                className="text-white text-[28px] md:text-[36px]"
+                style={{
+                  fontFamily: '"Hanken Grotesk", sans-serif',
+                  fontWeight: 400,
+                  lineHeight: '1.25',
+                }}
+              >
+                Let's Build Your Workforce Together
+              </h3>
+              <p
+                style={{
+                  fontFamily: '"Source Sans 3", sans-serif',
+                  fontWeight: 400,
+                  fontSize: 14,
+                  lineHeight: '22.75px',
+                  color: '#FFFFFFE5',
+                  maxWidth: 448,
+                }}
+              >
+                Partner with E2E HRC and experience recruitment solutions that drive
+                growth, efficiency and long-term success.
+              </p>
+            </div>
+
+            <a
+              href="#"
+              className="self-center md:self-start inline-flex items-center gap-2"
+              style={{
+                borderRadius: 9999,
+                border: '1px solid rgba(255,255,255,0.3)',
+                background: 'rgba(255,255,255,0.1)',
+                padding: '12px 24px',
+                fontFamily: '"Source Sans 3", sans-serif',
+                fontWeight: 700,
+                fontSize: 14,
+                color: '#FFFFFF',
+                lineHeight: '20px',
+                transition: 'background 0.2s, border-color 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.25)';
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+              }}
+            >
+              Submit a Vacancy
+              <FiArrowRight size={14} />
+            </a>
           </div>
 
-          <div className="flex flex-col gap-4 relative z-10">
-            <h3 className="font-heading font-bold text-2xl md:text-3xl text-white leading-snug">
-              Let's Build Your Workforce Together
-            </h3>
-            <p className="text-white/70 text-sm leading-relaxed">
-              Partner with E2E HRC and experience recruitment solutions that drive
-              growth, efficiency and long-term success.
-            </p>
-          </div>
+          {/* Gradient overlay - hidden on mobile */}
+          <div
+            aria-hidden="true"
+            className="absolute top-0 bottom-0 hidden md:block"
+            style={{
+              right: 0,
+              width: 100,
+              background: 'linear-gradient(90deg, #003679 0%, rgba(0, 54, 121, 0) 100%)',
+              zIndex: 1,
+            }}
+          />
 
-          <a
-            href="#"
-            className="self-start bg-white text-primary font-heading font-semibold text-sm
-                       px-6 py-3 rounded-pill hover:bg-accent hover:text-white
-                       transition-colors duration-200 relative z-10"
+          {/* Icon stack - hidden on mobile */}
+          <div
+            className="absolute flex-col items-center hidden md:flex"
+            aria-hidden="true"
+            style={{
+              gap: 16,
+              right: 39.5,
+              top: 40,
+              zIndex: 2,
+            }}
           >
-            Submit a Vacancy →
-          </a>
-        </div>
+            <img src={browseIcon} alt="" style={{ width: 36, height: 18 }} />
+            <img src={communityIcon} alt="" style={{ width: 30, height: 30 }} />
+            <img src={searchIcon} alt="" style={{ width: 36, height: 30 }} />
+          </div>
+        </motion.div>
 
       </div>
     </section>
