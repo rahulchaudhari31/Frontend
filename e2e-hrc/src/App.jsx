@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import Employer from './pages/Employer';
 import Employee from './pages/Employee';
 import Blogs from './pages/Blogs';
+import BecomePartner from './pages/BecomePartner';
 
 function HomePage() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
       <Route path="/employer" element={<Employer />} />
       <Route path="/employee" element={<Employee />} />
       <Route path="/blogs" element={<Blogs />} />
+      <Route path="/become-a-partner" element={<BecomePartner />} />
     </Routes>
   );
 }
