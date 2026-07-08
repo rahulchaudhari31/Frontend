@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { FiGlobe, FiHome, FiLayers } from 'react-icons/fi';
 import AnnouncementBar from '../components/AnnouncementBar';
 import Navbar from '../components/shared/Navbar';
 import Footer from '../components/shared/Footer';
+import OfficeInfoCard from '../components/OfficeInfoCard';
 
 import heroBg from '../assets/assets/background coonecting reqrirment/background become a partner.jpg';
 import teamPhoto from '../assets/assets/background coonecting reqrirment/background connectivity.jpeg';
@@ -31,6 +32,45 @@ const checkItems = [
   },
 ];
 
+const officeData = {
+  uk: {
+    officeName: 'UK Head Office',
+    address: ['Unit 2, 1204B Stratford Road, Hall Green,', 'Birmingham, B28 8AS, UK'],
+    phone: '+44 (0) 121 778 2400',
+    email: 'info@e2ehrc.co.uk',
+    hours: 'Mon to Fri: 9AM to 6PM',
+    aboutText: 'Our UK head office is located in Birmingham, easily accessible by road and public transport. Our team is available to assist you with all your recruitment needs.',
+    directionsQuery: 'Unit 2, 1204B Stratford Road, Hall Green, Birmingham, B28 8AS, UK',
+  },
+  gcc: {
+    officeName: 'GCC Hub',
+    address: ['Level 14, Al Fattan Currency House,', 'Tower 2, DIFC, Dubai, UAE'],
+    phone: '+971 4 123 4567',
+    email: 'gcc@e2ehrc.co.uk',
+    hours: 'Sun to Thu: 9AM to 6PM',
+    aboutText: 'Our GCC hub in Dubai serves as the central operations base for the Middle East and North Africa region, providing comprehensive recruitment solutions across diverse industries.',
+    directionsQuery: 'Level 14, Al Fattan Currency House, Tower 2, DIFC, Dubai, UAE',
+  },
+  europe: {
+    officeName: 'Europe Hub',
+    address: ['Friedrichstraße 68,', '10117 Berlin, Germany'],
+    phone: '+49 30 1234 5678',
+    email: 'europe@e2ehrc.co.uk',
+    hours: 'Mon to Fri: 9AM to 6PM',
+    aboutText: 'Our Berlin office connects clients and candidates across the European Union, with deep expertise in DACH and Nordics markets.',
+    directionsQuery: 'Friedrichstraße 68, 10117 Berlin, Germany',
+  },
+  southasia: {
+    officeName: 'South Asia Hub',
+    address: ['91 Springboard, Sector 44,', 'Gurugram, Haryana 122003, India'],
+    phone: '+91 124 456 7890',
+    email: 'southasia@e2ehrc.co.uk',
+    hours: 'Mon to Sat: 9AM to 6PM',
+    aboutText: 'Our Gurugram office drives our South Asia operations, offering end-to-end recruitment services across India and neighbouring markets.',
+    directionsQuery: '91 Springboard, Sector 44, Gurugram, Haryana 122003, India',
+  },
+};
+
 const statsData = [
   { value: '18+', label: 'Years Exp' },
   { value: '450+', label: 'Clients' },
@@ -42,6 +82,19 @@ export default function BecomePartner() {
   const [formData, setFormData] = useState({ name: '', email: '', phoneCode: '+971', phone: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
+  const [activeOfficeCard, setActiveOfficeCard] = useState(null);
+  const cardTimers = useRef({});
+
+  const makeHandleEnter = (id) => () => {
+    if (cardTimers.current[id]) clearTimeout(cardTimers.current[id]);
+    setActiveOfficeCard(id);
+  };
+
+  const makeHandleLeave = (id) => () => {
+    cardTimers.current[id] = setTimeout(() => setActiveOfficeCard(null), 250);
+  };
+
+  const hideCard = () => setActiveOfficeCard(null);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -66,43 +119,39 @@ export default function BecomePartner() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       <AnnouncementBar />
       <Navbar variant="partner" />
 
       {/* ===== 1. HERO ===== */}
       <section
-        className="relative flex items-center"
+        className="relative flex items-center px-4 md:px-16"
         style={{
           height: 201,
           background: `linear-gradient(0deg, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${heroBg}) center / cover no-repeat`,
           borderTop: '1px solid #EAE8E7',
-          padding: '55px 0 55px 64px',
         }}
       >
         <div
+          className="w-full max-w-[1344px]"
           style={{
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'flex-start',
-            padding: 0,
             gap: 16,
-            width: 1344,
-            height: 48,
           }}
         >
           <h1
-            className="text-white"
+            className="text-white text-[28px] md:text-[48px]"
             style={{
               fontFamily: "'Poppins', sans-serif",
               fontWeight: 700,
-              fontSize: '48px',
-              lineHeight: '48px',
+              lineHeight: '28px',
               margin: 0,
             }}
           >
-            Become Our Trusted Recruitment Partner
+            Become Our <span style={{ color: '#F39308' }}>Trusted</span> Recruitment Partner
           </h1>
         </div>
       </section>
@@ -112,7 +161,7 @@ export default function BecomePartner() {
         <div className="max-w-[1440px] mx-auto px-6 xl:px-16">
           <div className="relative pt-4 lg:pt-16">
             <div
-              className="relative w-full rounded-[24px] overflow-hidden min-h-[340px] lg:h-[463px]"
+              className="relative w-full min-h-[340px] lg:h-[463px]"
               style={{
                 backgroundImage: `url(${teamPhoto})`,
                 backgroundSize: 'cover',
@@ -120,13 +169,13 @@ export default function BecomePartner() {
               }}
             >
               <div
+                className="px-4 md:px-16"
                 style={{
                   position: 'absolute',
                   left: 0,
                   right: 0,
                   top: 0,
                   bottom: -127,
-                  padding: '0 64px',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
@@ -135,77 +184,90 @@ export default function BecomePartner() {
                 }}
               >
                 <div
+                  className="w-full max-w-[576px]"
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'flex-start',
-                    padding: 0,
                     gap: 24,
-                    width: 576,
-                    maxWidth: 576,
                     position: 'relative',
                   }}
                 >
                   <h1
+                    className="hidden lg:block"
                     style={{
                       position: 'absolute',
                       width: 647,
                       height: 212,
-                      left: -0.17,
-                      top: -26.11,
+                      left: -20.17,
+                      top: -96.11,
                       fontFamily: "'Inter', sans-serif",
                       fontWeight: 800,
                       fontSize: 60,
                       lineHeight: '70.4px',
                       letterSpacing: '-1.28px',
                       color: '#FFFFFF',
-                      display: 'flex',
-                      alignItems: 'center',
-                      filter: 'drop-shadow(0 4px 3px rgba(0,0,0,0.1)) drop-shadow(0 10px 8px rgba(0,0,0,0.04))',
                       margin: 0,
                     }}
                   >
-                    Connecting Recruitment Partners Worldwide
+                    <span style={{ display: 'block' }}>Connecting</span>
+                    <span style={{ display: 'block' }}>Recruitment Partners</span>
+                    <span style={{ display: 'block', color: '#F39308' }}>Worldwide</span>
+                  </h1>
+                  <h1
+                    className="lg:hidden text-white"
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontWeight: 800,
+                      fontSize: '28px',
+                      lineHeight: '34px',
+                      letterSpacing: '-0.56px',
+                      margin: 0,
+                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
+                    }}
+                  >
+                    Connecting<br />Recruitment Partners<br /><span style={{ color: '#F39308' }}>Worldwide</span>
                   </h1>
                 </div>
               </div>
             </div>
 
             <div
-              className="relative z-10 w-full mt-8 lg:mt-0 lg:absolute"
+              className="relative z-10 w-full mt-8 lg:mt-0 lg:absolute lg:left-[64%] lg:top-[124px] mx-auto"
               style={{
-                top: '84px',
-                left: '64%',
-                width: '434px',
+                maxWidth: '434px',
+                width: 'calc(100% - 32px)',
               }}
             >
               <div
-                className="bg-white"
-                style={{ borderRadius: '24px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', padding: '32px 32px 0' }}
+                className="bg-white p-6 md:p-8"
+                style={{ borderRadius: '24px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', minHeight: '572px' }}
               >
-                <h3
-                  style={{
-                    fontFamily: "'Poppins', sans-serif",
-                    fontWeight: 600,
-                    fontSize: '18px',
-                    lineHeight: '28px',
-                    color: '#004CA5',
-                    marginBottom: '8px',
-                  }}
-                >
-                  Get in Touch with Our Partnership Team
-                </h3>
-                <p
-                  style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: '11px',
-                    lineHeight: '20px',
-                    color: '#424752',
-                    marginBottom: '24px',
-                  }}
-                >
-                  Have questions about partnership opportunities or our global network? Fill out the form below and our team will get back to you shortly.
-                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <h3
+                    style={{
+                      fontFamily: "'Poppins', sans-serif",
+                      fontWeight: 600,
+                      fontSize: '18px',
+                      lineHeight: '28px',
+                      color: '#004CA5',
+                      margin: 0,
+                    }}
+                  >
+                    Get in Touch with Our Partnership Team
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: '11px',
+                      lineHeight: '20px',
+                      color: '#424752',
+                      margin: 0,
+                    }}
+                  >
+                    Have questions about partnership opportunities or our global network? Fill out the form below and our team will get back to you shortly.
+                  </p>
+                </div>
 
                 {submitted ? (
                   <div className="text-center py-8">
@@ -218,7 +280,7 @@ export default function BecomePartner() {
                     <p className="text-[#424752] text-sm">We will get back to you shortly.</p>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="flex flex-col" style={{ gap: '19px' }}>
+                  <form onSubmit={handleSubmit} className="flex flex-col" style={{ gap: '19px', marginTop: '24px' }}>
                     <div>
                       <label
                         className="block"
@@ -240,7 +302,7 @@ export default function BecomePartner() {
                           value={formData.name}
                           onChange={handleChange}
                           className="w-full bg-white"
-                          style={{ height: '44px', padding: '13px 16px 13px 48px', border: '1px solid #F1F2F9', borderRadius: '12px', outline: 'none', boxSizing: 'border-box', fontFamily: "'Inter', sans-serif", fontSize: '16px' }}
+                          style={{ height: '44px', padding: '13px 16px 13px 48px', border: '1px solid #F1F2F9', borderRadius: '12px', outline: 'none', boxSizing: 'border-box', fontFamily: "'Inter', sans-serif", fontSize: '16px', lineHeight: '19px' }}
                         />
                       </div>
                       {errors.name && <span className="text-red-500 text-xs mt-1 block">{errors.name}</span>}
@@ -267,7 +329,7 @@ export default function BecomePartner() {
                           value={formData.email}
                           onChange={handleChange}
                           className="w-full bg-white"
-                          style={{ height: '44px', padding: '13px 16px 13px 48px', border: '1px solid #F1F2F9', borderRadius: '16px', outline: 'none', boxSizing: 'border-box', fontFamily: "'Inter', sans-serif", fontSize: '16px' }}
+                          style={{ height: '44px', padding: '13px 16px 13px 48px', border: '1px solid #F1F2F9', borderRadius: '16px', outline: 'none', boxSizing: 'border-box', fontFamily: "'Inter', sans-serif", fontSize: '16px', lineHeight: '19px' }}
                         />
                       </div>
                       {errors.email && <span className="text-red-500 text-xs mt-1 block">{errors.email}</span>}
@@ -280,20 +342,14 @@ export default function BecomePartner() {
                       >
                         Contact Number
                       </label>
-                      <div className="flex" style={{ gap: '7.99px' }}>
-                        <div className="relative" style={{ width: '165px' }}>
-                          <img
-                            src={countryFlag}
-                            alt=""
-                            className="absolute"
-                            style={{ left: '12px', top: '50%', transform: 'translateY(-50%)', width: '20px', height: '20px', borderRadius: '2px', zIndex: 1 }}
-                          />
+                      <div className="flex flex-col sm:flex-row" style={{ gap: '7.99px' }}>
+                        <div className="relative w-full sm:w-[165px]">
                           <select
                             name="phoneCode"
                             value={formData.phoneCode}
                             onChange={handleChange}
                             className="bg-white"
-                            style={{ width: '100%', height: '44px', padding: '12px 12px 12px 40px', border: '1px solid #F1F2F9', borderRadius: '16px', outline: 'none', boxSizing: 'border-box', fontFamily: "'Inter', sans-serif", fontSize: '16px', lineHeight: '24px', color: '#1B1C1C' }}
+                            style={{ width: '100%', height: '44px', padding: '12px', border: '1px solid #F1F2F9', borderRadius: '16px', outline: 'none', boxSizing: 'border-box', fontFamily: "'Inter', sans-serif", fontSize: '16px', lineHeight: '24px', color: '#1B1C1C' }}
                           >
                             <option value="UAE +971">UAE +971</option>
                             <option value="UK +44">UK +44</option>
@@ -302,12 +358,6 @@ export default function BecomePartner() {
                           </select>
                         </div>
                         <div className="relative" style={{ flex: 1 }}>
-                          <img
-                            src={callIcon}
-                            alt=""
-                            className="absolute"
-                            style={{ left: '16px', top: '30%', width: '15px', height: '15px', zIndex: 1 }}
-                          />
                           <input
                             type="tel"
                             name="phone"
@@ -315,7 +365,7 @@ export default function BecomePartner() {
                             value={formData.phone}
                             onChange={handleChange}
                             className="w-full bg-white"
-                            style={{ height: '44px', padding: '13px 16px 13px 48px', border: '1px solid #F1F2F9', borderRadius: '16px', outline: 'none', boxSizing: 'border-box', fontFamily: "'Source Sans 3', sans-serif", fontSize: '16px', lineHeight: '16px' }}
+                            style={{ height: '44px', padding: '13px 16px', border: '1px solid #F1F2F9', borderRadius: '16px', outline: 'none', boxSizing: 'border-box', fontFamily: "'Source Sans 3', sans-serif", fontSize: '16px', lineHeight: '16px' }}
                           />
                         </div>
                       </div>
@@ -336,7 +386,7 @@ export default function BecomePartner() {
                         value={formData.message}
                         onChange={handleChange}
                         className="w-full bg-white resize-none"
-                        style={{ height: '44px', padding: '13px 16px', border: '1px solid #F1F2F9', borderRadius: '16px', outline: 'none', boxSizing: 'border-box', fontFamily: "'Inter', sans-serif", fontSize: '16px' }}
+                        style={{ height: '44px', padding: '13px 16px', border: '1px solid #F1F2F9', borderRadius: '16px', outline: 'none', boxSizing: 'border-box', fontFamily: "'Inter', sans-serif", fontSize: '16px', lineHeight: '16px' }}
                       />
                     </div>
 
@@ -373,26 +423,31 @@ export default function BecomePartner() {
         <div className="max-w-[1440px] mx-auto px-6 xl:px-16">
           <div className="flex flex-col lg:flex-row gap-x-[64px] gap-y-12 items-center">
             <div className="relative w-full lg:w-[568px] lg:h-[500px] shrink-0">
-              <div
-                className="hidden lg:block absolute w-[435px] h-[463px] border border-[#F39308]"
-                style={{ left: '-10px', top: '-10px', borderWidth: '1.2px' }}
-              />
-              <div className="relative lg:absolute lg:left-[66px] lg:top-[19px] w-full max-w-[520px] mx-auto lg:mx-0 lg:w-[435px] lg:h-[463px]">
+              <div className="hidden lg:block absolute" style={{ left: '48px', top: '8px', width: '459px', height: '487px' }}>
+                <div className="absolute inset-0 border border-[#F39308]" style={{ borderWidth: '1.2px' }} />
+                <div className="absolute" style={{ left: '12px', top: '12px', width: '435px', height: '463px' }}>
+                  <img
+                    src={trustPhoto}
+                    alt="Our team collaboration"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+              <div className="relative lg:hidden w-full max-w-[520px] mx-auto">
                 <img
                   src={trustPhoto}
                   alt="Our team collaboration"
-                  className="w-full h-[380px] md:h-[440px] lg:h-[463px] object-cover rounded-[8px]"
+                  className="w-full h-[380px] md:h-[440px] object-cover rounded-[8px]"
                 />
               </div>
             </div>
 
             <div className="flex flex-col gap-4 flex-1 max-w-[568px]">
               <h2
+                className="text-[24px] md:text-[32px] leading-[32px] md:leading-[40px]"
                 style={{
                   fontFamily: "'Hanken Grotesk', sans-serif",
                   fontWeight: 600,
-                  fontSize: '32px',
-                  lineHeight: '40px',
                   letterSpacing: '-0.32px',
                   color: '#003679',
                 }}
@@ -403,8 +458,8 @@ export default function BecomePartner() {
                 style={{
                   fontFamily: "'Source Sans 3', sans-serif",
                   fontWeight: 400,
-                  fontSize: '18px',
-                  lineHeight: '28px',
+                  fontSize: '16px',
+                  lineHeight: '24px',
                   color: '#424752',
                 }}
               >
@@ -423,22 +478,20 @@ export default function BecomePartner() {
                     </div>
                     <div className="flex flex-col gap-1">
                       <h4
+                        className="text-[18px] md:text-[20px] leading-[26px] md:leading-[28px]"
                         style={{
                           fontFamily: "'Hanken Grotesk', sans-serif",
                           fontWeight: 600,
-                          fontSize: '20px',
-                          lineHeight: '28px',
                           color: '#1B1C1C',
                         }}
                       >
                         {item.title}
                       </h4>
                       <p
+                        className="text-[14px] md:text-[16px] leading-[22px] md:leading-[24px]"
                         style={{
                           fontFamily: "'Source Sans 3', sans-serif",
                           fontWeight: 400,
-                          fontSize: '16px',
-                          lineHeight: '24px',
                           color: '#424752',
                         }}
                       >
@@ -460,76 +513,59 @@ export default function BecomePartner() {
           <div className="flex flex-col items-center gap-12">
             {/* Map heading + subtext */}
             <div className="text-center max-w-[1072px]">
-              <h2 className="font-['Hanken_Grotesk',sans-serif] font-bold text-[48px] leading-[56px] tracking-[-0.96px] text-[#004CA5] mb-4">
+              <h2 className="font-['Hanken_Grotesk',sans-serif] font-bold text-[28px] leading-[34px] md:text-[48px] md:leading-[56px] tracking-[-0.56px] md:tracking-[-0.96px] text-[#004CA5] mb-4">
                 Connecting Recruitment Partners Worldwide
               </h2>
-              <p className="font-['Source_Sans_3',sans-serif] font-normal text-base leading-6 text-[#424752] max-w-[672px] mx-auto">
+              <p className="font-['Source_Sans_3',sans-serif] font-normal text-sm md:text-base leading-5 md:leading-6 text-[#424752] max-w-[672px] mx-auto">
                 Our established global infrastructure enables seamless cross-border recruitment and market entry for our partners.
               </p>
             </div>
 
-            <div className="relative w-full h-[385px] overflow-hidden rounded-[24px] border border-[rgba(194,198,212,0.2)] bg-[#F2F4F6]">
-              <img
-                src={mapBg}
-                alt="Our Recruitment Network Map"
-                className="absolute inset-0 w-full h-full object-cover"
-                style={{ opacity: '0.3' }}
-              />
-
-              {/* UK Head Office */}
-              <div className="group absolute" style={{ left: '45.01%', top: '30.06%' }}>
-                <button tabIndex={0} className="relative w-4 h-4 bg-[#00458D] rounded-full shadow-[0_0_0_4px_rgba(0,69,141,0.2)] cursor-pointer hover:scale-125 transition-transform focus:outline-2 focus:outline-offset-2 focus:outline-[#F39308]" aria-label="UK Head Office">
-                  <span className="sr-only">UK Head Office</span>
-                </button>
-                <div className="flex flex-col items-center pt-2 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 pointer-events-none">
-                  <div className="bg-white px-3 py-1 rounded-lg shadow-[0_1px_2px_rgba(0,0,0,0.05)] whitespace-nowrap" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, fontSize: '12px', lineHeight: '16px', color: '#00458D' }}>
-                    UK Head Office
-                  </div>
-                </div>
+            <div className="relative w-full min-h-[385px] rounded-[24px] border border-[rgba(194,198,212,0.2)] bg-[#F2F4F6]">
+              <div className="absolute inset-0 rounded-[24px] overflow-hidden pointer-events-none">
+                <img
+                  src={mapBg}
+                  alt="Our Recruitment Network Map"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  style={{ opacity: '0.3' }}
+                />
               </div>
 
-              {/* GCC Hub */}
-              <div className="group absolute" style={{ left: '57.99%', top: '45.01%' }}>
-                <button tabIndex={0} className="relative w-3 h-3 bg-[#FFB952] rounded-full shadow-[0_0_0_4px_rgba(255,185,82,0.2)] cursor-pointer hover:scale-125 transition-transform focus:outline-2 focus:outline-offset-2 focus:outline-[#004CA5]" aria-label="GCC Hub">
-                  <span className="sr-only">GCC Hub</span>
-                </button>
-                <div className="flex flex-col items-center pt-2 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 pointer-events-none">
-                  <div className="bg-white px-3 py-1 rounded-lg shadow-[0_1px_2px_rgba(0,0,0,0.05)] whitespace-nowrap" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, fontSize: '12px', lineHeight: '16px', color: '#00458D' }}>
-                    GCC Hub
-                  </div>
+              {[
+                { id: 'uk', label: 'UK Head Office', left: '45.01%', top: '30.06%', size: 'w-4 h-4', color: '#00458D', shadow: 'rgba(0,69,141,0.2)', focus: '#F39308', cardTop: -80 },
+                { id: 'gcc', label: 'GCC Hub', left: '57.99%', top: '45.01%', size: 'w-3 h-3', color: '#FFB952', shadow: 'rgba(255,185,82,0.2)', focus: '#004CA5', cardTop: -80 },
+                { id: 'europe', label: 'Europe Hub', left: '50%', top: '35.05%', size: 'w-3 h-3', color: '#FFB952', shadow: 'rgba(255,185,82,0.2)', focus: '#004CA5', cardTop: -80 },
+                { id: 'southasia', label: 'South Asia Hub', left: '64.97%', top: '50%', size: 'w-3 h-3', color: '#FFB952', shadow: 'rgba(255,185,82,0.2)', focus: '#004CA5', cardTop: -80 },
+              ].map((m) => (
+                <div key={m.id} className="absolute" style={{ left: m.left, top: m.top }}>
+                  <button
+                    tabIndex={0}
+                    className={`relative ${m.size} rounded-full cursor-pointer hover:scale-125 transition-transform focus:outline-2 focus:outline-offset-2`}
+                    style={{ background: m.color, boxShadow: `0 0 0 4px ${m.shadow}`, outlineColor: m.focus }}
+                    aria-label={m.label}
+                    onMouseEnter={makeHandleEnter(m.id)}
+                    onMouseLeave={makeHandleLeave(m.id)}
+                    onFocus={() => setActiveOfficeCard(m.id)}
+                  >
+                    <span className="sr-only">{m.label}</span>
+                  </button>
+                  <OfficeInfoCard
+                    data={officeData[m.id]}
+                    isVisible={activeOfficeCard === m.id}
+                    style={{ right: 'calc(100% + 12px)', top: m.cardTop, zIndex: 100 }}
+                    onClose={hideCard}
+                    onMouseEnter={makeHandleEnter(m.id)}
+                    onMouseLeave={makeHandleLeave(m.id)}
+                  />
                 </div>
-              </div>
-
-              {/* Europe Hub */}
-              <div className="group absolute" style={{ left: '50%', top: '35.05%' }}>
-                <button tabIndex={0} className="relative w-3 h-3 bg-[#FFB952] rounded-full shadow-[0_0_0_4px_rgba(255,185,82,0.2)] cursor-pointer hover:scale-125 transition-transform focus:outline-2 focus:outline-offset-2 focus:outline-[#004CA5]" aria-label="Europe Hub">
-                  <span className="sr-only">Europe Hub</span>
-                </button>
-                <div className="flex flex-col items-center pt-2 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 pointer-events-none">
-                  <div className="bg-white px-3 py-1 rounded-lg shadow-[0_1px_2px_rgba(0,0,0,0.05)] whitespace-nowrap" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, fontSize: '12px', lineHeight: '16px', color: '#00458D' }}>
-                    Europe Hub
-                  </div>
-                </div>
-              </div>
-
-              {/* South Asia Hub */}
-              <div className="group absolute" style={{ left: '64.97%', top: '50%' }}>
-                <button tabIndex={0} className="relative w-3 h-3 bg-[#FFB952] rounded-full shadow-[0_0_0_4px_rgba(255,185,82,0.2)] cursor-pointer hover:scale-125 transition-transform focus:outline-2 focus:outline-offset-2 focus:outline-[#004CA5]" aria-label="South Asia Hub">
-                  <span className="sr-only">South Asia Hub</span>
-                </button>
-                <div className="flex flex-col items-center pt-2 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 pointer-events-none">
-                  <div className="bg-white px-3 py-1 rounded-lg shadow-[0_1px_2px_rgba(0,0,0,0.05)] whitespace-nowrap" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500, fontSize: '12px', lineHeight: '16px', color: '#00458D' }}>
-                    South Asia Hub
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
 
             {/* Stats */}
-            <div className="w-full max-w-[1072px] flex flex-row justify-center items-start gap-8">
+            <div className="w-full max-w-[1072px] flex flex-wrap justify-center items-start gap-8">
               {statsData.map((stat, i) => (
-                <div key={i} className="flex-1 text-center" style={{ maxWidth: '244px' }}>
-                  <p className="font-['Hanken_Grotesk'] font-bold text-[48px] leading-[56px] tracking-[-0.96px] text-[#004CA5]">
+                <div key={i} className="text-center" style={{ flex: '1 1 40%', maxWidth: '244px' }}>
+                  <p className="font-['Hanken_Grotesk'] font-bold text-[32px] leading-[38px] md:text-[48px] md:leading-[56px] tracking-[-0.64px] md:tracking-[-0.96px] text-[#004CA5]">
                     {stat.value}
                   </p>
                   <p className="font-['Hanken_Grotesk'] font-normal text-base leading-6 text-[#424752]">
