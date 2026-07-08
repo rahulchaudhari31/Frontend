@@ -60,7 +60,7 @@ export default function OfficeInfoCard({
       <div
         role={isModal ? 'dialog' : 'tooltip'}
         aria-label={officeName}
-        aria-modal={isModal ? 'true' : undefined}
+        aria-modal={isModal}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         style={{
