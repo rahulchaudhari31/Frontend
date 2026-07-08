@@ -1,6 +1,9 @@
 import { useState } from 'react';
-import { FiUser } from 'react-icons/fi';
-import { useScrollReveal } from '../hooks/useScrollReveal';
+import { motion } from 'framer-motion';
+
+import hrDirector from '../assets/assets/icons of field/hr drector.jpg';
+import talentManager from '../assets/assets/icons of field/talent manager.jpg';
+import hrManager from '../assets/assets/icons of field/hr manager.jpg';
 
 const testimonials = [
   {
@@ -9,6 +12,7 @@ const testimonials = [
     quote: 'E2E HRC consistently delivers high-quality candidates and understands our hiring needs. They are a true recruitment partner.',
     person: 'HR Director',
     company: 'NHS Trust',
+    icon: hrDirector,
   },
   {
     name: 'Siemens',
@@ -16,6 +20,7 @@ const testimonials = [
     quote: 'Their professionalism, global reach and quick turnaround helped us build strong teams across multiple projects.',
     person: 'Talent Manager',
     company: 'Siemens Ltd.',
+    icon: talentManager,
   },
   {
     name: 'Radisson',
@@ -23,35 +28,71 @@ const testimonials = [
     quote: 'E2E HRC helps us hire the right talent at the right time. Their team is responsive, reliable and easy to work with.',
     person: 'HR Manager',
     company: 'Radisson Hotel Group',
+    icon: hrManager,
   },
 ];
 
-const delayClass = ['', 'reveal-delay-2', 'reveal-delay-3'];
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: 'easeOut',
+    },
+  },
+};
+
+const headerVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: 'easeOut' },
+  },
+};
 
 export default function Testimonials() {
   const [active, setActive] = useState(0);
-  const [headerRef, headerVisible] = useScrollReveal();
-  const [cardsRef, cardsVisible] = useScrollReveal();
 
   return (
     <section id="testimonials" className="bg-white py-16 md:py-20 px-4">
       <div className="max-w-7xl mx-auto">
 
-        <div
-          ref={headerRef}
-          className={`text-center mb-12 reveal ${headerVisible ? 'visible' : ''}`}
+        <motion.div
+          variants={headerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          className="text-center mb-12"
         >
           <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-3">What Our Clients Say</p>
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-primary">Trusted by Businesses Worldwide</h2>
-        </div>
+        </motion.div>
 
-        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map(({ name, industry, quote, person, company }, i) => (
-            <div
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+        >
+          {testimonials.map(({ name, industry, quote, person, company, icon }) => (
+            <motion.div
               key={name}
-              className={`border border-gray-100 rounded-xl p-6 flex flex-col gap-5
-                         shadow-sm hover:shadow-card hover:-translate-y-1 transition-all duration-200
-                         reveal ${delayClass[i]} ${cardsVisible ? 'visible' : ''}`}
+              variants={cardVariants}
+              whileHover={{ scale: 1.08, boxShadow: '0 20px 48px rgba(0,0,0,0.15)' }}
+              className="border border-gray-100 rounded-xl p-6 flex flex-col gap-5 shadow-sm transition-colors duration-200"
             >
               <div className="flex items-start justify-between">
                 <div>
@@ -63,18 +104,20 @@ export default function Testimonials() {
 
               <p className="text-text-body text-sm leading-relaxed flex-1">"{quote}"</p>
 
-              <div className="flex items-center gap-3 pt-3 border-t border-gray-100">
-                <span className="w-9 h-9 rounded-full bg-bg-section flex items-center justify-center shrink-0" aria-hidden="true">
-                  <FiUser size={15} className="text-text-body" />
-                </span>
+              <div className="flex items-center gap-4 pt-6 border-t border-[rgba(195,198,212,0.2)]">
+                <img
+                  src={icon}
+                  alt={person}
+                  className="w-12 h-12 rounded-full object-cover shrink-0"
+                />
                 <div>
                   <p className="font-heading font-semibold text-primary text-sm leading-none">{person}</p>
                   <p className="text-text-body text-xs mt-1">{company}</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Pagination dots */}
         <div className="flex justify-center gap-2 mt-10" role="tablist" aria-label="Testimonial navigation">

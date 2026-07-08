@@ -18,8 +18,8 @@
   animation: marquee-scroll var(--scroll-speed, 30s) linear infinite;
 }
 
-/* Pause on hover */
-.testimonials-carousel:hover .testimonials-track {
+/* Pause on hold — controlled via JS toggle */
+.testimonials-track.paused {
   animation-play-state: paused;
 }
 
