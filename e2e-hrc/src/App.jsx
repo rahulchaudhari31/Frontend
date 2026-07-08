@@ -9,6 +9,7 @@ import Testimonials from './components/Testimonials';
 import Footer from './components/Footer';
 import Employer from './pages/Employer';
 import Employee from './pages/Employee';
+import Blogs from './pages/Blogs';
 
 function HomePage() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/employer" element={<Employer />} />
       <Route path="/employee" element={<Employee />} />
+      <Route path="/blogs" element={<Blogs />} />
     </Routes>
   );
 }

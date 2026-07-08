@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>From Our Blog — e2e Human Resource Consultancy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Source+Sans+3:wght@400;600&family=Hanken+Grotesk:wght@400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --c-black: #000000;
+      --c-blue: #004CA5;
+      --c-orange: #F39308;
+      --c-white: #FFFFFF;
+      --c-navtext: #475569;
+      --c-heading: #1B1C1C;
+      --c-body: #424752;
+      --c-footertext: #DBEAFE;
+      --c-linkblue: #003679;
+      --c-border: #EAE8E7;
+      --c-bgsoft: #F6F3F2;
+      --c-bgpage: #F7F9FB;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--c-body);
+      background: var(--c-white);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+    .container { max-width: 1440px; margin: 0 auto; }
+
+    /* ============ ANNOUNCEMENT BAR ============ */
+    .ann-bar {
+      height: 48px;
+      width: 100%;
+      background: var(--c-black);
+    }
+    .ann-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 64px;
+    }
+    .ann-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--c-blue);
+      white-space: nowrap;
+    }
+    .ann-link:hover { color: #1C93F3; }
+    .ann-arrow { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .ann-social { display: flex; align-items: center; gap: 20px; }
+    .ann-social a { color: var(--c-white); transition: color 0.15s; display: flex; align-items: center; }
+    .ann-social a:hover { color: var(--c-blue); }
+    .ann-social svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ============ HEADER / NAVBAR ============ */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--c-white);
+      height: 81px;
+      border-bottom: 1px solid #F3F4F6;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+    .header-logo { display: flex; align-items: center; gap: 10px; }
+    .header-logo img { width: 146px; height: auto; object-fit: contain; }
+    .header-nav { display: flex; align-items: center; gap: 4px; }
+    .header-nav a {
+      display: flex;
+      align-items: center;
+      padding: 8px 14px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--c-navtext);
+      border-radius: 6px;
+      transition: color 0.15s;
+      white-space: nowrap;
+    }
+    .header-nav a:hover { color: var(--c-blue); }
+    .header-nav a.active { color: var(--c-blue); }
+    .header-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 24px;
+      background: var(--c-orange);
+      color: var(--c-white);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 50px;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .header-cta:hover { background: #E07D00; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; padding: 8px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--c-heading); border-radius: 2px; transition: 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    .mobile-nav {
+      display: none;
+      position: absolute;
+      top: 81px;
+      left: 0;
+      right: 0;
+      background: var(--c-white);
+      border-top: 1px solid #F3F4F6;
+      padding: 16px 24px 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      z-index: 49;
+    }
+    .mobile-nav.open { display: block; }
+    .mobile-nav a {
+      display: block;
+      padding: 12px 0;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--c-navtext);
+      border-bottom: 1px solid #F9FAFB;
+    }
+    .mobile-nav a.active { color: var(--c-blue); }
+    .mobile-nav .header-cta { margin-top: 16px; text-align: center; display: block; }
+
+    /* ============ BLOG BANNER ============ */
+    .blog-banner {
+      position: relative;
+      width: 100%;
+      height: 201px;
+      background: var(--c-black);
+      border-top: 1px solid #EAE8E7;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+    .blog-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('src/assets/assets/our%20blog%20images/backround%20our%20blog.jpg') center center / cover no-repeat;
+      opacity: 0.5;
+    }
+    .blog-banner-content {
+      position: relative;
+      z-index: 1;
+      padding-left: 64px;
+    }
+    .blog-banner-title {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 60px;
+      color: var(--c-white);
+      line-height: 1.1;
+    }
+    .blog-banner-title span { color: var(--c-orange); }
+
+    /* ============ HERO FEATURED ARTICLE ============ */
+    .hero-section {
+      background: var(--c-white);
+      padding: 64px;
+    }
+    .hero-card {
+      display: flex;
+      align-items: stretch;
+      border-radius: 24px;
+      min-height: 400px;
+      background: var(--c-bgsoft);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-card-image {
+      width: 874.66px;
+      height: 400px;
+      flex-shrink: 0;
+      flex: none;
+      background: linear-gradient(to right, var(--c-bgsoft) 0%, var(--c-bgsoft) 10%, transparent 40%), url('src/assets/assets/our%20blog%20images/background%20every%20employer.jpg');
+      background-size: 100% 100%, cover;
+      background-position: 0 0, center;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+    .hero-card-content {
+      flex: 1;
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 670px;
+    }
+    .heading-overlap {
+      margin-right: -240px;
+      position: relative;
+      z-index: 1;
+    }
+    .desc-overlap {
+      margin-right: -200px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-meta {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 14px;
+      color: var(--c-body);
+      margin-bottom: 16px;
+    }
+    .hero-heading {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 400;
+      font-size: 36px;
+      line-height: 40px;
+      letter-spacing: 0px;
+      color: #1B1C1C;
+      margin-bottom: 20px;
+    }
+    .hero-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      color: #424752;
+      max-width: 689px;
+    }
+
+    /* ============ POSTS + SIDEBAR ============ */
+    .posts-section {
+      background: var(--c-bgpage);
+      padding: 80px 64px;
+    }
+    .posts-layout {
+      display: flex;
+      gap: 40px;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    .posts-main { flex: 1; min-width: 0; }
+    .posts-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+    .posts-header h2 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 32px;
+      color: var(--c-heading);
+    }
+    .posts-header a {
+      font-family: 'Hanken Grotesk', sans-serif;
+      font-size: 16px;
+      color: var(--c-linkblue);
+    }
+    .posts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .article-card {
+      background: var(--c-white);
+      border: 1px solid var(--c-border);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+    }
+    .article-card-thumb {
+      position: relative;
+      height: 192px;
+      overflow: hidden;
+      background: #E8E4E0;
+    }
+    .article-card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .article-card-tag {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      padding: 6px 14px;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(4px);
+      border-radius: 50px;
+      font-family: 'Hanken Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.96px;
+      text-transform: uppercase;
+      color: var(--c-heading);
+    }
+    .article-card-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .article-card-title {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 28px;
+      color: var(--c-heading);
+      margin-bottom: 12px;
+    }
+    .article-card-desc {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--c-body);
+      margin-bottom: 20px;
+      flex: 1;
+    }
+    .article-card-footer {
+      border-top: 1px solid var(--c-border);
+      padding-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 12px;
+      color: var(--c-body);
+    }
+    .article-card-footer svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      margin-right: 4px;
+    }
+    .article-card-footer .meta-item {
+      display: flex;
+      align-items: center;
+    }
+
+    /* ============ SIDEBAR ============ */
+    .posts-sidebar {
+      width: 427px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .sidebar-card {
+      background: var(--c-white);
+      border: 1px solid var(--c-border);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .sidebar-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .sidebar-card-header svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: var(--c-linkblue);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .sidebar-card-header h3 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 20px;
+      color: var(--c-heading);
+    }
+
+    .trending-item {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--c-border);
+    }
+    .trending-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .trending-item:first-child { padding-top: 0; }
+    .trending-category {
+      font-family: 'Hanken Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.96px;
+      text-transform: uppercase;
+      color: var(--c-linkblue);
+      margin-bottom: 4px;
+    }
+    .trending-title {
+      font-family: 'Hanken Grotesk', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--c-heading);
+    }
+
+    .sidebar-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--c-body);
+      margin-bottom: 16px;
+    }
+    .category-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .category-row:hover { background: var(--c-bgpage); }
+    .category-row svg.cat-icon {
+      width: 8px;
+      height: 8px;
+      fill: var(--c-orange);
+      flex-shrink: 0;
+    }
+    .category-row .cat-label {
+      flex: 1;
+      font-family: 'Hanken Grotesk', sans-serif;
+      font-size: 14px;
+      color: var(--c-heading);
+    }
+    .category-row .cat-chevron {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: #94A3B8;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .resource-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 8px 0;
+    }
+    .resource-icon-box {
+      width: 48px;
+      height: 48px;
+      background: rgba(0,54,121,0.1);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .resource-icon-box svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: var(--c-linkblue);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .resource-title {
+      font-family: 'Hanken Grotesk', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--c-heading);
+    }
+    .resource-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #94A3B8;
+    }
+
+    /* ============ FOOTER ============ */
+    .site-footer {
+      background: var(--c-black);
+      color: var(--c-footertext);
+      padding: 96px 64px 48px;
+    }
+    .footer-inner {
+      max-width: 1245px;
+      margin: 0 auto;
+    }
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: space-between;
+    }
+    .footer-col { flex: 1; min-width: 200px; max-width: 300px; }
+    .footer-col.brand { max-width: 320px; flex: 1.2; }
+    .footer-logo { width: 200px; height: auto; margin-bottom: 24px; object-fit: contain; }
+    .footer-brand-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 23px;
+      color: var(--c-footertext);
+      max-width: 255px;
+    }
+    .footer-heading {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 28px;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--c-orange);
+      margin-bottom: 24px;
+    }
+    .footer-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .footer-nav-list a {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--c-footertext);
+      transition: color 0.15s;
+    }
+    .footer-nav-list a:hover { color: var(--c-orange); }
+    .footer-contact-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .footer-contact-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--c-footertext);
+      font-style: normal;
+    }
+    .footer-contact-list li.center { align-items: center; }
+    .footer-contact-list li a { color: var(--c-footertext); text-decoration: none; }
+    .footer-contact-list li svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: var(--c-orange);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .footer-contact-list li.center svg { margin-top: 0; }
+    .footer-map {
+      width: 100%;
+      max-width: 255px;
+      height: 210px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .footer-divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin: 48px 0 32px;
+    }
+    .footer-copy {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      line-height: 16px;
+      text-align: center;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: rgba(191, 219, 254, 0.6);
+    }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 1280px) {
+      .ann-bar-inner { padding: 0 32px; }
+      .header-inner { padding: 0 32px; }
+      .hero-section { padding: 48px 32px; }
+      .posts-section { padding: 60px 32px; }
+      .site-footer { padding: 60px 32px 40px; }
+    }
+
+    @media (max-width: 1100px) {
+      .posts-sidebar { width: 340px; }
+    }
+
+    @media (max-width: 1024px) {
+      .ann-link { font-size: 12px; }
+      .header-inner { padding: 0 24px; }
+      .header-nav { display: none; }
+      .header-cta.desktop { display: none; }
+      .hamburger { display: flex; }
+
+      .blog-banner-content { padding-left: 32px; }
+      .blog-banner-title { font-size: 42px; }
+
+      .hero-section { padding: 32px 24px; }
+      .hero-card { flex-direction: column; }
+      .hero-card-image {
+        width: 100%;
+        height: 250px;
+        flex: none;
+        order: -1;
+        background: linear-gradient(to bottom, var(--c-bgsoft) 0%, transparent 30%), url('src/assets/assets/our%20blog%20images/background%20every%20employer.jpg');
+        background-size: 100% 100%, cover;
+        background-position: 0 0, center;
+        background-repeat: no-repeat;
+      }
+      .hero-card-content { flex: none; padding: 32px; }
+      .hero-heading { font-size: 28px; line-height: 32px; }
+      .heading-overlap { margin-right: 0; }
+      .desc-overlap { margin-right: 0; }
+
+      .posts-layout { flex-direction: column; }
+      .posts-sidebar { width: 100%; }
+    }
+
+    @media (max-width: 768px) {
+      .ann-bar-inner { padding: 0 16px; }
+      .ann-link { font-size: 11px; }
+      .ann-social { display: none; }
+
+      .blog-banner-content { padding-left: 24px; }
+      .blog-banner-title { font-size: 32px; }
+
+      .hero-section { padding: 24px 16px; }
+      .hero-card-content { padding: 24px; }
+      .hero-card-image { height: 200px; }
+      .hero-heading { font-size: 24px; line-height: 30px; }
+      .hero-text { font-size: 14px; line-height: 22px; }
+
+      .posts-section { padding: 40px 16px; }
+      .posts-grid { grid-template-columns: 1fr; }
+      .posts-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .posts-header h2 { font-size: 26px; }
+      .article-card-thumb { height: 180px; }
+
+      .site-footer { padding: 40px 20px 32px; }
+      .footer-grid { flex-direction: column; gap: 32px; }
+      .footer-col { max-width: 100%; }
+      .footer-col.brand { max-width: 100%; }
+      .footer-brand-text { max-width: 100%; }
+      .footer-divider { margin: 32px 0 24px; }
+    }
+
+    @media (max-width: 480px) {
+      .ann-link { font-size: 10px; }
+      .blog-banner-title { font-size: 28px; }
+      .hero-card-image { height: 160px; }
+      .posts-header h2 { font-size: 22px; }
+    }
+
+    .header-cta.mobile { display: none; }
+    @media (max-width: 1024px) {
+      .header-cta.mobile { display: block; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== ANNOUNCEMENT BAR ==================== -->
+  <div class="ann-bar">
+    <div class="ann-bar-inner">
+      <a href="#" class="ann-link">
+        Looking to hire exceptional talent? Submit a Vacancy
+        <svg class="ann-arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <div class="ann-social">
+        <a href="#" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="#" aria-label="Twitter">
+          <svg viewBox="0 0 24 24"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+        </a>
+        <a href="#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="#" class="header-logo">
+        <img src="src/assets/assets/image/image/logo.png" alt="e2e Human Resource Consultancy" width="146" height="58">
+      </a>
+
+      <nav class="header-nav" aria-label="Main navigation">
+        <a href="#">Home</a>
+        <a href="#">About Us</a>
+        <a href="#">Employer</a>
+        <a href="#">Employee</a>
+        <a href="#">Workforce Solutions</a>
+        <a href="#">Become a Partner</a>
+        <a href="#" class="active">Blogs</a>
+        <a href="#">Contact Us</a>
+      </nav>
+
+      <a href="#" class="header-cta desktop">Submit Vacancy / CV</a>
+
+      <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <div class="mobile-nav" id="mobileNav">
+      <a href="#">Home</a>
+      <a href="#">About Us</a>
+      <a href="#">Employer</a>
+      <a href="#">Employee</a>
+      <a href="#">Workforce Solutions</a>
+      <a href="#">Become a Partner</a>
+      <a href="#" class="active">Blogs</a>
+      <a href="#">Contact Us</a>
+      <a href="#" class="header-cta mobile">Submit Vacancy / CV</a>
+    </div>
+  </header>
+
+  <!-- ==================== BLOG BANNER ==================== -->
+  <section class="blog-banner">
+    <div class="blog-banner-content">
+      <h1 class="blog-banner-title">From Our <span>Blog</span></h1>
+    </div>
+  </section>
+
+  <!-- ==================== HERO FEATURED ARTICLE ==================== -->
+  <section class="hero-section">
+    <div class="hero-card">
+      <div class="hero-card-content">
+        <p class="hero-meta">2 days ago &bull; 8 min read</p>
+        <h2 class="hero-heading heading-overlap">Top 10 Hiring Trends Every Employer<br />Should Know in 2026</h2>
+        <p class="hero-text desc-overlap">As the global talent landscape evolves, staying ahead of recruitment trends<br />is crucial. From AI-driven candidate screening to shifting expectations<br />around flexible work, discover what will shape the future of hiring.</p>
+      </div>
+      <div class="hero-card-image" role="img" aria-label="Hiring trends team meeting"></div>
+    </div>
+  </section>
+
+  <!-- ==================== POSTS + SIDEBAR ==================== -->
+  <section class="posts-section">
+    <div class="posts-layout">
+      <div class="posts-main">
+        <div class="posts-header">
+          <h2>All blog posts</h2>
+          <a href="#">View All &rarr;</a>
+        </div>
+        <div class="posts-grid">
+          <article class="article-card">
+            <div class="article-card-thumb">
+              <img src="src/assets/assets/our%20blog%20images/executive%20search.jpg" alt="Navigating Leadership Transitions" loading="lazy">
+              <span class="article-card-tag">Executive Search</span>
+            </div>
+            <div class="article-card-body">
+              <h3 class="article-card-title">Navigating Leadership Transitions in Fast-Growing Tech Firms</h3>
+              <p class="article-card-desc">A comprehensive guide to managing executive turnover and ensuring smooth transitions during periods of rapid company growth.</p>
+              <div class="article-card-footer">
+                <span class="meta-item">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  April 8, 2026
+                </span>
+                <span class="meta-item">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  5 min read
+                </span>
+              </div>
+            </div>
+          </article>
+
+          <article class="article-card">
+            <div class="article-card-thumb">
+              <img src="src/assets/assets/our%20blog%20images/compliance.png" alt="Employment Law Updates" loading="lazy">
+              <span class="article-card-tag">Compliance</span>
+            </div>
+            <div class="article-card-body">
+              <h3 class="article-card-title">2026 Employment Law Updates: What HR Teams Need to Know</h3>
+              <p class="article-card-desc">Stay compliant with our breakdown of the latest employment regulations affecting businesses across the UK and EMEA regions.</p>
+              <div class="article-card-footer">
+                <span class="meta-item">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  April 3, 2026
+                </span>
+                <span class="meta-item">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  6 min read
+                </span>
+              </div>
+            </div>
+          </article>
+
+          <article class="article-card">
+            <div class="article-card-thumb">
+              <img src="src/assets/assets/our%20blog%20images/culture.jpg" alt="Building Remote-First Cultures" loading="lazy">
+              <span class="article-card-tag">Culture</span>
+            </div>
+            <div class="article-card-body">
+              <h3 class="article-card-title">Building Remote-First Cultures That Actually Work</h3>
+              <p class="article-card-desc">Strategies for maintaining team cohesion, productivity, and wellbeing when your workforce is distributed across time zones.</p>
+              <div class="article-card-footer">
+                <span class="meta-item">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  March 29, 2026
+                </span>
+                <span class="meta-item">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  7 min read
+                </span>
+              </div>
+            </div>
+          </article>
+
+          <article class="article-card">
+            <div class="article-card-thumb">
+              <img src="src/assets/assets/our%20blog%20images/requirement.jpg" alt="Data-Driven Hiring" loading="lazy">
+              <span class="article-card-tag">Recruitment</span>
+            </div>
+            <div class="article-card-body">
+              <h3 class="article-card-title">Data-Driven Hiring: Metrics That Truly Matter</h3>
+              <p class="article-card-desc">Move beyond time-to-fill and cost-per-hire. Discover the new metrics that indicate true recruitment success.</p>
+              <div class="article-card-footer">
+                <span class="meta-item">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  March 21, 2026
+                </span>
+                <span class="meta-item">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  4 min read
+                </span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <aside class="posts-sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-card-header">
+            <img src="src/assets/assets/icon trending now/trendinng now.png" alt="Trending Now" style="width:16px;height:19px" />
+            <h3>Trending Now</h3>
+          </div>
+          <div class="trending-item">
+            <div class="trending-category">Career</div>
+            <div class="trending-title">How to Retain Top Performers in a Competitive Market</div>
+          </div>
+          <div class="trending-item">
+            <div class="trending-category">Executive Search</div>
+            <div class="trending-title">The Rise of the Fractional Executive: Is It Right for You?</div>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <div class="sidebar-card-header">
+            <img src="src/assets/assets/icon trending now/expert categories.png" alt="Expert Categories" style="width:19px;height:20px" />
+            <h3>Expert Categories</h3>
+          </div>
+          <p class="sidebar-desc">Explore deeper insights across our core consultancy pillars.</p>
+          <div class="category-row">
+            <svg class="cat-icon" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5"/></svg>
+            <span class="cat-label">Recruitment Strategy</span>
+            <svg class="cat-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="category-row">
+            <svg class="cat-icon" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5"/></svg>
+            <span class="cat-label">Executive Search</span>
+            <svg class="cat-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="category-row">
+            <svg class="cat-icon" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5"/></svg>
+            <span class="cat-label">HR Compliance</span>
+            <svg class="cat-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="category-row">
+            <svg class="cat-icon" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5"/></svg>
+            <span class="cat-label">Talent Analytics</span>
+            <svg class="cat-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="category-row">
+            <svg class="cat-icon" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5"/></svg>
+            <span class="cat-label">Leadership Development</span>
+            <svg class="cat-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <div class="sidebar-card-header">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <h3>Industry Resources</h3>
+          </div>
+          <div class="resource-row">
+            <div class="resource-icon-box">
+              <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div>
+              <div class="resource-title">2026 Tech Salary Guide</div>
+              <div class="resource-subtitle">PDF Guide</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-col brand">
+          <img src="src/assets/assets/image/image/logo.png" alt="e2e Human Resource Consultancy" class="footer-logo">
+          <p class="footer-brand-text">Connecting exceptional talent with exceptional businesses across the UK, Europe, South Asia, and the GCC since 2007.</p>
+        </div>
+
+        <div class="footer-col">
+          <h3 class="footer-heading">Navigation</h3>
+          <nav aria-label="Footer navigation">
+            <ul class="footer-nav-list">
+              <li><a href="#">Home</a></li>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Our Services</a></li>
+              <li><a href="#">Latest Jobs</a></li>
+              <li><a href="#">Expert Blogs</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="footer-col">
+          <h3 class="footer-heading">UK Head Office</h3>
+          <ul class="footer-contact-list">
+            <li>
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>Unit 2, 1204B Stratford Road, Hall Green, Birmingham, B28 8HN, UK</span>
+            </li>
+            <li class="center">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <a href="tel:+441217782400">+44 (0) 121 778 2400</a>
+            </li>
+            <li class="center">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <a href="mailto:info@e2ehrc.co.uk">info@e2ehrc.co.uk</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3 class="footer-heading">Our Office Locations</h3>
+          <img src="src/assets/assets/image/image/map.png" alt="Office locations map" class="footer-map" loading="lazy">
+        </div>
+      </div>
+
+      <hr class="footer-divider">
+      <p class="footer-copy">&copy; 2026 e2e Human Resource Consultancy Ltd. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      var btn = document.getElementById('hamburgerBtn');
+      var nav = document.getElementById('mobileNav');
+      if (btn && nav) {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          btn.classList.toggle('open');
+          nav.classList.toggle('open');
+        });
+        document.addEventListener('click', function(e) {
+          if (!btn.contains(e.target) && !nav.contains(e.target)) {
+            btn.classList.remove('open');
+            nav.classList.remove('open');
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
