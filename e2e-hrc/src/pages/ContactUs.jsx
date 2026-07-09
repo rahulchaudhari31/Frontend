@@ -117,8 +117,10 @@ export default function ContactUs() {
           alignItems: 'flex-start',
           boxSizing: 'border-box',
         }}
+        className="hero-section"
       >
         <h1
+          className="hero-heading"
           style={{
             fontFamily: "'Poppins', sans-serif",
             fontWeight: 800,
@@ -135,14 +137,14 @@ export default function ContactUs() {
       </section>
 
       {/* ===== 2. MAIN CONTACT SECTION ===== */}
-      <section className="bg-[#F6F3F2]" style={{ padding: '64px 0' }}>
+      <section className="bg-[#F6F3F2] contact-section" style={{ padding: '64px 0' }}>
         <div
-          className="mx-auto flex flex-col lg:flex-row"
+          className="mx-auto flex flex-col lg:flex-row contact-container"
           style={{ maxWidth: '1312px', gap: '77px', padding: '0 16px' }}
         >
           {/* ----- LEFT COLUMN: FORM CARD (772px) ----- */}
           <div
-            className="w-full bg-white"
+            className="w-full bg-white form-card"
             style={{
               maxWidth: '772px',
               flex: 1,
@@ -537,10 +539,10 @@ export default function ContactUs() {
           </div>
 
           {/* ----- RIGHT COLUMN: INFO SIDE (464px) ----- */}
-          <div className="w-full lg:w-[464px] shrink-0 flex flex-col" style={{ gap: '32px' }}>
+          <div className="w-full lg:w-[464px] shrink-0 flex flex-col info-side" style={{ gap: '32px' }}>
             {/* Head Office Birmingham Card */}
             <div
-              className="w-full bg-white"
+              className="w-full bg-white info-card"
               style={{
                 borderRadius: '24px',
                 padding: '40px',
@@ -839,7 +841,7 @@ export default function ContactUs() {
 
       {/* ===== 3. OUR GLOBAL NETWORK SECTION ===== */}
       <section
-        className="bg-white mx-auto"
+        className="bg-white mx-auto global-network-section"
         style={{
           padding: '40px 64px',
           maxWidth: '1200px',
@@ -852,6 +854,7 @@ export default function ContactUs() {
       >
         {/* Heading + subtext */}
         <div
+          className="global-header"
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -863,6 +866,7 @@ export default function ContactUs() {
           }}
         >
           <h2
+            className="global-heading"
             style={{
               fontFamily: "'Poppins', sans-serif",
               fontWeight: 700,
@@ -877,6 +881,7 @@ export default function ContactUs() {
             Our Global Network
           </h2>
           <p
+            className="global-subtext"
             style={{
               fontFamily: "'Source Sans 3', sans-serif",
               fontWeight: 400,
@@ -894,7 +899,7 @@ export default function ContactUs() {
 
         {/* Map Container */}
         <div
-          className="relative"
+          className="relative global-map"
           style={{
             width: '100%',
             maxWidth: '1196px',
@@ -949,6 +954,7 @@ export default function ContactUs() {
 
         {/* Stats Row */}
         <div
+          className="stats-row"
           style={{
             display: 'flex',
             flexDirection: 'row',
@@ -962,6 +968,7 @@ export default function ContactUs() {
           {statsData.map((stat, i) => (
             <div
               key={i}
+              className="stat-item"
               style={{
                 flex: '1 1 0',
                 maxWidth: '244px',
@@ -972,6 +979,7 @@ export default function ContactUs() {
               }}
             >
               <p
+                className="stat-value"
                 style={{
                   fontFamily: "'Hanken Grotesk', sans-serif",
                   fontWeight: 700,
@@ -1003,6 +1011,36 @@ export default function ContactUs() {
         </div>
       </section>
 
+      <style>{`
+        @media (max-width: 767px) {
+          .hero-section { height: 300px !important; padding: 32px 0 32px 16px !important; }
+          .hero-heading { font-size: 28px !important; line-height: 32px !important; white-space: normal !important; margin-bottom: 24px !important; }
+          .contact-section { padding: 32px 0 !important; }
+          .contact-container { gap: 32px !important; }
+          .form-card { padding: 24px !important; }
+          .info-side { gap: 24px !important; }
+          .info-card { padding: 24px !important; }
+          .global-network-section { padding: 32px 16px !important; gap: 32px !important; }
+          .global-heading { font-size: 28px !important; line-height: 36px !important; }
+          .global-subtext { max-width: 100% !important; }
+          .global-map { height: 220px !important; }
+          .stats-row { flex-wrap: wrap !important; gap: 24px !important; }
+          .stat-item { flex: 1 1 40% !important; max-width: 160px !important; }
+          .stat-value { font-size: 32px !important; line-height: 40px !important; }
+        }
+        @media (min-width: 768px) and (max-width: 1023px) {
+          .hero-section { padding: 40px 0 40px 32px !important; }
+          .hero-heading { font-size: 44px !important; line-height: 44px !important; margin-bottom: 60px !important; }
+          .contact-section { padding: 48px 0 !important; }
+          .contact-container { gap: 48px !important; }
+          .form-card { padding: 36px !important; }
+          .global-network-section { padding: 40px 32px !important; }
+          .global-heading { font-size: 36px !important; line-height: 44px !important; }
+          .global-map { height: 300px !important; }
+          .stat-item { max-width: 200px !important; }
+          .stat-value { font-size: 40px !important; line-height: 48px !important; }
+        }
+      `}</style>
       <Footer />
     </div>
   );
