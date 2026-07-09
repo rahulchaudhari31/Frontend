@@ -19,7 +19,7 @@ const navLinks = [
   { label: 'Workforce Solutions', to: '/' },
   { label: 'Become a Partner', to: '/become-a-partner' },
   { label: 'Blogs', to: '/blogs' },
-  { label: 'Contact Us', to: '#' },
+  { label: 'Contact Us', to: '/contact-us' },
 ];
 
 export default function Navbar({ variant = 'home' }) {
