@@ -1,5 +1,6 @@
-import { useState, useRef, useCallback } from 'react';
-import { FiMapPin, FiClock, FiGlobe } from 'react-icons/fi';
+import { useState, useRef, useCallback, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { FiMapPin, FiClock, FiGlobe, FiX, FiCompass } from 'react-icons/fi';
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import AnnouncementBar from '../components/AnnouncementBar';
 import Navbar from '../components/shared/Navbar';
@@ -75,6 +76,15 @@ export default function ContactUs() {
   });
   const [activeOfficeCard, setActiveOfficeCard] = useState(null);
   const cardTimers = useRef({});
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    setIsMobile(mq.matches);
+    const handler = (e) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -907,7 +917,6 @@ export default function ContactUs() {
             borderRadius: '24px',
             border: '1px solid rgba(194,198,212,0.2)',
             background: '#F2F4F6',
-            isolation: 'isolate',
           }}
         >
           <div
@@ -921,35 +930,58 @@ export default function ContactUs() {
             />
           </div>
           {/* Location markers */}
-          {locationMarkers.map((m) => (
-            <div
-              key={m.id}
-              className="absolute"
-              style={{ left: m.left, top: m.top, transform: 'translate(-50%, -50%)', zIndex: 1 }}
-            >
+          {locationMarkers.map((m) => {
+            if (isMobile) {
+              return (
+                <div
+                  key={m.id}
+                  className="absolute"
+                  style={{ left: m.left, top: m.top, transform: 'translate(-50%, -50%)', zIndex: 1 }}
+                >
+                  <div
+                    className={`${m.size} rounded-full cursor-pointer hover:scale-125 transition-transform`}
+                    style={{
+                      background: m.color,
+                      boxShadow: `0 0 0 4px ${m.shadow}`,
+                    }}
+                    aria-label={m.label}
+                    onClick={() => setActiveOfficeCard(activeOfficeCard === m.id ? null : m.id)}
+                  >
+                    <span className="sr-only">{m.label}</span>
+                  </div>
+                </div>
+              );
+            }
+            return (
               <div
-                className={`${m.size} rounded-full cursor-pointer hover:scale-125 transition-transform`}
-                style={{
-                  background: m.color,
-                  boxShadow: `0 0 0 4px ${m.shadow}`,
-                }}
-                aria-label={m.label}
-                onMouseEnter={makeHandleEnter(m.id)}
-                onMouseLeave={makeHandleLeave(m.id)}
-                onFocus={() => setActiveOfficeCard(m.id)}
+                key={m.id}
+                className="absolute"
+                style={{ left: m.left, top: m.top, transform: 'translate(-50%, -50%)', zIndex: 1 }}
               >
-                <span className="sr-only">{m.label}</span>
+                <div
+                  className={`${m.size} rounded-full cursor-pointer hover:scale-125 transition-transform`}
+                  style={{
+                    background: m.color,
+                    boxShadow: `0 0 0 4px ${m.shadow}`,
+                  }}
+                  aria-label={m.label}
+                  onMouseEnter={makeHandleEnter(m.id)}
+                  onMouseLeave={makeHandleLeave(m.id)}
+                  onFocus={() => setActiveOfficeCard(m.id)}
+                >
+                  <span className="sr-only">{m.label}</span>
+                </div>
+                <OfficeInfoCard
+                  data={officeData[m.id]}
+                  isVisible={activeOfficeCard === m.id}
+                  style={{ left: '50%', top: 'calc(100% + 12px)', zIndex: 100 }}
+                  onClose={hideCard}
+                  onMouseEnter={makeHandleEnter(m.id)}
+                  onMouseLeave={makeHandleLeave(m.id)}
+                />
               </div>
-              <OfficeInfoCard
-                data={officeData[m.id]}
-                isVisible={activeOfficeCard === m.id}
-                style={{ left: '50%', top: 'calc(100% + 12px)', zIndex: 100 }}
-                onClose={hideCard}
-                onMouseEnter={makeHandleEnter(m.id)}
-                onMouseLeave={makeHandleLeave(m.id)}
-              />
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Stats Row */}
@@ -1041,6 +1073,94 @@ export default function ContactUs() {
           .stat-value { font-size: 40px !important; line-height: 48px !important; }
         }
       `}</style>
+
+      {isMobile && activeOfficeCard && (() => {
+        const d = officeData[activeOfficeCard];
+        return createPortal(
+          <>
+            <div
+              onClick={hideCard}
+              style={{
+                position: 'fixed', inset: 0, zIndex: 9999,
+                background: 'rgba(0,0,0,0.4)',
+              }}
+            />
+            <div
+              style={{
+                position: 'fixed', inset: 0, zIndex: 10000,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                pointerEvents: 'none',
+              }}
+            >
+              <div
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  pointerEvents: 'auto',
+                  width: 'calc(100% - 32px)', maxWidth: 440,
+                  maxHeight: '80vh', overflowY: 'auto',
+                  background: '#FFF', borderRadius: 24, padding: 24,
+                  boxShadow: '0 20px 40px rgba(0,0,0,0.18)',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
+                  <button
+                    onClick={hideCard}
+                    aria-label="Close"
+                    style={{
+                      width: 36, height: 36,
+                      borderRadius: '50%', background: '#FFF', border: 'none',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)', cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}
+                  >
+                    <FiX size={16} color="#000" />
+                  </button>
+                </div>
+
+                <h2 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: 20, color: '#004CA5', margin: 0, marginBottom: 16 }}>
+                  {d.officeName}
+                </h2>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+                  {[
+                    { icon: FiMapPin, color: '#004CA5', content: d.address.map((line, i) => (<span key={i}>{line}{i < d.address.length - 1 && <br />}</span>)) },
+                    { icon: FaPhoneAlt, color: '#004CA5', content: d.phone },
+                    { icon: FaEnvelope, color: '#004CA5', content: d.email },
+                    { icon: FiClock, color: '#004CA5', content: d.hours },
+                  ].map((row, i) => (
+                    <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 12, alignItems: 'flex-start' }}>
+                      <div style={{ flexShrink: 0, marginTop: 2 }}><row.icon size={14} color={row.color} /></div>
+                      <span style={{ fontSize: 13, lineHeight: 1.5, color: '#1B1C1C', fontFamily: "'Inter', sans-serif" }}>{row.content}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <h3 style={{ fontWeight: 700, fontSize: 16, color: '#1B1C1C', margin: 0, marginTop: 16, marginBottom: 8 }}>
+                  About this Office
+                </h3>
+                <p style={{ fontSize: 13, lineHeight: 1.5, color: '#424752', margin: 0, marginBottom: 16, fontFamily: "'Inter', sans-serif" }}>
+                  {d.aboutText}
+                </p>
+
+                <button
+                  onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(d.directionsQuery)}`, '_blank', 'noopener,noreferrer')}
+                  style={{
+                    width: '100%', padding: 12, borderRadius: 9999, background: '#004CA5',
+                    color: '#FFF', border: 'none', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                    fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: 14,
+                  }}
+                >
+                  <FiCompass size={14} color="#FFF" />
+                  Get Directions
+                </button>
+              </div>
+            </div>
+          </>,
+          document.body
+        );
+      })()}
+
       <Footer />
     </div>
   );
