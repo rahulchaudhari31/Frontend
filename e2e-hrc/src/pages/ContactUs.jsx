@@ -129,7 +129,7 @@ export default function ContactUs() {
             color: '#FFFFFF',
             margin: 0,
             whiteSpace: 'nowrap',
-            marginBottom: '140px',
+            marginBottom: '60px',
           }}
         >
           Connect With <span style={{ color: '#F39308' }}>E2E HRC</span>
