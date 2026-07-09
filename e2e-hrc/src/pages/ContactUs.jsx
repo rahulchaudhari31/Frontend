@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { FiMapPin, FiClock, FiGlobe } from 'react-icons/fi';
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import AnnouncementBar from '../components/AnnouncementBar';
 import Navbar from '../components/shared/Navbar';
 import Footer from '../components/shared/Footer';
+import OfficeInfoCard from '../components/OfficeInfoCard';
 
 import heroBg from '../assets/assets/about us images/about us background.jpg';
 import mapBase from '../assets/assets/about us images/map image.png';
@@ -23,6 +24,45 @@ const locationMarkers = [
   { id: 'southasia', label: 'South Asia Hub', left: '64%', top: '49%', size: 'w-3 h-3', color: '#FFB952', shadow: 'rgba(255,185,82,0.2)' },
 ];
 
+const officeData = {
+  uk: {
+    officeName: 'UK Head Office',
+    address: ['1204B Stratford Road, Hall Green,', 'Birmingham, B28 8AS, UK'],
+    phone: '+44 (0) 121 778 2400',
+    email: 'info@e2ehrc.co.uk',
+    hours: 'Mon to Fri: 9AM to 6PM',
+    aboutText: 'Our UK head office in Birmingham serves as the central hub for executive recruitment across the United Kingdom, connecting top talent with leading businesses.',
+    directionsQuery: '1204B Stratford Road, Hall Green, Birmingham, B28 8AS, UK',
+  },
+  europe: {
+    officeName: 'Europe Hub',
+    address: ['Friedrichstraße 68,', '10117 Berlin, Germany'],
+    phone: '+49 30 1234 5678',
+    email: 'europe@e2ehrc.co.uk',
+    hours: 'Mon to Fri: 9AM to 6PM',
+    aboutText: 'Our Berlin office connects clients and candidates across the European Union, with deep expertise in DACH and Nordics markets.',
+    directionsQuery: 'Friedrichstraße 68, 10117 Berlin, Germany',
+  },
+  gcc: {
+    officeName: 'GCC Hub',
+    address: ['Level 14, Al Fattan Currency House,', 'Tower 2, DIFC, Dubai, UAE'],
+    phone: '+971 4 123 4567',
+    email: 'gcc@e2ehrc.co.uk',
+    hours: 'Sun to Thu: 9AM to 6PM',
+    aboutText: 'Our GCC hub in Dubai serves as the central operations base for the Middle East and North Africa region.',
+    directionsQuery: 'Level 14, Al Fattan Currency House, Tower 2, DIFC, Dubai, UAE',
+  },
+  southasia: {
+    officeName: 'South Asia Hub',
+    address: ['91 Springboard, Sector 44,', 'Gurugram, Haryana 122003, India'],
+    phone: '+91 124 456 7890',
+    email: 'southasia@e2ehrc.co.uk',
+    hours: 'Mon to Sat: 9AM to 6PM',
+    aboutText: 'Our Gurugram office drives our South Asia operations, offering end-to-end recruitment services across India and neighbouring markets.',
+    directionsQuery: '91 Springboard, Sector 44, Gurugram, Haryana 122003, India',
+  },
+};
+
 export default function ContactUs() {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -33,6 +73,8 @@ export default function ContactUs() {
     subject: '',
     message: '',
   });
+  const [activeOfficeCard, setActiveOfficeCard] = useState(null);
+  const cardTimers = useRef({});
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -43,6 +85,17 @@ export default function ContactUs() {
     e.preventDefault();
     console.log('Form submitted:', formData);
   }
+
+  const makeHandleEnter = useCallback((id) => () => {
+    if (cardTimers.current[id]) clearTimeout(cardTimers.current[id]);
+    setActiveOfficeCard(id);
+  }, []);
+
+  const makeHandleLeave = useCallback((id) => () => {
+    cardTimers.current[id] = setTimeout(() => setActiveOfficeCard(null), 250);
+  }, []);
+
+  const hideCard = useCallback(() => setActiveOfficeCard(null), []);
 
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
@@ -139,9 +192,9 @@ export default function ContactUs() {
                     placeholder="John"
                     value={formData.firstName}
                     onChange={handleChange}
-                    className="w-full bg-white"
+                    className="w-full bg-white placeholder-[#6B7280]"
                     style={{
-                      padding: '17px 16px',
+                      padding: '13px 16px',
                       height: '44px',
                       border: '1px solid #F1F2F9',
                       borderRadius: '16px',
@@ -151,7 +204,7 @@ export default function ContactUs() {
                       fontWeight: 400,
                       fontSize: '16px',
                       lineHeight: '23px',
-                      color: '#6B7280',
+                      color: '#1B1C1C',
                     }}
                   />
                 </div>
@@ -179,9 +232,9 @@ export default function ContactUs() {
                     placeholder="Doe"
                     value={formData.lastName}
                     onChange={handleChange}
-                    className="w-full bg-white"
+                    className="w-full bg-white placeholder-[#6B7280]"
                     style={{
-                      padding: '17px 16px',
+                      padding: '13px 16px',
                       height: '44px',
                       border: '1px solid #F1F2F9',
                       borderRadius: '16px',
@@ -191,7 +244,7 @@ export default function ContactUs() {
                       fontWeight: 400,
                       fontSize: '16px',
                       lineHeight: '23px',
-                      color: '#6B7280',
+                      color: '#1B1C1C',
                     }}
                   />
                 </div>
@@ -223,9 +276,9 @@ export default function ContactUs() {
                     placeholder="Enter company name"
                     value={formData.company}
                     onChange={handleChange}
-                    className="w-full bg-white"
+                    className="w-full bg-white placeholder-[#6B7280]"
                     style={{
-                      padding: '17px 16px',
+                      padding: '13px 16px',
                       height: '44px',
                       border: '1px solid #F1F2F9',
                       borderRadius: '16px',
@@ -235,7 +288,7 @@ export default function ContactUs() {
                       fontWeight: 400,
                       fontSize: '16px',
                       lineHeight: '23px',
-                      color: '#6B7280',
+                      color: '#1B1C1C',
                     }}
                   />
                 </div>
@@ -263,9 +316,9 @@ export default function ContactUs() {
                     placeholder="john@company.com"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full bg-white"
+                    className="w-full bg-white placeholder-[#6B7280]"
                     style={{
-                      padding: '17px 16px',
+                      padding: '13px 16px',
                       height: '44px',
                       border: '1px solid #F1F2F9',
                       borderRadius: '16px',
@@ -275,7 +328,7 @@ export default function ContactUs() {
                       fontWeight: 400,
                       fontSize: '16px',
                       lineHeight: '23px',
-                      color: '#6B7280',
+                      color: '#1B1C1C',
                     }}
                   />
                 </div>
@@ -300,39 +353,31 @@ export default function ContactUs() {
                   >
                     I AM A...
                   </label>
-                  <div style={{ position: 'relative' }}>
-                    <select
-                      id="role"
-                      name="role"
-                      value={formData.role}
-                      onChange={handleChange}
-                      className="w-full bg-white"
-                      style={{
-                        padding: '17px 16px',
-                        height: '44px',
-                        border: '1px solid #F1F2F9',
-                        borderRadius: '16px',
-                        outline: 'none',
-                        boxSizing: 'border-box',
-                        fontFamily: "'Source Sans 3', sans-serif",
-                        fontWeight: 400,
-                        fontSize: '16px',
-                        lineHeight: '24px',
-                        color: '#1B1C1C',
-                        appearance: 'none',
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236B7280' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'right 16px center',
-                        paddingRight: '40px',
-                      }}
-                    >
-                      <option value="" disabled>Employer Looking for Talent</option>
-                      <option value="employer">Employer Looking for Talent</option>
-                      <option value="employee">Job Seeker / Candidate</option>
-                      <option value="partner">Recruitment Partner</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
+                  <select
+                    id="role"
+                    name="role"
+                    value={formData.role}
+                    onChange={handleChange}
+                    className="w-full bg-white"
+                    style={{
+                      padding: '10px 16px',
+                      border: '1px solid #F1F2F9',
+                      borderRadius: '16px',
+                      outline: 'none',
+                      fontFamily: "'Source Sans 3', sans-serif",
+                      fontWeight: 400,
+                      fontSize: '16px',
+                      lineHeight: '24px',
+                      color: '#1B1C1C',
+                      boxSizing: 'border-box',
+                    }}
+                  >
+                    <option value="">Employer Looking for Talent</option>
+                    <option value="employer">Employer Looking for Talent</option>
+                    <option value="employee">Job Seeker / Candidate</option>
+                    <option value="partner">Recruitment Partner</option>
+                    <option value="other">Other</option>
+                  </select>
                 </div>
                 <div>
                   <label
@@ -358,9 +403,9 @@ export default function ContactUs() {
                     placeholder="Executive Search Inquiry"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full bg-white"
+                    className="w-full bg-white placeholder-[#6B7280]"
                     style={{
-                      padding: '17px 16px',
+                      padding: '13px 16px',
                       height: '44px',
                       border: '1px solid #F1F2F9',
                       borderRadius: '16px',
@@ -370,7 +415,7 @@ export default function ContactUs() {
                       fontWeight: 400,
                       fontSize: '16px',
                       lineHeight: '23px',
-                      color: '#6B7280',
+                      color: '#1B1C1C',
                     }}
                   />
                 </div>
@@ -400,7 +445,7 @@ export default function ContactUs() {
                   placeholder="How can we help your business grow?"
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full bg-white resize-none"
+                    className="w-full bg-white resize-none placeholder-[#6B7280]"
                   style={{
                     padding: '16px 16px 88px',
                     height: '128px',
@@ -412,8 +457,8 @@ export default function ContactUs() {
                     fontWeight: 400,
                     fontSize: '16px',
                     lineHeight: '24px',
-                    color: '#6B7280',
-                    overflow: 'scroll',
+                    color: '#1B1C1C',
+                    overflow: 'hidden',
                   }}
                 />
               </div>
@@ -793,125 +838,168 @@ export default function ContactUs() {
       </section>
 
       {/* ===== 3. OUR GLOBAL NETWORK SECTION ===== */}
-      <section className="bg-white" style={{ padding: '40px 64px' }}>
-        <div className="mx-auto" style={{ maxWidth: '1200px' }}>
-          {/* Heading + subtext */}
-          <div className="text-center mb-10">
-            <h2
-              style={{
-                fontFamily: "'Poppins', sans-serif",
-                fontWeight: 700,
-                fontSize: '48px',
-                lineHeight: '56px',
-                color: '#004CA5',
-                margin: '0 0 16px 0',
-              }}
-            >
-              Our Global Network
-            </h2>
-            <p
-              className="mx-auto"
-              style={{
-                fontFamily: "'Source Sans 3', sans-serif",
-                fontSize: '16px',
-                lineHeight: '24px',
-                color: '#424752',
-                maxWidth: '600px',
-                margin: 0,
-              }}
-            >
-              Strategic recruitment hubs across three continents, providing borderless executive search capabilities.
-            </p>
-          </div>
-
-          {/* Map Container */}
-          <div
-            className="relative w-full"
+      <section
+        className="bg-white mx-auto"
+        style={{
+          padding: '40px 64px',
+          maxWidth: '1200px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '48px',
+        }}
+      >
+        {/* Heading + subtext */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: 0,
+            gap: '16px',
+            width: '100%',
+            maxWidth: '1072px',
+          }}
+        >
+          <h2
             style={{
-              minHeight: '385px',
-              borderRadius: '24px',
-              border: '1px solid rgba(194,198,212,0.2)',
-              background: '#F2F4F6',
-              overflow: 'hidden',
+              fontFamily: "'Poppins', sans-serif",
+              fontWeight: 700,
+              fontSize: '48px',
+              lineHeight: '56px',
+              color: '#004CA5',
+              margin: 0,
+              textAlign: 'center',
+              letterSpacing: '-0.96px',
             }}
+          >
+            Our Global Network
+          </h2>
+          <p
+            style={{
+              fontFamily: "'Source Sans 3', sans-serif",
+              fontWeight: 400,
+              fontSize: '16px',
+              lineHeight: '24px',
+              color: '#424752',
+              margin: 0,
+              textAlign: 'center',
+              maxWidth: '672px',
+            }}
+          >
+            Strategic recruitment hubs across three continents, providing borderless executive search capabilities.
+          </p>
+        </div>
+
+        {/* Map Container */}
+        <div
+          className="relative"
+          style={{
+            width: '100%',
+            maxWidth: '1196px',
+            height: '385px',
+            borderRadius: '24px',
+            border: '1px solid rgba(194,198,212,0.2)',
+            background: '#F2F4F6',
+            isolation: 'isolate',
+          }}
+        >
+          <div
+            className="absolute inset-0 rounded-[24px] overflow-hidden pointer-events-none"
+            style={{ opacity: 0.3 }}
           >
             <img
               src={mapBase}
               alt="World map"
               className="w-full h-full object-cover"
-              style={{ position: 'absolute', inset: 0, opacity: 0.3 }}
             />
-            {/* Location markers */}
-            {locationMarkers.map((m) => (
+          </div>
+          {/* Location markers */}
+          {locationMarkers.map((m) => (
+            <div
+              key={m.id}
+              className="absolute"
+              style={{ left: m.left, top: m.top, transform: 'translate(-50%, -50%)', zIndex: 1 }}
+            >
               <div
-                key={m.id}
-                className="absolute"
-                style={{ left: m.left, top: m.top, transform: 'translate(-50%, -50%)' }}
+                className={`${m.size} rounded-full cursor-pointer hover:scale-125 transition-transform`}
+                style={{
+                  background: m.color,
+                  boxShadow: `0 0 0 4px ${m.shadow}`,
+                }}
+                aria-label={m.label}
+                onMouseEnter={makeHandleEnter(m.id)}
+                onMouseLeave={makeHandleLeave(m.id)}
+                onFocus={() => setActiveOfficeCard(m.id)}
               >
-                <div className="relative group">
-                  <div
-                    className={`${m.size} rounded-full cursor-pointer`}
-                    style={{
-                      background: m.color,
-                      boxShadow: `0 0 0 6px ${m.shadow}`,
-                    }}
-                  >
-                    <span className="sr-only">{m.label}</span>
-                  </div>
-                  {/* Tooltip */}
-                  <div
-                    className="absolute whitespace-nowrap px-2 py-1 rounded pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
-                    style={{
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      bottom: 'calc(100% + 6px)',
-                      background: '#FFFFFF',
-                      border: '1px solid #E4E2E1',
-                      fontFamily: "'Inter', sans-serif",
-                      fontWeight: 500,
-                      fontSize: '12px',
-                      color: '#00458D',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                    }}
-                  >
-                    {m.label}
-                  </div>
-                </div>
+                <span className="sr-only">{m.label}</span>
               </div>
-            ))}
-          </div>
+              <OfficeInfoCard
+                data={officeData[m.id]}
+                isVisible={activeOfficeCard === m.id}
+                style={{ left: '50%', top: 'calc(100% + 12px)', zIndex: 100 }}
+                onClose={hideCard}
+                onMouseEnter={makeHandleEnter(m.id)}
+                onMouseLeave={makeHandleLeave(m.id)}
+              />
+            </div>
+          ))}
+        </div>
 
-          {/* Stats Row */}
-          <div className="flex flex-wrap justify-center mt-12" style={{ gap: '32px' }}>
-            {statsData.map((stat, i) => (
-              <div key={i} className="text-center" style={{ flex: '1 1 160px', maxWidth: '220px' }}>
-                <p
-                  style={{
-                    fontFamily: "'Hanken Grotesk', sans-serif",
-                    fontWeight: 700,
-                    fontSize: '48px',
-                    lineHeight: '56px',
-                    color: '#004CA5',
-                    margin: 0,
-                  }}
-                >
-                  {stat.value}
-                </p>
-                <p
-                  style={{
-                    fontFamily: "'Hanken Grotesk', sans-serif",
-                    fontWeight: 400,
-                    fontSize: '16px',
-                    lineHeight: '24px',
-                    color: '#424752',
-                    margin: 0,
-                  }}
-                >
-                  {stat.label}
-                </p>
-              </div>
-            ))}
-          </div>
+        {/* Stats Row */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+            gap: '32px',
+            width: '100%',
+            maxWidth: '1072px',
+          }}
+        >
+          {statsData.map((stat, i) => (
+            <div
+              key={i}
+              style={{
+                flex: '1 1 0',
+                maxWidth: '244px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                padding: 0,
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: "'Hanken Grotesk', sans-serif",
+                  fontWeight: 700,
+                  fontSize: '48px',
+                  lineHeight: '56px',
+                  color: '#004CA5',
+                  margin: 0,
+                  textAlign: 'center',
+                  letterSpacing: '-0.96px',
+                }}
+              >
+                {stat.value}
+              </p>
+              <p
+                style={{
+                  fontFamily: "'Hanken Grotesk', sans-serif",
+                  fontWeight: 400,
+                  fontSize: '16px',
+                  lineHeight: '24px',
+                  color: '#424752',
+                  margin: 0,
+                  textAlign: 'center',
+                }}
+              >
+                {stat.label}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 
