@@ -7,8 +7,8 @@ const navLinks = ['Home', 'About Us', 'Our Services', 'Latest Jobs', 'Expert Blo
 export default function Footer() {
   return (
     <footer className="w-full bg-black text-white">
-      <div className="mx-auto max-w-[1245px] px-4 xl:px-16 py-24 lg:py-28">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
+      <div className="mx-auto max-w-[1245px] px-4 xl:px-16 py-16 sm:py-20 md:py-24 lg:py-28">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-12 lg:gap-16">
           <div className="flex flex-col gap-8 lg:w-[255px]">
             <img src={footerLogo} alt="E2E HRC Logo" className="w-[200px] lg:w-[255px] h-auto object-contain" />
             <p className="font-body text-sm leading-relaxed text-[#DBEAFE] max-w-xs">
@@ -57,7 +57,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/10 mt-20 pt-12">
+        <div className="border-t border-white/10 mt-12 sm:mt-16 md:mt-20 pt-8 sm:pt-10 md:pt-12">
           <p className="font-body text-xs text-center tracking-[1.2px] uppercase text-[rgba(191,219,254,0.6)]">
             Copyright &copy; 2026 by E2E Human Resource Consultancy Ltd | All Rights Reserved
           </p>

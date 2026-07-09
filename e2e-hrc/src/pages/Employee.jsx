@@ -5,6 +5,16 @@ import HeroSection from '../components/employee/HeroSection';
 import TestimonialsCarousel from '../components/employee/TestimonialsCarousel';
 import './Employee.css';
 
+import sectorConstruction from '../assets/assets/sectors/construction.jpg';
+import sectorEducation from '../assets/assets/sectors/education.jpg';
+import sectorEngineering from '../assets/assets/sectors/engineering.jpg';
+import sectorFinance from '../assets/assets/sectors/finance.jpg';
+import sectorHealthcare from '../assets/assets/sectors/healthcare.jpg';
+import sectorIT from '../assets/assets/sectors/it technology.jpg';
+import sectorLogistics from '../assets/assets/sectors/logistics.jpg';
+import sectorManufacturing from '../assets/assets/sectors/manuifacturing.jpg';
+import FAQAndCTA from '../components/FAQAndCTA';
+
 const testimonialsData = [
   {
     title: 'Efficient and Effective Hiring Process!',
@@ -26,7 +36,20 @@ const testimonialsData = [
   },
 ];
 
+import { useRef } from 'react';
+
 export default function Employee() {
+  const trackRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (!trackRef.current) return;
+    const scrollAmount = 300;
+    trackRef.current.scrollBy({
+      left: direction === 'next' ? scrollAmount : -scrollAmount,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
       <AnnouncementBar />
@@ -80,7 +103,7 @@ export default function Employee() {
       </section>
 
       {/* ===== E. WHAT MAKES US DIFFERENT ===== */}
-      <section className="py-20" style={{ background: 'url(/images/employee/background.jpg) center/cover no-repeat' }}>
+      <section className="py-12 sm:py-16 md:py-20" style={{ background: 'url(/images/employee/background.jpg) center/cover no-repeat' }}>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
           <p
             className="text-center font-[Poppins] text-base uppercase tracking-[1.6px] mb-2"
@@ -92,7 +115,7 @@ export default function Employee() {
           >
             WHY CHOOSE E2E HRC
           </p>
-          <h2 className="text-center font-[Poppins] font-bold text-[26px] sm:text-[36px] text-[#00264B] mb-[60px]">
+          <h2 className="text-center font-[Poppins] font-bold text-[26px] sm:text-[36px] text-[#00264B] mb-8 sm:mb-12 md:mb-[60px]">
             What makes us different
           </h2>
 
@@ -111,13 +134,13 @@ export default function Employee() {
               <p className="font-[Inter] text-base text-[#43474F] leading-relaxed mb-6">
                 We view your career journey as more than just a job search. Every candidate is a professional with unique goals; every role is an opportunity for growth. We partner with you to find a culture where you can thrive.
               </p>
-              <div className="flex gap-12">
+              <div className="flex gap-6 sm:gap-12">
                 <div>
-                  <p className="font-['Hanken_Grotesk'] font-bold text-[30px] text-[#F39308]">500+</p>
+                  <p className="font-['Hanken_Grotesk'] font-bold text-[24px] sm:text-[30px] text-[#F39308]">500+</p>
                   <p className="font-[Inter] text-xs uppercase text-[#43474F] mt-0.5">ACTIVE CLIENTS</p>
                 </div>
                 <div>
-                  <p className="font-['Hanken_Grotesk'] font-bold text-[30px] text-[#F39308]">98%</p>
+                  <p className="font-['Hanken_Grotesk'] font-bold text-[24px] sm:text-[30px] text-[#F39308]">98%</p>
                   <p className="font-[Inter] text-xs uppercase text-[#43474F] mt-0.5">SATISFACTION RATE</p>
                 </div>
               </div>
@@ -137,13 +160,13 @@ export default function Employee() {
               <p className="font-[Inter] text-base text-[#43474F] leading-relaxed mb-6">
                 Our success is defined by yours. We don't just place you in a role; we ensure it's the right fit for your long-term career trajectory. From CV polishing to interview prep, we are invested in your professional advancement.
               </p>
-              <div className="flex gap-12">
+              <div className="flex gap-6 sm:gap-12">
                 <div>
-                  <p className="font-[Poppins] font-bold text-[30px] text-[#004CA5]">10K+</p>
+                  <p className="font-[Poppins] font-bold text-[24px] sm:text-[30px] text-[#004CA5]">10K+</p>
                   <p className="font-[Inter] text-xs uppercase text-[#43474F] mt-0.5">PLACEMENTS MADE</p>
                 </div>
                 <div>
-                  <p className="font-[Poppins] font-bold text-[30px] text-[#004CA5]">25+</p>
+                  <p className="font-[Poppins] font-bold text-[24px] sm:text-[30px] text-[#004CA5]">25+</p>
                   <p className="font-[Inter] text-xs uppercase text-[#43474F] mt-0.5">INDUSTRIES SERVED</p>
                 </div>
               </div>
@@ -155,56 +178,55 @@ export default function Employee() {
         </div>
       </section>
 
-      {/* ===== F. OUR PLACEMENTS ===== */}
-      <section className="bg-white" style={{ padding: '60px 15px' }}>
-        <div className="mx-auto" style={{ maxWidth: '1140px' }}>
-          <p className="text-center font-[Roboto] font-medium text-[16px] leading-[16px] uppercase text-[#004CA5] mb-2 tracking-[0px]">
-            OUR Placements
-          </p>
-          <h2 className="text-center font-[Roboto] font-semibold text-[30px] leading-[39px] text-[#2A343E] mb-0" style={{ letterSpacing: '0px' }}>
-            Top Companies Hiring Through E2E HRC
-          </h2>
+      {/* ===== F. DEEP EXPERTISE ACROSS 25+ SECTORS ===== */}
+      <section className="industries-section">
+        <div className="industries-header">
+          <div className="industries-header-left">
+            <div className="industries-badge">Industries We Serve</div>
+            <h2 className="industries-heading">Deep expertise across 25+ sectors</h2>
+          </div>
+          <div className="industries-nav">
+            <button className="industries-nav-btn" aria-label="Previous" onClick={() => scroll('prev')}>
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M11.25 13.5L6.75 9L11.25 4.5" stroke="#004CA5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <button className="industries-nav-btn" aria-label="Next" onClick={() => scroll('next')}>
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M6.75 4.5L11.25 9L6.75 13.5" stroke="#004CA5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          </div>
         </div>
 
-        <div className="emp-placements-grid mx-auto flex flex-col" style={{ maxWidth: '1140px', paddingTop: '40px', gap: '15px' }}>
-          <div className="flex" style={{ gap: '15px' }}>
+        <div className="industries-cards-wrapper">
+          <div className="industries-cards-track" ref={trackRef}>
             {[
-              { name: 'google', file: 'google.png' },
-              { name: 'tiktok', file: 'tik tok.png' },
-              { name: 'instagram', file: 'instagram.png' },
-              { name: 'twitter', file: 'twitter.png' },
-              { name: 'disney', file: 'disnep.png' },
-              { name: 'ibm', file: 'ibm.png' },
-            ].map((company) => (
-              <div key={company.name} className="flex items-center justify-center shrink-0" style={{ width: '177.41px', height: '100px', border: '0.8px solid #E8ECF7', borderRadius: '10px', padding: '25px' }}>
-                <img src={`/images/employee/logos/${company.file}`} alt={company.name} className="max-h-[50px] object-contain" loading="lazy" />
+              { name: 'Manufacturing', image: sectorManufacturing },
+              { name: 'Healthcare', image: sectorHealthcare },
+              { name: 'Engineering', image: sectorEngineering },
+              { name: 'Construction', image: sectorConstruction },
+              { name: 'Logistics', image: sectorLogistics },
+              { name: 'Finance', image: sectorFinance },
+              { name: 'Education', image: sectorEducation },
+              { name: 'IT Technology', image: sectorIT },
+            ].map((sector) => (
+              <div key={sector.name} className="industries-card">
+                <img src={sector.image} alt={sector.name} className="industries-card-img" loading="lazy" />
+                <div className="industries-card-overlay" />
+                <div className="industries-card-content">
+                  <div className="industries-card-heading-wrap">
+                    <h3 className="industries-card-title">{sector.name}</h3>
+                  </div>
+                  <div className="industries-card-link"></div>
+                </div>
               </div>
             ))}
-          </div>
-          <div className="flex" style={{ gap: '15px' }}>
-            {[
-              { name: 'apple', file: 'apple.png' },
-              { name: 'adp', file: 'adp.png' },
-              { name: 'microsoft', file: 'microsoft.png' },
-              { name: 'youtube', file: 'youtube.png' },
-              { name: 'nestle', file: 'nestle.png' },
-              { name: 'adidas', file: 'adidas.png' },
-            ].map((company) => (
-              <div key={company.name} className="flex items-center justify-center shrink-0" style={{ width: '177.41px', height: '100px', border: '0.8px solid #E8ECF7', borderRadius: '10px', padding: '25px' }}>
-                <img src={`/images/employee/logos/${company.file}`} alt={company.name} className="max-h-[50px] object-contain" loading="lazy" />
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-center" style={{ gap: '15px' }}>
-            <div className="flex items-center justify-center shrink-0" style={{ width: '177.41px', height: '100px', border: '0.8px solid #E8ECF7', borderRadius: '10px', padding: '25px' }}>
-              <img src="/images/employee/logos/amazon.png" alt="amazon" className="max-h-[50px] object-contain" loading="lazy" />
-            </div>
-            <div className="flex items-center justify-center shrink-0" style={{ width: '177.41px', height: '100px', border: '0.8px solid #E8ECF7', borderRadius: '10px', padding: '25px' }}>
-              <img src="/images/employee/logos/coca cola.png" alt="cocacola" className="max-h-[50px] object-contain" loading="lazy" />
-            </div>
           </div>
         </div>
       </section>
+
+      <FAQAndCTA />
 
       {/* ===== G. TESTIMONIALS ===== */}
       <section className="emp-testimonials relative overflow-hidden" style={{ background: 'url(/images/employee/background%20Testimonials.png) center/cover no-repeat', padding: '43px 100px 59px 100px' }}>
