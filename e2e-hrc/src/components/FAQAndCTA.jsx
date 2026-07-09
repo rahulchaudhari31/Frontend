@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FiArrowRight } from 'react-icons/fi';
 import { useScrollReveal } from '../hooks/useScrollReveal';
@@ -34,6 +34,15 @@ const faqs = [
 export default function FAQAndCTA() {
   const [openIndex, setOpenIndex] = useState(null);
   const [ref, visible] = useScrollReveal();
+  const ctaRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const toggle = (i) => setOpenIndex(openIndex === i ? null : i);
 
@@ -41,7 +50,7 @@ export default function FAQAndCTA() {
     <section id="faq" className="bg-bg-section py-16 md:py-20 px-4">
       <div
         ref={ref}
-        className={`max-w-7xl mx-auto grid lg:grid-cols-2 gap-10 items-start reveal ${visible ? 'visible' : ''}`}
+        className={`max-w-7xl mx-auto grid lg:grid-cols-2 gap-6 md:gap-10 items-start reveal ${visible ? 'visible' : ''}`}
       >
 
         {/* LEFT — FAQ */}
@@ -113,6 +122,7 @@ export default function FAQAndCTA() {
 
         {/* RIGHT — CTA Card */}
         <motion.div
+          ref={ctaRef}
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.3 }}
@@ -121,7 +131,7 @@ export default function FAQAndCTA() {
           style={{
             background: 'linear-gradient(128.18deg, #004CA5 0%, #003375 100%)',
             boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)',
-            minHeight: 414,
+            minHeight: isMobile ? 'auto' : 414,
           }}
         >
           {/* Content */}
@@ -195,18 +205,25 @@ export default function FAQAndCTA() {
 
           {/* Icon stack - hidden on mobile */}
           <div
-            className="absolute flex-col items-center hidden md:flex"
+            className="absolute flex-col hidden md:flex"
             aria-hidden="true"
             style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              padding: 0,
               gap: 16,
+              position: 'absolute',
+              width: 36,
+              height: 110,
               right: 39.5,
               top: 40,
-              zIndex: 2,
+              zIndex: 1,
             }}
           >
             <img src={browseIcon} alt="" style={{ width: 36, height: 18 }} />
-            <img src={communityIcon} alt="" style={{ width: 30, height: 30 }} />
-            <img src={searchIcon} alt="" style={{ width: 36, height: 30 }} />
+            <img src={communityIcon} alt="" style={{ width: 36, height: 30 }} />
+            <img src={searchIcon} alt="" style={{ width: 28.51764678955078, height: 30 }} />
           </div>
         </motion.div>
 

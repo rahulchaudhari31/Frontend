@@ -19,10 +19,10 @@ const statsData = [
 ];
 
 const locationMarkers = [
-  { id: 'uk', label: 'UK Head Office', left: '44%', top: '29%', size: 'w-4 h-4', color: '#00458D', shadow: 'rgba(0,69,141,0.2)' },
-  { id: 'europe', label: 'Europe Hub', left: '49%', top: '34%', size: 'w-3 h-3', color: '#FFB952', shadow: 'rgba(255,185,82,0.2)' },
-  { id: 'gcc', label: 'GCC Hub', left: '57%', top: '44%', size: 'w-3 h-3', color: '#FFB952', shadow: 'rgba(255,185,82,0.2)' },
-  { id: 'southasia', label: 'South Asia Hub', left: '64%', top: '49%', size: 'w-3 h-3', color: '#FFB952', shadow: 'rgba(255,185,82,0.2)' },
+  { id: 'uk', label: 'UK Head Office', left: '45.01%', top: '30.06%', size: 'w-4 h-4', color: '#00458D', shadow: 'rgba(0,69,141,0.2)', focus: '#F39308', cardTop: -80 },
+  { id: 'europe', label: 'Europe Hub', left: '50%', top: '35.05%', size: 'w-3 h-3', color: '#FFB952', shadow: 'rgba(255,185,82,0.2)', focus: '#004CA5', cardTop: -80 },
+  { id: 'gcc', label: 'GCC Hub', left: '57.99%', top: '45.01%', size: 'w-3 h-3', color: '#FFB952', shadow: 'rgba(255,185,82,0.2)', focus: '#004CA5', cardTop: -80 },
+  { id: 'southasia', label: 'South Asia Hub', left: '64.97%', top: '50%', size: 'w-3 h-3', color: '#FFB952', shadow: 'rgba(255,185,82,0.2)', focus: '#004CA5', cardTop: -80 },
 ];
 
 const officeData = {
@@ -849,230 +849,73 @@ export default function ContactUs() {
         </div>
       </section>
 
-      {/* ===== 3. OUR GLOBAL NETWORK SECTION ===== */}
-      <section
-        className="bg-white mx-auto global-network-section"
-        style={{
-          padding: '40px 64px',
-          maxWidth: '1200px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: '48px',
-        }}
-      >
-        {/* Heading + subtext */}
-        <div
-          className="global-header"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            padding: 0,
-            gap: '16px',
-            width: '100%',
-            maxWidth: '1072px',
-          }}
-        >
-          <h2
-            className="global-heading"
-            style={{
-              fontFamily: "'Poppins', sans-serif",
-              fontWeight: 700,
-              fontSize: '48px',
-              lineHeight: '56px',
-              color: '#004CA5',
-              margin: 0,
-              textAlign: 'center',
-              letterSpacing: '-0.96px',
-            }}
-          >
-            Our Global Network
-          </h2>
-          <p
-            className="global-subtext"
-            style={{
-              fontFamily: "'Source Sans 3', sans-serif",
-              fontWeight: 400,
-              fontSize: '16px',
-              lineHeight: '24px',
-              color: '#424752',
-              margin: 0,
-              textAlign: 'center',
-              maxWidth: '672px',
-            }}
-          >
-            Strategic recruitment hubs across three continents, providing borderless executive search capabilities.
-          </p>
-        </div>
-
-        {/* Map Container */}
-        <div
-          className="relative global-map"
-          style={{
-            width: '100%',
-            maxWidth: '1196px',
-            height: '385px',
-            borderRadius: '24px',
-            border: '1px solid rgba(194,198,212,0.2)',
-            background: '#F2F4F6',
-          }}
-        >
-          <div
-            className="absolute inset-0 rounded-[24px] overflow-hidden pointer-events-none"
-            style={{ opacity: 0.3 }}
-          >
-            <img
-              src={mapBase}
-              alt="World map"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          {/* Location markers */}
-          {locationMarkers.map((m) => {
-            if (isMobile) {
-              return (
-                <div
-                  key={m.id}
-                  className="absolute"
-                  style={{ left: m.left, top: m.top, transform: 'translate(-50%, -50%)', zIndex: 1 }}
-                >
-                  <div
-                    className={`${m.size} rounded-full cursor-pointer hover:scale-125 transition-transform`}
-                    style={{
-                      background: m.color,
-                      boxShadow: `0 0 0 4px ${m.shadow}`,
-                    }}
-                    aria-label={m.label}
-                    onClick={() => setActiveOfficeCard(activeOfficeCard === m.id ? null : m.id)}
-                  >
-                    <span className="sr-only">{m.label}</span>
-                  </div>
-                </div>
-              );
-            }
-            return (
-              <div
-                key={m.id}
-                className="absolute"
-                style={{ left: m.left, top: m.top, transform: 'translate(-50%, -50%)', zIndex: 1 }}
-              >
-                <div
-                  className={`${m.size} rounded-full cursor-pointer hover:scale-125 transition-transform`}
-                  style={{
-                    background: m.color,
-                    boxShadow: `0 0 0 4px ${m.shadow}`,
-                  }}
-                  aria-label={m.label}
-                  onMouseEnter={makeHandleEnter(m.id)}
-                  onMouseLeave={makeHandleLeave(m.id)}
-                  onFocus={() => setActiveOfficeCard(m.id)}
-                >
-                  <span className="sr-only">{m.label}</span>
-                </div>
-                <OfficeInfoCard
-                  data={officeData[m.id]}
-                  isVisible={activeOfficeCard === m.id}
-                  style={{ left: '50%', top: 'calc(100% + 12px)', zIndex: 100 }}
-                  onClose={hideCard}
-                  onMouseEnter={makeHandleEnter(m.id)}
-                  onMouseLeave={makeHandleLeave(m.id)}
-                />
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Stats Row */}
-        <div
-          className="stats-row"
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'flex-start',
-            gap: '32px',
-            width: '100%',
-            maxWidth: '1072px',
-          }}
-        >
-          {statsData.map((stat, i) => (
-            <div
-              key={i}
-              className="stat-item"
-              style={{
-                flex: '1 1 0',
-                maxWidth: '244px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                padding: 0,
-              }}
-            >
-              <p
-                className="stat-value"
-                style={{
-                  fontFamily: "'Hanken Grotesk', sans-serif",
-                  fontWeight: 700,
-                  fontSize: '48px',
-                  lineHeight: '56px',
-                  color: '#004CA5',
-                  margin: 0,
-                  textAlign: 'center',
-                  letterSpacing: '-0.96px',
-                }}
-              >
-                {stat.value}
-              </p>
-              <p
-                style={{
-                  fontFamily: "'Hanken Grotesk', sans-serif",
-                  fontWeight: 400,
-                  fontSize: '16px',
-                  lineHeight: '24px',
-                  color: '#424752',
-                  margin: 0,
-                  textAlign: 'center',
-                }}
-              >
-                {stat.label}
+      {/* ===== 3. OUR GLOBAL NETWORK ===== */}
+      <section className="bg-white py-10">
+        <div className="mx-auto px-6 xl:px-16" style={{ maxWidth: '1440px' }}>
+          <div className="flex flex-col items-center gap-12">
+            {/* Heading + subtext */}
+            <div className="text-center" style={{ maxWidth: '1072px' }}>
+              <h2 className="font-['Hanken_Grotesk',sans-serif] font-bold text-[28px] leading-[34px] md:text-[48px] md:leading-[56px] tracking-[-0.56px] md:tracking-[-0.96px] text-[#004CA5] mb-4">
+                Our Global Network
+              </h2>
+              <p className="font-['Source_Sans_3',sans-serif] font-normal text-sm md:text-base leading-5 md:leading-6 text-[#424752] max-w-[672px] mx-auto">
+                Strategic recruitment hubs across three continents, providing borderless executive search capabilities.
               </p>
             </div>
-          ))}
+
+            {/* Map Container */}
+            <div className="relative w-full min-h-[385px] rounded-[24px] border border-[rgba(194,198,212,0.2)] bg-[#F2F4F6]">
+              <div className="absolute inset-0 rounded-[24px] overflow-hidden pointer-events-none">
+                <img
+                  src={mapBase}
+                  alt="World map"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  style={{ opacity: '0.3' }}
+                />
+              </div>
+
+              {locationMarkers.map((m) => (
+                <div key={m.id} className="absolute" style={{ left: m.left, top: m.top }}>
+                  <button
+                    tabIndex={0}
+                    className={`relative ${m.size} rounded-full cursor-pointer hover:scale-125 transition-transform focus:outline-2 focus:outline-offset-2`}
+                    style={{ background: m.color, boxShadow: `0 0 0 4px ${m.shadow}`, outlineColor: m.focus }}
+                    aria-label={m.label}
+                    onMouseEnter={makeHandleEnter(m.id)}
+                    onMouseLeave={isMobile ? undefined : makeHandleLeave(m.id)}
+                    onFocus={() => setActiveOfficeCard(m.id)}
+                  >
+                    <span className="sr-only">{m.label}</span>
+                  </button>
+                  <OfficeInfoCard
+                    data={officeData[m.id]}
+                    isVisible={activeOfficeCard === m.id}
+                    isModal={isMobile}
+                    style={{ right: 'calc(100% + 12px)', top: m.cardTop, zIndex: 100 }}
+                    onClose={hideCard}
+                    onMouseEnter={isMobile ? undefined : makeHandleEnter(m.id)}
+                    onMouseLeave={isMobile ? undefined : makeHandleLeave(m.id)}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Stats Row */}
+            <div className="w-full flex flex-wrap justify-center items-start gap-8" style={{ maxWidth: '1072px' }}>
+              {statsData.map((stat, i) => (
+                <div key={i} className="text-center" style={{ flex: '1 1 40%', maxWidth: '244px' }}>
+                  <p className="font-['Hanken_Grotesk'] font-bold text-[32px] leading-[38px] md:text-[48px] md:leading-[56px] tracking-[-0.64px] md:tracking-[-0.96px] text-[#004CA5]">
+                    {stat.value}
+                  </p>
+                  <p className="font-['Hanken_Grotesk'] font-normal text-base leading-6 text-[#424752]">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
-
-      <style>{`
-        @media (max-width: 767px) {
-          .hero-section { height: 300px !important; padding: 32px 0 32px 16px !important; }
-          .hero-heading { font-size: 28px !important; line-height: 32px !important; white-space: normal !important; margin-bottom: 24px !important; }
-          .contact-section { padding: 32px 0 !important; }
-          .contact-container { gap: 32px !important; }
-          .form-card { padding: 24px !important; }
-          .info-side { gap: 24px !important; }
-          .info-card { padding: 24px !important; }
-          .global-network-section { padding: 32px 16px !important; gap: 32px !important; }
-          .global-heading { font-size: 28px !important; line-height: 36px !important; }
-          .global-subtext { max-width: 100% !important; }
-          .global-map { height: 220px !important; }
-          .stats-row { flex-wrap: wrap !important; gap: 24px !important; }
-          .stat-item { flex: 1 1 40% !important; max-width: 160px !important; }
-          .stat-value { font-size: 32px !important; line-height: 40px !important; }
-        }
-        @media (min-width: 768px) and (max-width: 1023px) {
-          .hero-section { padding: 40px 0 40px 32px !important; }
-          .hero-heading { font-size: 44px !important; line-height: 44px !important; margin-bottom: 60px !important; }
-          .contact-section { padding: 48px 0 !important; }
-          .contact-container { gap: 48px !important; }
-          .form-card { padding: 36px !important; }
-          .global-network-section { padding: 40px 32px !important; }
-          .global-heading { font-size: 36px !important; line-height: 44px !important; }
-          .global-map { height: 300px !important; }
-          .stat-item { max-width: 200px !important; }
-          .stat-value { font-size: 40px !important; line-height: 48px !important; }
-        }
-      `}</style>
 
       {isMobile && activeOfficeCard && (() => {
         const d = officeData[activeOfficeCard];

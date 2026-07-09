@@ -18,8 +18,8 @@
   animation: marquee-scroll var(--scroll-speed, 30s) linear infinite;
 }
 
-/* Pause on hold — controlled via JS toggle */
-.testimonials-track.paused {
+/* Pause — controlled via click on container */
+.testimonials-carousel.paused .testimonials-track {
   animation-play-state: paused;
 }
 
@@ -33,15 +33,54 @@
   }
 }
 
-/* Responsive gap */
-@media (max-width: 1024px) {
-  .testimonials-track {
-    gap: 24px;
+/* ─── Mobile card sizing & tap toggle cue ─── */
+@media (max-width: 768px) {
+  .testimonials-carousel.is-mobile {
+    cursor: pointer;
+  }
+  .testimonials-carousel.is-mobile.paused {
+    cursor: pointer;
+  }
+  .testimonials-card {
+    min-height: 260px !important;
+  }
+  .testimonials-card-inner {
+    padding-top: 24px !important;
+    gap: 14px !important;
+  }
+  .testimonials-card-text {
+    gap: 10px !important;
+  }
+  .testimonials-card-title {
+    font-size: 16px !important;
+    line-height: 22px !important;
+  }
+  .testimonials-card-quote {
+    font-size: 13px !important;
+    line-height: 17px !important;
   }
 }
 
 @media (max-width: 600px) {
   .testimonials-track {
-    gap: 16px;
+    gap: 10px;
+  }
+  .testimonials-card {
+    min-height: 220px !important;
+  }
+  .testimonials-card-inner {
+    padding-top: 18px !important;
+    gap: 12px !important;
+  }
+  .testimonials-card-text {
+    gap: 8px !important;
+  }
+  .testimonials-card-title {
+    font-size: 14px !important;
+    line-height: 20px !important;
+  }
+  .testimonials-card-quote {
+    font-size: 12px !important;
+    line-height: 15px !important;
   }
 }
