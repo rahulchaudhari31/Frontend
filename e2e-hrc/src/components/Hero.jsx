@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import heroImage from "../assets/assets/image/image/image hero.jpg";
 import { BadgeCheck, Users, ClipboardCheck, Globe2 } from "lucide-react";
 import { getHeroData } from "../services/heroService";
 
 const fallbackStats = [
-  { icon: BadgeCheck,     value: "18+",  label: "Years Experience", color: "#1D4ED8" },
-  { icon: Users,          value: "450+", label: "Clients Served",   color: "#F97316" },
-  { icon: ClipboardCheck, value: "12K+", label: "Placements",       color: "#1D4ED8" },
-  { icon: Globe2,         value: "4",    label: "Global Offices",   color: "#F97316" },
+  { icon: BadgeCheck,     value: "18+",  label: "Years Experience" },
+  { icon: Users,          value: "450+", label: "Clients Served"   },
+  { icon: ClipboardCheck, value: "12K+", label: "Placements"       },
+  { icon: Globe2,         value: "4",    label: "Global Offices"   },
 ];
 
 export default function Hero() {
@@ -20,9 +21,7 @@ export default function Hero() {
         if (res && res.data) {
           setHeroData(res.data);
         }
-      } catch {
-        // fall back to hardcoded data
-      }
+      } catch {}
     };
     fetchHero();
   }, []);
@@ -32,7 +31,6 @@ export default function Hero() {
         icon: [BadgeCheck, Users, ClipboardCheck, Globe2][i % 4],
         value: s.value || s.label || "",
         label: s.label || "",
-        color: i % 2 === 0 ? "#1D4ED8" : "#F97316",
       }))
     : fallbackStats;
 
@@ -41,6 +39,7 @@ export default function Hero() {
   const title2 = heroData?.title?.split("\n")[1] || "Business Growth";
   const description = heroData?.description || "At E2E Human Resource Consultancy, we provide end-to-end workforce solutions that help organisations attract, recruit, manage, and retain exceptional talent.";
   const heroImg = heroData?.heroImage || heroImage;
+
   return (
     <>
       <style>{`
@@ -52,45 +51,46 @@ export default function Hero() {
           min-height: 626px;
         }
         .hero-row {
-          display: flex; flex-direction: row; align-items: center;
-          gap: 64px; flex: 1; min-height: 0;
+          display: flex; flex-direction: row; justify-content: center; align-items: center;
+          gap: 170px; width: 1200px; max-width: 100%; margin: -33px 0px;
         }
         .hero-left {
-          flex: 1; display: flex; flex-direction: column;
-          justify-content: flex-start; gap: 20px; min-width: 0;
-          max-width: 580px; padding-top: 10px;
+          display: flex; flex-direction: column; align-items: flex-start;
+          gap: 32px; width: 752px; max-width: 100%; z-index: 1;
+          padding-left: 24px;
         }
         .hero-badge {
-          display: inline-flex; align-self: flex-start; white-space: nowrap;
-          padding: 7px 18px; border-radius: 999px;
-          border: 1.5px solid #F5A623; background: #FFF8EE;
-          color: #F5A623; font-family: 'Poppins', sans-serif;
-          font-size: 11px; font-weight: 600; letter-spacing: 0.15em;
-          text-transform: uppercase;
+          box-sizing: border-box;
+          display: flex; flex-direction: row; align-items: center;
+          padding: 8px 16px; width: 249.3px; height: 34px;
+          background: rgba(253, 171, 12, 0.1);
+          border: 1px solid rgba(253, 171, 12, 0.2);
+          border-radius: 9999px;
+        }
+        .hero-badge-text {
+          font-family: 'Hanken Grotesk', sans-serif;
+          font-style: normal; font-weight: 700;
+          font-size: 12px; line-height: 16px;
+          letter-spacing: 1.2px; text-transform: uppercase;
+          color: #F39308;
         }
         .hero-h1 {
-          margin: 0; display: flex; flex-direction: column;
-          font-family: 'Poppins', sans-serif; font-weight: 800;
-          font-size: 52px; line-height: 1.15;
-          letter-spacing: -0.5px; color: #0F172A;
+          margin: 0; width: 752px; height: 180px;
+          font-family: 'Inter', sans-serif;
+          font-style: normal; font-weight: 800;
+          font-size: 60px; line-height: 60px;
+          letter-spacing: -0.96px; color: #004CA5;
+          display: flex; align-items: center;
         }
-        .hero-h1 .blue { color: #003679; display: block; line-height: 1.15; }
-        .hero-h1 .orange { color: #F97316; display: block; line-height: 1.15; }
         .hero-p {
-          margin: 0; font-family: 'Inter', sans-serif;
-          font-size: 15px; font-weight: 400; line-height: 1.75;
-          color: #64748B; max-width: 576px;
+          margin: 0; font-family: 'Source Sans 3', sans-serif;
+          font-style: normal; font-weight: 400;
+          font-size: 18px; line-height: 28px;
+          color: #424752; max-width: 576px;
         }
         .hero-right-wrap {
-          position: absolute; right: -64px; top: 0; bottom: 0;
-          width: 695.87px; display: flex; align-items: flex-start;
-          justify-content: flex-end;
-        }
-        .hero-overlay {
-          position: absolute; width: 775.87px; height: 501px;
-          border-radius: 100px 0px 0px 100px;
-          background: #0036790D; top: 20px; right: -20px;
-          z-index: 0; pointer-events: none;
+          display: flex; flex-direction: row; justify-content: center; align-items: flex-start;
+          width: 460px; height: 473px; z-index: 0;
         }
         .hero-img-box {
           width: 695.87px; height: 481px;
@@ -102,89 +102,100 @@ export default function Hero() {
           object-position: center top; display: block;
         }
         .hero-stats {
-          position: absolute; left: 50%; transform: translateX(-50%);
-          bottom: 40px; width: 952px; height: 110px;
-          box-sizing: border-box; display: flex; flex-direction: row;
-          justify-content: center; align-items: center;
+          box-sizing: border-box;
+          display: flex; flex-direction: row; justify-content: center; align-items: center;
           padding: 32px; gap: 32px; isolation: isolate;
-          background: #FFFFFF; border: 1px solid rgba(195,198,212,0.3);
-          border-radius: 16px; z-index: 20;
+          width: 952px; height: 110px;
+          background: #FFFFFF;
+          border: 1px solid rgba(195, 198, 212, 0.3);
+          border-radius: 16px;
+          position: absolute; left: 50%; transform: translateX(-50%);
+          bottom: 40px; z-index: 20;
+        }
+        .hero-stats-shadow {
+          position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+          background: rgba(255, 255, 255, 0.002);
           box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1), 0px 4px 6px -4px rgba(0,0,0,0.1);
+          border-radius: 16px; z-index: 0;
         }
         .hero-stat-item {
           display: flex; flex-direction: row; align-items: center;
-          gap: 16px; flex: 1 1 0;
+          padding: 0px; gap: 16px;
+          width: 197.5px; height: 44px;
+          flex: 1 1 0; z-index: 1;
+        }
+        .hero-stat-icon {
+          display: flex; justify-content: center; align-items: center;
+          width: 33px; height: 31.5px; background: #FDAB0C;
+          border-radius: 4px; flex-shrink: 0;
+        }
+        .hero-stat-text {
+          display: flex; flex-direction: column; align-items: flex-start;
+          gap: 0px; width: 97.22px; height: 44px;
         }
         .hero-stat-value {
-          font-family: 'Hanken Grotesk', 'Poppins', sans-serif;
-          font-weight: 700; font-size: 16px; line-height: 24px;
+          font-family: 'Hanken Grotesk', sans-serif;
+          font-style: normal; font-weight: 700;
+          font-size: 16px; line-height: 24px;
           color: #003679;
         }
         .hero-stat-label {
-          font-family: 'Source Sans 3', 'Inter', sans-serif;
-          font-weight: 400; font-size: 14px; line-height: 20px;
+          font-family: 'Source Sans 3', sans-serif;
+          font-style: normal; font-weight: 400;
+          font-size: 14px; line-height: 20px;
           color: #424752;
         }
 
         @media (max-width: 1200px) {
           .hero-sec { padding: 4px 32px 40px; min-height: auto; }
-          .hero-right-wrap { width: 50%; right: 0; position: relative; }
+          .hero-row { width: 100%; gap: 64px; flex-direction: column; }
+          .hero-left { width: 100%; max-width: none; }
+          .hero-h1 { width: 100%; font-size: 40px; line-height: 44px; height: auto; }
+          .hero-right-wrap { width: 100%; height: auto; }
           .hero-img-box { width: 100%; height: 380px; margin-top: 0; }
-          .hero-overlay { display: none; }
-          .hero-row { gap: 32px; }
           .hero-stats { position: static; transform: none; width: 100%; height: auto; margin-top: 24px; flex-wrap: wrap; padding: 24px; }
-          .hero-h1 { font-size: 40px; }
-          .hero-left { max-width: none; }
         }
         @media (max-width: 768px) {
           .hero-sec { padding: 24px 20px 32px; }
-          .hero-row { flex-direction: column; gap: 24px; }
+          .hero-row { gap: 24px; }
           .hero-right-wrap { width: 100%; }
           .hero-img-box { height: 260px; border-radius: 16px; }
-          .hero-h1 { font-size: 32px; }
-          .hero-p { font-size: 14px; }
+          .hero-h1 { font-size: 32px; line-height: 36px; }
+          .hero-p { font-size: 16px; }
           .hero-stats { gap: 16px; padding: 20px 16px; }
-          .hero-stat-item { flex: 1 1 calc(50% - 8px); border-right: none; }
+          .hero-stat-item { flex: 1 1 calc(50% - 8px); }
           .hero-stat-value { font-size: 14px; }
           .hero-stat-label { font-size: 12px; }
         }
       `}</style>
       <section className="hero-sec">
         <div className="hero-row">
-          {/* LEFT column */}
           <div className="hero-left">
-            <span className="hero-badge">{subtitle}</span>
+            <div className="hero-badge">
+              <span className="hero-badge-text">{subtitle}</span>
+            </div>
             <h1 className="hero-h1">
-              <span className="blue">{title1}</span>
-              <span className="orange">{title2}</span>
+              <span style={{ color: '#004CA5' }}>Workforce Solutions</span><br />
+              <span style={{ color: '#004CA5' }}>That Drive</span><br />
+              <span style={{ color: '#F39308' }}>{title2}</span>
             </h1>
             <p className="hero-p">{description}</p>
           </div>
-
-          {/* RIGHT column */}
           <div className="hero-right-wrap">
-            <div className="hero-overlay" />
             <div className="hero-img-box">
               <img src={heroImg} alt="Team collaborating in a modern office" />
             </div>
           </div>
         </div>
 
-        {/* Stats card */}
         <div className="hero-stats">
+          <div className="hero-stats-shadow" />
           {stats.map(({ icon: Icon, value, label }, i) => (
-            <div
-              key={label}
-              className="hero-stat-item"
-              style={{
-                borderRight: i < stats.length - 1 ? '1px solid rgba(195,198,212,0.3)' : 'none',
-                paddingRight: i < stats.length - 1 ? '32px' : '0',
-              }}
-            >
-              <div style={{ flexShrink: 0 }}>
-                <Icon size={28} color="#FDAB0C" strokeWidth={2} />
+            <div key={label} className="hero-stat-item">
+              <div className="hero-stat-icon">
+                <Icon size={20} color="#FFFFFF" strokeWidth={2} />
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+              <div className="hero-stat-text">
                 <span className="hero-stat-value">{value}</span>
                 <span className="hero-stat-label">{label}</span>
               </div>

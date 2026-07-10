@@ -1,4 +1,4 @@
-import heroImage from "../../assets/hero-image1.png";
+import heroImage from "../../assets/assets/images/workforce-hero.png";
 import { FiAward, FiUsers, FiCheckCircle, FiGlobe } from "react-icons/fi";
 import styles from "./WorkforceHeroSection.module.css";
 

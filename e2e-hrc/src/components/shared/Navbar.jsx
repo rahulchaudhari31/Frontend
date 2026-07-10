@@ -12,8 +12,8 @@ const socialLinks = [
 ];
 
 const navLinks = [
-  { label: 'Home', to: '/' },
-  { label: 'About Us', to: '/about' },
+  { label: 'Home', to: '#' },
+  { label: 'About Us', to: '#' },
   { label: 'Employer', to: '/employer' },
   { label: 'Employee', to: '/employee' },
   { label: 'Workforce Solutions', to: '/workforce-solutions' },
@@ -25,11 +25,12 @@ const navLinks = [
 export default function Navbar({ variant = 'home' }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isEmployer = variant === 'employer';
+  const isWorkforce = variant === 'workforce';
 
-  const activeStyle = isEmployer ? 'text-[#0085d5]' : 'text-navy';
+  const activeStyle = isEmployer ? 'text-[#0085d5]' : 'text-[#004CA5]';
   const ctaBg = 'bg-[#F39308] hover:bg-[#E07D00]';
 
-  const activePage = isEmployer ? '/employer' : variant === 'employee' ? '/employee' : variant === 'blog' ? '/blogs' : variant === 'partner' ? '/become-a-partner' : '/';
+  const activePage = isEmployer ? '/employer' : variant === 'employee' ? '/employee' : variant === 'blog' ? '/blogs' : variant === 'partner' ? '/become-a-partner' : isWorkforce ? '/workforce-solutions' : '/';
 
   function renderLink({ label, to }, extraCls = '', onClick) {
     const isActive = to === activePage;
