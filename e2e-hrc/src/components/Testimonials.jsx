@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { getTestimonials } from '../services/aboutServices';
 
 import hrDirector from '../assets/assets/icons of field/hr drector.jpg';
 import talentManager from '../assets/assets/icons of field/talent manager.jpg';
 import hrManager from '../assets/assets/icons of field/hr manager.jpg';
 
-const testimonials = [
+const fallbackIcons = [hrDirector, talentManager, hrManager];
+
+const fallbackTestimonials = [
   {
     name: 'NHS',
     industry: 'Healthcare',
@@ -64,6 +67,31 @@ const headerVariants = {
 
 export default function Testimonials() {
   const [active, setActive] = useState(0);
+  const [testimonials, setTestimonials] = useState(fallbackTestimonials);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getTestimonials();
+        const items = res?.data?.data ?? res?.data;
+        if (Array.isArray(items) && items.length > 0) {
+          setTestimonials(
+            items.map((t, i) => ({
+              name: t.name || t.company || `Client ${i + 1}`,
+              industry: t.industry || '',
+              quote: t.quote || t.testimonial || t.description || '',
+              person: t.person || t.author || '',
+              company: t.company || t.clientName || '',
+              icon: fallbackIcons[i % fallbackIcons.length],
+            }))
+          );
+        }
+      } catch {
+        // use fallback
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <section id="testimonials" className="bg-white py-16 md:py-20 px-4">

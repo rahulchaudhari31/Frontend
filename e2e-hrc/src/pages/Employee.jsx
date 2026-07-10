@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react';
 import AnnouncementBar from '../components/AnnouncementBar';
 import Navbar from '../components/shared/Navbar';
 import Footer from '../components/shared/Footer';
@@ -5,6 +6,7 @@ import HeroSection from '../components/employee/HeroSection';
 import TestimonialsCarousel from '../components/employee/TestimonialsCarousel';
 import WhyChooseE2E from '../components/employee/WhyChooseE2E';
 import './Employee.css';
+import { getTestimonials } from '../services/aboutServices';
 
 import sectorConstruction from '../assets/assets/sectors/construction.jpg';
 import sectorEducation from '../assets/assets/sectors/education.jpg';
@@ -16,7 +18,7 @@ import sectorLogistics from '../assets/assets/sectors/logistics.jpg';
 import sectorManufacturing from '../assets/assets/sectors/manuifacturing.jpg';
 import FAQAndCTA from '../components/FAQAndCTA';
 
-const testimonialsData = [
+const fallbackTestimonials = [
   {
     title: 'Efficient and Effective Hiring Process!',
     quote: "The efficiency of Applyfier's hiring process is commendable. The platform's intuitive interface, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.",
@@ -37,10 +39,31 @@ const testimonialsData = [
   },
 ];
 
-import { useRef } from 'react';
-
 export default function Employee() {
   const trackRef = useRef(null);
+  const [testimonialsData, setTestimonialsData] = useState(fallbackTestimonials);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getTestimonials();
+        const items = res?.data?.data ?? res?.data;
+        if (Array.isArray(items) && items.length > 0) {
+          setTestimonialsData(
+            items.map((t) => ({
+              title: t.title || t.name || '',
+              quote: t.quote || t.testimonial || t.description || '',
+              logo: t.logo || t.image || '/images/employee/Union.png',
+              alt: t.alt || t.company || 'Testimonial',
+            }))
+          );
+        }
+      } catch {
+        // use fallback
+      }
+    };
+    fetchData();
+  }, []);
 
   const scroll = (direction) => {
     if (!trackRef.current) return;

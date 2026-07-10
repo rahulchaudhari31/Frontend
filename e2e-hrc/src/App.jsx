@@ -13,6 +13,8 @@ import Employee from './pages/Employee';
 import Blogs from './pages/Blogs';
 import BecomePartner from './pages/BecomePartner';
 import ContactUs from './pages/ContactUs';
+import AboutUs from './pages/AboutUs';
+import WorkforceSolution from './pages/WorkforceSolution';
 
 function HomePage() {
   return (
@@ -39,6 +41,8 @@ export default function App() {
       <Route path="/blogs" element={<Blogs />} />
       <Route path="/become-a-partner" element={<BecomePartner />} />
       <Route path="/contact-us" element={<ContactUs />} />
+      <Route path="/about" element={<AboutUs />} />
+      <Route path="/workforce-solutions" element={<WorkforceSolution />} />
     </Routes>
   );
 }

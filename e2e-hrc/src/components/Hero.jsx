@@ -1,7 +1,9 @@
+import { useState, useEffect } from "react";
 import heroImage from "../assets/assets/image/image/image hero.jpg";
 import { BadgeCheck, Users, ClipboardCheck, Globe2 } from "lucide-react";
+import { getHeroData } from "../services/heroService";
 
-const stats = [
+const fallbackStats = [
   { icon: BadgeCheck,     value: "18+",  label: "Years Experience", color: "#1D4ED8" },
   { icon: Users,          value: "450+", label: "Clients Served",   color: "#F97316" },
   { icon: ClipboardCheck, value: "12K+", label: "Placements",       color: "#1D4ED8" },
@@ -9,6 +11,36 @@ const stats = [
 ];
 
 export default function Hero() {
+  const [heroData, setHeroData] = useState(null);
+
+  useEffect(() => {
+    const fetchHero = async () => {
+      try {
+        const res = await getHeroData();
+        if (res && res.data) {
+          setHeroData(res.data);
+        }
+      } catch {
+        // fall back to hardcoded data
+      }
+    };
+    fetchHero();
+  }, []);
+
+  const stats = heroData?.stats
+    ? heroData.stats.map((s, i) => ({
+        icon: [BadgeCheck, Users, ClipboardCheck, Globe2][i % 4],
+        value: s.value || s.label || "",
+        label: s.label || "",
+        color: i % 2 === 0 ? "#1D4ED8" : "#F97316",
+      }))
+    : fallbackStats;
+
+  const subtitle = heroData?.subtitle || "STRATEGIC • FLEXIBLE • GLOBAL";
+  const title1 = heroData?.title?.split("\n")[0] || "Workforce Solutions That Drive";
+  const title2 = heroData?.title?.split("\n")[1] || "Business Growth";
+  const description = heroData?.description || "At E2E Human Resource Consultancy, we provide end-to-end workforce solutions that help organisations attract, recruit, manage, and retain exceptional talent.";
+  const heroImg = heroData?.heroImage || heroImage;
   return (
     <>
       <style>{`
@@ -121,23 +153,19 @@ export default function Hero() {
         <div className="hero-row">
           {/* LEFT column */}
           <div className="hero-left">
-            <span className="hero-badge">STRATEGIC • FLEXIBLE • GLOBAL</span>
+            <span className="hero-badge">{subtitle}</span>
             <h1 className="hero-h1">
-              <span className="blue">Workforce Solutions<br />That Drive</span>
-              <span className="orange">Business Growth</span>
+              <span className="blue">{title1}</span>
+              <span className="orange">{title2}</span>
             </h1>
-            <p className="hero-p">
-              At E2E Human Resource Consultancy, we provide end-to-end workforce
-              solutions that help organisations attract, recruit, manage, and
-              retain exceptional talent.
-            </p>
+            <p className="hero-p">{description}</p>
           </div>
 
           {/* RIGHT column */}
           <div className="hero-right-wrap">
             <div className="hero-overlay" />
             <div className="hero-img-box">
-              <img src={heroImage} alt="Team collaborating in a modern office" />
+              <img src={heroImg} alt="Team collaborating in a modern office" />
             </div>
           </div>
         </div>
