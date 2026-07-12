@@ -1,6 +1,6 @@
-import { FiPhone, FiMail, FiMapPin } from 'react-icons/fi';
-import mapImage from '../../assets/assets/image/image/map.png';
-import footerLogo from '../../assets/assets/image/image/logo.png';
+﻿import { FiPhone, FiMail, FiMapPin } from 'react-icons/fi';
+import mapImage from '../../assets/image/map.png';
+import footerLogo from '../../assets/image/logo.png';
 
 const navLinks = ['Home', 'About Us', 'Our Services', 'Latest Jobs', 'Expert Blogs'];
 
@@ -14,21 +14,6 @@ export default function Footer() {
             <p className="font-body text-sm leading-relaxed text-[#DBEAFE] max-w-xs">
               Connecting exceptional talent with exceptional businesses across the UK, Europe, South Asia, and the GCC since 2007.
             </p>
-          </div>
-
-          <div className="lg:w-[180px]">
-            <h3 className="font-montserrat font-bold text-lg tracking-[1.8px] uppercase text-[#F39308] mb-8">NAVIGATION</h3>
-            <nav>
-              <ul className="flex flex-col gap-4">
-                {navLinks.map((link) => (
-                  <li key={link}>
-                    <a href="#" className="font-body text-sm text-[#DBEAFE] hover:text-[#F39308] transition-colors no-underline">
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
           </div>
 
           <div className="lg:w-[255px]">
@@ -47,6 +32,21 @@ export default function Footer() {
                 <a href="mailto:info@e2ehrc.co.uk" className="font-body text-sm text-[#DBEAFE] no-underline">info@e2ehrc.co.uk</a>
               </div>
             </address>
+          </div>
+
+          <div className="lg:w-[180px]">
+            <h3 className="font-montserrat font-bold text-lg tracking-[1.8px] uppercase text-[#F39308] mb-8">NAVIGATION</h3>
+            <nav>
+              <ul className="flex flex-col gap-4">
+                {navLinks.map((link) => (
+                  <li key={link}>
+                    <a href="#" className="font-body text-sm text-[#DBEAFE] hover:text-[#F39308] transition-colors no-underline">
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
 
           <div className="lg:w-[255px]">

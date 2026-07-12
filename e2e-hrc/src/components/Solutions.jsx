@@ -1,4 +1,4 @@
-import sectionImage from '../assets/assets/image/image/Section - 3. Our Workforce Solutions (1).png';
+﻿import sectionImage from '../assets/image/Section - 3. Our Workforce Solutions (1).png';
 
 export default function Solutions() {
   return (

@@ -1,7 +1,7 @@
-import ukImg from '../../assets/assets/Professionals/UK.jpg';
-import strategyImg from '../../assets/assets/Professionals/strategy.jpg';
-import workforceImg from '../../assets/assets/Professionals/workforceplanning.jpg';
-import leadershipImg from '../../assets/assets/Professionals/leadership.jpg';
+﻿import ukImg from '../../assets/Professionals/UK.jpg';
+import strategyImg from '../../assets/Professionals/strategy.jpg';
+import workforceImg from '../../assets/Professionals/workforceplanning.jpg';
+import leadershipImg from '../../assets/Professionals/leadership.jpg';
 
 const defaultFeatured = {
   image: ukImg,
@@ -120,12 +120,12 @@ export default function LatestInsights({
                     <PersonIcon />
                     <span>{featured.author}</span>
                   </div>
-                  <span className="text-[rgba(255,255,255,0.7)]">·</span>
+                  <span className="text-[rgba(255,255,255,0.7)]">Â·</span>
                   <div className="flex items-center gap-1.5 text-[rgba(255,255,255,0.7)] font-body text-[12px]">
                     <ClockIcon />
                     <span>{featured.readTime}</span>
                   </div>
-                  <span className="text-[rgba(255,255,255,0.7)]">·</span>
+                  <span className="text-[rgba(255,255,255,0.7)]">Â·</span>
                   <span className="text-[rgba(255,255,255,0.7)] font-body text-[12px]">{featured.date}</span>
                 </div>
                 <a href="#" className="inline-flex items-center gap-1 font-heading font-semibold text-[12px] leading-[16px] text-[#C8D96F] hover:underline">
@@ -155,7 +155,7 @@ export default function LatestInsights({
                   <div className="flex items-center gap-1.5 text-[#6B6B6B] font-body text-[12px]">
                     <ClockIcon />
                     <span>{post.readTime}</span>
-                    <span>·</span>
+                    <span>Â·</span>
                     <span>{post.date}</span>
                   </div>
                 </div>
