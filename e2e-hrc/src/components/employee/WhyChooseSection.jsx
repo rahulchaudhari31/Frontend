@@ -1,6 +1,6 @@
-import buildingImage from '../../assets/assets/images/building.jpg';
-import manImage from '../../assets/assets/images/Man.jpg';
-import randomImage from '../../assets/assets/images/random image.jpg';
+﻿import buildingImage from '../../assets/images/building.jpg';
+import manImage from '../../assets/images/Man.jpg';
+import randomImage from '../../assets/images/random image.jpg';
 
 const rows = [
   {
@@ -53,7 +53,7 @@ const rows = [
     eyebrow: 'Long-term partnership',
     eyebrowColor: '#C9DB82',
     title: 'Commitment Always',
-    desc: 'We don\'t disappear after placement. Our commitment to clients and candidates extends far beyond the hire date — with aftercare, check-ins, and genuine ongoing support at every stage.',
+    desc: 'We don\'t disappear after placement. Our commitment to clients and candidates extends far beyond the hire date â€” with aftercare, check-ins, and genuine ongoing support at every stage.',
     stats: [
       { value: '15+', label: 'Years Experience' },
       { value: '4', label: 'UK Offices' },

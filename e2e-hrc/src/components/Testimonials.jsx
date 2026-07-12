@@ -1,9 +1,9 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { motion } from 'framer-motion';
 
-import hrDirector from '../assets/assets/icons of field/hr drector.jpg';
-import talentManager from '../assets/assets/icons of field/talent manager.jpg';
-import hrManager from '../assets/assets/icons of field/hr manager.jpg';
+import hrDirector from '../assets/icons of field/hr drector.jpg';
+import talentManager from '../assets/icons of field/talent manager.jpg';
+import hrManager from '../assets/icons of field/hr manager.jpg';
 
 const testimonials = [
   {

@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+﻿import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { FiArrowRight, FiMenu, FiX } from 'react-icons/fi';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from 'react-icons/fa';
-import logoImage from '../../assets/assets/image/image/logo.png';
+import logoImage from '../../assets/image/logo.png';
 
 const socialLinks = [
   { label: 'LinkedIn', href: '#', Icon: FaLinkedinIn },
@@ -25,11 +25,12 @@ const navLinks = [
 export default function Navbar({ variant = 'home' }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isEmployer = variant === 'employer';
+  const location = useLocation();
 
   const activeStyle = isEmployer ? 'text-[#0085d5]' : 'text-navy';
   const ctaBg = 'bg-[#F39308] hover:bg-[#E07D00]';
 
-  const activePage = isEmployer ? '/employer' : variant === 'employee' ? '/employee' : variant === 'blog' ? '/blogs' : variant === 'partner' ? '/become-a-partner' : '/';
+  const activePage = location.pathname;
 
   function renderLink({ label, to }, extraCls = '', onClick) {
     const isActive = to === activePage;

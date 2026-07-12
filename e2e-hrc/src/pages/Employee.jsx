@@ -1,4 +1,4 @@
-import AnnouncementBar from '../components/AnnouncementBar';
+﻿import AnnouncementBar from '../components/AnnouncementBar';
 import Navbar from '../components/shared/Navbar';
 import Footer from '../components/shared/Footer';
 import HeroSection from '../components/employee/HeroSection';
@@ -6,14 +6,14 @@ import TestimonialsCarousel from '../components/employee/TestimonialsCarousel';
 import WhyChooseE2E from '../components/employee/WhyChooseE2E';
 import './Employee.css';
 
-import sectorConstruction from '../assets/assets/sectors/construction.jpg';
-import sectorEducation from '../assets/assets/sectors/education.jpg';
-import sectorEngineering from '../assets/assets/sectors/engineering.jpg';
-import sectorFinance from '../assets/assets/sectors/finance.jpg';
-import sectorHealthcare from '../assets/assets/sectors/healthcare.jpg';
-import sectorIT from '../assets/assets/sectors/it technology.jpg';
-import sectorLogistics from '../assets/assets/sectors/logistics.jpg';
-import sectorManufacturing from '../assets/assets/sectors/manuifacturing.jpg';
+import sectorConstruction from '../assets/sectors/construction.jpg';
+import sectorEducation from '../assets/sectors/education.jpg';
+import sectorEngineering from '../assets/sectors/engineering.jpg';
+import sectorFinance from '../assets/sectors/finance.jpg';
+import sectorHealthcare from '../assets/sectors/healthcare.jpg';
+import sectorIT from '../assets/sectors/it technology.jpg';
+import sectorLogistics from '../assets/sectors/logistics.jpg';
+import sectorManufacturing from '../assets/sectors/manuifacturing.jpg';
 import FAQAndCTA from '../components/FAQAndCTA';
 
 const testimonialsData = [

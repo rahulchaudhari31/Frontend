@@ -7,7 +7,7 @@ import HowWeWork from './components/HowWeWork';
 import FAQAndCTA from './components/FAQAndCTA';
 import Testimonials from './components/Testimonials';
 import WhyChooseE2E from './components/employee/WhyChooseE2E';
-import Footer from './components/Footer';
+import Footer from './components/shared/Footer';
 import Employer from './pages/Employer';
 import Employee from './pages/Employee';
 import Blogs from './pages/Blogs';

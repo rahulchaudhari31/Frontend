@@ -1,4 +1,4 @@
-import heroImage from "../assets/assets/image/image/image hero.jpg";
+﻿import heroImage from "../assets/image/image hero.jpg";
 import { BadgeCheck, Users, ClipboardCheck, Globe2 } from "lucide-react";
 
 const stats = [
@@ -121,7 +121,7 @@ export default function Hero() {
         <div className="hero-row">
           {/* LEFT column */}
           <div className="hero-left">
-            <span className="hero-badge">STRATEGIC • FLEXIBLE • GLOBAL</span>
+            <span className="hero-badge">STRATEGIC â€¢ FLEXIBLE â€¢ GLOBAL</span>
             <h1 className="hero-h1">
               <span className="blue">Workforce Solutions<br />That Drive</span>
               <span className="orange">Business Growth</span>

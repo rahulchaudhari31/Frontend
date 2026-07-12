@@ -1,8 +1,8 @@
-import bciLogo from '../../assets/assets/employee/LOGO BCI.png';
-import ecoLogo from '../../assets/assets/employee/LOGO ECO.png';
-import icoLogo from '../../assets/assets/employee/LOGO ICO.png';
-import recLogo from '../../assets/assets/employee/logo REC.png';
-import bsiLogo from '../../assets/assets/employee/LOGOI bsi.png';
+﻿import bciLogo from '../../assets/employee/LOGO BCI.png';
+import ecoLogo from '../../assets/employee/LOGO ECO.png';
+import icoLogo from '../../assets/employee/LOGO ICO.png';
+import recLogo from '../../assets/employee/logo REC.png';
+import bsiLogo from '../../assets/employee/LOGOI bsi.png';
 
 const defaultLogos = [
   { name: 'BCI', tagline: 'British Columbia Institute', image: bciLogo },

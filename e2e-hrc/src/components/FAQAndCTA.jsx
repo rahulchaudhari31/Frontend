@@ -1,12 +1,12 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FiArrowRight } from 'react-icons/fi';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
-import plusIcon from '../assets/assets/icons of field/\+.png';
-import browseIcon from '../assets/assets/icons of field/browse.png';
-import communityIcon from '../assets/assets/icons of field/community.png';
-import searchIcon from '../assets/assets/icons of field/search.png';
+import plusIcon from '../assets/icons of field/\+.png';
+import browseIcon from '../assets/icons of field/browse.png';
+import communityIcon from '../assets/icons of field/community.png';
+import searchIcon from '../assets/icons of field/search.png';
 
 const faqs = [
   {
@@ -27,7 +27,7 @@ const faqs = [
   },
   {
     q: 'How quickly can you fill a vacancy?',
-    a: 'Timelines vary by role and seniority, but for most positions we present a shortlist within 5–10 business days. For urgent or high-volume requirements, we can often move faster thanks to our active candidate pipeline.',
+    a: 'Timelines vary by role and seniority, but for most positions we present a shortlist within 5â€“10 business days. For urgent or high-volume requirements, we can often move faster thanks to our active candidate pipeline.',
   },
 ];
 
@@ -53,7 +53,7 @@ export default function FAQAndCTA() {
         className={`max-w-7xl mx-auto grid lg:grid-cols-2 gap-6 md:gap-10 items-start reveal ${visible ? 'visible' : ''}`}
       >
 
-        {/* LEFT — FAQ */}
+        {/* LEFT â€” FAQ */}
         <div>
           <p className="text-xs font-semibold tracking-widest uppercase mb-6" style={{ color: '#003679' }}>
             Frequently Asked Questions
@@ -120,7 +120,7 @@ export default function FAQAndCTA() {
           </div>
         </div>
 
-        {/* RIGHT — CTA Card */}
+        {/* RIGHT â€” CTA Card */}
         <motion.div
           ref={ctaRef}
           initial={{ opacity: 0, x: 40 }}
