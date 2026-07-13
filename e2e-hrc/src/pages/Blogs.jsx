@@ -4,6 +4,7 @@ import Footer from '../components/shared/Footer';
 import BlogBanner from '../components/blogs/BlogBanner';
 import FeaturedArticle from '../components/blogs/FeaturedArticle';
 import BlogPostsGrid from '../components/blogs/BlogPostsGrid';
+import '../components/blogs/Blogs.css';
 
 export default function Blogs() {
   return (

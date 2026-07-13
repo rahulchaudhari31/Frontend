@@ -15,6 +15,7 @@ import sectorIT from '../assets/sectors/it technology.jpg';
 import sectorLogistics from '../assets/sectors/logistics.jpg';
 import sectorManufacturing from '../assets/sectors/manuifacturing.jpg';
 import FAQAndCTA from '../components/FAQAndCTA';
+import LatestInsights from '../components/employee/LatestInsights';
 
 const testimonialsData = [
   {
@@ -155,6 +156,9 @@ export default function Employee() {
       </section>
 
       <FAQAndCTA />
+
+      {/* ===== LATEST INSIGHTS ===== */}
+      <LatestInsights />
 
       {/* ===== G. TESTIMONIALS ===== */}
       <section className="emp-testimonials relative overflow-hidden" style={{ background: 'url(/images/employee/background%20Testimonials.png) center/cover no-repeat', padding: '43px 100px 59px 100px' }}>

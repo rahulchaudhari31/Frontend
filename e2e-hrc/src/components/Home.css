@@ -1,0 +1,107 @@
+/* ========================================================
+   Home Page - Mobile Responsive Styles
+   Targets: 320px–768px only
+   Desktop (1024px+) untouched
+   ======================================================== */
+
+/* ---- Global: prevent horizontal scroll on home ---- */
+.min-h-screen.bg-white {
+  overflow-x: hidden;
+}
+
+/* ---- TABLETS / MOBILE LANDSCAPE (max-width: 768px) ---- */
+@media (max-width: 768px) {
+  .min-h-screen.bg-white {
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .min-h-screen.bg-white > nav,
+  .min-h-screen.bg-white > header {
+    flex-shrink: 0;
+  }
+}
+
+/* ---- SMALL PHONES (max-width: 480px) ---- */
+
+/* HERO — single screen, no scrollbar, image fills space */
+@media (max-width: 480px) {
+  .hero-sec {
+    padding: 12px 12px 0 !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .hero-h1 {
+    font-size: 22px !important;
+  }
+
+  .hero-badge {
+    font-size: 9px !important;
+    padding: 5px 12px !important;
+  }
+
+  .hero-p {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+
+  .hero-right-wrap {
+    border-radius: 12px !important;
+  }
+
+  .hero-stats {
+    gap: 8px !important;
+    padding: 12px 10px !important;
+  }
+
+  .hero-stat-item {
+    flex: 1 1 calc(50% - 4px) !important;
+  }
+
+  .hero-stat-value {
+    font-size: 13px !important;
+  }
+
+  .hero-stat-label {
+    font-size: 10px !important;
+  }
+}
+
+/* HOW WE WORK — single column on very small screens */
+@media (max-width: 480px) {
+  #how-we-work .grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* WORKFORCE SOLUTIONS — single column, tighter padding */
+@media (max-width: 480px) {
+  #solutions .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  #solutions .py-16 {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+}
+
+/* FAQ — tighter padding on small screens */
+@media (max-width: 480px) {
+  #faq .max-w-7xl {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+
+/* TESTIMONIALS — single column, tighter spacing */
+@media (max-width: 480px) {
+  #testimonials .grid {
+    grid-template-columns: 1fr !important;
+  }
+}
