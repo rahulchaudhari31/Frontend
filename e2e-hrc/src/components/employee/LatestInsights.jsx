@@ -79,19 +79,19 @@ export default function LatestInsights({
 }) {
   return (
     <section className="py-16 md:py-20 bg-[#F8FAFC]">
-      <div className="mx-auto pl-[24px] pr-[24px] lg:pl-[124px] lg:pr-[32px]" style={{ maxWidth: '1440px' }}>
+      <div className="insights-container mx-auto pl-[24px] pr-[24px] lg:pl-[124px] lg:pr-[32px]" style={{ maxWidth: '1440px' }}>
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 lg:gap-0 mb-10">
           <div>
             <span className="inline-flex items-center bg-[#EAF1FB] text-[#004CA5] font-body font-semibold text-[12px] leading-[16px] px-3 py-[6px] rounded-full mb-2">
               {eyebrow}
             </span>
-            <h2 className="font-heading font-[800] text-[32px] lg:text-[36px] leading-[40px] text-[#004CA5]" style={{ maxWidth: '793px' }}>
+            <h2 className="insights-heading font-heading font-[800] text-[32px] lg:text-[36px] leading-[40px] text-[#004CA5]" style={{ maxWidth: '793px' }}>
               {heading}
             </h2>
           </div>
           <a
             href={ctaHref}
-            className="inline-flex items-center justify-center gap-2 shrink-0 border-[1.6px] border-[#004CA5] text-[#004CA5] font-heading font-semibold text-[14px] leading-[20px] px-6 py-3 rounded-[999px] bg-transparent hover:bg-[#004CA5]/10 transition-colors duration-200 self-start lg:self-auto"
+            className="insights-cta inline-flex items-center justify-center gap-2 shrink-0 border-[1.6px] border-[#004CA5] text-[#004CA5] font-heading font-semibold text-[14px] leading-[20px] px-6 py-3 rounded-[999px] bg-transparent hover:bg-[#004CA5]/10 transition-colors duration-200 self-start lg:self-auto"
           >
             {ctaLabel}
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -100,32 +100,32 @@ export default function LatestInsights({
           </a>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8" style={{ maxWidth: '1284px' }}>
-          <div className="relative group rounded-2xl overflow-hidden cursor-pointer w-full lg:w-[532px] h-[400px] lg:h-[480px] shrink-0">
+        <div className="insights-grid flex flex-col lg:flex-row gap-8" style={{ maxWidth: '1284px' }}>
+          <div className="insights-featured relative group rounded-2xl overflow-hidden cursor-pointer w-full lg:w-[532px] h-[400px] lg:h-[480px] shrink-0">
             <img src={featured.image} alt={featured.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
+            <div className="insights-featured-text absolute bottom-0 left-0 right-0 p-6 lg:p-8">
               <span className="inline-flex items-center bg-[#004CA5] text-white font-body font-semibold text-[12px] leading-[16px] px-3 py-1 rounded-full mb-3">
                 {featured.category}
               </span>
-              <h3 className="text-white font-heading font-bold text-[24px] leading-[33px] mb-3" style={{ maxWidth: '460px' }}>
+              <h3 className="insights-featured-title text-white font-heading font-bold text-[24px] leading-[33px] mb-3" style={{ maxWidth: '460px' }}>
                 {featured.title}
               </h3>
-              <p className="text-[rgba(255,255,255,0.7)] font-body font-normal text-[14px] leading-[22.75px] mb-6" style={{ maxWidth: '460px' }}>
+              <p className="insights-featured-desc text-[rgba(255,255,255,0.7)] font-body font-normal text-[14px] leading-[22.75px] mb-6" style={{ maxWidth: '460px' }}>
                 {featured.description}
               </p>
-              <div className="flex items-center justify-between w-full" style={{ maxWidth: '460px' }}>
-                <div className="flex items-center gap-2">
+              <div className="insights-featured-meta flex flex-wrap items-center justify-between w-full gap-2" style={{ maxWidth: '460px' }}>
+                <div className="flex items-center gap-2 flex-wrap">
                   <div className="flex items-center gap-1.5 text-[rgba(255,255,255,0.7)] font-body text-[12px]">
                     <PersonIcon />
                     <span>{featured.author}</span>
                   </div>
-                  <span className="text-[rgba(255,255,255,0.7)]">Â·</span>
+                  <span className="text-[rgba(255,255,255,0.7)]">·</span>
                   <div className="flex items-center gap-1.5 text-[rgba(255,255,255,0.7)] font-body text-[12px]">
                     <ClockIcon />
                     <span>{featured.readTime}</span>
                   </div>
-                  <span className="text-[rgba(255,255,255,0.7)]">Â·</span>
+                  <span className="text-[rgba(255,255,255,0.7)]">·</span>
                   <span className="text-[rgba(255,255,255,0.7)] font-body text-[12px]">{featured.date}</span>
                 </div>
                 <a href="#" className="inline-flex items-center gap-1 font-heading font-semibold text-[12px] leading-[16px] text-[#C8D96F] hover:underline">
@@ -136,10 +136,10 @@ export default function LatestInsights({
             </div>
           </div>
 
-          <div className="flex flex-col gap-5 flex-1 min-w-0">
+          <div className="insights-posts flex flex-col gap-5 flex-1 min-w-0">
             {posts.map((post) => (
-              <div key={post.title} className="flex flex-col sm:flex-row rounded-2xl overflow-hidden cursor-pointer group bg-[#FAFAFA] sm:h-[134px]">
-                <div className="w-full sm:w-[144px] h-[180px] sm:h-full shrink-0 overflow-hidden">
+              <div key={post.title} className="insights-post-card flex flex-col sm:flex-row rounded-2xl overflow-hidden cursor-pointer group bg-[#FAFAFA] sm:h-[134px]">
+                <div className="insights-post-img w-full sm:w-[144px] h-[180px] sm:h-full shrink-0 overflow-hidden">
                   <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 </div>
                 <div className="flex-1 flex flex-col justify-center gap-2 p-5 sm:pl-0 min-w-0">
@@ -155,7 +155,7 @@ export default function LatestInsights({
                   <div className="flex items-center gap-1.5 text-[#6B6B6B] font-body text-[12px]">
                     <ClockIcon />
                     <span>{post.readTime}</span>
-                    <span>Â·</span>
+                    <span>·</span>
                     <span>{post.date}</span>
                   </div>
                 </div>

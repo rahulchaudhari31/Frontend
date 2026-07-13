@@ -60,8 +60,8 @@ const categories = [
 
 export default function BlogPostsGrid() {
   return (
-    <section className="bg-[#F7F9FB] px-16 py-20 max-sm:px-4 max-sm:py-10 max-md:px-6 max-md:py-12">
-      <div className="flex gap-10 max-lg:flex-col max-w-[1440px] mx-auto">
+    <section className="blog-grid-section bg-[#F7F9FB] px-16 py-20 max-sm:px-4 max-sm:py-10 max-md:px-6 max-md:py-12">
+      <div className="blog-grid-layout flex gap-10 max-lg:flex-col max-w-[1440px] mx-auto">
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-8 max-sm:flex-col max-sm:items-start max-sm:gap-2">
             <h2 className="font-heading font-semibold text-3xl max-sm:text-2xl text-[#1B1C1C]">
@@ -90,10 +90,10 @@ export default function BlogPostsGrid() {
                   </span>
                 </div>
                 <div className="p-6 flex flex-col flex-1">
-                  <h3 className="font-heading text-xl leading-7 text-[#1B1C1C] mb-3">
+                  <h3 className="blog-article-title font-heading text-xl leading-7 text-[#1B1C1C] mb-3">
                     {item.title}
                   </h3>
-                  <p className="font-body text-sm leading-5 text-[#424752] mb-5 flex-1">
+                  <p className="blog-article-desc font-body text-sm leading-5 text-[#424752] mb-5 flex-1">
                     {item.desc}
                   </p>
                   <div className="border-t border-[#EAE8E7] pt-4 flex items-center gap-4 font-body text-xs text-[#424752]">
@@ -112,7 +112,7 @@ export default function BlogPostsGrid() {
           </div>
         </div>
 
-        <aside className="w-[377px] shrink-0 max-lg:w-full flex flex-col gap-8">
+        <aside className="blog-aside w-[377px] shrink-0 max-lg:w-full flex flex-col gap-8">
           <div className="bg-white border border-[#EAE8E7] rounded-2xl p-6 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
             <div className="flex items-center gap-[7.99px] mb-5 h-7">
               <img src={trendingIcon} alt="Trending Now" style={{ width: 16, height: 19 }} />

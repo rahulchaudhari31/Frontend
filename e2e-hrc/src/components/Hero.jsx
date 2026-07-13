@@ -105,14 +105,15 @@ export default function Hero() {
           .hero-left { max-width: none; }
         }
         @media (max-width: 768px) {
-          .hero-sec { padding: 24px 20px 32px; }
-          .hero-row { flex-direction: column; gap: 24px; }
-          .hero-right-wrap { width: 100%; }
-          .hero-img-box { height: 260px; border-radius: 16px; }
+          .hero-sec { padding: 20px 20px 0; flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
+          .hero-row { flex-direction: column; gap: 0; flex: 1; min-height: 0; }
+          .hero-left { max-width: none; padding-top: 0; gap: 12px; }
+          .hero-right-wrap { width: 100%; flex: 1; min-height: 0; position: relative; display: flex; flex-direction: column; overflow: hidden; border-radius: 16px; }
+          .hero-img-box { width: 100%; height: auto; margin-top: 0; border-radius: 0; flex: 1; min-height: 0; }
           .hero-h1 { font-size: 32px; }
-          .hero-p { font-size: 14px; }
-          .hero-stats { gap: 16px; padding: 20px 16px; }
-          .hero-stat-item { flex: 1 1 calc(50% - 8px); border-right: none; }
+          .hero-p { font-size: 14px; margin-bottom: 0; }
+          .hero-stats { position: static; transform: none; width: 100%; height: auto; margin-top: auto; flex-wrap: wrap; gap: 12px; padding: 16px; margin-bottom: 0; }
+          .hero-stat-item { flex: 1 1 calc(50% - 6px); border-right: none !important; padding-right: 0 !important; }
           .hero-stat-value { font-size: 14px; }
           .hero-stat-label { font-size: 12px; }
         }

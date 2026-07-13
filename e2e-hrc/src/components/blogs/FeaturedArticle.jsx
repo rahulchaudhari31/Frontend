@@ -45,20 +45,20 @@ export default function FeaturedArticle() {
       `}</style>
 
       <section className="px-16 py-16 max-sm:px-4 max-sm:py-6 max-md:px-6 max-md:py-8">
-        <div className="flex max-lg:flex-col rounded-3xl min-h-[400px] bg-[#F6F3F2] overflow-hidden">
-          <div className="flex-1 max-lg:w-full p-12 max-sm:p-6 max-md:p-8 flex flex-col justify-center">
+        <div className="featured-card flex max-lg:flex-col rounded-3xl min-h-[400px] bg-[#F6F3F2] overflow-hidden">
+          <div className="featured-card-text flex-1 max-lg:w-full p-12 max-sm:p-6 max-md:p-8 flex flex-col justify-center">
             <p className="font-body text-sm text-[#424752] mb-4">2 days ago &bull; 8 min read</p>
-            <h2 className="font-heading text-[36px] leading-[40px] tracking-normal max-sm:text-2xl max-sm:leading-8 text-[#1B1C1C] mb-5 heading-overlap">
+            <h2 className="featured-heading font-heading text-[36px] leading-[40px] tracking-normal max-sm:text-2xl max-sm:leading-8 text-[#1B1C1C] mb-5 heading-overlap">
               Top 10 Hiring Trends Every Employer<br />
               Should Know in 2026
             </h2>
-            <p className="font-body text-base leading-6 text-[#424752] desc-overlap">
+            <p className="featured-desc font-body text-base leading-6 text-[#424752] desc-overlap">
               As the global talent landscape evolves, staying ahead of recruitment trends<br />
               is crucial. From AI-driven candidate screening to shifting expectations<br />
               around flexible work, discover what will shape the future of hiring.
             </p>
           </div>
-          <div className="hero-card-img max-lg:hidden" role="img" aria-label="Hiring trends team meeting" />
+          <div className="featured-card-img hero-card-img max-lg:hidden" role="img" aria-label="Hiring trends team meeting" />
         </div>
       </section>
     </>

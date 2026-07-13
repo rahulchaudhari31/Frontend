@@ -10,7 +10,7 @@ export default function BlogBanner() {
         }
       `}</style>
 
-      <section className="relative h-[201px] bg-black overflow-hidden flex items-center border-t border-[#EAE8E7]">
+      <section className="blog-banner-section relative h-[201px] bg-black overflow-hidden flex items-center border-t border-[#EAE8E7]">
         <div className="absolute inset-0 banner-overlay" />
         <div className="relative z-10 pl-16 max-sm:pl-6">
           <h1 className="font-heading font-extrabold text-6xl text-white max-sm:text-3xl max-md:text-4xl">

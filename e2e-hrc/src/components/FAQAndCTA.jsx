@@ -10,24 +10,20 @@ import searchIcon from '../assets/icons of field/search.png';
 
 const faqs = [
   {
-    q: 'What types of workforce solutions do you offer?',
-    a: 'We offer a full spectrum of workforce solutions including permanent recruitment, contract and temporary staffing, executive search, RPO, and workforce consultancy. Our services are tailored to meet the unique needs of each client across multiple industries.',
+    q: 'How does E2E HRC source candidates for employer roles?',
+    a: 'We use a multi-channel approach including our extensive talent database, professional networks, job boards, and direct headhunting to find the best candidates for your specific needs.',
   },
   {
-    q: 'Do you provide international recruitment services?',
-    a: 'Yes. We source and place talent across the UK, Europe, GCC, and Asia. Our global network allows us to connect organisations with qualified professionals regardless of geography or sector.',
+    q: 'What industries does E2E HRC specialize in?',
+    a: 'We cover a wide range of industries including Engineering, Healthcare, IT, Finance, Construction, Logistics, Education, and many more specialized sectors.',
   },
   {
-    q: 'Can you support high-volume hiring?',
-    a: 'Absolutely. Through our Recruitment Process Outsourcing (RPO) model, we can scale our resources to support large-scale hiring campaigns efficiently and cost-effectively, without compromising on candidate quality.',
+    q: 'What is the typical turnaround time for hiring?',
+    a: 'Our typical turnaround time varies by role complexity, but we aim to present shortlisted candidates within 2-3 weeks for most positions.',
   },
   {
-    q: 'Do you provide temporary and contract staffing?',
-    a: 'Yes. We specialise in flexible staffing arrangements to cover short-term projects, seasonal demand, and interim roles. Our pre-vetted talent pool means we can mobilise quickly to meet your deadlines.',
-  },
-  {
-    q: 'How quickly can you fill a vacancy?',
-    a: 'Timelines vary by role and seniority, but for most positions we present a shortlist within 5â€“10 business days. For urgent or high-volume requirements, we can often move faster thanks to our active candidate pipeline.',
+    q: 'Do you offer replacement guarantees?',
+    a: 'Yes, we offer a replacement guarantee period for all placed candidates. If a candidate leaves or is terminated within the guarantee period, we will find a replacement at no additional cost.',
   },
 ];
 

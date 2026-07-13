@@ -1,4 +1,4 @@
-import heroImage from "../../assets/hero-image1.png";
+import heroImage from "../../assets/image/image hero.jpg";
 import { FiAward, FiUsers, FiCheckCircle, FiGlobe } from "react-icons/fi";
 import styles from "./WorkforceHeroSection.module.css";
 
@@ -15,56 +15,56 @@ export default function WorkforceHeroSection() {
       <section
         className={styles.section}
         aria-label="Workforce Solutions Hero"
-        style={{ marginTop: '0px' }}
       >
-        {/* ── Two-column hero row ── */}
-        <div className={styles.hero}>
+        <div className={styles.container}>
+          <div className={styles.innerContainer}>
 
-          {/* LEFT */}
-          <div className={styles.left}>
-            <span className={styles.badge}>
-              STRATEGIC • FLEXIBLE • GLOBAL
-            </span>
-
-            <h1 className={styles.heading}>
-              <span className={styles.headingBlue}>
-                Workforce Solutions<br />That Drive
+            {/* LEFT — badge + heading + body */}
+            <div className={styles.leftText}>
+              <div className={styles.leftBg} />
+              <span className={styles.badge}>
+                STRATEGIC • FLEXIBLE • GLOBAL
               </span>
-              <br />
-              <span className={styles.headingOrange}>Business Growth</span>
-            </h1>
-
-            <p className={styles.body}>
-              At E2E Human Resource Consultancy, we provide end-to-end workforce
-              solutions that help organisations attract, recruit, manage, and retain
-              exceptional talent.
-            </p>
-          </div>
-
-          {/* RIGHT */}
-          <div className={styles.right}>
-            <img
-              src={heroImage}
-              alt="E2E HRC team collaborating in a modern office"
-              className={styles.heroImage}
-            />
-          </div>
-
-        </div>
-
-        {/* ── Stats card ── */}
-        <div className={styles.statsCard} role="list" aria-label="Company statistics">
-          {stats.map(({ icon: Icon, value, label }) => (
-            <div key={label} className={styles.statItem} role="listitem">
-              <span className={styles.statIcon} aria-hidden="true">
-                <Icon size={22} />
-              </span>
-              <strong className={styles.statValue}>{value}</strong>
-              <span className={styles.statLabel}>{label}</span>
+              <h1 className={styles.heading}>
+                Workforce Solutions That Drive Business Growth
+              </h1>
+              <p className={styles.body}>
+                At E2E Human Resource Consultancy, we provide end-to-end workforce
+                solutions that help organisations attract, recruit, manage, and retain
+                exceptional talent.
+              </p>
             </div>
-          ))}
-        </div>
 
+            {/* RIGHT — image + overlay */}
+            <div className={styles.leftImage}>
+              <div className={styles.imageWrapper}>
+                <div className={styles.overlay} />
+                <img
+                  src={heroImage}
+                  alt="E2E HRC team collaborating in a modern office"
+                  className={styles.heroImage}
+                />
+              </div>
+            </div>
+
+          </div>
+
+          {/* Stats card */}
+          <div className={styles.statsCard} role="list" aria-label="Company statistics">
+            {stats.map(({ icon: Icon, value, label }) => (
+              <div key={label} className={styles.statItem} role="listitem">
+                <span className={styles.statIcon} aria-hidden="true">
+                  <Icon size={18} />
+                </span>
+                <div className={styles.statText}>
+                  <strong className={styles.statValue}>{value}</strong>
+                  <span className={styles.statLabel}>{label}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
       </section>
     </div>
   );

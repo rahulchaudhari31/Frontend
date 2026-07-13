@@ -12,11 +12,11 @@ const socialLinks = [
 ];
 
 const navLinks = [
-  { label: 'Home', to: '#' },
-  { label: 'About Us', to: '#' },
+  { label: 'Home', to: '/' },
+  { label: 'About Us', to: '/about-us' },
   { label: 'Employer', to: '/employer' },
   { label: 'Employee', to: '/employee' },
-  { label: 'Workforce Solutions', to: '/' },
+  { label: 'Workforce Solutions', to: '/workforce-solutions' },
   { label: 'Become a Partner', to: '/become-a-partner' },
   { label: 'Blogs', to: '/blogs' },
   { label: 'Contact Us', to: '/contact-us' },
