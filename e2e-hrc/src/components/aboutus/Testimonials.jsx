@@ -6,35 +6,35 @@ const testimonials = [
   {
     _id: "1",
     testimonialTitle: "Efficient and Effective Hiring Process!",
-    review: "The efficiency of Applyfier's hiring process is commendable. The platform's intuitive interface, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.",
+    review: "The efficiency of E2E HRC's hiring process is commendable. Their intuitive approach, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.",
     companyName: "Ford",
     logo: fordLogo,
   },
   {
     _id: "2",
     testimonialTitle: "Top-Notch Talent at Our Fingertips!",
-    review: "As an employer, finding top-notch talent is crucial for our success. Applyfier has been our go-to platform for hiring. The automated candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
+    review: "As an employer, finding top-notch talent is crucial for our success. E2E HRC has been our go-to partner for hiring. Their candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
     companyName: "Disney",
     logo: disneyLogo,
   },
   {
     _id: "3",
     testimonialTitle: "Top-Notch Talent at Our Fingertips!",
-    review: "As an employer, finding top-notch talent is crucial for our success. Applyfier has been our go-to platform for hiring. The automated candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
+    review: "As an employer, finding top-notch talent is crucial for our success. E2E HRC has been our go-to partner for hiring. Their candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
     companyName: "Disney",
     logo: disneyLogo,
   },
   {
     _id: "4",
     testimonialTitle: "Efficient and Effective Hiring Process!",
-    review: "The efficiency of Applyfier's hiring process is commendable. The platform's intuitive interface, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.",
+    review: "The efficiency of E2E HRC's hiring process is commendable. Their intuitive approach, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.",
     companyName: "Ford",
     logo: fordLogo,
   },
   {
     _id: "5",
     testimonialTitle: "Top-Notch Talent at Our Fingertips!",
-    review: "As an employer, finding top-notch talent is crucial for our success. Applyfier has been our go-to platform for hiring. The automated candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
+    review: "As an employer, finding top-notch talent is crucial for our success. E2E HRC has been our go-to partner for hiring. Their candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
     companyName: "Disney",
     logo: disneyLogo,
   },
@@ -256,7 +256,7 @@ const Testimonials = () => {
                 alignItems: "flex-end",
               }}
             >
-              Discover the stories and experiences of individuals and companies who have found success and excellence through Applyfier
+              Discover the stories and experiences of individuals and companies who have found success and excellence through E2E HRC
             </p>
             <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 10, width: 91.93, height: 40.97, flexShrink: 0 }}>
               <button

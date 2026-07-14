@@ -3,31 +3,53 @@
 export default function HeroSection() {
   return (
     <section
+      className="hero-section"
       style={{
-        width: '1440px',
-        maxWidth: '100%',
+        position: 'relative',
+        width: '100%',
+        maxWidth: '1440px',
+        margin: '0 auto',
         height: '515px',
-        padding: '55px 0px 55px 64px',
-        background: `linear-gradient(0deg, rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${heroBg}) center / cover no-repeat`,
+        padding: '55px 64px',
         borderTop: '1px solid #EAE8E7',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-end',
         alignItems: 'flex-start',
         boxSizing: 'border-box',
+        overflow: 'hidden',
       }}
-      className="hero-section"
     >
+      {/* Background image */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `url(${heroBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
+      {/* Dark overlay */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(0deg, rgba(0,0,0,0.3), rgba(0,0,0,0.3))',
+        }}
+      />
       <h1
         className="hero-heading"
         style={{
+          position: 'relative',
+          zIndex: 1,
           fontFamily: "'Poppins', sans-serif",
           fontWeight: 800,
           fontSize: '60px',
           lineHeight: '48px',
           color: '#FFFFFF',
           margin: 0,
-          whiteSpace: 'nowrap',
           marginBottom: '60px',
         }}
       >
