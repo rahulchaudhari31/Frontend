@@ -207,7 +207,7 @@ export default function OurJourney() {
       ref={secRef}
       aria-label="Our Journey timeline"
       style={{
-        width: "1440px", maxWidth: "100%", margin: "0 auto",
+        width: "100%", margin: "0 auto",
         padding: "80px 113.5px 88px",
         background: C.cream,
         fontFamily: "'Inter',sans-serif",

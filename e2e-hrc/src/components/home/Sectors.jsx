@@ -8,16 +8,95 @@ import constructionImg from "../../assets/images/sectors/construction.jpg";
 import logisticsImg from "../../assets/images/sectors/logistics.jpg";
 import financeImg from "../../assets/images/sectors/finance.jpg";
 import educationImg from "../../assets/images/sectors/education.jpg";
+import itImg from "../../assets/images/sectors/it technology.jpg";
 
 const industries = [
-  { name: "Manufacturing", image: manufacturingImg, description: "Tailored recruitment solutions for this sector." },
-  { name: "Healthcare", image: healthcareImg, description: "Tailored recruitment solutions for this sector." },
-  { name: "Engineering", image: engineeringImg, description: "Tailored recruitment solutions for this sector." },
-  { name: "Construction", image: constructionImg, description: "Tailored recruitment solutions for this sector." },
-  { name: "Logistics", image: logisticsImg, description: "Tailored recruitment solutions for this sector." },
-  { name: "Finance", image: financeImg, description: "Tailored recruitment solutions for this sector." },
-  { name: "Education", image: educationImg, description: "Tailored recruitment solutions for this sector." },
+  {
+    name: "Manufacturing",
+    image: manufacturingImg,
+    description:
+      "We provide experienced manufacturing professionals for production, operations, quality assurance, supply chain, and plant management roles. Our recruitment solutions support businesses in maintaining efficiency, productivity, and growth.",
+  },
+  {
+    name: "Healthcare",
+    image: healthcareImg,
+    description:
+      "We connect healthcare facilities with skilled doctors, nurses, and allied health professionals. Our staffing solutions ensure quality patient care while helping institutions manage workforce demands efficiently.",
+  },
+  {
+    name: "IT & Technology",
+    image: itImg,
+    description:
+      "We source top-tier developers, engineers, and IT specialists to help businesses scale their technology teams. Our recruitment process identifies talent with the right technical skills and cultural fit.",
+  },
+  {
+    name: "Engineering",
+    image: engineeringImg,
+    description:
+      "We provide qualified engineers across civil, mechanical, electrical, and industrial disciplines. Our recruitment expertise helps organizations build strong technical teams for complex projects.",
+  },
+  {
+    name: "Construction",
+    image: constructionImg,
+    description:
+      "We supply experienced construction professionals including site managers, engineers, and skilled tradespeople. Our staffing solutions help construction firms meet project timelines and safety standards.",
+  },
+  {
+    name: "Logistics",
+    image: logisticsImg,
+    description:
+      "We provide skilled logistics and supply chain professionals for warehousing, distribution, and transportation roles. Our recruitment solutions help businesses optimize operations and delivery efficiency.",
+  },
+  {
+    name: "Finance",
+    image: financeImg,
+    description:
+      "We connect organizations with experienced finance professionals including accountants, analysts, and financial managers. Our recruitment solutions support businesses in maintaining financial accuracy and strategic growth.",
+  },
+  {
+    name: "Education",
+    image: educationImg,
+    description:
+      "We provide qualified educators, administrators, and support staff for schools and educational institutions. Our recruitment solutions help maintain quality teaching and learning environments.",
+  },
 ];
+
+function SectorCard({ name, image, description }) {
+  return (
+    <div className="sector-card group relative w-[280px] h-[420px] min-w-[280px] rounded-[20px] overflow-hidden cursor-pointer snap-start shadow-[0px_4px_20px_0px_rgba(0,0,0,0.08)]">
+      {image ? (
+        <img
+          src={image}
+          alt={name}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#004CA5] via-[#2b6cb0] to-[#77c0f4] text-center text-sm font-semibold text-white">
+          {name}
+        </div>
+      )}
+
+      <div
+        className="absolute inset-0 transition-opacity duration-300"
+        style={{
+          background:
+            "linear-gradient(0deg, rgba(0,15,40,0.9) 30%, rgba(0,15,40,0.35) 100%)",
+        }}
+      />
+
+      <div className="absolute inset-0 flex flex-col justify-end p-7">
+        <div className="w-[224px]">
+          <p className="sector-desc font-[Poppins] font-medium text-[13px] leading-[15px] text-white m-0">
+            {description}
+          </p>
+          <h3 className="font-[Poppins] font-bold text-[20px] leading-[28px] text-white m-0">
+            {name}
+          </h3>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function Sectors() {
   const scrollRef = useRef(null);
@@ -70,39 +149,40 @@ function Sectors() {
 
         <div
           ref={scrollRef}
-          className="flex gap-6 overflow-x-auto no-scrollbar pb-4 -mx-4 px-4 snap-x snap-mandatory"
+          className="flex gap-5 overflow-x-auto no-scrollbar pb-4 -mx-4 px-4 snap-x snap-mandatory"
         >
-          {industries.map((service) => {
-            const name = service.name;
-            const image = service.image;
-
-            return (
-              <div
-                key={name}
-                className="group relative w-[280px] h-[420px] min-w-[280px] rounded-[20px] overflow-hidden cursor-pointer snap-start bg-transparent shadow-[0px_4px_20px_0px_#00000014]"
-              >
-                {image ? (
-                  <img
-                    src={image}
-                    alt={name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#004CA5] via-[#2b6cb0] to-[#77c0f4] text-center text-sm font-semibold text-white">
-                    {name}
-                  </div>
-                )}
-                <div className="absolute inset-0" style={{ background: "linear-gradient(0deg, rgba(0, 15, 40, 0.9) 30%, rgba(0, 15, 40, 0.35) 100%)" }} />
-                <div className="absolute left-0 top-0 w-[280px] h-[420px] flex flex-col justify-end items-start p-7">
-                  <div className="w-[224px] pb-2">
-                    <h3 className="font-heading font-bold text-[20px] leading-[28px] text-white">{name}</h3>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          {industries.map((industry) => (
+            <SectorCard
+              key={industry.name}
+              name={industry.name}
+              image={industry.image}
+              description={industry.description}
+            />
+          ))}
         </div>
       </div>
+
+      <style>{`
+        .sector-card .sector-desc {
+          max-height: 0;
+          opacity: 0;
+          margin-bottom: 0;
+          overflow: hidden;
+          transition: max-height 0.3s ease, opacity 0.3s ease, margin-bottom 0.3s ease;
+        }
+        .sector-card:hover .sector-desc {
+          max-height: 200px;
+          opacity: 1;
+          margin-bottom: 12px;
+        }
+        @media (max-width: 1024px) {
+          .sector-card .sector-desc {
+            max-height: 200px !important;
+            opacity: 1 !important;
+            margin-bottom: 12px !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

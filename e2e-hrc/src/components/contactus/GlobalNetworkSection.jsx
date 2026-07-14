@@ -3,15 +3,16 @@ import { createPortal } from 'react-dom';
 import { FiMapPin, FiClock, FiX, FiCompass } from 'react-icons/fi';
 import { FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
 
+import useCountUp from '../../hooks/useCountUp';
 import OfficeInfoCard from '../OfficeInfoCard';
 
 import mapBase from '../../assets/about us images/map image.png';
 
 const statsData = [
-  { value: '18+', label: 'YEARS EXP' },
-  { value: '450+', label: 'CLIENTS' },
-  { value: '12k+', label: 'PLACEMENTS' },
-  { value: '4', label: 'REGIONAL HUBS' },
+  { target: 18, suffix: '+', label: 'YEARS EXP', delay: 100 },
+  { target: 450, suffix: '+', label: 'CLIENTS', delay: 200 },
+  { target: 12, suffix: 'k+', label: 'PLACEMENTS', delay: 300 },
+  { target: 4, suffix: '', label: 'REGIONAL HUBS', delay: 400 },
 ];
 
 const locationMarkers = [
@@ -84,6 +85,40 @@ export default function GlobalNetworkSection() {
 
   const hideCard = useCallback(() => setActiveOfficeCard(null), []);
 
+  function AnimatedStat({ target, suffix, label, delay }) {
+    const { count, done } = useCountUp(target, 1500, delay);
+    const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+      const t = setTimeout(() => setVisible(true), delay);
+      return () => clearTimeout(t);
+    }, [delay]);
+
+    return (
+      <div className="text-center" style={{ flex: '1 1 40%', maxWidth: '244px' }}>
+        <p
+          className="font-['Hanken_Grotesk'] font-bold text-[32px] leading-[38px] md:text-[48px] md:leading-[56px] tracking-[-0.64px] md:tracking-[-0.96px] text-[#004CA5]"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateY(0)' : 'translateY(10px)',
+            transition: 'opacity 0.4s ease-out, transform 0.4s ease-out',
+          }}
+        >
+          <span style={{
+            display: 'inline-block',
+            transform: done ? 'scale(1.12)' : 'scale(1)',
+            transition: 'transform 0.3s ease-out',
+          }}>
+            {count}{suffix}
+          </span>
+        </p>
+        <p className="font-['Hanken_Grotesk'] font-normal text-base leading-6 text-[#424752]">
+          {label}
+        </p>
+      </div>
+    );
+  }
+
   return (
     <>
       <section className="bg-white py-10">
@@ -135,15 +170,14 @@ export default function GlobalNetworkSection() {
             </div>
 
             <div className="w-full flex flex-wrap justify-center items-start gap-8" style={{ maxWidth: '1072px' }}>
-              {statsData.map((stat, i) => (
-                <div key={i} className="text-center" style={{ flex: '1 1 40%', maxWidth: '244px' }}>
-                  <p className="font-['Hanken_Grotesk'] font-bold text-[32px] leading-[38px] md:text-[48px] md:leading-[56px] tracking-[-0.64px] md:tracking-[-0.96px] text-[#004CA5]">
-                    {stat.value}
-                  </p>
-                  <p className="font-['Hanken_Grotesk'] font-normal text-base leading-6 text-[#424752]">
-                    {stat.label}
-                  </p>
-                </div>
+              {statsData.map((stat) => (
+                <AnimatedStat
+                  key={stat.label}
+                  target={stat.target}
+                  suffix={stat.suffix}
+                  label={stat.label}
+                  delay={stat.delay}
+                />
               ))}
             </div>
           </div>

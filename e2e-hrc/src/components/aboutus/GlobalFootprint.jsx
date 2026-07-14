@@ -181,7 +181,7 @@ export default function GlobalFootprint() {
   return (
     <section
       style={{
-        width: "1440px", maxWidth: "100%", margin: "0 auto",
+        width: "100%", margin: "0 auto",
         display: "flex", flexDirection: "column", alignItems: "center",
         padding: "48px 0 47px", gap: "44px",
         background: "#FFFFFF", fontFamily: "'Inter', sans-serif",

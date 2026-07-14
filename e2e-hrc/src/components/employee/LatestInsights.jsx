@@ -78,7 +78,7 @@ export default function LatestInsights({
   ctaHref = '#',
 }) {
   return (
-    <section className="py-16 md:py-20 bg-[#F8FAFC]">
+    <section className="py-16 md:py-24 bg-[#F8FAFC]">
       <div className="insights-container mx-auto pl-[24px] pr-[24px] lg:pl-[124px] lg:pr-[32px]" style={{ maxWidth: '1440px' }}>
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 lg:gap-0 mb-10">
           <div>
@@ -100,8 +100,8 @@ export default function LatestInsights({
           </a>
         </div>
 
-        <div className="insights-grid flex flex-col lg:flex-row gap-8" style={{ maxWidth: '1284px' }}>
-          <div className="insights-featured relative group rounded-2xl overflow-hidden cursor-pointer w-full lg:w-[532px] h-[400px] lg:h-[480px] shrink-0">
+        <div className="insights-grid flex flex-col lg:flex-row lg:items-stretch gap-8" style={{ maxWidth: '1284px' }}>
+          <div className="insights-featured relative group rounded-2xl overflow-hidden cursor-pointer w-full lg:w-[532px] h-[400px] lg:h-auto lg:min-h-[480px] shrink-0">
             <img src={featured.image} alt={featured.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             <div className="insights-featured-text absolute bottom-0 left-0 right-0 p-6 lg:p-8">
@@ -138,7 +138,7 @@ export default function LatestInsights({
 
           <div className="insights-posts flex flex-col gap-5 flex-1 min-w-0">
             {posts.map((post) => (
-              <div key={post.title} className="insights-post-card flex flex-col sm:flex-row rounded-2xl overflow-hidden cursor-pointer group bg-[#FAFAFA] sm:h-[134px]">
+              <div key={post.title} className="insights-post-card flex-1 flex flex-col sm:flex-row rounded-2xl overflow-hidden cursor-pointer group bg-[#FAFAFA] sm:min-h-[134px]">
                 <div className="insights-post-img w-full sm:w-[144px] h-[180px] sm:h-full shrink-0 overflow-hidden">
                   <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 </div>
