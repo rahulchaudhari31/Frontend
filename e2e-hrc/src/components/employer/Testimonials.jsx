@@ -39,13 +39,13 @@ const testimonials = [
 ];
 
 const ChevronLeftIcon = () => (
-  <svg width="9" height="16" viewBox="0 0 9 16" fill="none">
+  <svg width="8.98" height="15.58" viewBox="0 0 9 16" fill="none">
     <path d="M8 1L1 8L8 15" stroke="#004CA5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
 const ChevronRightIcon = () => (
-  <svg width="9" height="16" viewBox="0 0 9 16" fill="none">
+  <svg width="8.98" height="15.58" viewBox="0 0 9 16" fill="none">
     <path d="M1 1L8 8L1 15" stroke="#004CA5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
@@ -56,7 +56,7 @@ function TestimonialCard({ t }) {
       className="testimonial-card"
       style={{
         position: "relative",
-        minWidth: 530,
+        width: 530,
         height: 388,
         background: "#FFFFFF",
         borderRadius: 12,
@@ -66,15 +66,15 @@ function TestimonialCard({ t }) {
       <div
         style={{
           position: "absolute",
-          left: "calc(50% - 200px)",
-          top: 53,
-          width: 402,
+          width: 400,
+          left: "calc(50% - 400px/2)",
+          top: 55,
           display: "flex",
           flexDirection: "column",
           gap: 30,
         }}
       >
-        <div style={{ display: "flex", flexDirection: "column", gap: 30, height: 170 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 30, width: 368, height: 170 }}>
           <h3
             style={{
               fontFamily: "Poppins, sans-serif",
@@ -95,6 +95,7 @@ function TestimonialCard({ t }) {
               lineHeight: "19px",
               color: "#000000",
               margin: 0,
+              maxWidth: 362,
             }}
           >
             {t.quote}
@@ -109,7 +110,7 @@ function TestimonialCard({ t }) {
           }}
         />
         <div style={{ display: "flex", alignItems: "center", justifyContent: t.brand === "Ford" ? "center" : "flex-start" }}>
-          <img src={t.logo} alt={t.brand} style={{ height: 40, objectFit: "contain" }} />
+          <img src={t.logo} alt={t.brand} style={{ width: 128.65, height: 45.95, objectFit: "contain" }} />
         </div>
       </div>
     </div>
@@ -161,7 +162,7 @@ export default function Testimonials() {
       style={{
         position: "relative",
         width: "100%",
-        padding: "43px 0 59px",
+        padding: "43px 100px 59px",
         gap: 50,
         display: "flex",
         flexDirection: "column",
@@ -171,12 +172,11 @@ export default function Testimonials() {
         boxSizing: "border-box",
       }}
     >
-
-      <div style={{ position: "relative", zIndex: 10, width: "100%", maxWidth: 1252, margin: "0 auto", padding: "0 100px", boxSizing: "border-box" }}>
+      <div style={{ position: "relative", zIndex: 10, width: "100%", maxWidth: 1240, margin: "0 auto", boxSizing: "border-box" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 30 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-              <div style={{ width: 80, borderTop: "1px solid #FFFFFF" }} />
+              <div style={{ width: 80, height: 0, borderTop: "1px solid #FFFFFF" }} />
               <span
                 style={{
                   display: "flex",
@@ -185,6 +185,8 @@ export default function Testimonials() {
                   gap: 10,
                   background: "#FFFFFF",
                   borderRadius: 20,
+                  width: 135,
+                  height: 32,
                   fontFamily: "Inter, sans-serif",
                   fontWeight: 400,
                   fontSize: 16,
@@ -217,7 +219,7 @@ export default function Testimonials() {
                 fontSize: 16,
                 lineHeight: "19px",
                 color: "#FFFFFF",
-                maxWidth: 580,
+                width: 580,
                 margin: 0,
                 display: "flex",
                 alignItems: "flex-end",
@@ -225,7 +227,7 @@ export default function Testimonials() {
             >
               Discover the stories and experiences of individuals and companies who have found success and excellence through E2E HRC
             </p>
-            <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 10, flex: 1 }}>
+            <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 10, width: 91.93 }}>
               <button
                 onClick={() => scroll("left")}
                 style={{
@@ -240,6 +242,8 @@ export default function Testimonials() {
                   cursor: "pointer",
                   boxSizing: "border-box",
                   flexShrink: 0,
+                  padding: "11.7px 17.56px",
+                  gap: 11.7,
                 }}
                 aria-label="Previous"
               >
@@ -257,6 +261,8 @@ export default function Testimonials() {
                   borderRadius: 58.52,
                   cursor: "pointer",
                   flexShrink: 0,
+                  padding: "11.7px 17.56px",
+                  gap: 11.7,
                 }}
                 aria-label="Next"
               >
