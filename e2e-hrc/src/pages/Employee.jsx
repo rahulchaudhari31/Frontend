@@ -1,5 +1,4 @@
-﻿import AnnouncementBar from '../components/AnnouncementBar';
-import Navbar from '../components/shared/Navbar';
+﻿import Navbar from '../components/shared/Navbar';
 import Footer from '../components/shared/Footer';
 import HeroSection from '../components/employee/HeroSection';
 import TestimonialsCarousel from '../components/employee/TestimonialsCarousel';
@@ -34,7 +33,6 @@ const testimonialsData = [
 export default function Employee() {
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
-      <AnnouncementBar />
       <Navbar variant="employee" />
 
       {/* ===== C. HERO SECTION ===== */}
