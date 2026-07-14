@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import './components/Home.css';
-import AnnouncementBar from './components/AnnouncementBar';
 import Navbar from './components/shared/Navbar';
 import Footer from './components/shared/Footer';
 import Home from './pages/Home';
@@ -17,7 +16,6 @@ export default function App() {
     <Routes>
       <Route path="/" element={
         <div className="min-h-screen bg-white">
-          <AnnouncementBar />
           <Navbar />
           <Home />
           <Footer />
@@ -25,7 +23,6 @@ export default function App() {
       } />
       <Route path="/about-us" element={
         <div className="min-h-screen bg-white">
-          <AnnouncementBar />
           <Navbar />
           <About />
           <Footer />
@@ -33,7 +30,6 @@ export default function App() {
       } />
       <Route path="/workforce-solutions" element={
         <div className="min-h-screen bg-white">
-          <AnnouncementBar />
           <Navbar />
           <WorkforceSolution />
           <Footer />
@@ -41,7 +37,6 @@ export default function App() {
       } />
       <Route path="/employer" element={
         <div className="min-h-screen bg-white">
-          <AnnouncementBar />
           <Navbar />
           <Employer />
           <Footer />

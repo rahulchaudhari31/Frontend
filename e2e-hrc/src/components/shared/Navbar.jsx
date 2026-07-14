@@ -22,6 +22,9 @@ const navLinks = [
   { label: 'Contact Us', to: '/contact-us' },
 ];
 
+const NAV_HEIGHT = 81;
+const TOP_BAR_HEIGHT = 48;
+
 export default function Navbar({ variant = 'home' }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isEmployer = variant === 'employer';
@@ -31,6 +34,7 @@ export default function Navbar({ variant = 'home' }) {
   const ctaBg = 'bg-[#F39308] hover:bg-[#E07D00]';
 
   const activePage = location.pathname;
+  const totalHeight = isEmployer ? NAV_HEIGHT + TOP_BAR_HEIGHT : NAV_HEIGHT;
 
   function renderLink({ label, to }, extraCls = '', onClick) {
     const isActive = to === activePage;
@@ -44,7 +48,17 @@ export default function Navbar({ variant = 'home' }) {
 
   return (
     <>
-      <div className="sticky top-0 z-50 w-full">
+      {/* Fixed navbar */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 9999,
+          width: '100%',
+        }}
+      >
         {isEmployer && (
           <>
             <style>{`
@@ -98,55 +112,58 @@ export default function Navbar({ variant = 'home' }) {
         <header
           className="bg-white w-full"
           style={{
-            height: '81px',
+            height: `${NAV_HEIGHT}px`,
             borderBottom: '1px solid #F3F4F6',
             boxShadow: '0px 1px 2px 0px #0000000D',
           }}
         >
-        <div className="flex items-center justify-between h-full max-w-[1440px] mx-auto px-6 xl:px-16">
-          <Link to="/" aria-label="E2E HRC home" className="flex shrink-0 items-center no-underline">
-            <img src={logoImage} alt="E2E HRC" width="146" height="58" className="block h-auto max-h-[58px] w-[146px] shrink-0 object-contain" />
-          </Link>
+          <div className="flex items-center justify-between h-full max-w-[1440px] mx-auto px-6 xl:px-16">
+            <Link to="/" aria-label="E2E HRC home" className="flex shrink-0 items-center no-underline">
+              <img src={logoImage} alt="E2E HRC" width="146" height="58" className="block h-auto max-h-[58px] w-[146px] shrink-0 object-contain" />
+            </Link>
 
-          <nav aria-label="Main navigation" className="hidden xl:flex items-center gap-1">
-            {navLinks.map((link) => renderLink(link, 'flex items-center px-3 py-2 text-[13px] font-semibold whitespace-nowrap rounded-md transition-colors duration-150'))}
-          </nav>
-
-          <Link
-            to="#"
-            className={`hidden xl:inline-flex items-center justify-center text-white text-[14px] font-semibold px-6 py-2.5 rounded-pill transition-colors duration-150 shrink-0 ${ctaBg}`}
-          >
-            Submit Vacancy / CV
-          </Link>
-
-          <button
-            className="xl:hidden text-primary p-2 rounded-md hover:bg-gray-50 transition-colors"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={mobileOpen}
-          >
-            {mobileOpen ? <FiX size={22} /> : <FiMenu size={22} />}
-          </button>
-        </div>
-
-        {mobileOpen && (
-          <div className="xl:hidden bg-white border-t border-gray-100 px-6 pb-5">
-            <nav aria-label="Mobile navigation" className="flex flex-col mt-2">
-              {navLinks.map((link) => renderLink(link, 'flex items-center justify-between py-3 text-sm font-semibold border-b border-gray-50 transition-colors duration-150', () => setMobileOpen(false)))}
+            <nav aria-label="Main navigation" className="hidden xl:flex items-center gap-1">
+              {navLinks.map((link) => renderLink(link, 'flex items-center px-3 py-2 text-[13px] font-semibold whitespace-nowrap rounded-md transition-colors duration-150'))}
             </nav>
-            <div className="mt-4">
-              <Link
-                to="#"
-                className={`flex items-center justify-center text-white text-sm font-semibold px-5 py-3 rounded-pill transition-colors duration-150 ${ctaBg}`}
-                onClick={() => setMobileOpen(false)}
-              >
-                Submit Vacancy / CV
-              </Link>
-            </div>
+
+            <Link
+              to="#"
+              className={`hidden xl:inline-flex items-center justify-center text-white text-[14px] font-semibold px-6 py-2.5 rounded-pill transition-colors duration-150 shrink-0 ${ctaBg}`}
+            >
+              Submit Vacancy / CV
+            </Link>
+
+            <button
+              className="xl:hidden text-primary p-2 rounded-md hover:bg-gray-50 transition-colors"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={mobileOpen}
+            >
+              {mobileOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+            </button>
           </div>
-        )}
-      </header>
+
+          {mobileOpen && (
+            <div className="xl:hidden bg-white border-t border-gray-100 px-6 pb-5">
+              <nav aria-label="Mobile navigation" className="flex flex-col mt-2">
+                {navLinks.map((link) => renderLink(link, 'flex items-center justify-between py-3 text-sm font-semibold border-b border-gray-50 transition-colors duration-150', () => setMobileOpen(false)))}
+              </nav>
+              <div className="mt-4">
+                <Link
+                  to="#"
+                  className={`flex items-center justify-center text-white text-sm font-semibold px-5 py-3 rounded-pill transition-colors duration-150 ${ctaBg}`}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Submit Vacancy / CV
+                </Link>
+              </div>
+            </div>
+          )}
+        </header>
       </div>
+
+      {/* Spacer to push page content below the fixed navbar */}
+      <div style={{ height: `${totalHeight}px`, width: '100%', flexShrink: 0 }} />
     </>
   );
 }
