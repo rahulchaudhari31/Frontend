@@ -1,4 +1,5 @@
 ﻿import { FiCalendar, FiClock } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 import executiveImg from '../../assets/our blog images/executive search.jpg';
 import complianceImg from '../../assets/our blog images/compliance.png';
@@ -67,9 +68,9 @@ export default function BlogPostsGrid() {
             <h2 className="font-heading font-semibold text-3xl max-sm:text-2xl text-[#1B1C1C]">
               All blog posts
             </h2>
-            <a href="#" className="font-['Hanken_Grotesk',sans-serif] text-base text-[#003679]">
+            <Link to="/blogs/navigating-leadership-transitions" className="font-['Hanken_Grotesk',sans-serif] text-base text-[#003679]">
               View All &rarr;
-            </a>
+            </Link>
           </div>
 
           <div className="grid grid-cols-2 max-md:grid-cols-1 gap-8">

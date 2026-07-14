@@ -37,7 +37,7 @@ export default function Navbar({ variant = 'home' }) {
   const totalHeight = isEmployer ? NAV_HEIGHT + TOP_BAR_HEIGHT : NAV_HEIGHT;
 
   function renderLink({ label, to }, extraCls = '', onClick) {
-    const isActive = to === activePage;
+    const isActive = to === activePage || (to === '/blogs' && activePage.startsWith('/blogs'));
     const cls = `${extraCls} ${isActive ? activeStyle : 'text-primary hover:text-accent'}`;
     return (
       <Link key={label} to={to} aria-current={isActive ? 'page' : undefined} className={cls} onClick={onClick}>

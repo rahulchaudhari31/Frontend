@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Employer from './pages/Employer';
 import Employee from './pages/Employee';
 import Blogs from './pages/Blogs';
+import BlogArticle from './pages/BlogArticle';
 import BecomePartner from './pages/BecomePartner';
 import ContactUs from './pages/ContactUs';
 import About from './pages/About';
@@ -44,6 +45,7 @@ export default function App() {
       } />
       <Route path="/employee" element={<Employee />} />
       <Route path="/blogs" element={<Blogs />} />
+      <Route path="/blogs/:slug" element={<BlogArticle />} />
       <Route path="/become-a-partner" element={<BecomePartner />} />
       <Route path="/contact-us" element={<ContactUs />} />
     </Routes>

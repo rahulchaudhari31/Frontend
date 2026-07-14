@@ -26,7 +26,7 @@ export default function BlogSection() {
           </div>
           <a
             href="#"
-            className="hidden sm:inline-flex text-accent font-semibold text-sm hover:text-orange-500 transition-colors"
+            className="hidden sm:inline-flex text-[#003679] font-semibold text-sm hover:text-[#002a5c] transition-colors"
           >
             View All Blog &rarr;
           </a>
@@ -70,7 +70,7 @@ export default function BlogSection() {
             ))}
             <a
               href="#"
-              className="sm:hidden text-accent font-semibold text-sm hover:text-orange-500 transition-colors mt-2"
+              className="sm:hidden text-[#003679] font-semibold text-sm hover:text-[#002a5c] transition-colors mt-2"
             >
               View All Blog &rarr;
             </a>

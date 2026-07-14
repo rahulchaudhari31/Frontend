@@ -188,11 +188,11 @@ function BlogSection({ posts = defaultPosts }) {
             backgroundColor: "transparent", cursor: "pointer", boxSizing: "border-box", flexShrink: 0,
           }}>
             <span style={{
-              fontFamily: "Poppins, sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "20px", color: "#004CA5",
+              fontFamily: "Poppins, sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "20px", color: "#003679",
             }}>
               View All Articles
             </span>
-            <ArrowRight size={15} color="#004CA5" />
+            <ArrowRight size={15} color="#003679" />
           </button>
         </div>
 
