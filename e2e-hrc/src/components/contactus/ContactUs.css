@@ -1,7 +1,5 @@
 /* ========================================================
-   Contact Us Page - Mobile Responsive Styles
-   Targets: 320px–768px only
-   Desktop (1024px+) is untouched
+   Contact Us Page - Responsive Styles
    ======================================================== */
 
 /* ---- TABLETS / MOBILE LANDSCAPE (max-width: 768px) ---- */
@@ -46,6 +44,18 @@
 
   .info-card {
     padding: 28px 20px !important;
+  }
+}
+
+/* ---- MEDIUM SCREENS (max-width: 1024px) ---- */
+@media (max-width: 1024px) {
+  .hero-section {
+    padding: 48px 40px !important;
+  }
+
+  .hero-heading {
+    font-size: 48px !important;
+    line-height: 42px !important;
   }
 }
 

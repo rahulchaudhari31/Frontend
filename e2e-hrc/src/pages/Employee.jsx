@@ -20,19 +20,19 @@ import LatestInsights from '../components/employee/LatestInsights';
 const testimonialsData = [
   {
     title: 'Efficient and Effective Hiring Process!',
-    quote: "The efficiency of Applyfier's hiring process is commendable. The platform's intuitive interface, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.",
+    quote: "The efficiency of E2E HRC's hiring process is commendable. Their intuitive approach, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.",
     logo: '/images/employee/Union.png',
     alt: 'Ford',
   },
   {
     title: 'Top-Notch Talent at Our Fingertips!',
-    quote: "As an employer, finding top-notch talent is crucial for our success. Applyfier has been our go-to platform for hiring. The automated candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
+    quote: "As an employer, finding top-notch talent is crucial for our success. E2E HRC has been our go-to partner for hiring. Their candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
     logo: '/images/employee/disnep1.png',
     alt: 'Disney',
   },
   {
     title: 'Top-Notch Talent at Our Fingertips!',
-    quote: "As an employer, finding top-notch talent is crucial for our success. Applyfier has been our go-to platform for hiring. The automated candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
+    quote: "As an employer, finding top-notch talent is crucial for our success. E2E HRC has been our go-to partner for hiring. Their candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
     logo: '/images/employee/disnep1.png',
     alt: 'Disney',
   },
