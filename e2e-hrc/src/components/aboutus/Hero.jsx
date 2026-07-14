@@ -1,13 +1,11 @@
 import React from "react";
 import bgImage from "../../assets/image/About us image.jpg";
+import { ArrowRight, Search } from "lucide-react";
 
 export default function HeroSection() {
   const subtitle = "Trusted";
-  const description = "We are more than a recruitment agency; we are strategic partners in your growth. E2E Consultancy connects visionary organizations with exceptional human capital across the globe, ensuring precision, compliance, and long-term success.";
-  const button1Text = "Submit a Vacancy";
-  const button1Link = "#";
-  const button2Text = "Upload CV";
-  const button2Link = "#";
+  const description =
+    "We are more than a recruitment agency; we are strategic partners in your growth. E2E Consultancy connects visionary organizations with exceptional human capital across the globe, ensuring precision, compliance, and long-term success.";
 
   return (
     <section
@@ -18,10 +16,10 @@ export default function HeroSection() {
         display: "flex",
         alignItems: "center",
         overflow: "hidden",
-        fontFamily:
-          "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        fontFamily: "'Inter', sans-serif",
       }}
     >
+      {/* Background image */}
       <div
         style={{
           position: "absolute",
@@ -32,6 +30,7 @@ export default function HeroSection() {
         }}
       />
 
+      {/* Dark overlay */}
       <div
         style={{
           position: "absolute",
@@ -41,6 +40,7 @@ export default function HeroSection() {
         }}
       />
 
+      {/* Content */}
       <div
         style={{
           position: "relative",
@@ -49,6 +49,7 @@ export default function HeroSection() {
           padding: "48px 64px",
         }}
       >
+        {/* Eyebrow badge */}
         <div
           style={{
             display: "inline-flex",
@@ -71,17 +72,12 @@ export default function HeroSection() {
               display: "inline-block",
             }}
           />
-          <span
-            style={{
-              color: "#ffffff",
-              fontSize: "13px",
-              fontWeight: 500,
-            }}
-          >
+          <span style={{ color: "#ffffff", fontSize: "13px", fontWeight: 500 }}>
             {subtitle}
           </span>
         </div>
 
+        {/* Heading */}
         <h1
           style={{
             margin: 0,
@@ -96,6 +92,7 @@ export default function HeroSection() {
           <span style={{ color: "#004CA5" }}>Building Futures.</span>
         </h1>
 
+        {/* Description */}
         <p
           style={{
             marginTop: "20px",
@@ -109,50 +106,25 @@ export default function HeroSection() {
           {description}
         </p>
 
-        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-          {button1Text ? (
-            <a
-              href={button1Link}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                background: "#f59e0b",
-                color: "#ffffff",
-                border: "none",
-                borderRadius: "8px",
-                padding: "14px 26px",
-                fontSize: "15px",
-                fontWeight: 600,
-                cursor: "pointer",
-                textDecoration: "none",
-              }}
-            >
-              {button1Text} <span aria-hidden="true">&#8594;</span>
-            </a>
-          ) : null}
+        {/* Button group */}
+        <div className="flex flex-wrap items-start gap-4 pt-4">
+          {/* Button 1 — Hire Talent (primary) */}
+          <a
+            href="#"
+            className="flex items-center justify-center gap-2 py-[17px] px-8 bg-[#F39308] hover:bg-[#d9820a] text-[#004CA5] font-inter font-semibold text-sm tracking-[0.7px] rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#00458D] no-underline"
+          >
+            Hire Talent
+            <ArrowRight className="w-[13.33px] h-[13.33px] text-[#004CA5]" strokeWidth={2} />
+          </a>
 
-          {button2Text ? (
-            <a
-              href={button2Link}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                background: "#ffffff",
-                color: "#1e293b",
-                border: "none",
-                borderRadius: "8px",
-                padding: "14px 26px",
-                fontSize: "15px",
-                fontWeight: 600,
-                cursor: "pointer",
-                textDecoration: "none",
-              }}
-            >
-              {button2Text} <span aria-hidden="true">🔍</span>
-            </a>
-          ) : null}
+          {/* Button 2 — Find Opportunities (outline) */}
+          <a
+            href="#"
+            className="flex items-center justify-center gap-2 py-4 px-8 bg-[#F7F9FB] hover:bg-[#EDF0F4] border border-[#C2C6D4] text-[#004CA5] font-inter font-semibold text-sm tracking-[0.7px] rounded-full transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#00458D] no-underline"
+          >
+            Find Opportunities
+            <Search className="w-[15px] h-[15px] text-[#00458D]" strokeWidth={2} />
+          </a>
         </div>
       </div>
     </section>
