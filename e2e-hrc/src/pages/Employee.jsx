@@ -96,31 +96,81 @@ export default function Employee() {
       <LatestInsights />
 
       {/* ===== G. TESTIMONIALS ===== */}
-      <section className="emp-testimonials relative overflow-hidden" style={{ background: 'url(/images/employee/background%20Testimonials.png) center/cover no-repeat', padding: '43px 100px 59px 100px' }}>
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'rgba(0,0,0,0.6)' }} />
-        <div className="emp-testimonials-inner relative z-10 mx-auto flex flex-col" style={{ maxWidth: '1240px', gap: '50px' }}>
-
-          <div className="emp-testimonials-top flex flex-col" style={{ width: '100%', gap: '40px' }}>
-            <div className="emp-testimonials-header flex flex-col" style={{ width: '100%', gap: '30px' }}>
-              <div className="emp-testimonials-badge flex items-center" style={{ gap: '20px', height: '32px' }}>
-                <div style={{ width: '80px', borderTop: '1px solid #FFFFFF' }} />
-                <span className="bg-white inline-flex items-center justify-center" style={{ width: '135px', height: '32px', padding: '10px 20px', borderRadius: '20px', gap: '10px' }}>
-                  <span className="font-[Inter] text-[16px] leading-[19px] text-[#F39308]" style={{ fontWeight: 400 }}>Testimonials</span>
+      <section
+        style={{
+          position: "relative",
+          width: "100%",
+          padding: "43px 100px 59px",
+          gap: 50,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          background: "linear-gradient(0deg, rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(/images/employee/background%20Testimonials.png) center/cover no-repeat",
+          overflow: "hidden",
+          boxSizing: "border-box",
+        }}
+      >
+        <div style={{ position: "relative", zIndex: 10, width: "100%", maxWidth: 1240, margin: "0 auto", boxSizing: "border-box" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 30 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+                <div style={{ width: 80, height: 0, borderTop: "1px solid #FFFFFF" }} />
+                <span
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "10px 20px",
+                    gap: 10,
+                    background: "#FFFFFF",
+                    borderRadius: 20,
+                    width: 135,
+                    height: 32,
+                    fontFamily: "Inter, sans-serif",
+                    fontWeight: 400,
+                    fontSize: 16,
+                    lineHeight: "19px",
+                    color: "#F39308",
+                  }}
+                >
+                  Testimonials
                 </span>
               </div>
-              <h2 className="emp-testimonials-heading font-[Poppins] font-semibold text-[36px] text-white m-0" style={{ width: '100%', lineHeight: '76px', letterSpacing: '0%' }}>
+              <h2
+                style={{
+                  fontFamily: "Poppins, sans-serif",
+                  fontWeight: 600,
+                  fontSize: 36,
+                  lineHeight: "76px",
+                  color: "#FFFFFF",
+                  margin: 0,
+                }}
+              >
                 What our candidates say
               </h2>
             </div>
 
-            <div className="emp-testimonials-controls flex items-start" style={{ width: '100%', gap: '568px' }}>
-              <p className="emp-testimonials-desc font-[Inter] text-white m-0" style={{ width: '100%', maxWidth: '580px', fontSize: '16px', lineHeight: '19px', fontWeight: 400, display: 'flex', alignItems: 'flex-end' }}>
-                Discover the stories and experiences of individuals and companies who have found success and excellence through Applyfier
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 568, width: "100%" }}>
+              <p
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: 400,
+                  fontSize: 16,
+                  lineHeight: "19px",
+                  color: "#FFFFFF",
+                  width: 580,
+                  margin: 0,
+                  display: "flex",
+                  alignItems: "flex-end",
+                }}
+              >
+                Discover the stories and experiences of individuals and companies who have found success and excellence through E2E HRC
               </p>
             </div>
           </div>
 
-          <TestimonialsCarousel data={testimonialsData} speed={30} />
+          <div style={{ marginTop: 20 }}>
+            <TestimonialsCarousel data={testimonialsData} speed={30} />
+          </div>
         </div>
       </section>
 
