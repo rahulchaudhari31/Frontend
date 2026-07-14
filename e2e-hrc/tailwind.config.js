@@ -24,6 +24,8 @@ export default {
         body: ['Inter', 'Poppins', 'sans-serif'],
         display: ['Playfair Display', 'serif'],
         montserrat: ['Montserrat', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
       },
       borderRadius: {
         card: '12px',

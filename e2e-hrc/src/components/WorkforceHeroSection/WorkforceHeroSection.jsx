@@ -14,19 +14,20 @@ export default function WorkforceHeroSection() {
     <div className={styles.sectionWrapper}>
       <section
         className={styles.section}
-        aria-label="Workforce Solutions Hero"
+        aria-label="Our Workforce Solutions"
       >
         <div className={styles.container}>
           <div className={styles.innerContainer}>
 
             {/* LEFT — badge + heading + body */}
             <div className={styles.leftText}>
-              <div className={styles.leftBg} />
               <span className={styles.badge}>
                 STRATEGIC • FLEXIBLE • GLOBAL
               </span>
               <h1 className={styles.heading}>
-                Workforce Solutions That Drive Business Growth
+                Workforce Solutions<br />
+                That Drive<br />
+                <span className={styles.headingAccent}>Business Growth</span>
               </h1>
               <p className={styles.body}>
                 At E2E Human Resource Consultancy, we provide end-to-end workforce
@@ -35,15 +36,16 @@ export default function WorkforceHeroSection() {
               </p>
             </div>
 
-            {/* RIGHT — image + overlay */}
-            <div className={styles.leftImage}>
-              <div className={styles.imageWrapper}>
-                <div className={styles.overlay} />
+            {/* RIGHT — image + background shapes */}
+            <div className={styles.rightImage}>
+              <div className={styles.imageBgShape1} />
+              <div className={styles.imageBgShape2}>
                 <img
                   src={heroImage}
                   alt="E2E HRC team collaborating in a modern office"
                   className={styles.heroImage}
                 />
+                <div className={styles.imageOverlay} />
               </div>
             </div>
 

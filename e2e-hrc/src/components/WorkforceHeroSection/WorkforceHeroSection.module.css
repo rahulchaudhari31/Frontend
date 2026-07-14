@@ -1,6 +1,5 @@
 /* ─────────────────────────────────────────
-   Page-level wrapper — positions section
-   exactly at top: 129px on a 1440 canvas
+   Page-level wrapper
 ───────────────────────────────────────── */
 .sectionWrapper {
   width: 100%;
@@ -10,8 +9,8 @@
 }
 
 /* ─────────────────────────────────────────
-   Section  — Figma frame
-   width: 1440 | height: 626 | top: 129
+   Section — Figma frame
+   1440×626, top: 129
    padding: 4px 64px 40px 64px
    gap: 64px | bg: #FFFFFF
 ───────────────────────────────────────── */
@@ -21,21 +20,16 @@
   max-width: 100%;
   height: 626px;
   background: #ffffff;
-
-  padding-top: 4px;
-  padding-right: 64px;
-  padding-bottom: 40px;
-  padding-left: 64px;
+  padding: 4px 64px 40px 64px;
   box-sizing: border-box;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: flex-end;
 }
 
 /* ─────────────────────────────────────────
-   Container — 1200px centered, 582px height
+   Container (outer) — 1200×582
 ───────────────────────────────────────── */
 .container {
   width: 1200px;
@@ -43,48 +37,29 @@
   height: 582px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding: 0;
+  align-items: center;
 }
 
 /* ─────────────────────────────────────────
-   Inner Container — flex row, gap 170px
-   1200×504, margin: -33px 0
-   align-self: stretch
+   Container (row) — 1200×504
+   gap: 170px | margin: -33px 0
 ───────────────────────────────────────── */
 .innerContainer {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   gap: 170px;
   width: 1200px;
   height: 504px;
-  align-self: stretch;
   margin: -33px 0;
   position: relative;
+  isolation: isolate;
 }
 
 /* ─────────────────────────────────────────
-   LEFT IMAGE — image on left side
-───────────────────────────────────────── */
-.leftImage {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  width: 460px;
-  height: 473px;
-  z-index: 0;
-  position: relative;
-  margin-top: 20px;
-  margin-left: -100px;
-  flex-shrink: 0;
-}
-
-/* ─────────────────────────────────────────
-   LEFT TEXT — badge + heading + body on right side
-   752×362, z-index 1
-   flex-column, gap 32px
+   LEFT TEXT BLOCK — 752×362, z-index: 1
+   flex-column, gap: 32px
 ───────────────────────────────────────── */
 .leftText {
   display: flex;
@@ -98,34 +73,13 @@
 }
 
 /* ─────────────────────────────────────────
-   Left decorative background shape
-   696×481, radius 100px left, bg #0036790D
-───────────────────────────────────────── */
-.leftBg {
-  position: absolute;
-  width: 696px;
-  height: 481px;
-  top: 50%;
-  left: -30px;
-  transform: translateY(-50%);
-  background: #0036790D;
-  border-top-left-radius: 100px;
-  border-bottom-left-radius: 100px;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.leftText > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* ─────────────────────────────────────────
-   Badge pill — Figma exact
-   249.3×34, bg rgba(253,171,12,0.1)
-   border 1px solid rgba(253,171,12,0.2)
-   radius 9999px, text #F39308
-   Hanken Grotesk 700 12px
+   Badge/Pill — "STRATEGIC • FLEXIBLE • GLOBAL"
+   padding: 8px 16px, width: ~249px, height: 34px
+   bg: rgba(253,171,12,0.1)
+   border: 1px solid rgba(253,171,12,0.2)
+   radius: 9999px
+   text: Hanken Grotesk 700 12px/16px
+   letter-spacing: 1.2px, uppercase, color: #F39308
 ───────────────────────────────────────── */
 .badge {
   display: inline-flex;
@@ -149,8 +103,10 @@
 
 /* ─────────────────────────────────────────
    Heading — 752×180
-   Inter 800 60px
+   Inter 800 60px/60px
    letter-spacing: -0.96px
+   Line 1 & 2: #004CA5
+   Line 3 "Business Growth": #F39308
 ───────────────────────────────────────── */
 .heading {
   margin: 0;
@@ -163,14 +119,16 @@
   line-height: 60px;
   letter-spacing: -0.96px;
   color: #004CA5;
-  display: flex;
-  align-items: center;
+}
+
+.headingAccent {
+  color: #F39308;
 }
 
 /* ─────────────────────────────────────────
    Body — 576×84
-   Source Sans 3 400 18px, color #424752
-   line-height: 28px (156%)
+   Source Sans 3 400 18px/28px
+   color: #424752
 ───────────────────────────────────────── */
 .body {
   margin: 0;
@@ -186,47 +144,83 @@
 }
 
 /* ─────────────────────────────────────────
-   Image wrapper + overlay
-   radius: 100px 0 0 100px
+   RIGHT IMAGE BLOCK — 460×473
+   isolation: isolate, z-index: 0
 ───────────────────────────────────────── */
-.imageWrapper {
+.rightImage {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  width: 460px;
+  height: 473px;
+  isolation: isolate;
+  z-index: 0;
   position: relative;
-  width: 460px;
-  height: 473px;
+  flex-shrink: 0;
 }
 
-.heroImage {
+/* ─────────────────────────────────────────
+   Background shape 1 (behind image, offset left)
+   bg: rgba(0,54,121,0.05)
+   border-radius: 100px 0 0 100px
+   top: 38.5px, bottom: -46.5px
+   left: -75.74%, right: 24.47%
+───────────────────────────────────────── */
+.imageBgShape1 {
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 460px;
-  height: 473px;
-  object-fit: cover;
-  border-radius: 100px 0px 0px 100px;
-  display: block;
-  z-index: 1;
-}
-
-.overlay {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  top: 38.5px;
+  bottom: -46.5px;
+  left: -75.74%;
+  right: 24.47%;
   background: rgba(0, 54, 121, 0.05);
-  border-radius: 100px 0px 0px 100px;
+  border-radius: 100px 0 0 100px;
   z-index: 0;
   pointer-events: none;
 }
 
 /* ─────────────────────────────────────────
-   Stats card — Figma exact
-   952×110, padding 32px, gap 32px
+   Background shape 2 (image container)
+   bg-image: hero image + rgba(0,54,121,0.05) overlay
+   border-radius: 100px 0 0 100px
+   top: 38.5px, bottom: -46.5px
+   left: -57.54%, right: 6.26%
+───────────────────────────────────────── */
+.imageBgShape2 {
+  position: absolute;
+  top: 38.5px;
+  bottom: -46.5px;
+  left: -57.54%;
+  right: 6.26%;
+  border-radius: 100px 0 0 100px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 54, 121, 0.05);
+  border-radius: 100px 0 0 100px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ─────────────────────────────────────────
+   Stats Bar (floating card)
+   952×110, padding: 32px, gap: 32px
+   bg: #FFFFFF
    border: 1px solid rgba(195,198,212,0.3)
-   radius: 16px
-   shadow: 0 10px 15px -3px rgba(0,0,0,0.1),
-           0 4px 6px -4px rgba(0,0,0,0.1)
-   flex-grow: 0
+   border-radius: 16px
+   box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),
+               0 4px 6px -4px rgba(0,0,0,0.1)
 ───────────────────────────────────────── */
 .statsCard {
   position: relative;
@@ -236,7 +230,8 @@
   background: #ffffff;
   border: 1px solid rgba(195, 198, 212, 0.3);
   border-radius: 16px;
-  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1),
+              0px 4px 6px -4px rgba(0, 0, 0, 0.1);
   padding: 32px;
   box-sizing: border-box;
   display: flex;
@@ -247,8 +242,7 @@
 }
 
 /* ─────────────────────────────────────────
-   Stat item — Figma exact
-   row, gap 16, flex-grow 1
+   Stat item — row, gap 16, flex-grow 1
 ───────────────────────────────────────── */
 .statItem {
   display: flex;
@@ -261,8 +255,7 @@
 }
 
 /* ─────────────────────────────────────────
-   Stat icon — Figma exact
-   33×31.5 bg #FDAB0C, or similar sizes
+   Stat icon — 36×36 bg #FDAB0C, radius 6px
 ───────────────────────────────────────── */
 .statIcon {
   display: flex;
@@ -286,8 +279,8 @@
 }
 
 /* ─────────────────────────────────────────
-   Stat value — Figma exact
-   Hanken Grotesk 700 16px, #003679
+   Stat value — Hanken Grotesk 700 16px/24px
+   color: #003679
 ───────────────────────────────────────── */
 .statValue {
   margin: 0;
@@ -300,8 +293,8 @@
 }
 
 /* ─────────────────────────────────────────
-   Stat label — Figma exact
-   Source Sans 3 400 14px, #424752
+   Stat label — Source Sans 3 400 14px/20px
+   color: #424752
 ───────────────────────────────────────── */
 .statLabel {
   margin: 0;
@@ -321,6 +314,7 @@
     width: 100%;
     height: auto;
     padding: 4px 32px 40px 32px;
+    align-items: center;
   }
 
   .container {
@@ -333,6 +327,11 @@
     height: auto;
     gap: 60px;
     flex-direction: column;
+  }
+
+  .leftText {
+    width: 100%;
+    height: auto;
   }
 
   .heading {
@@ -348,19 +347,21 @@
     height: auto;
   }
 
-  .leftImage {
+  .rightImage {
     width: 100%;
     height: 380px;
+    justify-content: center;
   }
 
-  .imageWrapper {
+  .imageBgShape1,
+  .imageBgShape2 {
+    position: relative;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    right: auto;
     width: 100%;
-    height: 380px;
-  }
-
-  .leftText {
-    width: 100%;
-    height: auto;
+    height: 100%;
   }
 
   .statsCard {
@@ -410,23 +411,26 @@
     height: auto;
   }
 
-  .leftImage {
+  .rightImage {
     width: 100%;
     height: 240px;
     justify-content: center;
   }
 
-  .imageWrapper {
+  .imageBgShape1,
+  .imageBgShape2 {
+    position: relative;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    right: auto;
     width: 100%;
-    height: 240px;
-  }
-
-  .heroImage {
+    height: 100%;
     border-radius: 16px;
   }
 
-  .overlay {
-    display: none;
+  .imageOverlay {
+    border-radius: 16px;
   }
 
   .statsCard {

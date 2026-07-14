@@ -5,7 +5,7 @@ const C = {
   blue: "#00458D",
   orange: "#F5871F",
   lime: "#C6D93C",
-  cream: "#F3F1ED",
+  cream: "#F0F4F8",
   white: "#FFFFFF",
   heading: "#191C1E",
   body: "#424752",

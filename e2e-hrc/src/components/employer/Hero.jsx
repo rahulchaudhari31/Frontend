@@ -6,14 +6,14 @@ export default function Hero() {
     <section
       style={{
         position: "relative",
-        width: "1440px",
-        maxWidth: "100%",
+        width: "100%",
         height: "491px",
         background: backgroundImage
           ? `linear-gradient(0deg, rgba(0,0,0,0.58), rgba(0,0,0,0.58)), url(${backgroundImage}) center/cover no-repeat`
           : "linear-gradient(0deg, rgba(0,0,0,0.58), rgba(0,0,0,0.58)) #000",
         fontFamily: "'Inter', sans-serif",
         overflow: "hidden",
+        flexShrink: 0,
       }}
     >
       <div
