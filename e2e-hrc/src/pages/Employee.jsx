@@ -6,16 +6,9 @@ import TestimonialsCarousel from '../components/employee/TestimonialsCarousel';
 import WhyChooseE2E from '../components/employee/WhyChooseE2E';
 import './Employee.css';
 
-import sectorConstruction from '../assets/sectors/construction.jpg';
-import sectorEducation from '../assets/sectors/education.jpg';
-import sectorEngineering from '../assets/sectors/engineering.jpg';
-import sectorFinance from '../assets/sectors/finance.jpg';
-import sectorHealthcare from '../assets/sectors/healthcare.jpg';
-import sectorIT from '../assets/sectors/it technology.jpg';
-import sectorLogistics from '../assets/sectors/logistics.jpg';
-import sectorManufacturing from '../assets/sectors/manuifacturing.jpg';
 import FAQAndCTA from '../components/FAQAndCTA';
 import LatestInsights from '../components/employee/LatestInsights';
+import IndustriesSection from '../components/employee/IndustriesSection';
 
 const testimonialsData = [
   {
@@ -38,20 +31,7 @@ const testimonialsData = [
   },
 ];
 
-import { useRef } from 'react';
-
 export default function Employee() {
-  const trackRef = useRef(null);
-
-  const scroll = (direction) => {
-    if (!trackRef.current) return;
-    const scrollAmount = 300;
-    trackRef.current.scrollBy({
-      left: direction === 'next' ? scrollAmount : -scrollAmount,
-      behavior: 'smooth',
-    });
-  };
-
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
       <AnnouncementBar />
@@ -108,52 +88,7 @@ export default function Employee() {
       <WhyChooseE2E />
 
       {/* ===== F. DEEP EXPERTISE ACROSS 25+ SECTORS ===== */}
-      <section className="industries-section">
-        <div className="industries-header">
-          <div className="industries-header-left">
-            <div className="industries-badge">Industries We Serve</div>
-            <h2 className="industries-heading">Deep expertise across 25+ sectors</h2>
-          </div>
-          <div className="industries-nav">
-            <button className="industries-nav-btn" aria-label="Previous" onClick={() => scroll('prev')}>
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <path d="M11.25 13.5L6.75 9L11.25 4.5" stroke="#004CA5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            <button className="industries-nav-btn" aria-label="Next" onClick={() => scroll('next')}>
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <path d="M6.75 4.5L11.25 9L6.75 13.5" stroke="#004CA5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <div className="industries-cards-wrapper">
-          <div className="industries-cards-track" ref={trackRef}>
-            {[
-              { name: 'Manufacturing', image: sectorManufacturing },
-              { name: 'Healthcare', image: sectorHealthcare },
-              { name: 'Engineering', image: sectorEngineering },
-              { name: 'Construction', image: sectorConstruction },
-              { name: 'Logistics', image: sectorLogistics },
-              { name: 'Finance', image: sectorFinance },
-              { name: 'Education', image: sectorEducation },
-              { name: 'IT Technology', image: sectorIT },
-            ].map((sector) => (
-              <div key={sector.name} className="industries-card">
-                <img src={sector.image} alt={sector.name} className="industries-card-img" loading="lazy" />
-                <div className="industries-card-overlay" />
-                <div className="industries-card-content">
-                  <div className="industries-card-heading-wrap">
-                    <h3 className="industries-card-title">{sector.name}</h3>
-                  </div>
-                  <div className="industries-card-link"></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <IndustriesSection />
 
       <FAQAndCTA />
 

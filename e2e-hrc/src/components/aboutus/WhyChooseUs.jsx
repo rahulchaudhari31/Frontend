@@ -62,8 +62,7 @@ const WhyChooseUs = () => {
   return (
     <section
       style={{
-        width: "1440px",
-        maxWidth: "100%",
+        width: "100%",
         background: "#F3F1ED",
         fontFamily: "'Inter', sans-serif",
         position: "relative",

@@ -7,8 +7,6 @@ export default function HeroSection() {
       style={{
         position: 'relative',
         width: '100%',
-        maxWidth: '1440px',
-        margin: '0 auto',
         height: '515px',
         padding: '55px 64px',
         borderTop: '1px solid #EAE8E7',

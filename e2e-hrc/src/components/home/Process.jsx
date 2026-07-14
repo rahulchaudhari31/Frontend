@@ -142,16 +142,23 @@ function Process() {
             className="hidden lg:flex flex-col items-center mx-auto px-4 lg:px-8"
             style={{ paddingTop: 140 }}
           >
-            <div style={{ width: 160, height: 160, position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div className="e2e-badge-wrapper" style={{ width: 160, height: 160, position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <div
+                className="e2e-dashed-ring"
                 style={{
                   width: 160, height: 160, borderRadius: "50%",
                   border: "1.6px dashed rgba(0,92,185,0.2)",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   position: "absolute", zIndex: 0,
                 }}
-              />
+              >
+                <span className="e2e-dot e2e-dot-orange-top" style={{ position: "absolute", top: 0, left: "48%", width: "4%", height: 8, background: "#F5A300", borderRadius: 4 }} />
+                <span className="e2e-dot e2e-dot-orange-bottom" style={{ position: "absolute", bottom: 0, left: "48%", width: "4%", height: 8, background: "#F5A300", borderRadius: 4 }} />
+                <span className="e2e-dot e2e-dot-green-left" style={{ position: "absolute", left: 0, top: "48%", width: 8, height: "4%", background: "#C8D96F", borderRadius: 4 }} />
+                <span className="e2e-dot e2e-dot-green-right" style={{ position: "absolute", right: 0, top: "48%", width: 8, height: "4%", background: "#C8D96F", borderRadius: 4 }} />
+              </div>
               <div
+                className="e2e-blue-ring"
                 style={{
                   width: 112, height: 112, borderRadius: "50%",
                   border: "1.6px solid rgba(0,92,185,0.3)",
@@ -159,7 +166,7 @@ function Process() {
                 }}
               >
                 <div
-                  className="flex items-center justify-center"
+                  className="e2e-inner-circle flex items-center justify-center"
                   style={{
                     width: 80, height: 80, borderRadius: "50%",
                     background: "linear-gradient(135deg, #005CB9 0%, #003B7A 100%)",
@@ -168,12 +175,8 @@ function Process() {
                   <span className="font-heading font-[800]" style={{ fontSize: 20, lineHeight: "28px", color: "#FFFFFF" }}>E2E</span>
                 </div>
               </div>
-              <span style={{ position: "absolute", top: 0, left: "48%", width: "4%", height: 8, background: "#F5A300" }} />
-              <span style={{ position: "absolute", bottom: 0, left: "48%", width: "4%", height: 8, background: "#F5A300" }} />
-              <span style={{ position: "absolute", left: 0, top: "48%", width: 8, height: "4%", background: "#C8D96F" }} />
-              <span style={{ position: "absolute", right: 0, top: "48%", width: 8, height: "4%", background: "#C8D96F" }} />
             </div>
-            <div style={{ paddingTop: 16, display: "flex", flexDirection: "column", alignItems: "center", gap: 0 }}>
+            <div className="e2e-text" style={{ paddingTop: 16, display: "flex", flexDirection: "column", alignItems: "center", gap: 0 }}>
               <span className="font-body font-semibold" style={{ fontSize: 12, lineHeight: "16px", textAlign: "center", color: "#64748B" }}>Connecting</span>
               <span className="font-body font-semibold" style={{ fontSize: 12, lineHeight: "16px", textAlign: "center", color: "#004CA5" }}>Both Journeys</span>
             </div>
@@ -214,6 +217,41 @@ function Process() {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes e2e-spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes e2e-pulse {
+          0% { transform: scale(1); opacity: 0.7; }
+          100% { transform: scale(1.05); opacity: 1; }
+        }
+        @keyframes e2e-breathe {
+          0% { transform: scale(1); box-shadow: 0 0 20px rgba(0,60,140,0.4); }
+          100% { transform: scale(1.03); box-shadow: 0 0 20px rgba(0,60,140,0.6); }
+        }
+        @keyframes e2e-text-in {
+          0% { opacity: 0; transform: translateY(8px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        .e2e-dashed-ring {
+          animation: e2e-spin 20s linear infinite;
+          will-change: transform;
+        }
+        .e2e-blue-ring {
+          animation: e2e-pulse 2.5s ease-in-out infinite alternate;
+          will-change: transform, opacity;
+        }
+        .e2e-inner-circle {
+          animation: e2e-breathe 3s ease-in-out infinite alternate;
+          will-change: transform, box-shadow;
+        }
+        .e2e-text {
+          animation: e2e-text-in 0.6s ease-out forwards;
+          opacity: 0;
+        }
+      `}</style>
     </section>
   );
 }

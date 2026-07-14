@@ -188,8 +188,7 @@ const Testimonials = () => {
     <section
       style={{
         position: "relative",
-        width: "1440px",
-        maxWidth: "100%",
+        width: "100%",
         margin: "0 auto",
         padding: "43px 100px 63px",
         gap: 50,

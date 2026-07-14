@@ -161,9 +161,7 @@ export default function Testimonials() {
       style={{
         position: "relative",
         width: "100%",
-        maxWidth: 1452,
-        margin: "0 auto",
-        padding: "43px 100px 59px",
+        padding: "43px 0 59px",
         gap: 50,
         display: "flex",
         flexDirection: "column",
@@ -174,7 +172,7 @@ export default function Testimonials() {
       }}
     >
 
-      <div style={{ position: "relative", zIndex: 10, width: "100%" }}>
+      <div style={{ position: "relative", zIndex: 10, width: "100%", maxWidth: 1252, margin: "0 auto", padding: "0 100px", boxSizing: "border-box" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 30 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 20 }}>

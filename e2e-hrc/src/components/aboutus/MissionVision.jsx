@@ -47,7 +47,7 @@ const MissionVision = () => {
 
   return (
     <section style={{
-      width: "1440px", maxWidth: "100%",
+      width: "100%",
       padding: "59px 113.5px 67px",
       background: "#FFFFFF",
       fontFamily: "'Inter', sans-serif",

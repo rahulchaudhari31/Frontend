@@ -66,24 +66,27 @@ export default function HowWeWork({ variant = 'employee' }) {
 
           {/* CENTER CONNECTOR */}
           <div className="hidden lg:flex flex-col items-center justify-center shrink-0 pt-16">
-            <div className="relative w-[140px] h-[140px] flex items-center justify-center">
-              <div className="absolute w-[120px] h-[120px] rounded-full border border-dashed border-[#004CA5]/20" />
-              <div className="absolute w-[100px] h-[100px] rounded-full border border-solid border-[#004CA5]/10" />
+            <div className="e2e-badge-wrapper relative w-[140px] h-[140px] flex items-center justify-center">
+              <div className="e2e-dashed-ring absolute w-[120px] h-[120px] rounded-full border border-dashed border-[#004CA5]/20">
+                <span className="e2e-dot absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-[#F5A300]" />
+                <span className="e2e-dot absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-[#C8D96F]" />
+                <span className="e2e-dot absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-3 h-3 rounded-full bg-[#F5A300]" />
+                <span className="e2e-dot absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-[#C8D96F]" />
+              </div>
+              <div className="e2e-blue-ring absolute w-[100px] h-[100px] rounded-full border border-solid border-[#004CA5]/10" />
               <div
-                className="absolute w-[80px] h-[80px] rounded-full flex items-center justify-center"
+                className="e2e-inner-circle absolute w-[80px] h-[80px] rounded-full flex items-center justify-center"
                 style={{ background: 'linear-gradient(180deg, #005CB9, #003B7A)' }}
               >
                 <span className="text-white font-heading font-bold text-[12px] text-center leading-tight">
                   E2E
                 </span>
               </div>
-              <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-[#F5A300]" />
-              <span className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-[#C8D96F]" />
-              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-3 h-3 rounded-full bg-[#F5A300]" />
-              <span className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-[#C8D96F]" />
             </div>
-            <p className="text-[#64748B] text-xs text-center mt-3">Connecting</p>
-            <p className="font-heading font-bold text-[#004CA5] text-sm text-center">Both Journeys</p>
+            <div className="e2e-text mt-3 text-center">
+              <p className="text-[#64748B] text-xs m-0">Connecting</p>
+              <p className="font-heading font-bold text-[#004CA5] text-sm m-0">Both Journeys</p>
+            </div>
           </div>
 
           {/* EMPLOYEE JOURNEY */}
@@ -120,24 +123,62 @@ export default function HowWeWork({ variant = 'employee' }) {
 
         {/* MOBILE CONNECTOR */}
         <div className="lg:hidden flex flex-col items-center mt-10">
-          <div className="relative w-[120px] h-[120px] flex items-center justify-center">
-            <div className="absolute w-[100px] h-[100px] rounded-full border border-dashed border-[#004CA5]/20" />
-            <div className="absolute w-[80px] h-[80px] rounded-full border border-solid border-[#004CA5]/10" />
+          <div className="e2e-badge-wrapper relative w-[120px] h-[120px] flex items-center justify-center">
+            <div className="e2e-dashed-ring absolute w-[100px] h-[100px] rounded-full border border-dashed border-[#004CA5]/20">
+              <span className="e2e-dot absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#F5A300]" />
+              <span className="e2e-dot absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#C8D96F]" />
+              <span className="e2e-dot absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#F5A300]" />
+              <span className="e2e-dot absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#C8D96F]" />
+            </div>
+            <div className="e2e-blue-ring absolute w-[80px] h-[80px] rounded-full border border-solid border-[#004CA5]/10" />
             <div
-              className="absolute w-[60px] h-[60px] rounded-full flex items-center justify-center"
+              className="e2e-inner-circle absolute w-[60px] h-[60px] rounded-full flex items-center justify-center"
               style={{ background: 'linear-gradient(180deg, #005CB9, #003B7A)' }}
             >
               <span className="text-white font-heading font-bold text-[10px] text-center leading-tight">E2E</span>
             </div>
-            <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#F5A300]" />
-            <span className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#C8D96F]" />
-            <span className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#F5A300]" />
-            <span className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#C8D96F]" />
           </div>
-          <p className="text-[#64748B] text-xs text-center mt-3">Connecting</p>
-          <p className="font-heading font-bold text-[#004CA5] text-sm text-center">Both Journeys</p>
+          <div className="e2e-text mt-3 text-center">
+            <p className="text-[#64748B] text-xs m-0">Connecting</p>
+            <p className="font-heading font-bold text-[#004CA5] text-sm m-0">Both Journeys</p>
+          </div>
         </div>
       </div>
     </section>
+
+    <style>{`
+      @keyframes e2e-spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes e2e-pulse {
+        0% { transform: scale(1); opacity: 0.7; }
+        100% { transform: scale(1.05); opacity: 1; }
+      }
+      @keyframes e2e-breathe {
+        0% { transform: scale(1); box-shadow: 0 0 20px rgba(0,60,140,0.4); }
+        100% { transform: scale(1.03); box-shadow: 0 0 20px rgba(0,60,140,0.6); }
+      }
+      @keyframes e2e-text-in {
+        0% { opacity: 0; transform: translateY(8px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+      .e2e-dashed-ring {
+        animation: e2e-spin 20s linear infinite;
+        will-change: transform;
+      }
+      .e2e-blue-ring {
+        animation: e2e-pulse 2.5s ease-in-out infinite alternate;
+        will-change: transform, opacity;
+      }
+      .e2e-inner-circle {
+        animation: e2e-breathe 3s ease-in-out infinite alternate;
+        will-change: transform, box-shadow;
+      }
+      .e2e-text {
+        animation: e2e-text-in 0.6s ease-out forwards;
+        opacity: 0;
+      }
+    `}</style>
   );
 }

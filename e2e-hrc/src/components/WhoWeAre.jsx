@@ -34,20 +34,6 @@ const WhoWeAre = () => {
             }}
           />
 
-          {/* Decorative square */}
-          <div
-            className="absolute z-0"
-            style={{
-              width: "192px",
-              height: "192px",
-              left: "-32px",
-              bottom: "-32px",
-              background: "#005CB9",
-              opacity: 0.5,
-              borderRadius: "24px",
-            }}
-          />
-
           {/* Photo card */}
           <div
             className="relative w-full h-full rounded-3xl overflow-hidden z-10"
