@@ -3,20 +3,26 @@ import { lazy, Suspense } from "react";
 import Hero from "../components/home/Hero";
 import LazySection from "../components/common/LazySection";
 import Loading from "../components/common/Loader";
+import WhatMakesUsDifferent from "../components/aboutus/WhatMakesUsDifferent";
+import { useContactType } from "../context/ContactTypeContext";
 
 const ServiceCards = lazy(() => import("../components/home/ServiceCards"));
 const Sectors = lazy(() => import("../components/home/Sectors"));
 const Process = lazy(() => import("../components/home/Process"));
-const WhyChooseUs = lazy(() => import("../components/home/WhyChooseUs"));
 const TrustedClients = lazy(() => import("../components/home/TrustedClients"));
 const Locations = lazy(() => import("../components/home/Locations"));
 const BlogSection = lazy(() => import("../components/home/BlogSection"));
 const ContactSection = lazy(() => import("../components/home/ContactSection"));
 
 function Home() {
+  const { contactRef, scrollToContact } = useContactType();
+
   return (
     <>
-      <Hero />
+      <Hero
+        onHireTalent={() => scrollToContact("employer")}
+        onFindOpportunities={() => scrollToContact("employee")}
+      />
 
       <LazySection height={500}>
         <Suspense fallback={<Loading />}>
@@ -38,7 +44,7 @@ function Home() {
 
       <LazySection height={500}>
         <Suspense fallback={<Loading />}>
-          <WhyChooseUs />
+          <WhatMakesUsDifferent />
         </Suspense>
       </LazySection>
 
@@ -62,11 +68,9 @@ function Home() {
 
       <div style={{ height: "80px", background: "#FFFFFF" }} />
 
-      <LazySection height={500}>
-        <Suspense fallback={<Loading />}>
-          <ContactSection />
-        </Suspense>
-      </LazySection>
+      <Suspense fallback={<Loading />}>
+        <ContactSection ref={contactRef} />
+      </Suspense>
     </>
   );
 }

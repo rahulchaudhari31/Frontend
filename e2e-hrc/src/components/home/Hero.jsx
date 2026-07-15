@@ -63,7 +63,7 @@ function AnimatedStat({ target, suffix = "+", label, containerWidth, duration = 
   );
 }
 
-function Hero() {
+function Hero({ onHireTalent, onFindOpportunities }) {
   const [imgLoaded, setImgLoaded] = useState(false);
 
   const heroData = {
@@ -120,8 +120,8 @@ function Hero() {
 
           {/* CTA Buttons */}
           <div style={{ display: "flex", flexDirection: "row", alignItems: "flex-start", padding: "8px 0px", gap: "16px", width: "632px", height: "68px", flex: "none", order: 3 }}>
-            <a
-              href={heroData.buttonLink}
+            <button
+              onClick={onHireTalent}
               style={{
                 display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",
                 padding: "12px 32px 12px 28px", gap: "8px",
@@ -129,13 +129,14 @@ function Hero() {
                 background: "#F39308", borderRadius: "9999px",
                 fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 600,
                 fontSize: "16px", lineHeight: "24px", color: "#FFFFFF",
-                textDecoration: "none",
+                cursor: "pointer", border: "none",
               }}
             >
               Hire Talent
               <span style={{ marginLeft: "4px" }}>→</span>
-            </a>
+            </button>
             <button
+              onClick={onFindOpportunities}
               style={{
                 display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",
                 padding: "12px 32px",

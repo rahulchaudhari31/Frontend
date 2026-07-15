@@ -7,7 +7,6 @@ import constructionImg from '../../assets/sectors/construction.jpg';
 import logisticsImg from '../../assets/sectors/logistics.jpg';
 import financeImg from '../../assets/sectors/finance.jpg';
 import educationImg from '../../assets/sectors/education.jpg';
-import itImg from '../../assets/sectors/it technology.jpg';
 
 const industries = [
   {
@@ -21,12 +20,6 @@ const industries = [
     image: healthcareImg,
     description:
       'We connect healthcare facilities with skilled doctors, nurses, and allied health professionals. Our staffing solutions ensure quality patient care while helping institutions manage workforce demands efficiently.',
-  },
-  {
-    name: 'IT & Technology',
-    image: itImg,
-    description:
-      'We source top-tier developers, engineers, and IT specialists to help businesses scale their technology teams. Our recruitment process identifies talent with the right technical skills and cultural fit.',
   },
   {
     name: 'Engineering',

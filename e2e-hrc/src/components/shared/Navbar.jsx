@@ -1,8 +1,9 @@
-﻿import { useState } from 'react';
+﻿import { useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FiArrowRight, FiMenu, FiX } from 'react-icons/fi';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from 'react-icons/fa';
 import logoImage from '../../assets/image/logo.png';
+import { useModal } from '../../context/ModalContext';
 
 const socialLinks = [
   { label: 'LinkedIn', href: '#', Icon: FaLinkedinIn },
@@ -25,16 +26,21 @@ const navLinks = [
 const NAV_HEIGHT = 81;
 const TOP_BAR_HEIGHT = 48;
 
-export default function Navbar({ variant = 'home' }) {
+export default function Navbar({ variant = 'home', onCtaAction }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isEmployer = variant === 'employer';
   const location = useLocation();
+  const { openWhoAreYouAtPosition, activeModal, openEmployeeModal } = useModal();
+  const ctaButtonRef = useRef(null);
+  const hoverTimeoutRef = useRef(null);
 
   const activeStyle = isEmployer ? 'text-[#0085d5]' : 'text-navy';
   const ctaBg = 'bg-[#F39308] hover:bg-[#E07D00]';
 
   const activePage = location.pathname;
   const totalHeight = isEmployer ? NAV_HEIGHT + TOP_BAR_HEIGHT : NAV_HEIGHT;
+  const isHomePage = activePage === '/';
+  const isEmployeePage = activePage === '/employee';
 
   function renderLink({ label, to }, extraCls = '', onClick) {
     const isActive = to === activePage || (to === '/blogs' && activePage.startsWith('/blogs'));
@@ -45,6 +51,32 @@ export default function Navbar({ variant = 'home' }) {
       </Link>
     );
   }
+
+  const handleCtaMouseEnter = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+    if (activeModal !== "none") return;
+
+    const rect = ctaButtonRef.current?.getBoundingClientRect();
+    if (rect) {
+      openWhoAreYouAtPosition(rect);
+    }
+  };
+
+  const handleCtaMouseLeave = () => {
+    hoverTimeoutRef.current = setTimeout(() => {
+      // Small delay to allow moving to the popup
+    }, 200);
+  };
+
+  const handleCtaClick = () => {
+    const rect = ctaButtonRef.current?.getBoundingClientRect();
+    if (rect) {
+      openWhoAreYouAtPosition(rect);
+    }
+  };
 
   return (
     <>
@@ -93,7 +125,7 @@ export default function Navbar({ variant = 'home' }) {
             `}</style>
             <div className="nann-bar">
               <div className="nann-bar-inner">
-                <Link to="#" className="nann-link">
+                <Link to="#" onClick={(e) => { e.preventDefault(); }} className="nann-link">
                   Looking to hire exceptional talent? Submit a Vacancy
                   <FiArrowRight size={16} />
                 </Link>
@@ -126,12 +158,14 @@ export default function Navbar({ variant = 'home' }) {
               {navLinks.map((link) => renderLink(link, 'flex items-center px-3 py-2 text-[13px] font-semibold whitespace-nowrap rounded-md transition-colors duration-150'))}
             </nav>
 
-            <Link
-              to="#"
+            <button
+              ref={ctaButtonRef}
+              onMouseEnter={handleCtaMouseEnter}
+              onMouseLeave={handleCtaMouseLeave}
               className={`hidden xl:inline-flex items-center justify-center text-white text-[14px] font-semibold px-6 py-2.5 rounded-pill transition-colors duration-150 shrink-0 ${ctaBg}`}
             >
               Submit Vacancy / CV
-            </Link>
+            </button>
 
             <button
               className="xl:hidden text-primary p-2 rounded-md hover:bg-gray-50 transition-colors"
@@ -149,13 +183,12 @@ export default function Navbar({ variant = 'home' }) {
                 {navLinks.map((link) => renderLink(link, 'flex items-center justify-between py-3 text-sm font-semibold border-b border-gray-50 transition-colors duration-150', () => setMobileOpen(false)))}
               </nav>
               <div className="mt-4">
-                <Link
-                  to="#"
-                  className={`flex items-center justify-center text-white text-sm font-semibold px-5 py-3 rounded-pill transition-colors duration-150 ${ctaBg}`}
-                  onClick={() => setMobileOpen(false)}
+                <button
+                  onClick={() => { setMobileOpen(false); openWhoAreYouAtPosition({ bottom: window.innerHeight / 2, left: window.innerWidth / 2, width: 200 }); }}
+                  className={`flex items-center justify-center text-white text-sm font-semibold px-5 py-3 rounded-pill transition-colors duration-150 w-full ${ctaBg}`}
                 >
                   Submit Vacancy / CV
-                </Link>
+                </button>
               </div>
             </div>
           )}
