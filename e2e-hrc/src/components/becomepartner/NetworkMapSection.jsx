@@ -61,6 +61,7 @@ const markers = [
 export default function NetworkMapSection() {
   const [activeOfficeCard, setActiveOfficeCard] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [mapHovered, setMapHovered] = useState(false);
   const cardTimers = useRef({});
 
   useEffect(() => {
@@ -82,13 +83,14 @@ export default function NetworkMapSection() {
   const hideCard = useCallback(() => setActiveOfficeCard(null), []);
 
   function AnimatedStat({ target, suffix, label, delay }) {
-    const { count, done } = useCountUp(target, 1500, delay);
+    const { count, done } = useCountUp(target, 3000, delay, mapHovered);
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
+      if (!mapHovered) return;
       const t = setTimeout(() => setVisible(true), delay);
       return () => clearTimeout(t);
-    }, [delay]);
+    }, [delay, mapHovered]);
 
     return (
       <div className="text-center" style={{ flex: '1 1 40%', maxWidth: '244px' }}>
@@ -128,7 +130,11 @@ export default function NetworkMapSection() {
             </p>
           </div>
 
-          <div className="relative w-full min-h-[385px] rounded-[24px] border border-[rgba(194,198,212,0.2)] bg-[#F2F4F6]">
+          <div
+            className="relative w-full min-h-[385px] rounded-[24px] border border-[rgba(194,198,212,0.2)] bg-[#F2F4F6]"
+            onMouseEnter={() => setMapHovered(true)}
+            onMouseLeave={() => setMapHovered(true)}
+          >
             <div className="absolute inset-0 rounded-[24px] overflow-hidden pointer-events-none">
               <img
                 src={mapBg}

@@ -1,14 +1,18 @@
 import { useState, useEffect, useRef } from "react";
 
-export default function useCountUp(target, duration, delay = 0) {
+export default function useCountUp(target, duration, delay = 0, trigger = true) {
   const [count, setCount] = useState(0);
   const [done, setDone] = useState(false);
   const rafRef = useRef(null);
+  const hasRun = useRef(false);
 
   useEffect(() => {
+    if (!trigger || hasRun.current) return;
+
     let startTime = null;
     let cancelled = false;
     const timer = setTimeout(() => {
+      hasRun.current = true;
       const animate = (timestamp) => {
         if (cancelled) return;
         if (!startTime) startTime = timestamp;
@@ -30,7 +34,7 @@ export default function useCountUp(target, duration, delay = 0) {
       clearTimeout(timer);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [target, duration, delay]);
+  }, [target, duration, delay, trigger]);
 
   return { count, done };
 }

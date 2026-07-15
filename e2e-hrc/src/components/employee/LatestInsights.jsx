@@ -91,11 +91,11 @@ export default function LatestInsights({
           </div>
           <a
             href={ctaHref}
-            className="insights-cta inline-flex items-center justify-center gap-2 shrink-0 border-[1.6px] border-[#004CA5] text-[#004CA5] font-heading font-semibold text-[14px] leading-[20px] px-6 py-3 rounded-[999px] bg-transparent hover:bg-[#004CA5]/10 transition-colors duration-200 self-start lg:self-auto"
+            className="insights-cta inline-flex items-center justify-center gap-2 shrink-0 border-[1.6px] border-[#003679] text-[#003679] font-heading font-semibold text-[14px] leading-[20px] px-6 py-3 rounded-[999px] bg-transparent hover:bg-[#003679]/10 transition-colors duration-200 self-start lg:self-auto"
           >
             {ctaLabel}
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="#004CA5" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="#003679" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </a>
         </div>
@@ -163,7 +163,7 @@ export default function LatestInsights({
             ))}
             <a
               href={ctaHref}
-              className="lg:hidden inline-flex items-center justify-center gap-2 border-[1.6px] border-[#004CA5] text-[#004CA5] font-heading font-semibold text-[14px] px-6 py-3 rounded-[999px] hover:bg-[#004CA5]/10 transition-colors duration-200 mt-2"
+              className="lg:hidden inline-flex items-center justify-center gap-2 border-[1.6px] border-[#003679] text-[#003679] font-heading font-semibold text-[14px] px-6 py-3 rounded-[999px] hover:bg-[#003679]/10 transition-colors duration-200 mt-2"
             >
               {ctaLabel}
             </a>
