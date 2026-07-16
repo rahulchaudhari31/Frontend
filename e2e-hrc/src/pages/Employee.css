@@ -364,23 +364,45 @@
     padding-right: 16px !important;
   }
   .insights-heading {
-    font-size: 26px !important;
-    line-height: 34px !important;
+    font-size: 24px !important;
+    line-height: 30px !important;
   }
   .insights-featured {
-    height: 320px !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+  .insights-featured-text {
+    padding: 20px !important;
   }
   .insights-featured-title {
-    font-size: 20px !important;
-    line-height: 28px !important;
+    font-size: 18px !important;
+    line-height: 24px !important;
+    margin-bottom: 8px !important;
   }
   .insights-featured-desc {
-    font-size: 13px !important;
-    line-height: 20px !important;
+    font-size: 12px !important;
+    line-height: 18px !important;
     margin-bottom: 12px !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+  .insights-featured-meta {
+    margin-bottom: 4px !important;
   }
   .insights-post-img {
-    height: 140px !important;
+    width: 120px !important;
+    height: 110px !important;
+    min-width: 120px !important;
+    margin-top: 12px !important;
+    margin-left: 12px !important;
+    margin-bottom: 0 !important;
+    margin-right: 0 !important;
+    border-radius: 12px !important;
+  }
+  .insights-post-card {
+    overflow: hidden !important;
   }
 }
 
@@ -390,23 +412,20 @@
     padding-right: 12px !important;
   }
   .insights-heading {
-    font-size: 22px !important;
-    line-height: 30px !important;
-  }
-  .insights-featured {
-    height: 280px !important;
+    font-size: 20px !important;
+    line-height: 26px !important;
   }
   .insights-featured-text {
     padding: 16px !important;
   }
   .insights-featured-title {
-    font-size: 18px !important;
-    line-height: 24px !important;
+    font-size: 16px !important;
+    line-height: 22px !important;
     margin-bottom: 6px !important;
   }
   .insights-featured-desc {
-    font-size: 12px !important;
-    line-height: 18px !important;
+    font-size: 11px !important;
+    line-height: 16px !important;
     margin-bottom: 8px !important;
   }
   .insights-featured-meta {
@@ -418,11 +437,17 @@
     gap: 12px !important;
   }
   .insights-post-img {
-    height: 120px !important;
-    width: 120px !important;
+    width: 100px !important;
+    height: 90px !important;
+    min-width: 100px !important;
+    margin-top: 10px !important;
+    margin-left: 10px !important;
+    margin-bottom: 0 !important;
+    margin-right: 0 !important;
+    border-radius: 10px !important;
   }
   .insights-post-card {
-    min-height: 120px !important;
+    min-height: auto !important;
   }
 }
 
