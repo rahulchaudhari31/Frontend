@@ -204,34 +204,31 @@ function WhoAreYouModal({ onClose, onSelect, buttonPosition, disableMouseLeave }
     return () => { if (el) el.removeEventListener("mouseleave", handleMouseLeave); };
   }, [onClose, disableMouseLeave]);
 
-  const popupWidth = 400;
   const viewportWidth = window.innerWidth;
-  let left = buttonPosition.left - popupWidth / 2;
-  if (left < 16) left = 16;
-  if (left + popupWidth > viewportWidth - 16) left = viewportWidth - popupWidth - 16;
+  const viewportHeight = window.innerHeight;
+  const isMobile = viewportWidth <= 768;
 
-  return (
-    <div
-      ref={popupRef}
-      style={{
-        position: "fixed",
-        zIndex: 10001,
-        background: "#FFFFFF",
-        border: "1px solid #F1F2F9",
-        borderRadius: "24px",
-        boxShadow: "0px 4px 32px -4px rgba(111,108,143,0.12), 0px 3px 12px -2px rgba(170,170,190,0.06)",
-        padding: "40px 32px 32px",
-        width: `${popupWidth}px`,
-        maxWidth: "90vw",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "20px",
-        animation: "fadeIn 0.15s ease-out",
-        top: `${buttonPosition.top + 8}px`,
-        left: `${left}px`,
-      }}
-    >
+  const popupWidth = isMobile ? Math.min(viewportWidth - 32, 360) : 400;
+  const popupHeight = 380;
+
+  let left, top;
+
+  if (!isMobile) {
+    left = buttonPosition.left - popupWidth / 2;
+    if (left < 16) left = 16;
+    if (left + popupWidth > viewportWidth - 16) left = viewportWidth - popupWidth - 16;
+
+    const spaceBelow = viewportHeight - buttonPosition.top - 8;
+    if (spaceBelow >= popupHeight) {
+      top = buttonPosition.top + 8;
+    } else {
+      top = buttonPosition.top - popupHeight - 8;
+      if (top < 16) top = 16;
+    }
+  }
+
+  const cardContent = (
+    <>
       <button
         onClick={onClose}
         style={{ position: "absolute", top: "12px", right: "12px", width: "56px", height: "56px", display: "flex", alignItems: "center", justifyContent: "center", background: "transparent", border: "none", cursor: "pointer" }}
@@ -292,6 +289,78 @@ function WhoAreYouModal({ onClose, onSelect, buttonPosition, disableMouseLeave }
           Employee
         </button>
       </div>
+    </>
+  );
+
+  if (isMobile) {
+    return (
+      <div
+        onClick={onClose}
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 10001,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "rgba(0,0,0,0.5)",
+          backdropFilter: "blur(4px)",
+        }}
+      >
+        <div
+          ref={popupRef}
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            position: "relative",
+            background: "#FFFFFF",
+            border: "1px solid #F1F2F9",
+            borderRadius: "24px",
+            boxShadow: "0px 4px 32px -4px rgba(111,108,143,0.12), 0px 3px 12px -2px rgba(170,170,190,0.06)",
+            padding: "40px 24px 32px",
+            width: `${popupWidth}px`,
+            maxWidth: "90vw",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "20px",
+            animation: "fadeIn 0.15s ease-out",
+            maxHeight: "90vh",
+            overflowY: "auto",
+            boxSizing: "border-box",
+          }}
+        >
+          {cardContent}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      ref={popupRef}
+      style={{
+        position: "fixed",
+        zIndex: 10001,
+        background: "#FFFFFF",
+        border: "1px solid #F1F2F9",
+        borderRadius: "24px",
+        boxShadow: "0px 4px 32px -4px rgba(111,108,143,0.12), 0px 3px 12px -2px rgba(170,170,190,0.06)",
+        padding: "40px 32px 32px",
+        width: `${popupWidth}px`,
+        maxWidth: "90vw",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "20px",
+        animation: "fadeIn 0.15s ease-out",
+        top: `${top}px`,
+        left: `${left}px`,
+        maxHeight: "90vh",
+        overflowY: "auto",
+        boxSizing: "border-box",
+      }}
+    >
+      {cardContent}
     </div>
   );
 }

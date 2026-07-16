@@ -49,7 +49,7 @@ const defaultPosts = {
 function FeaturedCard({ card }) {
   return (
     <div
-      className="relative overflow-hidden"
+      className="home-blog-featured relative overflow-hidden"
       style={{
         width: "532px", height: "480px", minWidth: "532px",
         borderRadius: "20px", padding: "36px", boxSizing: "border-box",
@@ -60,7 +60,7 @@ function FeaturedCard({ card }) {
       <div className="absolute inset-0" style={{
         background: "linear-gradient(0deg, rgba(0, 15, 40, 0.93) 35%, rgba(0, 15, 40, 0.3) 80%, rgba(0, 0, 0, 0) 100%)",
       }} />
-      <div className="relative z-10" style={{ width: "460px" }}>
+      <div className="home-blog-featured-text relative z-10" style={{ width: "460px" }}>
         <span style={{
           fontFamily: "Inter, sans-serif", fontWeight: 600, fontSize: "12px", lineHeight: "16px",
           backgroundColor: "#004CA5", color: "#FFFFFF", padding: "4px 12px",
@@ -68,19 +68,19 @@ function FeaturedCard({ card }) {
         }}>
           {card.badge}
         </span>
-        <h3 style={{
+        <h3 className="home-blog-featured-title" style={{
           fontFamily: "Poppins, sans-serif", fontWeight: 700, fontSize: "24px", lineHeight: "33px",
           color: "#FFFFFF", margin: 0, marginBottom: "12px", width: "460px",
         }}>
           {card.title}
         </h3>
-        <p style={{
+        <p className="home-blog-featured-desc" style={{
           fontFamily: "Inter, sans-serif", fontWeight: 400, fontSize: "14px", lineHeight: "23px",
           color: "rgba(255, 255, 255, 0.7)", margin: 0, marginBottom: "24px", width: "460px",
         }}>
           {card.description}
         </p>
-        <div style={{
+        <div className="home-blog-featured-meta" style={{
           display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center",
           width: "460px", marginBottom: "16px",
         }}>
@@ -110,13 +110,13 @@ function FeaturedCard({ card }) {
 
 function SmallCard({ card }) {
   return (
-    <div style={{
+    <div className="home-blog-small-card" style={{
       display: "flex", flexDirection: "row", alignItems: "flex-start", gap: "20px",
       width: "532px", minHeight: "130px", backgroundColor: "#F8FAFC",
-      borderRadius: "16px", flexShrink: 0,
+      borderRadius: "16px", flexShrink: 0, overflow: "hidden",
     }}>
-      <div style={{ width: "144px", height: "130px", flexShrink: 0, borderRadius: "16px 0 0 16px", overflow: "hidden" }}>
-        <img src={card.image} alt={card.title} style={{ width: "144px", height: "130px", objectFit: "cover", display: "block" }} />
+      <div className="home-blog-small-card-image" style={{ width: "144px", height: "130px", flexShrink: 0, borderRadius: "16px 0 0 16px", overflow: "hidden" }}>
+        <img src={card.image} alt={card.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
       </div>
       <div style={{
         display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start",
@@ -157,12 +157,12 @@ function BlogSection({ posts = defaultPosts }) {
       display: "flex", flexDirection: "column", alignItems: "flex-start",
       padding: "13px 0 37px", width: "100%", background: "#FFFFFF",
     }}>
-      <div style={{
+      <div className="home-blog-container" style={{
         display: "flex", flexDirection: "column", alignItems: "flex-start",
         padding: "0 32px 0 124px", width: "100%", maxWidth: "1440px",
       }}>
         {/* Header Row */}
-        <div style={{
+        <div className="home-blog-header" style={{
           display: "flex", flexDirection: "row", justifyContent: "space-between",
           alignItems: "flex-end", width: "100%", height: "84px",
         }}>
@@ -175,7 +175,7 @@ function BlogSection({ posts = defaultPosts }) {
             }}>
               Latest Blog
             </span>
-            <h2 style={{
+            <h2 className="home-blog-heading" style={{
               fontFamily: "Poppins, sans-serif", fontWeight: 800, fontSize: "36px", lineHeight: "40px",
               color: "#004CA5", margin: 0, marginTop: "0", width: "793px",
             }}>
@@ -201,9 +201,9 @@ function BlogSection({ posts = defaultPosts }) {
           display: "flex", flexDirection: "column", alignItems: "flex-start",
           padding: "48px 0 0 0", width: "100%",
         }}>
-          <div style={{ display: "flex", flexDirection: "row", width: "100%", height: "480px", position: "relative" }}>
+          <div className="home-blog-content-inner" style={{ display: "flex", flexDirection: "row", width: "100%", height: "480px", position: "relative" }}>
             <FeaturedCard card={featured} />
-            <div style={{
+            <div className="home-blog-small-cards" style={{
               display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "41px",
               position: "absolute", left: "556px", top: 0, width: "532px", height: "480px",
             }}>
