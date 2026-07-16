@@ -10,11 +10,10 @@ export default function ContactCTA() {
           Ready to get started?
         </div>
 
-        <h1>
-          Let's Build <span>Success</span>
-          <br />
+        <h2 className="text-4xl sm:text-5xl font-serif font-bold leading-tight mb-6 text-white">
+          Let's Build <span className="text-[#FFB800]">Success</span><br />
           Together
-        </h1>
+        </h2>
 
         <p>
           Whether you're hiring exceptional talent or searching for your next

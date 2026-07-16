@@ -122,9 +122,9 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
             <span className="w-2 h-2 rounded-full bg-emerald-400" />
             Ready to get started?
           </span>
-          <h2 className="text-4xl sm:text-5xl font-serif font-bold leading-tight mb-6">
+          <h2 className="text-4xl sm:text-5xl font-serif font-bold leading-tight mb-6 text-white">
             Let's Build{" "}
-            <span className="text-white">Success</span>
+            <span className="text-[#FFB800]">Success</span>
             <br />
             Together
           </h2>
