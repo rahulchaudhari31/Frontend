@@ -16,41 +16,37 @@
 ───────────────────────────────────────── */
 .section {
   position: relative;
-  width: 1440px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 1440px;
   height: 626px;
   background: #ffffff;
-  padding: 4px 64px 40px 64px;
+  padding: 4px 0 40px 64px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
+  overflow: hidden;
 }
 
 /* ─────────────────────────────────────────
-   Container (outer) — 1200×582
+   Container (outer) — full width
 ───────────────────────────────────────── */
 .container {
-  width: 1200px;
-  max-width: 1200px;
+  width: 100%;
   height: 582px;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 /* ─────────────────────────────────────────
-   Container (row) — 1200×504
-   gap: 170px | margin: -33px 0
+   Container (row) — full width
+   Image flush to right, text on left
 ───────────────────────────────────────── */
 .innerContainer {
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
-  gap: 170px;
-  width: 1200px;
+  width: 100%;
   height: 504px;
   margin: -33px 0;
   position: relative;
@@ -58,18 +54,20 @@
 }
 
 /* ─────────────────────────────────────────
-   LEFT TEXT BLOCK — 752×362, z-index: 1
+   LEFT TEXT BLOCK
    flex-column, gap: 32px
+   max-width keeps text at original width
 ───────────────────────────────────────── */
 .leftText {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 32px;
-  width: 752px;
+  max-width: 752px;
   height: 362px;
   z-index: 1;
   position: relative;
+  flex-shrink: 0;
 }
 
 /* ─────────────────────────────────────────
@@ -110,7 +108,7 @@
 ───────────────────────────────────────── */
 .heading {
   margin: 0;
-  width: 752px;
+  width: 100%;
   height: 180px;
   font-family: 'Inter', sans-serif;
   font-style: normal;
@@ -132,7 +130,7 @@
 ───────────────────────────────────────── */
 .body {
   margin: 0;
-  width: 576px;
+  width: 100%;
   max-width: 576px;
   height: 84px;
   font-family: 'Source Sans 3', sans-serif;
@@ -144,35 +142,31 @@
 }
 
 /* ─────────────────────────────────────────
-   RIGHT IMAGE BLOCK — 460×473
-   isolation: isolate, z-index: 0
+   RIGHT IMAGE BLOCK
+   margin-left: auto pushes to right edge
+   Background shapes extend LEFT from here
 ───────────────────────────────────────── */
 .rightImage {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  width: 460px;
+  position: relative;
+  flex: 0 0 460px;
   height: 473px;
+  margin-left: auto;
   isolation: isolate;
   z-index: 0;
-  position: relative;
-  flex-shrink: 0;
 }
 
 /* ─────────────────────────────────────────
-   Background shape 1 (behind image, offset left)
+   Background shape 1 (shadow behind image)
+   Extends left from the rightImage container
    bg: rgba(0,54,121,0.05)
    border-radius: 100px 0 0 100px
-   top: 38.5px, bottom: -46.5px
-   left: -75.74%, right: 24.47%
 ───────────────────────────────────────── */
 .imageBgShape1 {
   position: absolute;
   top: 38.5px;
   bottom: -46.5px;
-  left: -75.74%;
-  right: 24.47%;
+  left: -260px;
+  right: 0;
   background: rgba(0, 54, 121, 0.05);
   border-radius: 100px 0 0 100px;
   z-index: 0;
@@ -181,17 +175,15 @@
 
 /* ─────────────────────────────────────────
    Background shape 2 (image container)
-   bg-image: hero image + rgba(0,54,121,0.05) overlay
+   Extends left from the rightImage container
    border-radius: 100px 0 0 100px
-   top: 38.5px, bottom: -46.5px
-   left: -57.54%, right: 6.26%
 ───────────────────────────────────────── */
 .imageBgShape2 {
   position: absolute;
   top: 38.5px;
   bottom: -46.5px;
-  left: -57.54%;
-  right: 6.26%;
+  left: -190px;
+  right: 0;
   border-radius: 100px 0 0 100px;
   overflow: hidden;
   z-index: 1;
@@ -224,8 +216,9 @@
 ───────────────────────────────────────── */
 .statsCard {
   position: relative;
-  width: 952px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 952px;
+  margin: 0 auto;
   height: 110px;
   background: #ffffff;
   border: 1px solid rgba(195, 198, 212, 0.3);
@@ -314,7 +307,7 @@
     width: 100%;
     height: auto;
     padding: 4px 32px 40px 32px;
-    align-items: center;
+    overflow: visible;
   }
 
   .container {
@@ -325,12 +318,13 @@
   .innerContainer {
     width: 100%;
     height: auto;
-    gap: 60px;
     flex-direction: column;
+    gap: 40px;
   }
 
   .leftText {
     width: 100%;
+    max-width: 100%;
     height: auto;
   }
 
@@ -348,20 +342,16 @@
   }
 
   .rightImage {
+    flex: 0 0 100%;
     width: 100%;
     height: 380px;
-    justify-content: center;
+    margin-left: 0;
   }
 
   .imageBgShape1,
   .imageBgShape2 {
-    position: relative;
-    top: auto;
-    bottom: auto;
-    left: auto;
-    right: auto;
-    width: 100%;
-    height: 100%;
+    left: 0;
+    right: 0;
   }
 
   .statsCard {
@@ -382,7 +372,7 @@
   .section {
     padding: 24px 20px 32px 20px;
     height: auto;
-    align-items: center;
+    overflow: visible;
   }
 
   .container {
@@ -396,6 +386,7 @@
 
   .leftText {
     width: 100%;
+    max-width: 100%;
     height: auto;
   }
 
@@ -412,20 +403,16 @@
   }
 
   .rightImage {
+    flex: 0 0 100%;
     width: 100%;
     height: 240px;
-    justify-content: center;
+    margin-left: 0;
   }
 
   .imageBgShape1,
   .imageBgShape2 {
-    position: relative;
-    top: auto;
-    bottom: auto;
-    left: auto;
-    right: auto;
-    width: 100%;
-    height: 100%;
+    left: 0;
+    right: 0;
     border-radius: 16px;
   }
 
