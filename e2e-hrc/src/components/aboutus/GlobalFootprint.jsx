@@ -83,7 +83,6 @@ function OfficeCard({ data, visible, pos, onEnter, onLeave, onClose }) {
   return (
     <div
       role="tooltip"
-      onMouseDown={(e) => e.preventDefault()}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
       style={{
