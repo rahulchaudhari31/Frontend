@@ -102,7 +102,7 @@ function Row1Card({ row, index }) {
   const config = layoutConfig[index] || layoutConfig[0];
   return (
     <div
-      className="w-full lg:flex-1 relative"
+      className="home-diff-card w-full lg:flex-1 relative"
       style={{
         background: "#F8FAFC",
         borderRadius: "16px",
@@ -217,7 +217,7 @@ function Row23Card({ row, index }) {
   const padLeft = config.layout === "row2" ? "50px" : "58px";
   return (
     <div
-      className="w-full lg:flex-1 relative"
+      className="home-diff-card w-full lg:flex-1 relative"
       style={{
         background: "#F8FAFC",
         borderRadius: "16px",
@@ -321,7 +321,7 @@ function Row({ row, index }) {
   
   const imageBlock = (
     <div
-      className="shrink-0 overflow-hidden"
+      className="home-diff-image shrink-0 overflow-hidden"
       style={{
         width: config.imageWidth,
         height: "420px",
@@ -372,6 +372,7 @@ function Row({ row, index }) {
 
   return (
     <div
+      className="home-diff-row"
       style={{
         borderRadius: "20px",
         overflow: "hidden",
@@ -467,12 +468,14 @@ export default function WhatMakesUsDifferent() {
 
   return (
     <section
+      className="home-diff-section"
       style={{
         padding: "0px 54px 0px 61px",
         background: "white",
       }}
     >
       <div
+        className="home-diff-inner"
         style={{
           maxWidth: "1440px",
           margin: "0 auto",
@@ -483,6 +486,7 @@ export default function WhatMakesUsDifferent() {
       >
         {/* Header — 1325×84px */}
         <div
+          className="home-diff-header"
           style={{
             width: "1325px",
             height: "84px",
@@ -527,6 +531,7 @@ export default function WhatMakesUsDifferent() {
 
           {/* Heading — 36px/40px, all #004CA5, centered */}
           <div
+            className="home-diff-heading-wrap"
             style={{
               width: "1325px",
               height: "40px",
@@ -553,6 +558,7 @@ export default function WhatMakesUsDifferent() {
 
         {/* Rows — gap: 30px */}
         <div
+          className="home-diff-rows"
           style={{
             display: "flex",
             flexDirection: "column",

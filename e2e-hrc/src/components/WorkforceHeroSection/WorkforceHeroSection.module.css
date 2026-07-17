@@ -320,12 +320,16 @@
     height: auto;
     flex-direction: column;
     gap: 40px;
+    margin: 0;
+    isolation: auto;
   }
 
   .leftText {
     width: 100%;
     max-width: 100%;
     height: auto;
+    position: static;
+    z-index: auto;
   }
 
   .heading {
@@ -346,12 +350,17 @@
     width: 100%;
     height: 380px;
     margin-left: 0;
+    position: relative;
+    z-index: auto;
   }
 
   .imageBgShape1,
   .imageBgShape2 {
+    top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
+    border-radius: 16px;
   }
 
   .statsCard {
@@ -382,12 +391,17 @@
   .innerContainer {
     flex-direction: column;
     gap: 28px;
+    margin: 0;
+    height: auto;
+    isolation: auto;
   }
 
   .leftText {
     width: 100%;
     max-width: 100%;
     height: auto;
+    position: static;
+    z-index: auto;
   }
 
   .heading {
@@ -405,8 +419,10 @@
   .rightImage {
     flex: 0 0 100%;
     width: 100%;
-    height: 240px;
+    height: 260px;
     margin-left: 0;
+    position: relative;
+    z-index: auto;
   }
 
   .imageBgShape1,
@@ -423,9 +439,10 @@
   .statsCard {
     flex-wrap: wrap;
     height: auto;
-    padding: 20px 16px;
-    margin-top: 24px;
-    gap: 16px;
+    padding: 16px;
+    margin-top: 32px;
+    gap: 12px;
+    position: static;
   }
 
   .statItem {
@@ -449,8 +466,13 @@
     width: auto;
   }
 
+  .rightImage {
+    height: 220px;
+  }
+
   .statsCard {
-    padding: 16px 12px;
+    padding: 12px;
+    margin-top: 24px;
   }
 
   .statItem {

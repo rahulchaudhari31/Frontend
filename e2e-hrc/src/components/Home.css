@@ -9,99 +9,414 @@ html {
   overflow-x: hidden;
 }
 
-/* ---- TABLETS / MOBILE LANDSCAPE (max-width: 768px) ---- */
+/* ============================================================
+   TABLETS / MOBILE LANDSCAPE (max-width: 768px)
+   ============================================================ */
 @media (max-width: 768px) {
-  .min-h-screen.bg-white {
-    height: 100vh;
-    max-height: 100vh;
-    overflow: hidden;
+
+  /* ── Hero Section (scoped to direct child of page wrapper) ── */
+  .min-h-screen > section:first-of-type {
+    height: auto !important;
+    padding: 0 16px 40px !important;
+    max-width: 100% !important;
+  }
+
+  .min-h-screen > section:first-of-type > div {
+    height: auto !important;
+    position: static !important;
     display: flex;
     flex-direction: column;
+    gap: 24px;
   }
 
-  .min-h-screen.bg-white > nav,
-  .min-h-screen.bg-white > header {
-    flex-shrink: 0;
+  .min-h-screen > section:first-of-type > div > div:nth-child(1) {
+    position: static !important;
+    height: auto !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    order: 2;
   }
-}
 
-/* ---- SMALL PHONES (max-width: 480px) ---- */
+  .min-h-screen > section:first-of-type > div > div:nth-child(1) > div:nth-child(1) {
+    display: none !important;
+  }
 
-/* HERO — single screen, no scrollbar, image fills space */
-@media (max-width: 480px) {
-  .hero-sec {
-    padding: 12px 12px 0 !important;
-    flex: 1 !important;
-    min-height: 0 !important;
+  .min-h-screen > section:first-of-type > div > div:nth-child(1) > div:nth-child(2) {
+    display: none !important;
+  }
+
+  .min-h-screen > section:first-of-type > div > div:nth-child(1) > div:nth-child(3) {
+    position: static !important;
+    width: 100% !important;
+    height: 260px !important;
+    border-radius: 16px;
+    overflow: hidden;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+  }
+
+  .min-h-screen > section:first-of-type > div > div:nth-child(1) > div:nth-child(3) > img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 16px;
+  }
+
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) {
+    position: static !important;
+    height: auto !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    order: 1;
+    padding-bottom: 0 !important;
+  }
+
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:first-child {
+    width: auto !important;
+    height: auto !important;
+  }
+
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(2) {
+    width: 100% !important;
+  }
+
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(2) > h1 {
+    font-size: 32px !important;
+    line-height: 36px !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(3) {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(3) > p {
+    width: 100% !important;
+    height: auto !important;
+    font-size: 15px !important;
+    line-height: 24px !important;
+  }
+
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(4) {
+    width: 100% !important;
+    height: auto !important;
+    flex-wrap: wrap;
+    gap: 12px !important;
+  }
+
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(4) > button {
+    width: auto !important;
+    min-width: 150px;
+    height: auto !important;
+    padding: 10px 24px !important;
+    font-size: 14px !important;
+    flex: 1;
+    justify-content: center;
+  }
+
+  /* Stats container */
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(5) {
+    width: 100% !important;
+    height: auto !important;
+    padding: 12px 0 0 !important;
+    border-top: 1px solid #F3F4F6;
+    box-sizing: border-box !important;
+  }
+
+  /* Stats row */
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(5) > div {
+    width: 100% !important;
+    height: auto !important;
+    gap: 0 !important;
+    display: flex !important;
+    flex-wrap: wrap;
+  }
+
+  /* Each stat item (number + label) */
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(5) > div > div {
+    width: 50% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    padding: 10px 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: none !important;
+    overflow: visible !important;
+  }
+
+  /* Stat number (100+, 25+, 4) */
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(5) > div > div > span:first-child {
+    font-size: 22px !important;
+    line-height: 28px !important;
+    margin-left: 0 !important;
+    height: auto !important;
+    display: block !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  /* Stat label container */
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(5) > div > div > div {
+    width: 100% !important;
+    height: auto !important;
+    display: block !important;
+  }
+
+  /* Stat label text (CLIENTS, CANDIDATES, etc.) */
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(5) > div > div > div > span {
+    width: 100% !important;
+    display: block !important;
+    text-align: center !important;
+  }
+
+  /* ── Blog Section ────────────────────────── */
+  .home-blog-container {
+    padding: 0 16px !important;
+  }
+
+  .home-blog-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    height: auto !important;
+    gap: 16px;
+  }
+
+  .home-blog-heading {
+    font-size: 24px !important;
+    line-height: 30px !important;
+    width: 100% !important;
+  }
+
+  .home-blog-content-inner {
+    flex-direction: column !important;
+    height: auto !important;
+    position: static !important;
     overflow: hidden !important;
   }
 
-  .hero-h1 {
-    font-size: 22px !important;
+  .home-blog-featured {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 20px !important;
   }
 
-  .hero-badge {
-    font-size: 9px !important;
-    padding: 5px 12px !important;
+  .home-blog-featured-text {
+    width: 100% !important;
   }
 
-  .hero-p {
-    font-size: 13px !important;
-    line-height: 1.5 !important;
+  .home-blog-featured-title {
+    width: 100% !important;
+    font-size: 18px !important;
+    line-height: 24px !important;
+    margin-bottom: 8px !important;
   }
 
-  .hero-right-wrap {
+  .home-blog-featured-desc {
+    width: 100% !important;
+    font-size: 12px !important;
+    line-height: 18px !important;
+    margin-bottom: 12px !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .home-blog-featured-meta {
+    width: 100% !important;
+    flex-wrap: wrap;
+    gap: 8px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .home-blog-small-cards {
+    position: static !important;
+    width: 100% !important;
+    left: auto !important;
+    gap: 16px !important;
+    height: auto !important;
+  }
+
+  .home-blog-small-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .home-blog-small-card-image {
+    width: 120px !important;
+    height: 110px !important;
+    min-width: 120px;
+    margin-top: 20px !important;
+    margin-left: 20px !important;
     border-radius: 12px !important;
   }
 
-  .hero-stats {
-    gap: 8px !important;
-    padding: 12px 10px !important;
+  .home-blog-small-card-image img {
+    width: 120px !important;
+    height: 110px !important;
   }
 
-  .hero-stat-item {
-    flex: 1 1 calc(50% - 4px) !important;
+  /* ── What Makes Us Different ──────────────── */
+  .home-diff-section {
+    padding: 0 16px !important;
   }
 
-  .hero-stat-value {
+  .home-diff-header {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .home-diff-heading-wrap {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .home-diff-heading-wrap h2 {
+    font-size: 24px !important;
+    line-height: 30px !important;
+  }
+
+  .home-diff-rows {
+    width: 100% !important;
+    gap: 16px !important;
+  }
+
+  .home-diff-row {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .home-diff-row > div {
+    flex-direction: column !important;
+    height: auto !important;
+    padding: 16px !important;
+  }
+
+  .home-diff-image {
+    width: 100% !important;
+    height: 200px !important;
+    border-radius: 16px !important;
+  }
+
+  .home-diff-card {
+    height: auto !important;
+    min-height: auto !important;
+    padding: 24px !important;
+    position: relative !important;
+  }
+
+  .home-diff-card [aria-hidden="true"] {
+    display: none !important;
+  }
+
+  /* ── Contact Section ─────────────────────── */
+  .home-contact-form-card {
+    max-height: 480px !important;
+    padding: 20px !important;
+  }
+
+  /* ── Locations Section ───────────────────── */
+  .location-card {
+    width: 280px !important;
+    height: 260px !important;
+    min-width: 280px !important;
+    margin: 0 8px !important;
+  }
+
+  .location-card:first-child { margin-left: 16px !important; }
+  .location-card:last-child  { margin-right: 16px !important; }
+
+  /* ── Trusted Clients ─────────────────────── */
+  .trusted-clients-track {
+    animation-duration: 15s !important;
+  }
+
+  /* ── Footer ──────────────────────────────── */
+  footer .grid {
+    gap: 32px !important;
+  }
+}
+
+/* ============================================================
+   SMALL PHONES (max-width: 480px)
+   ============================================================ */
+@media (max-width: 480px) {
+
+  /* HERO — tighter spacing */
+  .min-h-screen > section:first-of-type {
+    padding: 0 12px 24px !important;
+  }
+
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(2) > h1 {
+    font-size: 26px !important;
+    line-height: 30px !important;
+  }
+
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:first-child {
+    font-size: 9px !important;
+    padding: 5px 10px !important;
+  }
+
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(3) > p {
+    font-size: 13px !important;
+    line-height: 20px !important;
+  }
+
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(4) > button {
+    min-width: 130px !important;
+    padding: 10px 16px !important;
     font-size: 13px !important;
   }
 
-  .hero-stat-label {
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(5) > div > div > span:first-child {
+    font-size: 18px !important;
+  }
+
+  .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(5) > div > div > div > span {
     font-size: 10px !important;
   }
-}
 
-/* HOW WE WORK — single column on very small screens */
-@media (max-width: 480px) {
-  #how-we-work .grid {
-    grid-template-columns: 1fr !important;
-  }
-}
-
-/* WORKFORCE SOLUTIONS — single column, tighter padding */
-@media (max-width: 480px) {
-  #solutions .grid {
-    grid-template-columns: 1fr !important;
+  /* BLOG — tighter */
+  .home-blog-heading {
+    font-size: 20px !important;
+    line-height: 26px !important;
   }
 
-  #solutions .py-16 {
-    padding-top: 2rem !important;
-    padding-bottom: 2rem !important;
+  .home-blog-small-card-image {
+    width: 100px !important;
+    height: 90px !important;
+    min-width: 100px;
+    margin-top: 16px !important;
+    margin-left: 16px !important;
+    border-radius: 10px !important;
   }
-}
 
-/* FAQ — tighter padding on small screens */
-@media (max-width: 480px) {
-  #faq .max-w-7xl {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+  .home-blog-small-card-image img {
+    width: 100px !important;
+    height: 90px !important;
   }
-}
 
-/* TESTIMONIALS — single column, tighter spacing */
-@media (max-width: 480px) {
-  #testimonials .grid {
-    grid-template-columns: 1fr !important;
+  /* WHAT MAKES US DIFFERENT — tighter */
+  .home-diff-card {
+    padding: 16px !important;
+  }
+
+  /* CONTACT FORM — tighter */
+  .home-contact-form-card {
+    padding: 16px !important;
+    max-height: 400px !important;
   }
 }

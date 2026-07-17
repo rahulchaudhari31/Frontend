@@ -209,7 +209,7 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
         <div
           id="contact-form-card"
           ref={ref}
-          className="w-full max-w-md mx-auto lg:mx-0 lg:ml-auto flex flex-col"
+          className="home-contact-form-card w-full max-w-md mx-auto lg:mx-0 lg:ml-auto flex flex-col"
           style={{
             background: "#FFFFFF",
             border: "1px solid #F1F2F9",

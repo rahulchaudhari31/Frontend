@@ -3,7 +3,7 @@ import office1 from "../assets/image/office 1.png";
 const WhoWeAre2 = () => {
   return (
     <section
-      className="relative isolate bg-white w-full"
+      className="relative isolate bg-white w-full about-whoweare2"
       style={{ padding: "64px 41px 64px 113.5px" }}
     >
       {/* Background decoration */}

@@ -206,6 +206,7 @@ export default function OurJourney() {
     <section
       ref={secRef}
       aria-label="Our Journey timeline"
+      className="about-ourjourney"
       style={{
         width: "100%", margin: "0 auto",
         padding: "80px 113.5px 88px",

@@ -180,6 +180,7 @@ export default function GlobalFootprint() {
 
   return (
     <section
+      className="about-globalfootprint"
       style={{
         width: "100%", margin: "0 auto",
         display: "flex", flexDirection: "column", alignItems: "center",
@@ -211,7 +212,7 @@ export default function GlobalFootprint() {
                 onMouseEnter={() => enter(m.id)}
                 onMouseLeave={() => leave(m.id)}
                 onFocus={() => enter(m.id)}
-                onBlur={() => hide()}
+                onBlur={() => {}}
                 style={{
                   position: "relative",
                   width: m.primary ? 18 : 14,
@@ -273,11 +274,6 @@ export default function GlobalFootprint() {
         })}
       </div>
 
-      <style>{`
-        @media(max-width:768px){
-          section > div:last-of-type{padding:0 16px}
-        }
-      `}</style>
     </section>
   );
 }

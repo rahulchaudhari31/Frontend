@@ -10,23 +10,25 @@ import MissionVision from "../components/aboutus/MissionVision.jsx";
 import Testimonials from "../components/aboutus/Testimonials.jsx";
 import GlobalFootprint from "../components/aboutus/GlobalFootprint.jsx";
 import CallToAction from "../components/aboutus/CallToAction.jsx";
+import "../components/aboutus/AboutPage.css";
 
 const About = () => {
   return (
     <main className="font-sans">
       <Navbar></Navbar>
-      <Hero />
-      <WhoWeAre2 />
-      <WhoWeAre />
-      <OurJourney />
-      <WhyChooseUs />
-      <MissionVision />
-      <Testimonials />
-      <GlobalFootprint />
-      <CallToAction />
-      <Footer></Footer>
-    </main>
-  );
+      <main className="font-sans about-page">
+        <Hero />
+        <WhoWeAre2 />
+        <WhoWeAre />
+        <OurJourney />
+        <WhyChooseUs />
+        <MissionVision />
+        <Testimonials />
+        <GlobalFootprint />
+        <CallToAction />
+        <Footer></Footer>
+      </main>
+      );
 };
 
-export default About;
+      export default About;

@@ -1,0 +1,263 @@
+/* ========================================================
+   Employer Page - Mobile Responsive Styles
+   Targets: 320px–768px only
+   Desktop untouched
+   ======================================================== */
+
+.employer-page {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* ============================================================
+   TABLETS / MOBILE LANDSCAPE (max-width: 768px)
+   ============================================================ */
+@media (max-width: 768px) {
+
+  /* ── Hero Section ── */
+  .employer-hero {
+    height: auto !important;
+    min-height: 320px !important;
+    padding: 100px 20px 40px !important;
+    overflow: visible !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .employer-hero > div {
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    left: auto !important;
+    top: auto !important;
+    padding: 0 !important;
+  }
+
+  .employer-hero > div > div {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .employer-hero > div > div > div:first-child {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    font-size: 28px !important;
+    line-height: 36px !important;
+    left: auto !important;
+    top: auto !important;
+  }
+
+  .employer-hero > div > div > div:nth-child(2) {
+    position: static !important;
+    width: 100px !important;
+    height: 4px !important;
+    left: auto !important;
+    top: auto !important;
+    margin: 12px 0 !important;
+  }
+
+  .employer-hero > div > div > div:last-child {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    font-size: 28px !important;
+    line-height: 38px !important;
+    left: auto !important;
+    top: auto !important;
+  }
+
+  /* ── How We Work Section ── */
+  .how-we-work-section {
+    padding: 40px 16px !important;
+  }
+
+  .how-we-work-section > div > div:first-child {
+    margin-bottom: 20px !important;
+  }
+
+  .how-we-work-section > div > div:first-child > p {
+    font-size: 14px !important;
+    line-height: 22px !important;
+  }
+
+  .how-we-work-section > div > div:first-child > h2 {
+    font-size: 24px !important;
+    line-height: 34px !important;
+  }
+
+  .how-we-work-section > div > div:nth-child(2) {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0 !important;
+  }
+
+  .how-we-work-section > div > div:nth-child(2) > div {
+    padding: 12px 8px !important;
+    gap: 12px !important;
+    border-right: 1px solid rgba(0,0,0,0.08) !important;
+  }
+
+  .how-we-work-section > div > div:nth-child(2) > div:nth-child(3n) {
+    border-right: none !important;
+  }
+
+  .how-we-work-section > div > div:nth-child(2) > div > div:first-child {
+    width: 100px !important;
+    height: 100px !important;
+  }
+
+  .how-we-work-section > div > div:nth-child(2) > div > div:first-child > div:first-child {
+    width: 80px !important;
+    height: 40px !important;
+    margin-left: -40px !important;
+    margin-top: -20px !important;
+  }
+
+  .how-we-work-section > div > div:nth-child(2) > div > div:first-child > div:nth-child(2) {
+    width: 80px !important;
+    height: 80px !important;
+    border-radius: 40px !important;
+  }
+
+  .how-we-work-section > div > div:nth-child(2) > div > div:last-child > h3 {
+    font-size: 16px !important;
+    line-height: 20px !important;
+  }
+
+  .how-we-work-section > div > div:nth-child(2) > div > div:last-child > p {
+    font-size: 13px !important;
+    line-height: 20px !important;
+  }
+
+  /* ── Sectors Section ── */
+  .employer-page .sector-card {
+    width: 260px !important;
+    min-width: 260px !important;
+    height: 380px !important;
+  }
+
+  /* ── FAQ & CTA Section ── */
+  .employer-page #faq {
+    padding: 40px 16px !important;
+  }
+
+  /* ── Testimonials Section — match About page exactly ── */
+  .employer-testimonials {
+    padding: 32px 16px 40px !important;
+    gap: 24px !important;
+  }
+
+  /* Heading area wrapper */
+  .employer-testimonials > div > div:first-child > div:first-child {
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 16px !important;
+    height: auto !important;
+  }
+
+  /* Eyebrow row */
+  .employer-testimonials > div > div:first-child > div:first-child > div:first-child {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    flex-wrap: wrap;
+  }
+
+  /* Decorative line before badge */
+  .employer-testimonials > div > div:first-child > div:first-child > div:first-child > div:first-child {
+    width: 60px !important;
+    height: auto !important;
+    flex-shrink: 0;
+  }
+
+  /* h2 */
+  .employer-testimonials > div > div:first-child > div:first-child > h2 {
+    font-size: 24px !important;
+    line-height: 32px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Description + nav buttons row — STACK vertically */
+  .employer-testimonials > div > div:first-child > div:last-child {
+    width: 100% !important;
+    gap: 16px !important;
+    height: auto !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .employer-testimonials > div > div:first-child > div:last-child > p {
+    max-width: 100% !important;
+    font-size: 14px !important;
+    line-height: 22px !important;
+  }
+
+  .employer-testimonials > div > div:first-child > div:last-child > div {
+    width: 100% !important;
+    justify-content: flex-end !important;
+    height: auto !important;
+  }
+
+  .employer-testimonials > div > div:first-child > div:last-child > div > button {
+    width: 44px !important;
+    height: 44px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Testimonial cards — keep original dimensions for horizontal carousel */
+  .testimonials-track-wrapper {
+    overflow: hidden !important;
+  }
+}
+
+/* ============================================================
+   SMALL PHONES (max-width: 480px)
+   ============================================================ */
+@media (max-width: 480px) {
+
+  .employer-hero {
+    min-height: 280px !important;
+    padding: 80px 16px 32px !important;
+  }
+
+  .employer-hero > div > div > div:first-child {
+    font-size: 24px !important;
+    line-height: 32px !important;
+  }
+
+  .employer-hero > div > div > div:last-child {
+    font-size: 24px !important;
+    line-height: 32px !important;
+  }
+
+  .how-we-work-section {
+    padding: 32px 12px !important;
+  }
+
+  .how-we-work-section > div > div:nth-child(2) {
+    grid-template-columns: 1fr !important;
+  }
+
+  .how-we-work-section > div > div:nth-child(2) > div {
+    border-right: none !important;
+    border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+  }
+
+  .how-we-work-section > div > div:nth-child(2) > div:last-child {
+    border-bottom: none !important;
+  }
+
+  .employer-testimonials {
+    padding: 24px 12px 32px !important;
+  }
+
+  .employer-testimonials > div > div:first-child > div:first-child > h2 {
+    font-size: 20px !important;
+    line-height: 28px !important;
+  }
+}

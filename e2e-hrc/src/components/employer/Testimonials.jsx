@@ -159,6 +159,7 @@ export default function Testimonials() {
 
   return (
     <section
+      className="employer-testimonials"
       style={{
         position: "relative",
         width: "100%",

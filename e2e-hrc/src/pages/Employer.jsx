@@ -11,13 +11,19 @@ const Employer = () => {
   return (
     <>
       <Navbar></Navbar>
-      <Hero />
-      <HowWeWork />
-      <Sectors />
-      <FAQAndCTA />
-      <Testimonials />
-      <Footer />
-    </>
+      import '../components/employer/EmployerPage.css';
+
+const Employer = () => {
+  return (
+      <div className="employer-page">
+        <Hero />
+        <HowWeWork />
+        <Sectors />
+        <FAQAndCTA />
+        <Testimonials />
+        <Footer />
+      </>
+    </div >
   );
 };
 
