@@ -543,7 +543,7 @@ export default function ContactFormSection() {
 
           {/* Ready to Connect Card */}
           <div
-            className="w-full bg-white"
+            className="w-full bg-white ready-connect-card"
             style={{
               borderRadius: '24px',
               padding: '40px',
@@ -565,7 +565,7 @@ export default function ContactFormSection() {
 
             <div className="flex flex-col" style={{ gap: '16px', marginTop: '32px' }}>
               <div
-                className="bg-white"
+                className="bg-white contact-action-btn"
                 style={{
                   border: '1px solid rgba(228,226,225,0.5)',
                   borderRadius: '24px',
@@ -616,7 +616,7 @@ export default function ContactFormSection() {
               </div>
 
               <div
-                className="bg-white"
+                className="bg-white contact-action-btn"
                 style={{
                   border: '1px solid rgba(228,226,225,0.5)',
                   borderRadius: '24px',
@@ -667,7 +667,7 @@ export default function ContactFormSection() {
               </div>
 
               <div
-                className="bg-white"
+                className="bg-white contact-action-btn"
                 style={{
                   border: '1px solid rgba(228,226,225,0.5)',
                   borderRadius: '24px',
