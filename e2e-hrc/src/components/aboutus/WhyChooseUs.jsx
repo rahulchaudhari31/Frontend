@@ -61,6 +61,7 @@ const WhyChooseUs = () => {
 
   return (
     <section
+      className="about-whychooseus"
       style={{
         width: "100%",
         background: "#F3F1ED",
@@ -70,6 +71,7 @@ const WhyChooseUs = () => {
       }}
     >
       <div
+        className="about-wcu-container"
         style={{
           width: "1324px",
           maxWidth: "100%",
@@ -79,6 +81,7 @@ const WhyChooseUs = () => {
         }}
       >
         <div
+          className="about-wcu-header"
           style={{
             position: "absolute",
             maxWidth: "768px",
@@ -125,6 +128,7 @@ const WhyChooseUs = () => {
         </div>
 
         <div
+          className="about-wcu-cards"
           style={{
             position: "absolute",
             height: "508px",
