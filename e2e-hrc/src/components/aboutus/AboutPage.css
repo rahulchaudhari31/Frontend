@@ -76,6 +76,11 @@
     max-width: 100% !important;
   }
 
+  /* Hide decorative "HR" watermark on mobile */
+  .about-whoweare2 span.absolute.font-inter.font-black {
+    display: none !important;
+  }
+
   /* ── Who We Are ── */
   .about-whoweare {
     padding: 40px 20px !important;
@@ -102,6 +107,11 @@
   .about-whoweare .font-inter.text-base {
     font-size: 14px !important;
     line-height: 22px !important;
+  }
+
+  /* Hide decorative "C" watermark on mobile */
+  .about-whoweare span.absolute.font-inter.font-black {
+    display: none !important;
   }
 
   /* ── Our Journey ── */
