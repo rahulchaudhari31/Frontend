@@ -4,6 +4,7 @@ export default function Hero() {
 
   return (
     <section
+      className="employer-hero"
       style={{
         position: "relative",
         width: "100%",

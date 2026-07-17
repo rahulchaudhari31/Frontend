@@ -95,6 +95,7 @@ export default function Employee() {
 
       {/* ===== G. TESTIMONIALS ===== */}
       <section
+        className="emp-testimonials"
         style={{
           position: "relative",
           width: "100%",
@@ -108,10 +109,10 @@ export default function Employee() {
           boxSizing: "border-box",
         }}
       >
-        <div style={{ position: "relative", zIndex: 10, width: "100%", maxWidth: 1240, margin: "0 auto", boxSizing: "border-box" }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 30 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+        <div className="emp-testimonials-inner" style={{ position: "relative", zIndex: 10, width: "100%", maxWidth: 1240, margin: "0 auto", boxSizing: "border-box" }}>
+          <div className="emp-testimonials-top" style={{ display: "flex", flexDirection: "column", gap: 40 }}>
+            <div className="emp-testimonials-header" style={{ display: "flex", flexDirection: "column", gap: 30 }}>
+              <div className="emp-testimonials-badge" style={{ display: "flex", alignItems: "center", gap: 20 }}>
                 <div style={{ width: 80, height: 0, borderTop: "1px solid #FFFFFF" }} />
                 <span
                   style={{
@@ -134,6 +135,7 @@ export default function Employee() {
                 </span>
               </div>
               <h2
+                className="emp-testimonials-heading"
                 style={{
                   fontFamily: "Poppins, sans-serif",
                   fontWeight: 600,
@@ -147,8 +149,9 @@ export default function Employee() {
               </h2>
             </div>
 
-            <div style={{ display: "flex", alignItems: "flex-start", gap: 568, width: "100%" }}>
+            <div className="emp-testimonials-controls" style={{ display: "flex", alignItems: "flex-start", gap: 568, width: "100%" }}>
               <p
+                className="emp-testimonials-desc"
                 style={{
                   fontFamily: "Inter, sans-serif",
                   fontWeight: 400,
