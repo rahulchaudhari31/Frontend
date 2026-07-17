@@ -186,6 +186,7 @@ const Testimonials = () => {
 
   return (
     <section
+      className="about-testimonials"
       style={{
         position: "relative",
         width: "100%",

@@ -4,6 +4,7 @@ import { FiArrowRight, FiUpload } from "react-icons/fi";
 const CallToAction = () => {
   return (
     <section
+      className="about-cta"
       style={{
         display: "flex",
         flexDirection: "column",

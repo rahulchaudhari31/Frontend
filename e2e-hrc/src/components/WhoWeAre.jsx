@@ -9,7 +9,7 @@ const features = [
 const WhoWeAre = () => {
   return (
     <section
-      className="relative isolate bg-white w-full"
+      className="relative isolate bg-white w-full about-whoweare"
       style={{ padding: "67px 41px 74px 113.5px" }}
     >
       <div

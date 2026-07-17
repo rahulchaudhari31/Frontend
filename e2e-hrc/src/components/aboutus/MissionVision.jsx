@@ -46,15 +46,15 @@ const MissionVision = () => {
   );
 
   return (
-    <section style={{
+    <section className="about-missionvision" style={{
       width: "100%",
       padding: "59px 113.5px 67px",
       background: "#FFFFFF",
       fontFamily: "'Inter', sans-serif",
       position: "relative",
     }}>
-      <div style={{ width: "1213px", maxWidth: "100%", height: "438.25px", position: "relative" }}>
-        <div style={{
+      <div className="about-mv-container" style={{ width: "1213px", maxWidth: "100%", height: "438.25px", position: "relative" }}>
+        <div className="about-mv-mission" style={{
           position: "absolute", height: "438.25px",
           left: "0px", right: "622.5px", top: "0px",
           background: "#FFFFFF",
@@ -105,7 +105,7 @@ const MissionVision = () => {
           </div>
         </div>
 
-        <div style={{
+        <div className="about-mv-vision" style={{
           position: "absolute", height: "439px",
           left: "622.5px", right: "0px", top: "0px",
           background: "#00458D99",

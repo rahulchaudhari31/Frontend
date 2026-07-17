@@ -80,6 +80,15 @@ export default function Navbar({ variant = 'home', onCtaAction }) {
 
   return (
     <>
+      <style>{`
+        @media (max-width: 640px) {
+          .navbar-logo { width: 110px !important; max-width: 110px !important; }
+          .navbar-header-inner { padding-left: 12px !important; padding-right: 12px !important; }
+        }
+        @media (min-width: 641px) and (max-width: 1024px) {
+          .navbar-logo { width: 128px !important; max-width: 128px !important; }
+        }
+      `}</style>
       {/* Fixed navbar */}
       <div
         style={{
@@ -151,7 +160,7 @@ export default function Navbar({ variant = 'home', onCtaAction }) {
         >
           <div className="flex items-center justify-between h-full max-w-[1440px] mx-auto px-6 xl:px-16">
             <Link to="/" aria-label="E2E HRC home" className="flex shrink-0 items-center no-underline">
-              <img src={logoImage} alt="E2E HRC" width="146" height="58" className="block h-auto max-h-[58px] w-[146px] shrink-0 object-contain" />
+              <img src={logoImage} alt="E2E HRC" width="146" height="58" className="navbar-logo block h-auto max-h-[58px] w-[146px] shrink-0 object-contain" />
             </Link>
 
             <nav aria-label="Main navigation" className="hidden xl:flex items-center gap-1">
@@ -168,17 +177,18 @@ export default function Navbar({ variant = 'home', onCtaAction }) {
             </button>
 
             <button
-              className="xl:hidden text-primary p-2 rounded-md hover:bg-gray-50 transition-colors"
+              className="xl:hidden p-2 rounded-md transition-colors"
+              style={{ color: '#0F2A52', minWidth: '44px', minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: mobileOpen ? '#f3f4f6' : 'transparent' }}
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileOpen}
             >
-              {mobileOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+              {mobileOpen ? <FiX size={24} /> : <FiMenu size={24} />}
             </button>
           </div>
 
           {mobileOpen && (
-            <div className="xl:hidden bg-white border-t border-gray-100 px-6 pb-5">
+            <div className="xl:hidden bg-white border-t border-gray-100 px-4 pb-5 sm:px-6">
               <nav aria-label="Mobile navigation" className="flex flex-col mt-2">
                 {navLinks.map((link) => renderLink(link, 'flex items-center justify-between py-3 text-sm font-semibold border-b border-gray-50 transition-colors duration-150', () => setMobileOpen(false)))}
               </nav>

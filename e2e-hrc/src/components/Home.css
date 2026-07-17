@@ -122,49 +122,61 @@ html {
     justify-content: center;
   }
 
+  /* Stats container */
   .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(5) {
     width: 100% !important;
     height: auto !important;
     padding: 12px 0 0 !important;
     border-top: 1px solid #F3F4F6;
+    box-sizing: border-box !important;
   }
 
+  /* Stats row */
   .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(5) > div {
     width: 100% !important;
     height: auto !important;
     gap: 0 !important;
+    display: flex !important;
     flex-wrap: wrap;
   }
 
+  /* Each stat item (number + label) */
   .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(5) > div > div {
     width: 50% !important;
     min-width: 0 !important;
     height: auto !important;
-    padding: 8px 0 !important;
+    padding: 10px 0 !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
     flex: none !important;
+    overflow: visible !important;
   }
 
+  /* Stat number (100+, 25+, 4) */
   .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(5) > div > div > span:first-child {
     font-size: 22px !important;
     line-height: 28px !important;
     margin-left: 0 !important;
+    height: auto !important;
     display: block !important;
-    text-align: center;
+    text-align: center !important;
+    width: 100% !important;
   }
 
+  /* Stat label container */
   .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(5) > div > div > div {
     width: 100% !important;
     height: auto !important;
+    display: block !important;
   }
 
+  /* Stat label text (CLIENTS, CANDIDATES, etc.) */
   .min-h-screen > section:first-of-type > div > div:nth-child(2) > div:nth-child(5) > div > div > div > span {
     width: 100% !important;
     display: block !important;
-    text-align: center;
+    text-align: center !important;
   }
 
   /* ── Blog Section ────────────────────────── */
@@ -247,8 +259,8 @@ html {
     width: 120px !important;
     height: 110px !important;
     min-width: 120px;
-    margin-top: 12px !important;
-    margin-left: 12px !important;
+    margin-top: 20px !important;
+    margin-left: 20px !important;
     border-radius: 12px !important;
   }
 
@@ -387,8 +399,8 @@ html {
     width: 100px !important;
     height: 90px !important;
     min-width: 100px;
-    margin-top: 10px !important;
-    margin-left: 10px !important;
+    margin-top: 16px !important;
+    margin-left: 16px !important;
     border-radius: 10px !important;
   }
 
