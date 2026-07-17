@@ -191,65 +191,80 @@ export default function GlobalNetworkSection() {
         const d = officeData[activeOfficeCard];
         return createPortal(
           <div
+            onClick={hideCard}
             style={{
               position: 'fixed', inset: 0, zIndex: 9999,
-              background: '#FFF',
-              display: 'flex', flexDirection: 'column',
-              padding: 24, overflowY: 'auto',
+              background: 'rgba(0,0,0,0.4)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              padding: 16,
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 16 }}>
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: 320,
+                maxHeight: '80vh',
+                overflowY: 'auto',
+                background: '#FFF',
+                borderRadius: 20,
+                padding: '24px 20px',
+                boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+              }}
+            >
               <button
                 onClick={hideCard}
                 aria-label="Close"
                 style={{
-                  width: 36, height: 36,
+                  position: 'absolute', top: 12, right: 12,
+                  width: 30, height: 30,
                   borderRadius: '50%', background: '#FFF', border: 'none',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.1)', cursor: 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}
               >
-                <FiX size={20} color="#000" />
+                <FiX size={16} color="#000" />
+              </button>
+
+              <h2 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: 18, color: '#004CA5', margin: 0, marginBottom: 14, paddingRight: 28 }}>
+                {d.officeName}
+              </h2>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+                {[
+                  { icon: FiMapPin, color: '#004CA5', content: d.address.map((line, i) => (<span key={i}>{line}{i < d.address.length - 1 && <br />}</span>)) },
+                  { icon: FaPhoneAlt, color: '#004CA5', content: d.phone },
+                  { icon: FaEnvelope, color: '#004CA5', content: d.email },
+                  { icon: FiClock, color: '#004CA5', content: d.hours },
+                ].map((row, i) => (
+                  <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 10, alignItems: 'flex-start' }}>
+                    <div style={{ flexShrink: 0, marginTop: 2 }}><row.icon size={14} color={row.color} /></div>
+                    <span style={{ fontSize: 13, lineHeight: 1.4, color: '#1B1C1C', fontFamily: "'Inter', sans-serif" }}>{row.content}</span>
+                  </div>
+                ))}
+              </div>
+
+              <h3 style={{ fontWeight: 700, fontSize: 14, color: '#1B1C1C', margin: 0, marginTop: 8, marginBottom: 8 }}>
+                About this Office
+              </h3>
+              <p style={{ fontSize: 13, lineHeight: 1.5, color: '#424752', margin: 0, marginBottom: 16, fontFamily: "'Inter', sans-serif" }}>
+                {d.aboutText}
+              </p>
+
+              <button
+                onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(d.directionsQuery)}`, '_blank', 'noopener,noreferrer')}
+                style={{
+                  width: '100%', padding: 10, borderRadius: 9999, background: '#004CA5',
+                  color: '#FFF', border: 'none', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                  fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: 14,
+                }}
+              >
+                <FiCompass size={14} color="#FFF" />
+                Get Directions
               </button>
             </div>
-
-            <h2 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: 22, color: '#004CA5', margin: 0, marginBottom: 20 }}>
-              {d.officeName}
-            </h2>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-              {[
-                { icon: FiMapPin, color: '#004CA5', content: d.address.map((line, i) => (<span key={i}>{line}{i < d.address.length - 1 && <br />}</span>)) },
-                { icon: FaPhoneAlt, color: '#004CA5', content: d.phone },
-                { icon: FaEnvelope, color: '#004CA5', content: d.email },
-                { icon: FiClock, color: '#004CA5', content: d.hours },
-              ].map((row, i) => (
-                <div key={i} style={{ display: 'flex', gap: 12, marginBottom: 16, alignItems: 'flex-start' }}>
-                  <div style={{ flexShrink: 0, marginTop: 2 }}><row.icon size={16} color={row.color} /></div>
-                  <span style={{ fontSize: 15, lineHeight: 1.5, color: '#1B1C1C', fontFamily: "'Inter', sans-serif" }}>{row.content}</span>
-                </div>
-              ))}
-            </div>
-
-            <h3 style={{ fontWeight: 700, fontSize: 18, color: '#1B1C1C', margin: 0, marginTop: 8, marginBottom: 12 }}>
-              About this Office
-            </h3>
-            <p style={{ fontSize: 15, lineHeight: 1.6, color: '#424752', margin: 0, marginBottom: 24, fontFamily: "'Inter', sans-serif" }}>
-              {d.aboutText}
-            </p>
-
-            <button
-              onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(d.directionsQuery)}`, '_blank', 'noopener,noreferrer')}
-              style={{
-                width: '100%', padding: 14, borderRadius: 9999, background: '#004CA5',
-                color: '#FFF', border: 'none', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: 16,
-              }}
-            >
-              <FiCompass size={16} color="#FFF" />
-              Get Directions
-            </button>
           </div>,
           document.body
         );
