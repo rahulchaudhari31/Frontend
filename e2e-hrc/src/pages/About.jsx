@@ -1,5 +1,7 @@
 import React from "react";
 import Hero from "../components/aboutus/Hero.jsx";
+import Navbar from "../components/shared/Navbar.jsx"
+import Footer from "../components/shared/Footer.jsx"
 import WhoWeAre2 from "../components/WhoWeAre2.jsx";
 import WhoWeAre from "../components/WhoWeAre.jsx";
 import OurJourney from "../components/aboutus/OurJourney.jsx";
@@ -12,6 +14,7 @@ import CallToAction from "../components/aboutus/CallToAction.jsx";
 const About = () => {
   return (
     <main className="font-sans">
+      <Navbar></Navbar>
       <Hero />
       <WhoWeAre2 />
       <WhoWeAre />
@@ -21,6 +24,7 @@ const About = () => {
       <Testimonials />
       <GlobalFootprint />
       <CallToAction />
+      <Footer></Footer>
     </main>
   );
 };

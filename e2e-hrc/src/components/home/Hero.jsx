@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import useCountUp from "../../hooks/useCountUp";
-import heroImgPlaceholder from "../../assets/images/hero.png";
+import { getHomeHero } from "../../services/home/homeHeroService";
 
 function HeroSkeleton() {
   return (
@@ -64,12 +64,42 @@ function AnimatedStat({ target, suffix = "+", label, containerWidth, duration = 
 }
 
 function Hero({ onHireTalent, onFindOpportunities }) {
+  const [heroData, setHeroData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [imgLoaded, setImgLoaded] = useState(false);
 
-  const heroData = {
-    title: "Connecting Talent. Building Futures.",
-    buttonLink: "#",
-  };
+  useEffect(() => {
+    const fetchHeroData = async () => {
+      try {
+        setLoading(true);
+        const data = await getHomeHero();
+        setHeroData(data);
+      } catch (error) {
+        console.error('Failed to fetch hero data:', error);
+        setHeroData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHeroData();
+  }, []);
+
+  if (loading) {
+    return <HeroSkeleton />;
+  }
+
+  // If no hero data, render nothing
+  if (!heroData) {
+    return null;
+  }
+
+  // Extract hero data with fallbacks
+  const title = heroData.title || "Connecting Talent. Building Futures.";
+  const description = heroData.description || "Helping UK employers find exceptional talent and helping candidates discover opportunities to grow and thrive in their careers.";
+  const primaryButtonText = heroData.buttonText || "Hire Talent";
+  const primaryButtonLink = heroData.buttonLink || "#";
+  const heroImage = heroData.heroImage || "";
 
   return (
     <section className="relative" style={{ width: "100%", maxWidth: "1440px", height: "638px", margin: "0 auto", padding: "2px 53.5px 79px", boxSizing: "border-box", zIndex: 2 }}>
@@ -79,49 +109,57 @@ function Hero({ onHireTalent, onFindOpportunities }) {
           <div style={{ position: "absolute", width: "519px", height: "519px", left: "calc(50% - 519px/2 - 18px)", top: "calc(50% - 519px/2 - 54.5px)", background: "#C2D760", opacity: 0.33, borderRadius: "9999px" }} />
           <div style={{ position: "absolute", width: "419px", height: "419px", left: "calc(50% - 419px/2)", top: "calc(50% - 419px/2 - 40.5px)", boxSizing: "border-box", border: "1px dashed #C2D760", borderRadius: "9999px" }} />
           <div style={{ position: "absolute", width: "697px", left: "calc(50% - 697px/2 - 40px)", top: "0", bottom: "14.16%" }}>
-            {!imgLoaded && (
+            {!imgLoaded && heroImage && (
               <div className="absolute inset-0 bg-gray-100 animate-pulse rounded-2xl" />
             )}
-            <img
-              src={heroImgPlaceholder}
-              alt="Hero Image"
-              loading="lazy"
-              decoding="async"
-              onLoad={() => setImgLoaded(true)}
-              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", opacity: imgLoaded ? 1 : 0, transition: "opacity 0.5s" }}
-            />
+            {heroImage && (
+              <img
+                src={heroImage}
+                alt="Hero Image"
+                loading="lazy"
+                decoding="async"
+                onLoad={() => setImgLoaded(true)}
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", opacity: imgLoaded ? 1 : 0, transition: "opacity 0.5s" }}
+              />
+            )}
           </div>
         </div>
 
         {/* Left column: Text Content */}
-        <div style={{ position: "absolute", height: "572px", left: "5px", right: "696px", top: "64px", display: "flex", flexDirection: "column", alignItems: "flex-start", padding: "0px 0px 41px", gap: "24px" }}>
+        <div style={{ position: "absolute", height: "572px", left: "5px", right: "696px", top: "64px", display: "flex", flexDirection: "column", alignItems: "flex-start", padding: "0px 0px 41px", gap: "24px", marginTop: 10 }}>
           {/* Badge */}
           <div style={{ display: "flex", flexDirection: "row", alignItems: "center", padding: "4px 12px", gap: "6px", width: "291.94px", height: "24px", background: "#C9DB82", borderRadius: "9999px", flex: "none", order: 0 }}>
             <div style={{ width: "12px", height: "12px", borderRadius: "9999px", background: "#166534", flex: "none", order: 0 }} />
             <span style={{ fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 600, fontSize: "12px", lineHeight: "16px", color: "#166534", flex: "none", order: 1 }}>
-              Connecting Talent. Building Futures.
+              {heroData.subtitle || title}
             </span>
           </div>
 
           {/* Heading */}
           <div style={{ width: "632px", display: "flex", flexDirection: "column", alignItems: "flex-start", padding: "0px", flex: "none", order: 1 }}>
-            <h1 style={{ margin: 0, fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 800, fontSize: "60px", lineHeight: "60px", letterSpacing: "0px", color: "#004CA5", width: "632px", height: "120px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", flex: "none", order: 0, alignSelf: "stretch", flexGrow: 0 }}>
-              <span>Connecting Talent.</span>
-              <span>Building <span style={{ color: "#F39308" }}>Futures.</span></span>
+            <h1 style={{ margin: 0, marginTop: 10, fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 800, fontSize: "60px", lineHeight: "60px", letterSpacing: "0px", color: "#004CA5", width: "632px", height: "120px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", flex: "none", order: 0, alignSelf: "stretch", flexGrow: 0 }}>
+              <span>{title.split('.')[0]}.</span>
+              <span>{title.split('.')[1]?.trim() || 'Building'} <span style={{ color: "#F39308" }}>{title.split('.')[2]?.trim() || 'Futures.'}</span></span>
             </h1>
           </div>
 
           {/* Description */}
           <div style={{ width: "632px", height: "88px", display: "flex", flexDirection: "column", alignItems: "flex-start", padding: "0px", flex: "none", order: 2 }}>
-            <p style={{ margin: 0, fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 400, fontSize: "18px", lineHeight: "29px", color: "#000000", width: "514px", height: "88px" }}>
-              Helping UK employers find exceptional talent and helping candidates discover opportunities to grow and thrive in their careers.
+            <p style={{ margin: 0, marginTop: 20, fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 400, fontSize: "18px", lineHeight: "29px", color: "#000000", width: "514px", height: "88px" }}>
+              {description}
             </p>
           </div>
 
           {/* CTA Buttons */}
           <div style={{ display: "flex", flexDirection: "row", alignItems: "flex-start", padding: "8px 0px", gap: "16px", width: "632px", height: "68px", flex: "none", order: 3 }}>
-            <button
-              onClick={onHireTalent}
+            <a
+              href={primaryButtonLink}
+              onClick={(e) => {
+                if (primaryButtonLink === "#") {
+                  e.preventDefault();
+                  onHireTalent?.();
+                }
+              }}
               style={{
                 display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",
                 padding: "12px 32px 12px 28px", gap: "8px",
@@ -129,12 +167,12 @@ function Hero({ onHireTalent, onFindOpportunities }) {
                 background: "#F39308", borderRadius: "9999px",
                 fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 600,
                 fontSize: "16px", lineHeight: "24px", color: "#FFFFFF",
-                cursor: "pointer", border: "none",
+                cursor: "pointer", border: "none", textDecoration: "none",
               }}
             >
-              Hire Talent
+              {primaryButtonText}
               <span style={{ marginLeft: "4px" }}>→</span>
-            </button>
+            </a>
             <button
               onClick={onFindOpportunities}
               style={{
@@ -177,7 +215,7 @@ function Hero({ onHireTalent, onFindOpportunities }) {
                     {stat.number}
                   </span>
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", padding: "0px", width: stat.containerWidth, height: "16px" }}>
-                    <span style={{ fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 400, fontSize: "12px", lineHeight: "16px", display: "flex", alignItems: "center", letterSpacing: "0.3px", textTransform: "uppercase", color: "#000000" }}>
+                    <span style={{ fontFamily: "Inter, sans-serif", fontStyle: "Bold", fontWeight: 700, fontSize: "12px", lineHeight: "16px", display: "flex", alignItems: "center", letterSpacing: "0.3px", textTransform: "uppercase", color: "#000000" }}>
                       {stat.label}
                     </span>
                   </div>

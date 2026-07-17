@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, forwardRef } from "react";
 import { Check, Phone, Mail, User, MapPin, Briefcase, CloudUpload, ChevronDown, ArrowRight, Search } from "lucide-react";
-import groupIcon from "../../assets/images/Career Growth imgs/Group.png";
 import { useContactType } from "../../context/ContactTypeContext";
+import { getContactCTA } from "../../services/home/contactCTAService";
 
 const COUNTRIES = [
   { name: "United Kingdom", code: "GB", dial: "+44", flag: "🇬🇧" },
@@ -19,7 +19,7 @@ const COUNTRIES = [
   { name: "Australia", code: "AU", dial: "+61", flag: "🇦🇺" },
 ];
 
-const content = {
+const defaultContent = {
   employer: {
     title: "Get in Touch with Our Employer Team",
     description:
@@ -35,6 +35,8 @@ const content = {
 const ContactSection = forwardRef(function ContactSection(props, ref) {
   const { contactType } = useContactType();
   const type = contactType;
+  const [ctaData, setCtaData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -51,6 +53,50 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [search, setSearch] = useState("");
   const dropdownRef = useRef(null);
+
+  // Fetch CTA data on mount
+  useEffect(() => {
+    const fetchCTAData = async () => {
+      try {
+        setLoading(true);
+        const response = await getContactCTA();
+        // Safely extract data from any response format
+        const payload =
+          response?.data?.data ||
+          response?.data?.section ||
+          response?.data ||
+          response;
+        console.log('Contact CTA API:', response);
+        console.log('Extracted Data:', payload);
+        setCtaData(payload);
+      } catch (error) {
+        console.error('Error loading contact CTA:', error);
+        setCtaData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCTAData();
+  }, []);
+
+  // Get content based on contact type - use API data if available, fallback to default
+  // Backend fields: headingLine1, highlightText, headingLine2, description
+  const formHeading = ctaData
+    ? [ctaData.headingLine1, ctaData.highlightText, ctaData.headingLine2].filter(Boolean).join(' ')
+    : null;
+  const content = ctaData ? {
+    employer: {
+      title: formHeading || defaultContent.employer.title,
+      description: ctaData.description || defaultContent.employer.description,
+    },
+    employee: {
+      title: formHeading || defaultContent.employee.title,
+      description: ctaData.description || defaultContent.employee.description,
+    },
+  } : defaultContent;
+
+  console.log('Component State:', ctaData);
 
   useEffect(() => {
     setFormData({ name: "", email: "", contactNumber: "", location: "", organization: "", vacancy: "", attachment: null });
@@ -120,37 +166,41 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
         <div className="text-white">
           <span className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white text-sm font-medium px-4 py-1.5 rounded-full mb-6">
             <span className="w-2 h-2 rounded-full bg-emerald-400" />
-            Ready to get started?
+            {ctaData?.badgeText || 'Ready to get started?'}
           </span>
           <h2 className="text-4xl sm:text-5xl font-serif font-bold leading-tight mb-6 text-white">
-            Let's Build{" "}
-            <span className="text-[#FFB800]">Success</span>
+            {ctaData?.headingLine1 || "Let's Build"}{" "}
+            <span className="text-[#FFB800]">{ctaData?.highlightText || 'Success'}</span>
             <br />
-            Together
+            {ctaData?.headingLine2 || 'Together'}
           </h2>
           <p className="text-white/80 text-base sm:text-lg max-w-md mb-8">
-            Whether you're hiring exceptional talent or searching for your next opportunity, we are here to help every step of the way.
+            {ctaData?.description || "Whether you're hiring exceptional talent or searching for your next opportunity, we are here to help every step of the way."}
           </p>
           <div className="space-y-3 mb-10">
-            <div className="flex items-center gap-3">
-              <span className="flex items-center justify-center w-5 h-5 rounded-full border border-emerald-400">
-                <Check className="w-3 h-3 text-emerald-400" strokeWidth={3} />
-              </span>
-              <span className="text-white/90">Dedicated consultant assigned to you</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="flex items-center justify-center w-5 h-5 rounded-full border border-emerald-400">
-                <Check className="w-3 h-3 text-emerald-400" strokeWidth={3} />
-              </span>
-              <span className="text-white/90">Response within 24 hours</span>
-            </div>
+            {(ctaData?.feature1 || 'Dedicated consultant assigned to you') && (
+              <div className="flex items-center gap-3">
+                <span className="flex items-center justify-center w-5 h-5 rounded-full border border-emerald-400">
+                  <Check className="w-3 h-3 text-emerald-400" strokeWidth={3} />
+                </span>
+                <span className="text-white/90">{ctaData?.feature1 || 'Dedicated consultant assigned to you'}</span>
+              </div>
+            )}
+            {(ctaData?.feature2 || 'Response within 24 hours') && (
+              <div className="flex items-center gap-3">
+                <span className="flex items-center justify-center w-5 h-5 rounded-full border border-emerald-400">
+                  <Check className="w-3 h-3 text-emerald-400" strokeWidth={3} />
+                </span>
+                <span className="text-white/90">{ctaData?.feature2 || 'Response within 24 hours'}</span>
+              </div>
+            )}
           </div>
           <div className="flex flex-wrap items-center gap-4">
             <button type="button" className="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-300 transition-colors text-[#0b3a91] font-semibold px-6 py-3 rounded-full">
-              Hire Talent <ArrowRight className="w-4 h-4" />
+              {ctaData?.button1Text || 'Hire Talent'} <ArrowRight className="w-4 h-4" />
             </button>
             <button type="button" className="inline-flex items-center gap-2 bg-transparent border border-white/40 hover:border-white transition-colors text-white font-semibold px-6 py-3 rounded-full">
-              Explore Opportunities
+              {ctaData?.button2Text || 'Explore Opportunities'}
             </button>
           </div>
         </div>
@@ -175,8 +225,8 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
                 {content[type]?.title || content.employer.title}
               </h3>
             </div>
-            <div className="shrink-0">
-              <img src={groupIcon} alt="" style={{ width: "80px", height: "60px" }} />
+            <div className="shrink-0" style={{ width: "80px", height: "60px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "36px" }}>
+              👥
             </div>
           </div>
           <p style={{ fontFamily: "Inter, sans-serif", fontWeight: 400, fontSize: "12px", lineHeight: "1.5", color: "#6F6C8F", margin: 0, marginBottom: "20px" }}>

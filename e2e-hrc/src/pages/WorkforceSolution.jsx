@@ -1,4 +1,6 @@
 import { lazy, Suspense } from "react";
+import Navbar from "../components/shared/Navbar.jsx"
+import Footer from "../components/shared/Footer.jsx"
 import WorkforceHeroSection from "../components/WorkforceHeroSection/WorkforceHeroSection";
 import WhyChooseE2E from "../components/employee/WhyChooseE2E";
 import Loading from "../components/common/Loader";
@@ -11,6 +13,7 @@ const Testimonials = lazy(() => import("../components/Testimonials"));
 function WorkforceSolution() {
   return (
     <>
+      <Navbar />
       <WorkforceHeroSection />
       <WhyChooseE2E />
       <Suspense fallback={<Loading />}>
@@ -25,6 +28,7 @@ function WorkforceSolution() {
       <Suspense fallback={<Loading />}>
         <Testimonials />
       </Suspense>
+      <Footer />
     </>
   );
 }

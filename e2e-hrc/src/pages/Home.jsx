@@ -1,9 +1,11 @@
 import { lazy, Suspense } from "react";
 
+import Navbar from '../components/shared/Navbar';
+import Footer from '../components/shared/Footer';
 import Hero from "../components/home/Hero";
 import LazySection from "../components/common/LazySection";
 import Loading from "../components/common/Loader";
-import WhatMakesUsDifferent from "../components/aboutus/WhatMakesUsDifferent";
+import WhatMakesUsDifferent from "../components/home/WhatMakesUsDifferent";
 import { useContactType } from "../context/ContactTypeContext";
 
 const ServiceCards = lazy(() => import("../components/home/ServiceCards"));
@@ -19,6 +21,7 @@ function Home() {
 
   return (
     <>
+    <Navbar/>
       <Hero
         onHireTalent={() => scrollToContact("employer")}
         onFindOpportunities={() => scrollToContact("employee")}
@@ -71,6 +74,7 @@ function Home() {
       <Suspense fallback={<Loading />}>
         <ContactSection ref={contactRef} />
       </Suspense>
+      <Footer/>
     </>
   );
 }

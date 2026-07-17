@@ -1,7 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import './components/Home.css';
-import Navbar from './components/shared/Navbar';
-import Footer from './components/shared/Footer';
 import Home from './pages/Home';
 import Employer from './pages/Employer';
 import Employee from './pages/Employee';
@@ -30,30 +28,24 @@ function AppContent() {
       <Routes>
         <Route path="/" element={
           <div className="min-h-screen bg-white">
-            <Navbar />
             <Home />
-            <Footer />
           </div>
         } />
         <Route path="/about-us" element={
           <div className="min-h-screen bg-white">
-            <Navbar />
+            
             <About />
-            <Footer />
+          
           </div>
         } />
         <Route path="/workforce-solutions" element={
           <div className="min-h-screen bg-white">
-            <Navbar />
             <WorkforceSolution />
-            <Footer />
           </div>
         } />
         <Route path="/employer" element={
           <div className="min-h-screen bg-white">
-            <Navbar />
             <Employer />
-            <Footer />
           </div>
         } />
         <Route path="/employee" element={<Employee />} />

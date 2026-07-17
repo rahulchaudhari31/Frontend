@@ -1,20 +1,5 @@
-const fallbackEmployerSteps = [
-  { title: "Discovery", description: "Understanding your business, culture, and requirements." },
-  { title: "Requirement Planning", description: "Defining the ideal candidate profile and timeline." },
-  { title: "Candidate Search", description: "Active headhunting across our talent network." },
-  { title: "Shortlisting", description: "Presenting only the best-matched candidates." },
-  { title: "Interview Support", description: "Full coordination and coaching throughout." },
-  { title: "Successful Hire", description: "Placement, onboarding support, and follow-up." },
-];
-
-const fallbackEmployeeSteps = [
-  { title: "Register", description: "Create your profile and tell us about your goals." },
-  { title: "CV Review", description: "Expert feedback to make your application stand out" },
-  { title: "Job Matching", description: "We match you with roles that fit your experience." },
-  { title: "Interview Preparation", description: "Tailored coaching and briefing for every interview" },
-  { title: "Placement", description: "We negotiate the best offer on your behalf." },
-  { title: "Career Support", description: "Ongoing support as your career progresses." },
-];
+import { useState, useEffect } from "react";
+import { getHowWeWork } from "../../services/home/howWeWorkService";
 
 function StepItem({ stepNumber, title, description, isBlue, isLast }) {
   return (
@@ -69,7 +54,65 @@ function StepItem({ stepNumber, title, description, isBlue, isLast }) {
   );
 }
 
+function StepSkeleton({ isBlue, isLast }) {
+  return (
+    <div className="flex items-start" style={{ gap: 16, padding: 0 }}>
+      <div className="flex flex-col items-center" style={{ width: 36, minWidth: 36 }}>
+        <div
+          className="animate-pulse"
+          style={{
+            width: 36, height: 36,
+            borderRadius: "50%",
+            background: "#E5E7EB",
+          }}
+        />
+        {!isLast && (
+          <div
+            className="animate-pulse"
+            style={{
+              width: 1, height: 32,
+              minHeight: 32,
+              marginTop: 4,
+              background: "#E5E7EB",
+            }}
+          />
+        )}
+      </div>
+      <div style={{ flex: 1, paddingBottom: isLast ? 0 : 24 }}>
+        <div className="h-4 bg-gray-200 rounded w-32 mb-2 animate-pulse" />
+        <div className="h-3 bg-gray-200 rounded w-full animate-pulse" />
+      </div>
+    </div>
+  );
+}
+
 function Process() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHowWeWork = async () => {
+      try {
+        setLoading(true);
+        const result = await getHowWeWork();
+        setData(result);
+      } catch (error) {
+        console.error('Failed to fetch how we work data:', error);
+        setData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHowWeWork();
+  }, []);
+
+  // Extract data with fallbacks
+  const sectionTitle = data?.sectionTitle || "How We Work";
+  const sectionDescription = data?.sectionDescription || "Dedicated pathways for employers and job seekers, united by one commitment to success.";
+  const employerSteps = data?.employerSteps || [];
+  const employeeSteps = data?.employeeSteps || [];
+
   return (
     <section style={{ background: "#F8FAFC" }}>
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12 pt-8 pb-12 lg:pt-[35px] lg:pb-0">
@@ -89,7 +132,7 @@ function Process() {
             className="font-heading font-[800] text-center"
             style={{ fontSize: "clamp(24px, 4vw, 36px)", lineHeight: "1.2", color: "#004CA5", margin: 0 }}
           >
-            How We Work
+            {sectionTitle}
           </h2>
           <p
             className="font-body font-normal text-center"
@@ -98,7 +141,7 @@ function Process() {
               maxWidth: 775, padding: "10px 0", margin: 0,
             }}
           >
-            Dedicated pathways for employers and job seekers, united by one commitment to success.
+            {sectionDescription}
           </p>
         </div>
 
@@ -124,16 +167,20 @@ function Process() {
               </div>
             </div>
             <div className="flex flex-col pt-6 lg:ml-11 pl-0 lg:pl-0" style={{ maxWidth: 416 }}>
-              {fallbackEmployerSteps.map((step, index) => (
-                <StepItem
-                  key={step.title}
-                  stepNumber={String(index + 1).padStart(2, "0")}
-                  title={step.title}
-                  description={step.description}
-                  isBlue={true}
-                  isLast={index === fallbackEmployerSteps.length - 1}
-                />
-              ))}
+              {loading
+                ? [1, 2, 3].map((i) => (
+                  <StepSkeleton key={i} isBlue={true} isLast={i === 3} />
+                ))
+                : employerSteps.map((step, index) => (
+                  <StepItem
+                    key={`employer-${index}`}
+                    stepNumber={String(index + 1).padStart(2, "0")}
+                    title={step.title || ""}
+                    description={step.description || ""}
+                    isBlue={true}
+                    isLast={index === employerSteps.length - 1}
+                  />
+                ))}
             </div>
           </div>
 
@@ -203,16 +250,20 @@ function Process() {
               </div>
             </div>
             <div className="flex flex-col pt-6 lg:ml-10 pl-0 lg:pl-0" style={{ maxWidth: 416 }}>
-              {fallbackEmployeeSteps.map((step, index) => (
-                <StepItem
-                  key={step.title}
-                  stepNumber={String(index + 1).padStart(2, "0")}
-                  title={step.title}
-                  description={step.description}
-                  isBlue={false}
-                  isLast={index === fallbackEmployeeSteps.length - 1}
-                />
-              ))}
+              {loading
+                ? [1, 2, 3].map((i) => (
+                  <StepSkeleton key={i} isBlue={false} isLast={i === 3} />
+                ))
+                : employeeSteps.map((step, index) => (
+                  <StepItem
+                    key={`employee-${index}`}
+                    stepNumber={String(index + 1).padStart(2, "0")}
+                    title={step.title || ""}
+                    description={step.description || ""}
+                    isBlue={false}
+                    isLast={index === employeeSteps.length - 1}
+                  />
+                ))}
             </div>
           </div>
         </div>

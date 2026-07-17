@@ -1,103 +1,74 @@
-import React from "react";
-import towerBridgeImg from "../../assets/images/Career Growth imgs/uk1.jpg";
-import manScarfImg from "../../assets/image/mann.jpg";
-import childrenImg from "../../assets/image/childrenssss.jpg";
+import { useState, useEffect } from "react";
+import { getApproachCards } from "../../services/home/approachCardService";
 
-const rows = [
-  {
-    eyebrow: "PEOPLE FIRST, ALWAYS",
-    eyebrowColor: "#004CA5",
-    title: "Human Approach",
-    description:
-      "We believe recruitment is fundamentally a human process. Every candidate is a person with aspirations, every employer has a culture worth protecting. We listen, understand, and connect with genuine care.",
-    stats: [
-      { value: "500+", label: "Active Clients" },
-      { value: "98%", label: "Satisfaction Rate" },
-    ],
-    statColor: "#004CA5",
-    image: towerBridgeImg,
-    letterSrc: "/watermark-H.png",
-    letterW: "302.64px",
-    letterH: "339.54px",
-    letterTop: "68.23px",
-    letterRight: "42.68px",
-    letterColor: "#004CA5",
-    letterOpacity: 0.1,
-    imageWidth: "496px",
-    imageRight: false,
-    layout: "row1",
-  },
-  {
-    eyebrow: "MEASURABLE OUTCOMES",
-    eyebrowColor: "#F39308",
-    title: "Results Driven",
-    description:
-      "Our track record speaks for itself. With a 98% client retention rate and thousands of successful placements, we\u2019re relentlessly focused on delivering outcomes that matter to your business.",
-    stats: [
-      { value: "10k+", label: "Placements Made" },
-      { value: "25+", label: "Industries Served" },
-    ],
-    statColor: "#F39308",
-    image: manScarfImg,
-    letterSrc: "/watermark-R.png",
-    letterW: "255.84px",
-    letterH: "348.37px",
-    letterTop: "71.82px",
-    letterRight: "36.08px",
-    letterColor: "#F39308",
-    letterOpacity: 0.1,
-    imageWidth: "527px",
-    imageRight: true,
-    layout: "row2",
-  },
-  {
-    eyebrow: "LONG-TERM PARTNERSHIP",
-    eyebrowColor: "#C9DB82",
-    title: "Commitment Always",
-    description:
-      "We don\u2019t disappear after placement. Our commitment to clients and candidates extends far beyond the hire date \u2014 with aftercare, check-ins, and genuine ongoing support at every stage.",
-    stats: [
-      { value: "15+", label: "Years Experience" },
-      { value: "4", label: "UK Offices" },
-    ],
-    statColor: "#C9DB82",
-    image: childrenImg,
-    letterSrc: "/watermark-C.png",
-    letterW: "250.38px",
-    letterH: "314.176px",
-    letterTop: "44.41px",
-    letterRight: "35.31px",
-    letterColor: "#C9DB82",
-    letterOpacity: 0.4,
-    imageWidth: "498px",
-    imageRight: false,
-    layout: "row3",
-  },
-];
+// Static watermark paths (these remain as they are design assets)
+const watermarkConfig = {
+  0: { letterSrc: "/watermark-H.png", letterW: "302.64px", letterH: "339.54px", letterTop: "68.23px", letterRight: "42.68px", letterOpacity: 0.1 },
+  1: { letterSrc: "/watermark-R.png", letterW: "255.84px", letterH: "348.37px", letterTop: "71.82px", letterRight: "36.08px", letterOpacity: 0.1 },
+  2: { letterSrc: "/watermark-C.png", letterW: "250.38px", letterH: "314.176px", letterTop: "44.41px", letterRight: "35.31px", letterOpacity: 0.4 },
+};
 
-function Watermark({ row }) {
-  if (row.letterColor) {
+// Color and layout configurations
+const layoutConfig = {
+  0: { eyebrowColor: "#004CA5", statColor: "#004CA5", imageWidth: "496px", imageRight: false, layout: "row1" },
+  1: { eyebrowColor: "#F39308", statColor: "#F39308", imageWidth: "527px", imageRight: true, layout: "row2" },
+  2: { eyebrowColor: "#C9DB82", statColor: "#C9DB82", imageWidth: "498px", imageRight: false, layout: "row3" },
+};
+
+// Background decorative letter component
+function BackgroundLetter({ title }) {
+  const backgroundLetter = title?.trim()?.charAt(0)?.toUpperCase() || "";
+  
+  if (!backgroundLetter) return null;
+  
+  return (
+    <span
+      aria-hidden="true"
+      style={{
+        position: "absolute",
+        right: "150px",
+        top: "50%",
+        transform: "translateY(-50%)",
+        fontFamily: "Poppins, sans-serif",
+        fontWeight: 800,
+        fontSize: "260px",
+        lineHeight: 1,
+        color: "#0D4DA1",
+        opacity: 0.08,
+        zIndex: 0,
+        pointerEvents: "none",
+        userSelect: "none",
+      }}
+    >
+      {backgroundLetter}
+    </span>
+  );
+}
+
+function Watermark({ row, index }) {
+  const config = watermarkConfig[index] || watermarkConfig[0];
+  const letterColor = layoutConfig[index]?.eyebrowColor || "#004CA5";
+
+  if (letterColor) {
     return (
       <div
         aria-hidden="true"
         style={{
           position: "absolute",
-          width: row.letterW,
-          height: row.letterH,
-          top: row.letterTop,
-          ...(row.letterRight
-            ? { right: row.letterRight }
-            : { left: row.letterLeft }),
-          backgroundColor: row.letterColor,
-          maskImage: `url(${row.letterSrc})`,
-          WebkitMaskImage: `url(${row.letterSrc})`,
+          width: config.letterW,
+          height: config.letterH,
+          top: config.letterTop,
+          right: config.letterRight,
+          backgroundColor: letterColor,
+          maskImage: `url(${config.letterSrc})`,
+          WebkitMaskImage: `url(${config.letterSrc})`,
           maskSize: "contain",
           WebkitMaskSize: "contain",
           maskRepeat: "no-repeat",
           WebkitMaskRepeat: "no-repeat",
           maskPosition: "center",
           WebkitMaskPosition: "center",
-          opacity: 1,
+          opacity: config.letterOpacity,
           pointerEvents: "none",
           userSelect: "none",
           zIndex: 0,
@@ -108,19 +79,17 @@ function Watermark({ row }) {
 
   return (
     <img
-      src={row.letterSrc}
+      src={config.letterSrc}
       alt=""
       aria-hidden="true"
       draggable={false}
       style={{
         position: "absolute",
-        width: row.letterW,
-        height: row.letterH,
-        top: row.letterTop,
-        ...(row.letterRight
-          ? { right: row.letterRight }
-          : { left: row.letterLeft }),
-        opacity: 1,
+        width: config.letterW,
+        height: config.letterH,
+        top: config.letterTop,
+        right: config.letterRight,
+        opacity: config.letterOpacity,
         pointerEvents: "none",
         userSelect: "none",
         zIndex: 0,
@@ -129,7 +98,8 @@ function Watermark({ row }) {
   );
 }
 
-function Row1Card({ row }) {
+function Row1Card({ row, index }) {
+  const config = layoutConfig[index] || layoutConfig[0];
   return (
     <div
       className="w-full lg:flex-1 relative"
@@ -140,7 +110,8 @@ function Row1Card({ row }) {
         overflow: "hidden",
       }}
     >
-      <Watermark row={row} />
+      <BackgroundLetter title={row.title} />
+      <Watermark row={row} index={index} />
 
       {/* Eyebrow — left:36px, top:56px */}
       <span
@@ -155,11 +126,11 @@ function Row1Card({ row }) {
           lineHeight: "16px",
           letterSpacing: "1.2px",
           textTransform: "uppercase",
-          color: row.eyebrowColor,
+          color: config.eyebrowColor,
           zIndex: 1,
         }}
       >
-        {row.eyebrow}
+        {row.badge}
       </span>
 
       {/* Heading — left:40px, top:90px */}
@@ -210,7 +181,7 @@ function Row1Card({ row }) {
           zIndex: 1,
         }}
       >
-        {row.stats.map((stat) => (
+        {row.stats && row.stats.map((stat) => (
           <div key={stat.label}>
             <div
               style={{
@@ -218,7 +189,7 @@ function Row1Card({ row }) {
                 fontWeight: 800,
                 fontSize: "24px",
                 lineHeight: "32px",
-                color: row.statColor,
+                color: config.statColor,
               }}
             >
               {stat.value}
@@ -241,8 +212,9 @@ function Row1Card({ row }) {
   );
 }
 
-function Row23Card({ row }) {
-  const padLeft = row.layout === "row2" ? "50px" : "58px";
+function Row23Card({ row, index }) {
+  const config = layoutConfig[index] || layoutConfig[1];
+  const padLeft = config.layout === "row2" ? "50px" : "58px";
   return (
     <div
       className="w-full lg:flex-1 relative"
@@ -258,7 +230,8 @@ function Row23Card({ row }) {
         padding: `1px 40px 40px ${padLeft}`,
       }}
     >
-      <Watermark row={row} />
+      <BackgroundLetter title={row.title} />
+      <Watermark row={row} index={index} />
 
       <div style={{ position: "relative", zIndex: 1, width: "518.4px" }}>
         <span
@@ -270,11 +243,11 @@ function Row23Card({ row }) {
             lineHeight: "16px",
             letterSpacing: "1.2px",
             textTransform: "uppercase",
-            color: row.eyebrowColor,
+            color: config.eyebrowColor,
             marginBottom: "8px",
           }}
         >
-          {row.eyebrow}
+          {row.badge}
         </span>
 
         <h3
@@ -311,7 +284,7 @@ function Row23Card({ row }) {
             paddingTop: "32px",
           }}
         >
-          {row.stats.map((stat) => (
+          {row.stats && row.stats.map((stat) => (
             <div key={stat.label}>
               <div
                 style={{
@@ -319,7 +292,7 @@ function Row23Card({ row }) {
                   fontWeight: 800,
                   fontSize: "24px",
                   lineHeight: "32px",
-                  color: row.statColor,
+                  color: config.statColor,
                 }}
               >
                 {stat.value}
@@ -343,28 +316,40 @@ function Row23Card({ row }) {
   );
 }
 
-function Row({ row }) {
+function Row({ row, index }) {
+  const config = layoutConfig[index] || layoutConfig[0];
+  
   const imageBlock = (
     <div
       className="shrink-0 overflow-hidden"
       style={{
-        width: row.imageWidth,
+        width: config.imageWidth,
         height: "420px",
         borderRadius: "16px",
         position: "relative",
         isolation: "isolate",
       }}
     >
-      <img
-        src={row.image}
-        alt={row.title}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          display: "block",
-        }}
-      />
+      {row.image ? (
+        <img
+          src={row.image}
+          alt={row.title}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            display: "block",
+          }}
+        />
+      ) : (
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            background: "#E8EDF5",
+          }}
+        />
+      )}
       <div
         aria-hidden="true"
         style={{
@@ -379,10 +364,10 @@ function Row({ row }) {
   );
 
   const cardBlock =
-    row.layout === "row1" ? (
-      <Row1Card row={row} />
+    config.layout === "row1" ? (
+      <Row1Card row={row} index={index} />
     ) : (
-      <Row23Card row={row} />
+      <Row23Card row={row} index={index} />
     );
 
   return (
@@ -394,13 +379,13 @@ function Row({ row }) {
         position: "relative",
       }}
     >
-      {row.imageRight ? (
+      {config.imageRight ? (
         <div
           style={{
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            padding: row.layout === "row2" ? "0px 40px" : "0px 40px 0px 40px",
+            padding: config.layout === "row2" ? "0px 40px" : "0px 40px 0px 40px",
             height: "420px",
           }}
         >
@@ -414,11 +399,11 @@ function Row({ row }) {
             flexDirection: "row",
             justifyContent: "flex-end",
             alignItems: "center",
-            padding: row.layout === "row1" ? "0px 1px 0px 40px" : "0px 40px",
+            padding: config.layout === "row1" ? "0px 1px 0px 40px" : "0px 40px",
             height: "420px",
           }}
         >
-          {row.layout === "row1" ? (
+          {config.layout === "row1" ? (
             <>
               {imageBlock}
               {cardBlock}
@@ -436,6 +421,50 @@ function Row({ row }) {
 }
 
 export default function WhatMakesUsDifferent() {
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        setLoading(true);
+        const fetchedCards = await getApproachCards();
+        
+        // Sort by displayOrder and filter active cards
+        const sortedCards = fetchedCards
+          .filter(card => card.isActive !== false)
+          .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+        
+        // Transform API data to match row structure
+        const transformedRows = sortedCards.map((card) => ({
+          badge: card.badge || "",
+          title: card.title || "",
+          description: card.description || "",
+          image: card.image || "",
+          stats: [
+            {
+              value: card.stat1Value || "",
+              label: card.stat1Label || "",
+            },
+            {
+              value: card.stat2Value || "",
+              label: card.stat2Label || "",
+            },
+          ],
+        }));
+        
+        setRows(transformedRows);
+      } catch (error) {
+        console.error('Error loading approach cards:', error);
+        setRows([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCards();
+  }, []);
+
   return (
     <section
       style={{
@@ -531,8 +560,8 @@ export default function WhatMakesUsDifferent() {
             width: "1325px",
           }}
         >
-          {rows.map((row) => (
-            <Row key={row.title} row={row} />
+          {rows.map((row, index) => (
+            <Row key={row.title} row={row} index={index} />
           ))}
         </div>
       </div>

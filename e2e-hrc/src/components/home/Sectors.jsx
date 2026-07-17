@@ -1,58 +1,12 @@
-import { useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { getServices } from "../../services/home/servicesService";
 
-import manufacturingImg from "../../assets/images/sectors/manuifacturing.jpg";
-import healthcareImg from "../../assets/images/sectors/healthcare.jpg";
-import engineeringImg from "../../assets/images/sectors/engineering.jpg";
-import constructionImg from "../../assets/images/sectors/construction.jpg";
-import logisticsImg from "../../assets/images/sectors/logistics.jpg";
-import financeImg from "../../assets/images/sectors/finance.jpg";
-import educationImg from "../../assets/images/sectors/education.jpg";
-
-const industries = [
-  {
-    name: "Manufacturing",
-    image: manufacturingImg,
-    description:
-      "We provide experienced manufacturing professionals for production, operations, quality assurance, supply chain, and plant management roles. Our recruitment solutions support businesses in maintaining efficiency, productivity, and growth.",
-  },
-  {
-    name: "Healthcare",
-    image: healthcareImg,
-    description:
-      "We connect healthcare facilities with skilled doctors, nurses, and allied health professionals. Our staffing solutions ensure quality patient care while helping institutions manage workforce demands efficiently.",
-  },
-  {
-    name: "Engineering",
-    image: engineeringImg,
-    description:
-      "We provide qualified engineers across civil, mechanical, electrical, and industrial disciplines. Our recruitment expertise helps organizations build strong technical teams for complex projects.",
-  },
-  {
-    name: "Construction",
-    image: constructionImg,
-    description:
-      "We supply experienced construction professionals including site managers, engineers, and skilled tradespeople. Our staffing solutions help construction firms meet project timelines and safety standards.",
-  },
-  {
-    name: "Logistics",
-    image: logisticsImg,
-    description:
-      "We provide skilled logistics and supply chain professionals for warehousing, distribution, and transportation roles. Our recruitment solutions help businesses optimize operations and delivery efficiency.",
-  },
-  {
-    name: "Finance",
-    image: financeImg,
-    description:
-      "We connect organizations with experienced finance professionals including accountants, analysts, and financial managers. Our recruitment solutions support businesses in maintaining financial accuracy and strategic growth.",
-  },
-  {
-    name: "Education",
-    image: educationImg,
-    description:
-      "We provide qualified educators, administrators, and support staff for schools and educational institutions. Our recruitment solutions help maintain quality teaching and learning environments.",
-  },
-];
+const ArrowIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+    <path d="M3.125 7.5H11.875M11.875 7.5L7.5 3.125M11.875 7.5L7.5 11.875" stroke="#FFFFFF" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
 function SectorCard({ name, image, description }) {
   return (
@@ -91,8 +45,33 @@ function SectorCard({ name, image, description }) {
   );
 }
 
+function SectorSkeleton() {
+  return (
+    <div className="w-[280px] h-[420px] min-w-[280px] rounded-[20px] bg-gray-200 animate-pulse" />
+  );
+}
+
 function Sectors() {
   const scrollRef = useRef(null);
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        setLoading(true);
+        const data = await getServices();
+        setServices(data || []);
+      } catch (error) {
+        console.error('Failed to fetch services:', error);
+        setServices([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
 
   const scrollLeft = () => {
     const el = scrollRef.current;
@@ -144,14 +123,16 @@ function Sectors() {
           ref={scrollRef}
           className="flex gap-5 overflow-x-auto no-scrollbar pb-4 -mx-4 px-4 snap-x snap-mandatory"
         >
-          {industries.map((industry) => (
-            <SectorCard
-              key={industry.name}
-              name={industry.name}
-              image={industry.image}
-              description={industry.description}
-            />
-          ))}
+          {loading
+            ? [1, 2, 3].map((i) => <SectorSkeleton key={i} />)
+            : services.map((service) => (
+              <SectorCard
+                key={service._id || service.id}
+                name={service.title || ""}
+                image={service.image || ""}
+                description={service.shortDescription || ""}
+              />
+            ))}
         </div>
       </div>
 

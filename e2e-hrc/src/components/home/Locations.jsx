@@ -1,18 +1,8 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
-import ukImg from "../../assets/images/uk-location.png";
-import uaeImg from "../../assets/images/uae-location.png";
-import europeImg from "../../assets/images/europe-location.png";
-import indiaImg from "../../assets/images/india-location.png";
 import locationIcon from "../../assets/images/Career Growth imgs/DUBAI LOCATION.png";
 import arrowIcon from "../../assets/images/Career Growth imgs/arrrow.png";
-
-const locations = [
-  { name: "United Kingdom", highlight: "United Kingdom", image: ukImg, link: "#", color: "#004CA5" },
-  { name: "Dubai, UAE", highlight: "United Arab Emirates", image: uaeImg, link: "#", color: "#F39308" },
-  { name: "Germany, Europe", highlight: "Europe", image: europeImg, link: "#", color: "#C9DB82" },
-  { name: "Delhi, India", highlight: "India", image: indiaImg, link: "#", color: "#71DF14" },
-];
+import { getLocationCards } from "../../services/home/locationCardService";
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 60 },
@@ -45,6 +35,42 @@ const cardVariants = {
 function Locations() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const [locations, setLocations] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        setLoading(true);
+        const fetchedLocations = await getLocationCards();
+        // Sort by order field and filter active locations
+        const sortedLocations = fetchedLocations
+          .filter(loc => loc.isActive !== false)
+          .sort((a, b) => (a.order || 0) - (b.order || 0));
+        
+        // Map backend fields to component expectations and assign colors based on country/city
+        const mappedLocations = sortedLocations.map((loc, idx) => {
+          const colorMap = ["#004CA5", "#F39308", "#C9DB82", "#71DF14"];
+          return {
+            _id: loc._id,
+            name: loc.cityname || "",
+            highlight: loc.contryname || "",
+            image: loc.image || "",
+            link: "#",
+            color: colorMap[idx % colorMap.length],
+          };
+        });
+        setLocations(mappedLocations);
+      } catch (error) {
+        console.error('Error loading location cards:', error);
+        setLocations([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLocations();
+  }, []);
 
   const scrollRef = useRef(null);
   const isDragging = useRef(false);
@@ -120,7 +146,7 @@ function Locations() {
         >
           {locations.map((loc, i) => (
             <motion.div
-              key={loc.name}
+              key={loc._id || i}
               className="location-card snap-center relative flex-shrink-0"
               variants={cardVariants}
               style={{
@@ -135,21 +161,31 @@ function Locations() {
               }}
             >
               <div className="location-card-inner" style={{ position: "absolute", inset: 0, borderRadius: "28px", overflow: "hidden" }}>
-                <img
-                  src={loc.image}
-                  alt={loc.name}
-                  loading="lazy"
-                  decoding="async"
-                  className="location-card-img"
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    willChange: "transform",
-                  }}
-                />
+                {loc.image ? (
+                  <img
+                    src={loc.image}
+                    alt={loc.name}
+                    loading="lazy"
+                    decoding="async"
+                    className="location-card-img"
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      willChange: "transform",
+                    }}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background: "#E8EDF5",
+                    }}
+                  />
+                )}
 
                 <div className="location-card-overlay" />
 
