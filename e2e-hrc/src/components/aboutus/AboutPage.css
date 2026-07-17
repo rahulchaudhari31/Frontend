@@ -362,9 +362,15 @@
 
   /* Nav buttons — right-aligned row */
   .about-testimonials > div > div:first-child > div:last-child > div {
-    width: auto !important;
+    width: 100% !important;
     justify-content: flex-end !important;
     height: auto !important;
+  }
+
+  .about-testimonials > div > div:first-child > div:last-child > div > button {
+    width: 44px !important;
+    height: 44px !important;
+    flex-shrink: 0 !important;
   }
 
   /* Testimonial cards — keep original dimensions for horizontal carousel */

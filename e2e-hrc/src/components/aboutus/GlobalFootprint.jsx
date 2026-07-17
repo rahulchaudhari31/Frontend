@@ -212,7 +212,7 @@ export default function GlobalFootprint() {
                 onMouseEnter={() => enter(m.id)}
                 onMouseLeave={() => leave(m.id)}
                 onFocus={() => enter(m.id)}
-                onBlur={() => hide()}
+                onBlur={() => {}}
                 style={{
                   position: "relative",
                   width: m.primary ? 18 : 14,
