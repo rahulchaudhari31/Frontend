@@ -150,21 +150,24 @@ export default function GlobalNetworkSection() {
                     className={`relative ${m.size} rounded-full cursor-pointer hover:scale-125 transition-transform focus:outline-2 focus:outline-offset-2`}
                     style={{ background: m.color, boxShadow: `0 0 0 4px ${m.shadow}`, outlineColor: m.focus }}
                     aria-label={m.label}
-                    onMouseEnter={makeHandleEnter(m.id)}
+                    onClick={makeHandleEnter(m.id)}
+                    onMouseEnter={isMobile ? undefined : makeHandleEnter(m.id)}
                     onMouseLeave={isMobile ? undefined : makeHandleLeave(m.id)}
                     onFocus={() => setActiveOfficeCard(m.id)}
                   >
                     <span className="sr-only">{m.label}</span>
                   </button>
-                  <OfficeInfoCard
-                    data={officeData[m.id]}
-                    isVisible={activeOfficeCard === m.id}
-                    isModal={isMobile}
-                    style={{ right: 'calc(100% + 12px)', top: m.cardTop, zIndex: 100 }}
-                    onClose={hideCard}
-                    onMouseEnter={isMobile ? undefined : makeHandleEnter(m.id)}
-                    onMouseLeave={isMobile ? undefined : makeHandleLeave(m.id)}
-                  />
+                  {!isMobile && (
+                    <OfficeInfoCard
+                      data={officeData[m.id]}
+                      isVisible={activeOfficeCard === m.id}
+                      isModal={false}
+                      style={{ right: 'calc(100% + 12px)', top: m.cardTop, zIndex: 100 }}
+                      onClose={hideCard}
+                      onMouseEnter={makeHandleEnter(m.id)}
+                      onMouseLeave={makeHandleLeave(m.id)}
+                    />
+                  )}
                 </div>
               ))}
             </div>
