@@ -41,17 +41,17 @@ export default function HeroSection() {
           <div className="dash-bracket-left"></div>
           <div className="dash-bracket-right"></div>
 
-          {/* Left-Top Hexagon Cluster (small, woman) */}
-          <div className="hex-bg-1"></div>
-          <img src="/images/employee/girl-employee.png" alt="" className="hero-img-1" loading="lazy" />
+          {/* Images Group */}
+          <div className="hero-images-group">
+            <div className="hex-bg-1"></div>
+            <img src="/images/employee/girl-employee.png" alt="" className="hero-img-1" loading="lazy" />
 
-          {/* Center-Left Hexagon Cluster (large, man) */}
-          <div className="hex-bg-2"></div>
-          <img src="/images/employee/man-employee.png" alt="" className="hero-img-2" loading="lazy" />
+            <div className="hex-bg-2"></div>
+            <img src="/images/employee/man-employee.png" alt="" className="hero-img-2" loading="lazy" />
 
-          {/* Right Hexagon Cluster (large, woman) */}
-          <div className="hex-bg-3"></div>
-          <img src="/images/employee/office-girl.png" alt="" className="hero-img-3" loading="lazy" />
+            <div className="hex-bg-3"></div>
+            <img src="/images/employee/office-girl.png" alt="" className="hero-img-3" loading="lazy" />
+          </div>
 
           {/* Solid Green Hexagon Dots (left) */}
           <div className="hex-dot hex-dot-1"></div>

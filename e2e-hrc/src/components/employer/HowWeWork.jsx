@@ -89,6 +89,7 @@ export default function HowWeWork() {
         </div>
 
         <div
+          className="how-we-work-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(3, 1fr)",
@@ -102,6 +103,7 @@ export default function HowWeWork() {
             return (
               <div
                 key={step._id || `${step.title}-${index}`}
+                className="how-we-work-step"
                 style={{
                   display: "flex",
                   flexDirection: "column",
@@ -111,6 +113,7 @@ export default function HowWeWork() {
                   borderRight: col < 2 ? "1px solid rgba(0,0,0,0.1)" : "none",
                   borderBottom: isTopRow ? "none" : "none",
                   boxSizing: "border-box",
+                  animationDelay: `${index * 0.12}s`,
                 }}
               >
                 <div
@@ -220,6 +223,36 @@ export default function HowWeWork() {
         .how-we-work-section > * {
           position: relative;
           z-index: 1;
+        }
+
+        @keyframes stepFadeUp {
+          from { opacity: 0; transform: translateY(24px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes stepFadeLeft {
+          from { opacity: 0; transform: translateX(24px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+
+        .how-we-work-step {
+          opacity: 0;
+          animation: stepFadeUp 0.5s ease forwards;
+        }
+
+        @media (max-width: 768px) {
+          .how-we-work-grid {
+            gap: 0 !important;
+          }
+          .how-we-work-step {
+            animation-name: stepFadeLeft !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .how-we-work-step {
+            animation-name: stepFadeUp !important;
+          }
         }
       `}</style>
     </section>

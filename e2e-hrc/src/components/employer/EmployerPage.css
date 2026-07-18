@@ -89,45 +89,45 @@
     line-height: 34px !important;
   }
 
-  .how-we-work-section > div > div:nth-child(2) {
+  .how-we-work-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 0 !important;
   }
 
-  .how-we-work-section > div > div:nth-child(2) > div {
+  .how-we-work-step {
     padding: 12px 8px !important;
     gap: 12px !important;
     border-right: 1px solid rgba(0,0,0,0.08) !important;
   }
 
-  .how-we-work-section > div > div:nth-child(2) > div:nth-child(3n) {
+  .how-we-work-step:nth-child(3n) {
     border-right: none !important;
   }
 
-  .how-we-work-section > div > div:nth-child(2) > div > div:first-child {
+  .how-we-work-step > div:first-child {
     width: 100px !important;
     height: 100px !important;
   }
 
-  .how-we-work-section > div > div:nth-child(2) > div > div:first-child > div:first-child {
+  .how-we-work-step > div:first-child > div:first-child {
     width: 80px !important;
     height: 40px !important;
     margin-left: -40px !important;
     margin-top: -20px !important;
   }
 
-  .how-we-work-section > div > div:nth-child(2) > div > div:first-child > div:nth-child(2) {
+  .how-we-work-step > div:first-child > div:nth-child(2) {
     width: 80px !important;
     height: 80px !important;
     border-radius: 40px !important;
   }
 
-  .how-we-work-section > div > div:nth-child(2) > div > div:last-child > h3 {
+  .how-we-work-step > div:last-child > h3 {
     font-size: 16px !important;
     line-height: 20px !important;
   }
 
-  .how-we-work-section > div > div:nth-child(2) > div > div:last-child > p {
+  .how-we-work-step > div:last-child > p {
     font-size: 13px !important;
     line-height: 20px !important;
   }
@@ -309,17 +309,55 @@
     padding: 32px 12px !important;
   }
 
-  .how-we-work-section > div > div:nth-child(2) {
+  .how-we-work-grid {
     grid-template-columns: 1fr !important;
   }
 
-  .how-we-work-section > div > div:nth-child(2) > div {
+  .how-we-work-step {
     border-right: none !important;
     border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+    flex-direction: row !important;
+    padding: 16px 8px !important;
+    gap: 16px !important;
   }
 
-  .how-we-work-section > div > div:nth-child(2) > div:last-child {
+  .how-we-work-step:last-child {
     border-bottom: none !important;
+  }
+
+  .how-we-work-step > div:first-child {
+    width: 80px !important;
+    height: 80px !important;
+    min-width: 80px !important;
+  }
+
+  .how-we-work-step > div:first-child > div:first-child {
+    width: 60px !important;
+    height: 30px !important;
+    margin-left: -30px !important;
+    margin-top: -15px !important;
+  }
+
+  .how-we-work-step > div:first-child > div:nth-child(2) {
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 30px !important;
+  }
+
+  .how-we-work-step > div:last-child {
+    align-items: flex-start !important;
+    padding: 0 !important;
+  }
+
+  .how-we-work-step > div:last-child > h3 {
+    text-align: left !important;
+    font-size: 16px !important;
+  }
+
+  .how-we-work-step > div:last-child > p {
+    text-align: left !important;
+    font-size: 13px !important;
+    line-height: 20px !important;
   }
 
   .employer-testimonials {

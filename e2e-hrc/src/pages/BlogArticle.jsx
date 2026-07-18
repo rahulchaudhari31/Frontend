@@ -133,15 +133,43 @@ export default function BlogArticle() {
           .blog-article-body { position: relative !important; left: 0 !important; right: 0 !important; width: 100% !important; height: auto !important; }
           .blog-main-container { padding-top: 24px !important; }
           .article-card { width: 100% !important; }
-          .card-image, .card-image img { width: 100% !important; }
+          .card-image { width: 100% !important; height: 0 !important; padding-bottom: 60% !important; position: relative !important; }
+          .card-image img { width: 100% !important; height: 100% !important; position: absolute !important; top: 0 !important; left: 0 !important; }
+        }
+        @media (max-width: 768px) {
+          .blog-article-body { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; padding: 0 16px !important; overflow-wrap: break-word !important; word-wrap: break-word !important; overflow-x: hidden !important; }
+          .blog-article-body div { max-width: 100% !important; width: 100% !important; }
+          .blog-sidebar .sidebar-inner { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; }
+          .blog-sidebar .sidebar-inner > div { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; }
+          .bento-grid { flex-direction: column !important; width: 100% !important; height: auto !important; }
+          .bento-grid > div { width: 100% !important; height: auto !important; min-height: 0 !important; box-sizing: border-box !important; }
+          .bento-grid p, .bento-grid h4 { height: auto !important; max-width: 100% !important; }
+          .newsletter-section { width: 100% !important; max-width: 100% !important; padding: 16px 16px 40px !important; box-sizing: border-box !important; height: auto !important; }
+          .newsletter-inner { width: 100% !important; max-width: 100% !important; height: auto !important; }
+          .newsletter-heading { font-size: 28px !important; line-height: 34px !important; width: 100% !important; height: auto !important; padding: 0 !important; }
+          .newsletter-desc { font-size: 14px !important; line-height: 22px !important; width: 100% !important; height: auto !important; }
+          .newsletter-label { width: auto !important; height: auto !important; }
+          .newsletter-form { width: 100% !important; flex-direction: column !important; gap: 12px !important; }
+          .newsletter-input { width: 100% !important; height: auto !important; box-sizing: border-box !important; }
+          .newsletter-btn { width: 100% !important; height: auto !important; box-sizing: border-box !important; }
+          .newsletter-privacy { width: 100% !important; height: auto !important; padding-top: 16px !important; }
+          .blog-article-body h1 { font-size: 28px !important; line-height: 36px !important; max-width: 100% !important; }
+          .blog-article-body h2 { font-size: 20px !important; line-height: 28px !important; max-width: 100% !important; }
+          .blog-article-body p { font-size: 14px !important; line-height: 22px !important; max-width: 100% !important; overflow-wrap: break-word !important; word-wrap: break-word !important; }
+          .tag-wrap { flex-wrap: wrap !important; max-width: 100% !important; }
+          .blog-spacer { height: auto !important; }
         }
         @media (max-width: 640px) {
           .blog-sidebar .sidebar-inner { width: 100% !important; }
-          .blog-article-body h1 { font-size: 32px !important; line-height: 40px !important; }
-          .newsletter-section { padding: 4px 24px 61px !important; }
-          .newsletter-form { flex-direction: column !important; }
-          .newsletter-input { width: 100% !important; }
-          .newsletter-btn { width: 100% !important; }
+          .blog-article-body h1 { font-size: 24px !important; line-height: 32px !important; }
+          .newsletter-section { padding: 16px 16px 32px !important; }
+          .newsletter-heading { font-size: 24px !important; line-height: 30px !important; }
+          .newsletter-desc { font-size: 13px !important; line-height: 20px !important; }
+          .blog-article-body h2 { font-size: 18px !important; line-height: 26px !important; }
+          .blog-article-body p { font-size: 13px !important; line-height: 20px !important; }
+          .article-card { width: 100% !important; }
+          .card-image, .card-image img { width: 100% !important; height: auto !important; }
+          .tag-wrap { flex-wrap: wrap !important; }
         }
         .blog-article-body p {
           font-family: 'Inter', sans-serif;
@@ -334,7 +362,7 @@ export default function BlogArticle() {
           </div>
 
           {/* Article Body */}
-          <div style={{ width: 768, maxWidth: 768, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 16 }}>
+          <div className="blog-article-body" style={{ width: 768, maxWidth: 768, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 16 }}>
             {/* Opening paragraph */}
             <div style={{ width: '100%' }}>
               <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#424752', margin: 0, maxWidth: 768, textAlign: 'left', whiteSpace: 'normal' }}>
@@ -385,7 +413,7 @@ export default function BlogArticle() {
             </div>
 
             {/* Bento Grid */}
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-start', padding: '24px 0 0', gap: 24, width: 768, height: 358 }}>
+            <div className="bento-grid" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-start', padding: '24px 0 0', gap: 24, width: 768, height: 358 }}>
               {/* Columnar */}
               <div style={{ width: 240, height: 314, background: '#FFFFFF', border: '1px solid #F2F2F2', boxShadow: '0px 1px 2px rgba(0,0,0,0.05)', borderRadius: 16, padding: '24px 24px 48px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8, boxSizing: 'border-box', order: 0, flexGrow: 1 }}>
                 <div style={{ width: 48, height: 48, background: 'rgba(0,76,165,0.1)', borderRadius: 12, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 0, order: 0 }}>
@@ -461,7 +489,7 @@ export default function BlogArticle() {
           </div>
 
           {/* Tags */}
-          <div style={{ display: 'flex', gap: 8, paddingTop: 32, maxWidth: 768 }}>
+          <div className="tag-wrap" style={{ display: 'flex', gap: 8, paddingTop: 32, maxWidth: 768 }}>
             {tags.map((tag) => (
               <div
                 key={tag}
@@ -483,18 +511,18 @@ export default function BlogArticle() {
       </div>
 
       {/* Spacer for absolute layout */}
-      <div style={{ height: 2200 }} />
+      <div className="blog-spacer" style={{ height: 2200 }} />
 
       {/* Newsletter Section */}
       <section className="newsletter-section" style={{ position: 'relative', width: 1440, height: 437, background: '#FFFFFF', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '4px 304px 61px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '5.5px 0 0', gap: 24, width: 672, maxWidth: 672, height: 355 }}>
-          <p style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 700, fontSize: 12, lineHeight: '16px', letterSpacing: 1.2, textTransform: 'uppercase', color: '#003679', textAlign: 'center', width: 98.25, height: 16, margin: 0 }}>
+        <div className="newsletter-inner" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '5.5px 0 0', gap: 24, width: 672, maxWidth: 672, height: 355 }}>
+          <p className="newsletter-label" style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 700, fontSize: 12, lineHeight: '16px', letterSpacing: 1.2, textTransform: 'uppercase', color: '#003679', textAlign: 'center', width: 98.25, height: 16, margin: 0 }}>
             STAY INFORMED
           </p>
-          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 400, fontSize: 48, lineHeight: '48px', color: '#1B1C1C', textAlign: 'center', width: 641.05, height: 96, margin: 0, padding: '2.5px 0 0' }}>
+          <h2 className="newsletter-heading" style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 400, fontSize: 48, lineHeight: '48px', color: '#1B1C1C', textAlign: 'center', width: 641.05, height: 96, margin: 0, padding: '2.5px 0 0' }}>
             Get executive insights directly to your inbox
           </h2>
-          <p style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#424752', textAlign: 'center', width: 606.22, height: 48, margin: 0 }}>
+          <p className="newsletter-desc" style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#424752', textAlign: 'center', width: 606.22, height: 48, margin: 0 }}>
             Join over 2,500 HR leaders who receive our weekly briefing on talent strategy, market intelligence, and leadership best practices.
           </p>
           <div className="newsletter-form" style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: 16, width: 672, height: 59 }}>
@@ -553,7 +581,7 @@ export default function BlogArticle() {
               <span style={{ position: 'relative', zIndex: 1 }}>Subscribe Now</span>
             </button>
           </div>
-          <p style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 400, fontSize: 12, lineHeight: '16px', color: '#737783', textAlign: 'center', width: 368.88, height: 16, margin: 0, padding: '16px 0 0' }}>
+          <p className="newsletter-privacy" style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 400, fontSize: 12, lineHeight: '16px', color: '#737783', textAlign: 'center', width: 368.88, height: 16, margin: 0, padding: '16px 0 0' }}>
             We respect your privacy. Read our <Link to="#" style={{ textDecoration: 'underline', color: '#004CA5' }}>Privacy Policy</Link>.
           </p>
         </div>

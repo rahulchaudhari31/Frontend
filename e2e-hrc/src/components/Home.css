@@ -334,6 +334,7 @@ html {
     width: 100% !important;
     height: 200px !important;
     border-radius: 16px !important;
+    order: -1 !important;
   }
 
   .home-diff-card {
@@ -341,10 +342,53 @@ html {
     min-height: auto !important;
     padding: 24px !important;
     position: relative !important;
+    overflow: visible !important;
   }
 
   .home-diff-card [aria-hidden="true"] {
     display: none !important;
+  }
+
+  /* Row1Card — override absolute positioning */
+  .home-diff-card > span[aria-hidden] {
+    position: static !important;
+    display: block !important;
+    margin-bottom: 6px !important;
+  }
+
+  .home-diff-card > h3 {
+    position: static !important;
+    font-size: 22px !important;
+    line-height: 28px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .home-diff-card > p {
+    position: static !important;
+    width: 100% !important;
+    font-size: 14px !important;
+    line-height: 22px !important;
+  }
+
+  .home-diff-card > div[style*="position: absolute"] {
+    position: static !important;
+    padding-top: 20px !important;
+  }
+
+  /* Row23Card — inner text container */
+  .home-diff-card > div[style*="518"] {
+    width: 100% !important;
+  }
+
+  .home-diff-card > div[style*="518"] h3 {
+    font-size: 22px !important;
+    line-height: 28px !important;
+  }
+
+  .home-diff-card > div[style*="518"] p {
+    font-size: 14px !important;
+    line-height: 22px !important;
+    max-width: 100% !important;
   }
 
   /* ── Contact Section ─────────────────────── */
@@ -437,6 +481,21 @@ html {
   /* WHAT MAKES US DIFFERENT — tighter */
   .home-diff-card {
     padding: 16px !important;
+  }
+
+  .home-diff-card > h3 {
+    font-size: 20px !important;
+    line-height: 26px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .home-diff-card > p {
+    font-size: 13px !important;
+    line-height: 20px !important;
+  }
+
+  .home-diff-card > div[style*="position: absolute"] {
+    padding-top: 16px !important;
   }
 
   /* CONTACT FORM — tighter */
