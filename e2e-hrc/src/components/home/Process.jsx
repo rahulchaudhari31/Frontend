@@ -16,9 +16,12 @@ const fallbackEmployeeSteps = [
   { title: "Career Support", description: "Ongoing support as your career progresses." },
 ];
 
-function StepItem({ stepNumber, title, description, isBlue, isLast }) {
+function StepItem({ stepNumber, title, description, isBlue, isLast, animIndex }) {
   return (
-    <div className="flex items-start" style={{ gap: 16, padding: 0 }}>
+    <div
+      className="flex items-start process-step-item"
+      style={{ gap: 16, padding: 0, animationDelay: `${(animIndex || 0) * 0.1}s` }}
+    >
       <div className="flex flex-col items-center" style={{ width: 36, minWidth: 36 }}>
         <div
           className="flex items-center justify-center shrink-0"
@@ -104,9 +107,9 @@ function Process() {
 
         <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-0 w-full">
           {/* Employer Journey Column */}
-          <div className="w-full lg:w-[503px] lg:flex-shrink-0">
+          <div className="w-full lg:w-[503px] lg:flex-shrink-0 process-journey-col process-journey-col-employer">
             <div
-              className="flex items-center"
+              className="flex items-center process-journey-header"
               style={{
                 width: "100%", maxWidth: 503, height: 72, background: "#004CA5",
                 borderRadius: 16, padding: 16, gap: 12, boxSizing: "border-box",
@@ -132,6 +135,7 @@ function Process() {
                   description={step.description}
                   isBlue={true}
                   isLast={index === fallbackEmployerSteps.length - 1}
+                  animIndex={index}
                 />
               ))}
             </div>
@@ -183,9 +187,9 @@ function Process() {
           </div>
 
           {/* Employee Journey Column */}
-          <div className="w-full lg:w-[498px] lg:flex-shrink-0">
+          <div className="w-full lg:w-[498px] lg:flex-shrink-0 process-journey-col process-journey-col-employee">
             <div
-              className="flex items-center"
+              className="flex items-center process-journey-header"
               style={{
                 width: "100%", maxWidth: 498, height: 72, background: "#C8D96F",
                 borderRadius: 16, padding: 16, gap: 12, boxSizing: "border-box",
@@ -211,6 +215,7 @@ function Process() {
                   description={step.description}
                   isBlue={false}
                   isLast={index === fallbackEmployeeSteps.length - 1}
+                  animIndex={index}
                 />
               ))}
             </div>
@@ -250,6 +255,39 @@ function Process() {
         .e2e-text {
           animation: e2e-text-in 0.6s ease-out forwards;
           opacity: 0;
+        }
+
+        @keyframes processStepFadeUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes processColFadeIn {
+          from { opacity: 0; transform: translateY(16px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .process-journey-col {
+          opacity: 0;
+          animation: processColFadeIn 0.5s ease forwards;
+        }
+        .process-journey-col-employer {
+          animation-delay: 0.1s;
+        }
+        .process-journey-col-employee {
+          animation-delay: 0.3s;
+        }
+
+        .process-step-item {
+          opacity: 0;
+          animation: processStepFadeUp 0.4s ease forwards;
+        }
+
+        @media (min-width: 1024px) {
+          .process-journey-col,
+          .process-step-item {
+            opacity: 1 !important;
+            animation: none !important;
+          }
         }
       `}</style>
     </section>

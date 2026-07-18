@@ -63,7 +63,7 @@ export default function BlogPostsGrid() {
   return (
     <section className="blog-grid-section bg-[#F7F9FB] px-16 py-20 max-sm:px-4 max-sm:py-10 max-md:px-6 max-md:py-12">
       <div className="blog-grid-layout flex gap-10 max-lg:flex-col max-w-[1440px] mx-auto">
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 overflow-hidden">
           <div className="flex items-center justify-between mb-8 max-sm:flex-col max-sm:items-start max-sm:gap-2">
             <h2 className="font-heading font-semibold text-3xl max-sm:text-2xl text-[#1B1C1C]">
               All blog posts
@@ -77,7 +77,7 @@ export default function BlogPostsGrid() {
             {articles.map((item) => (
               <article
                 key={item.title}
-                className="bg-white border border-[#EAE8E7] rounded-2xl overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.05)] flex flex-col"
+                className="bg-white border border-[#EAE8E7] rounded-2xl overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.05)] flex flex-col min-w-0"
               >
                 <div className="relative h-48 overflow-hidden">
                   <img
@@ -113,7 +113,7 @@ export default function BlogPostsGrid() {
           </div>
         </div>
 
-        <aside className="blog-aside w-[377px] shrink-0 max-lg:w-full flex flex-col gap-8">
+        <aside className="blog-aside w-[377px] shrink-0 max-lg:w-full flex flex-col gap-8 min-w-0">
           <div className="bg-white border border-[#EAE8E7] rounded-2xl p-6 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
             <div className="flex items-center gap-[7.99px] mb-5 h-7">
               <img src={trendingIcon} alt="Trending Now" style={{ width: 16, height: 19 }} />
@@ -172,12 +172,12 @@ export default function BlogPostsGrid() {
               <img src={industryIcon} alt="Industry Resources" style={{ width: 21.5, height: 16 }} />
               <h3 className="font-heading font-semibold text-xl text-[#1B1C1C]">Industry Resources</h3>
             </div>
-            <div className="flex items-center gap-3 h-[62px]">
+            <div className="flex items-center gap-3 h-auto min-h-[62px]">
               <div className="w-[32.67px] h-[35.67px] bg-[rgba(0,54,121,0.1)] rounded-md flex items-center justify-center shrink-0" style={{ padding: '8px 8px 11px 8px' }}>
                 <img src={techSalaryIcon} alt="Tech Salary Guide" style={{ width: 16.67, height: 16.67 }} />
               </div>
-              <div className="w-[161px] h-9 flex flex-col justify-center">
-                <p className="font-['Inter',sans-serif] font-medium text-sm leading-5 text-[#1B1C1C]">
+              <div className="flex-1 min-w-0 h-9 flex flex-col justify-center">
+                <p className="font-['Inter',sans-serif] font-medium text-sm leading-5 text-[#1B1C1C] truncate">
                   2026 Tech Salary Guide
                 </p>
                 <p className="font-['Source_Sans_3',sans-serif] text-xs leading-4 text-[#424752]">

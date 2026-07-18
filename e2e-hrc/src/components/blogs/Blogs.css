@@ -4,6 +4,17 @@
    Desktop (1024px+) untouched
    ======================================================== */
 
+/* ---- GLOBAL TEXT OVERFLOW SAFETY ---- */
+@media (max-width: 768px) {
+  .blog-grid-section,
+  .featured-card-text,
+  .blog-banner-section {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    overflow-x: hidden;
+  }
+}
+
 /* ---- TABLETS / MOBILE LANDSCAPE (max-width: 768px) ---- */
 @media (max-width: 768px) {
 
@@ -37,17 +48,30 @@
     font-size: 24px !important;
     line-height: 32px !important;
     margin-right: 0 !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  .featured-heading br {
+    display: none !important;
   }
 
   .featured-desc {
     margin-right: 0 !important;
     font-size: 14px !important;
     line-height: 20px !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  .featured-desc br {
+    display: none !important;
   }
 
   /* BLOG POSTS GRID */
   .blog-grid-section {
     padding: 32px 16px !important;
+    overflow-x: hidden;
   }
 
   .blog-grid-layout {
@@ -57,6 +81,28 @@
 
   .blog-aside {
     width: 100% !important;
+  }
+
+  /* Article card text overflow */
+  .blog-article-title {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: normal;
+  }
+
+  .blog-article-desc {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  /* Sidebar text overflow */
+  .blog-aside {
+    overflow: hidden;
+  }
+
+  .blog-aside p {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
   }
 }
 
@@ -93,7 +139,7 @@
 
   /* BLOG POSTS GRID */
   .blog-grid-section {
-    padding: 24px 12px !important;
+    padding: 24px 16px !important;
   }
 
   .blog-article-title {
@@ -103,5 +149,32 @@
 
   .blog-article-desc {
     font-size: 13px !important;
+  }
+}
+
+/* ---- TINY SCREENS (max-width: 360px) ---- */
+@media (max-width: 360px) {
+
+  .blog-banner-section h1 {
+    font-size: 24px !important;
+  }
+
+  .featured-heading {
+    font-size: 18px !important;
+    line-height: 24px !important;
+  }
+
+  .featured-desc {
+    font-size: 12px !important;
+    line-height: 17px !important;
+  }
+
+  .blog-article-title {
+    font-size: 15px !important;
+    line-height: 20px !important;
+  }
+
+  .blog-article-desc {
+    font-size: 12px !important;
   }
 }

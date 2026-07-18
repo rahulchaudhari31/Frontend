@@ -381,16 +381,17 @@
   .section {
     padding: 24px 20px 32px 20px;
     height: auto;
-    overflow: visible;
+    overflow: hidden;
   }
 
   .container {
     height: auto;
+    width: 100%;
   }
 
   .innerContainer {
     flex-direction: column;
-    gap: 28px;
+    gap: 24px;
     margin: 0;
     height: auto;
     isolation: auto;
@@ -402,53 +403,97 @@
     height: auto;
     position: static;
     z-index: auto;
+    align-items: center;
+    text-align: center;
   }
 
   .heading {
     width: 100%;
     height: auto;
-    font-size: 32px;
-    line-height: 1.15;
+    font-size: 30px;
+    line-height: 1.2;
+    text-align: center;
   }
 
   .body {
     width: 100%;
     height: auto;
+    text-align: center;
   }
 
+  /* Image — fully visible, no crop */
   .rightImage {
-    flex: 0 0 100%;
-    width: 100%;
+    flex: 0 0 auto;
+    width: 92%;
+    max-width: 480px;
     height: 260px;
-    margin-left: 0;
+    margin: 0 auto;
     position: relative;
     z-index: auto;
   }
 
-  .imageBgShape1,
-  .imageBgShape2 {
+  .imageBgShape1 {
+    top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
     border-radius: 16px;
+  }
+
+  .imageBgShape2 {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px;
+  }
+
+  .heroImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
   }
 
   .imageOverlay {
     border-radius: 16px;
   }
 
+  /* Stats card — below image, 92% width, centered */
   .statsCard {
-    flex-wrap: wrap;
+    width: 92%;
+    max-width: 480px;
+    margin: 24px auto 0 auto;
     height: auto;
-    padding: 16px;
-    margin-top: 32px;
-    gap: 12px;
+    padding: 20px;
+    gap: 16px;
     position: static;
+    flex-wrap: wrap;
+    box-sizing: border-box;
   }
 
   .statItem {
     flex: 1 1 calc(50% - 16px);
     min-width: 140px;
     width: auto;
+    gap: 10px;
+    height: auto;
+  }
+
+  .statIcon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .statValue {
+    font-size: 15px;
+    line-height: 22px;
+  }
+
+  .statLabel {
+    font-size: 13px;
+    line-height: 18px;
   }
 }
 
@@ -457,7 +502,7 @@
 ───────────────────────────────────────── */
 @media (max-width: 480px) {
   .heading {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   .badge {
@@ -468,14 +513,33 @@
 
   .rightImage {
     height: 220px;
+    width: 95%;
   }
 
   .statsCard {
-    padding: 12px;
-    margin-top: 24px;
+    width: 95%;
+    padding: 16px;
+    margin-top: 20px;
+    gap: 12px;
   }
 
   .statItem {
     flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  .statIcon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .statValue {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .statLabel {
+    font-size: 12px;
+    line-height: 16px;
   }
 }
