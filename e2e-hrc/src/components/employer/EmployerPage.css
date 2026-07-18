@@ -209,9 +209,79 @@
     flex-shrink: 0 !important;
   }
 
-  /* Testimonial cards — keep original dimensions for horizontal carousel */
+  /* Testimonial cards — responsive for mobile */
   .testimonials-track-wrapper {
     overflow: hidden !important;
+    width: 100% !important;
+  }
+
+  .employer-testimonials .testimonial-card {
+    min-width: 85vw !important;
+    width: 85vw !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  .employer-testimonials .testimonial-card > div:first-child {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    left: auto !important;
+    top: auto !important;
+    padding: 24px 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+
+  .employer-testimonials .testimonial-card > div:first-child > div:first-child {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .employer-testimonials .testimonial-card > div:first-child > div:first-child h3 {
+    font-size: 17px !important;
+    line-height: 24px !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .employer-testimonials .testimonial-card > div:first-child > div:first-child p {
+    font-size: 13px !important;
+    line-height: 19px !important;
+    margin-top: 6px !important;
+  }
+
+  .employer-testimonials .testimonial-card > div:first-child > div:nth-child(2) {
+    width: 100% !important;
+  }
+
+  .employer-testimonials .testimonial-card > div:first-child > div:last-child {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .employer-testimonials .testimonial-card > div:first-child > div:last-child img {
+    height: 30px !important;
+    max-width: 100% !important;
+  }
+
+  /* Nav buttons z-stacking */
+  .employer-testimonials > div > div:first-child > div:last-child {
+    position: relative !important;
+    z-index: 50 !important;
+  }
+
+  .employer-testimonials > div > div:first-child > div:last-child > div {
+    position: relative !important;
+    z-index: 100 !important;
+  }
+
+  .employer-testimonials > div > div:first-child > div:last-child > div > button {
+    position: relative !important;
+    z-index: 100 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
   }
 }
 
@@ -254,6 +324,11 @@
 
   .employer-testimonials {
     padding: 24px 12px 32px !important;
+  }
+
+  .employer-testimonials .testimonial-card {
+    min-width: 92vw !important;
+    width: 92vw !important;
   }
 
   .employer-testimonials > div > div:first-child > div:first-child > h2 {
