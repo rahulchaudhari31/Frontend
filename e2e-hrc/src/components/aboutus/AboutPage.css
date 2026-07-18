@@ -311,9 +311,10 @@
   .about-testimonials {
     padding: 32px 16px 40px !important;
     gap: 24px !important;
+    overflow: visible !important;
   }
 
-  /* Heading area wrapper (flex column, gap:30, width:403, height:87) */
+  /* Heading area wrapper */
   .about-testimonials > div > div:first-child > div:first-child {
     width: 100% !important;
     max-width: 100% !important;
@@ -321,7 +322,7 @@
     height: auto !important;
   }
 
-  /* Eyebrow row (flex row, width:235, height:32) */
+  /* Eyebrow row */
   .about-testimonials > div > div:first-child > div:first-child > div:first-child {
     width: 100% !important;
     max-width: 100% !important;
@@ -336,7 +337,7 @@
     flex-shrink: 0;
   }
 
-  /* h2 "What They Are Saying" — sibling of eyebrow row, NOT inside it */
+  /* h2 "What They Are Saying" */
   .about-testimonials > div > div:first-child > div:first-child > h2 {
     font-size: 24px !important;
     line-height: 32px !important;
@@ -345,7 +346,7 @@
     height: auto !important;
   }
 
-  /* Description + nav buttons row (gap:568) — STACK vertically */
+  /* Description + nav buttons row — STACK vertically */
   .about-testimonials > div > div:first-child > div:last-child {
     width: 100% !important;
     gap: 16px !important;
@@ -371,11 +372,74 @@
     width: 44px !important;
     height: 44px !important;
     flex-shrink: 0 !important;
+    position: relative !important;
+    z-index: 100 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
   }
 
-  /* Testimonial cards — keep original dimensions for horizontal carousel */
+  /* Testimonial cards — responsive on mobile */
   .testimonials-track-wrapper {
     overflow: hidden !important;
+    width: 100% !important;
+  }
+
+  .testimonial-card {
+    min-width: 85vw !important;
+    width: 85vw !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  .testimonial-card > div:first-child {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .testimonial-card > div:nth-child(2) {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    left: auto !important;
+    top: auto !important;
+    padding: 24px 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 20px !important;
+  }
+
+  .testimonial-card > div:nth-child(2) > div:first-child {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .testimonial-card > div:nth-child(2) > div:first-child h3 {
+    font-size: 17px !important;
+    line-height: 24px !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .testimonial-card > div:nth-child(2) > div:first-child p {
+    font-size: 13px !important;
+    line-height: 19px !important;
+    margin-top: 6px !important;
+  }
+
+  .testimonial-card > div:nth-child(2) > div:nth-child(2) {
+    width: 100% !important;
+  }
+
+  .testimonial-card > div:nth-child(2) > div:last-child {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .testimonial-card > div:nth-child(2) > div:last-child img {
+    height: 30px !important;
+    max-width: 100% !important;
   }
 
   /* ── Global Footprint ── */
@@ -497,6 +561,11 @@
   .about-testimonials > div > div:first-child > div:first-child > h2 {
     font-size: 20px !important;
     line-height: 28px !important;
+  }
+
+  .testimonial-card {
+    min-width: 90vw !important;
+    width: 90vw !important;
   }
 
   .about-cta {

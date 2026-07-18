@@ -109,14 +109,18 @@ const WhoWeAre = () => {
             {features.map((feature, index) => (
               <li key={index} className="flex gap-4 items-start">
                 <span
-                  className="shrink-0"
+                  className="shrink-0 flex items-center justify-center rounded-full"
                   style={{
                     width: "24px",
                     height: "24px",
                     marginTop: "4px",
                     background: "#00458D",
                   }}
-                />
+                >
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
                 <span
                   className="font-inter text-base"
                   style={{ lineHeight: "24px", color: "#191C1E" }}

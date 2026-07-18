@@ -39,27 +39,52 @@ html {
     order: 2;
   }
 
-  .min-h-screen > section:first-of-type > div > div:nth-child(1) > div:nth-child(1) {
-    display: none !important;
-  }
-
-  .min-h-screen > section:first-of-type > div > div:nth-child(1) > div:nth-child(2) {
-    display: none !important;
-  }
-
-  .min-h-screen > section:first-of-type > div > div:nth-child(1) > div:nth-child(3) {
-    position: static !important;
+  /* ── Hero image wrapper: aspect-ratio preserves desktop proportions ── */
+  .hero-image-wrapper {
+    position: relative !important;
     width: 100% !important;
-    height: 260px !important;
+    height: auto !important;
+    aspect-ratio: 632 / 572 !important;
+    overflow: visible !important;
+  }
+
+  /* Solid green circle — percentage-based, scales with container */
+  .hero-circle-solid {
+    position: absolute !important;
+    width: 82.1% !important;
+    height: auto !important;
+    aspect-ratio: 1 !important;
+    left: 6.1% !important;
+    top: -4.9% !important;
+    transform: none !important;
+  }
+
+  /* Dashed circle ring — percentage-based, scales with container */
+  .hero-circle-dashed {
+    position: absolute !important;
+    width: 66.3% !important;
+    height: auto !important;
+    aspect-ratio: 1 !important;
+    left: 16.9% !important;
+    top: 6.3% !important;
+    transform: none !important;
+  }
+
+  /* Image container — percentage-based, scales with container */
+  .min-h-screen > section:first-of-type > div > div:nth-child(1) > .hero-image-wrapper > div:nth-child(3) {
+    position: absolute !important;
+    width: 110.3% !important;
+    height: auto !important;
+    left: -11.5% !important;
+    right: auto !important;
+    top: 0 !important;
+    bottom: 14.16% !important;
     border-radius: 16px;
     overflow: hidden;
-    left: auto !important;
-    right: auto !important;
-    top: auto !important;
-    bottom: auto !important;
+    z-index: 2;
   }
 
-  .min-h-screen > section:first-of-type > div > div:nth-child(1) > div:nth-child(3) > img {
+  .min-h-screen > section:first-of-type > div > div:nth-child(1) > .hero-image-wrapper > div:nth-child(3) > img {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
