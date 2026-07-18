@@ -76,8 +76,9 @@ function Hero({ onHireTalent, onFindOpportunities }) {
       <div style={{ position: "relative", width: "100%", maxWidth: "1333px", height: "636px" }}>
         {/* Right column: Image Content */}
         <div style={{ position: "absolute", height: "572px", left: "685px", right: "16px", top: "64px" }}>
-          <div style={{ position: "absolute", width: "519px", height: "519px", left: "calc(50% - 519px/2 - 18px)", top: "calc(50% - 519px/2 - 54.5px)", background: "#C2D760", opacity: 0.33, borderRadius: "9999px" }} />
-          <div style={{ position: "absolute", width: "419px", height: "419px", left: "calc(50% - 419px/2)", top: "calc(50% - 419px/2 - 40.5px)", boxSizing: "border-box", border: "1px dashed #C2D760", borderRadius: "9999px" }} />
+          <div className="hero-image-wrapper" style={{ position: "relative", width: "100%", height: "100%" }}>
+          <div className="hero-circle-solid" style={{ position: "absolute", width: "519px", height: "519px", left: "calc(50% - 519px/2 - 18px)", top: "calc(50% - 519px/2 - 54.5px)", background: "#C2D760", opacity: 0.33, borderRadius: "9999px" }} />
+          <div className="hero-circle-dashed" style={{ position: "absolute", width: "419px", height: "419px", left: "calc(50% - 419px/2)", top: "calc(50% - 419px/2 - 40.5px)", boxSizing: "border-box", border: "1px dashed #C2D760", borderRadius: "9999px" }} />
           <div style={{ position: "absolute", width: "697px", left: "calc(50% - 697px/2 - 40px)", top: "0", bottom: "14.16%" }}>
             {!imgLoaded && (
               <div className="absolute inset-0 bg-gray-100 animate-pulse rounded-2xl" />
@@ -90,6 +91,7 @@ function Hero({ onHireTalent, onFindOpportunities }) {
               onLoad={() => setImgLoaded(true)}
               style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", opacity: imgLoaded ? 1 : 0, transition: "opacity 0.5s" }}
             />
+          </div>
           </div>
         </div>
 
