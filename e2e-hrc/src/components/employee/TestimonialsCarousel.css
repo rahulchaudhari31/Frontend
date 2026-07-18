@@ -1,86 +1,111 @@
 /* ================================================================
    TestimonialsCarousel.css
-   - Infinite seamless marquee scroll right-to-left
-   - Pause on hover
-   - No scrollbars
+   - One card at a time horizontal slider
    ================================================================ */
 
-.testimonials-carousel {
+.emp-testimonials-slider {
   width: 100%;
   overflow: hidden;
   position: relative;
 }
 
-.testimonials-track {
+.emp-testimonials-slider-track {
   display: flex;
-  gap: 44px;
-  width: max-content;
-  animation: marquee-scroll var(--scroll-speed, 30s) linear infinite;
+  transition: transform 0.5s ease;
+  will-change: transform;
 }
 
-/* Pause — controlled via click on container */
-.testimonials-carousel.paused .testimonials-track {
-  animation-play-state: paused;
+.emp-testimonials-slider-slide {
+  min-width: 100%;
+  width: 100%;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+  box-sizing: border-box;
 }
 
-@keyframes marquee-scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    /* Move left by exactly half the width (the duplicate half) */
-    transform: translateX(-50%);
-  }
+.emp-testimonial-card {
+  cursor: pointer;
+  max-width: 530px;
+  width: 100%;
 }
 
-/* ─── Mobile card sizing & tap toggle cue ─── */
+.emp-testimonials-nav-buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ── Mobile (768px) ── */
 @media (max-width: 768px) {
-  .testimonials-carousel.is-mobile {
-    cursor: pointer;
+  .emp-testimonials-slider-slide {
+    padding: 8px 0;
   }
-  .testimonials-carousel.is-mobile.paused {
-    cursor: pointer;
+
+  .emp-testimonial-card {
+    max-width: 85vw !important;
   }
-  .testimonials-card {
-    min-height: 260px !important;
+
+  .emp-testimonial-card > div:first-child {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    left: auto !important;
+    top: auto !important;
+    padding: 24px 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
   }
-  .testimonials-card-inner {
-    padding-top: 24px !important;
-    gap: 14px !important;
+
+  .emp-testimonial-card > div:first-child > div:first-child {
+    width: 100% !important;
+    height: auto !important;
   }
-  .testimonials-card-text {
-    gap: 10px !important;
+
+  .emp-testimonial-card > div:first-child > div:first-child h3 {
+    font-size: 17px !important;
+    line-height: 24px !important;
+    width: 100% !important;
+    height: auto !important;
   }
-  .testimonials-card-title {
-    font-size: 16px !important;
-    line-height: 22px !important;
-  }
-  .testimonials-card-quote {
+
+  .emp-testimonial-card > div:first-child > div:first-child p {
     font-size: 13px !important;
-    line-height: 17px !important;
+    line-height: 19px !important;
+    margin-top: 6px !important;
+  }
+
+  .emp-testimonial-card > div:first-child > div:nth-child(2) {
+    width: 100% !important;
+  }
+
+  .emp-testimonial-card > div:first-child > div:last-child {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .emp-testimonial-card > div:first-child > div:last-child img {
+    height: 30px !important;
+    max-width: 100% !important;
+  }
+
+  .emp-testimonials-nav-buttons > button {
+    width: 44px !important;
+    height: 44px !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
+    z-index: 100 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
   }
 }
 
-@media (max-width: 600px) {
-  .testimonials-track {
-    gap: 10px;
-  }
-  .testimonials-card {
-    min-height: 220px !important;
-  }
-  .testimonials-card-inner {
-    padding-top: 18px !important;
-    gap: 12px !important;
-  }
-  .testimonials-card-text {
-    gap: 8px !important;
-  }
-  .testimonials-card-title {
-    font-size: 14px !important;
-    line-height: 20px !important;
-  }
-  .testimonials-card-quote {
-    font-size: 12px !important;
-    line-height: 15px !important;
+/* ── Small phones (480px) ── */
+@media (max-width: 480px) {
+  .emp-testimonial-card {
+    max-width: 92vw !important;
   }
 }

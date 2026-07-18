@@ -1,100 +1,191 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import './TestimonialsCarousel.css';
+import { useRef, useEffect, useImperativeHandle, forwardRef, useState, useCallback } from "react";
 
-/**
- * TestimonialsCarousel
- * - Infinite seamless marquee scroll right-to-left
- * - Duplicates items internally for continuous loop
- * - Desktop: pauses on hover, resumes on leave
- * - Mobile (<768px): single tap to stop, single tap to play
- * - Speed configurable via `speed` prop (seconds for one full cycle)
- */
-export default function TestimonialsCarousel({ data = [], speed = 30 }) {
-  // Duplicate items so the scroll can loop seamlessly
-  // When translateX(-50%) is reached, the visual matches the start
-  const duplicated = [...data, ...data];
-  const [paused, setPaused] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const carRef = useRef(null);
+const ChevronLeftIcon = () => (
+  <svg width="8.98" height="15.58" viewBox="0 0 9 16" fill="none">
+    <path d="M8 1L1 8L8 15" stroke="#004CA5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
+const ChevronRightIcon = () => (
+  <svg width="8.98" height="15.58" viewBox="0 0 9 16" fill="none">
+    <path d="M1 1L8 8L1 15" stroke="#004CA5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+function TestimonialCard({ t }) {
+  return (
+    <div
+      className="emp-testimonial-card"
+      style={{
+        position: "relative",
+        width: "100%",
+        height: 388,
+        background: "#FFFFFF",
+        borderRadius: 12,
+        flexShrink: 0,
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          width: 400,
+          left: "calc(50% - 400px/2)",
+          top: 55,
+          display: "flex",
+          flexDirection: "column",
+          gap: 30,
+        }}
+      >
+        <div style={{ display: "flex", flexDirection: "column", gap: 30, width: 368, height: 170 }}>
+          <h3
+            style={{
+              fontFamily: "Poppins, sans-serif",
+              fontWeight: 500,
+              fontSize: 20,
+              lineHeight: "30px",
+              color: "#000000",
+              margin: 0,
+            }}
+          >
+            {t.title}
+          </h3>
+          <p
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontWeight: 400,
+              fontSize: 16,
+              lineHeight: "19px",
+              color: "#000000",
+              margin: 0,
+              maxWidth: 362,
+            }}
+          >
+            {t.quote}
+          </p>
+        </div>
+        <div
+          style={{
+            width: 400,
+            height: 0,
+            border: "1px solid rgba(0,0,0,0.25)",
+            transform: "rotate(0.27deg)",
+          }}
+        />
+        <div style={{ display: "flex", alignItems: "center", justifyContent: t.alt === "Ford" ? "center" : "flex-start" }}>
+          <img src={t.logo} alt={t.alt} style={{ width: 128.65, height: 45.95, objectFit: "contain" }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const TestimonialsCarousel = forwardRef(function TestimonialsCarousel({ data = [] }, ref) {
+  const [active, setActive] = useState(0);
+  const timerRef = useRef(null);
+  const total = data.length;
+
+  const goTo = useCallback((idx) => {
+    setActive(((idx % total) + total) % total);
+  }, [total]);
+
+  const scroll = (dir) => {
+    if (dir === "left") {
+      goTo(active - 1);
+    } else {
+      goTo(active + 1);
+    }
+  };
+
+  useImperativeHandle(ref, () => ({ scroll }), [scroll]);
+
+  // Auto-advance
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
+    timerRef.current = setInterval(() => {
+      setActive((prev) => (prev + 1) % total);
+    }, 3000);
+    return () => clearInterval(timerRef.current);
+  }, [total]);
 
-  const pause = useCallback(() => setPaused(true), []);
-  const resume = useCallback(() => setPaused(false), []);
-  const toggle = useCallback(() => setPaused((p) => !p), []);
-
-  const handlers = isMobile
-    ? { onClick: toggle }
-    : { onMouseEnter: pause, onMouseLeave: resume };
+  // Pause on hover
+  const pause = () => clearInterval(timerRef.current);
+  const resume = () => {
+    timerRef.current = setInterval(() => {
+      setActive((prev) => (prev + 1) % total);
+    }, 3000);
+  };
 
   return (
     <div
-      ref={carRef}
-      className={`testimonials-carousel${paused ? ' paused' : ''}${isMobile ? ' is-mobile' : ''}`}
-      style={{ '--scroll-speed': `${speed}s` }}
-      {...handlers}
+      className="emp-testimonials-slider"
+      onMouseEnter={pause}
+      onMouseLeave={resume}
+      onTouchStart={pause}
+      onTouchEnd={() => setTimeout(resume, 3000)}
     >
-      <div className="testimonials-track">
-        {duplicated.map((item, i) => (
-          <motion.div
-            key={i}
-            whileHover={{ scale: 1.12, boxShadow: '0 24px 56px rgba(0,0,0,0.18)' }}
-            className="bg-white shrink-0 flex flex-col items-center testimonials-card"
-            style={{
-              width: 'min(85vw, 530px)',
-              minHeight: '388px',
-              borderRadius: '12px',
-              padding: '0px',
-            }}
-          >
-            <div
-              className="flex flex-col items-center testimonials-card-inner"
-              style={{ width: 'min(75vw, 400px)', gap: '30px', paddingTop: '55px' }}
-            >
-              <div className="flex flex-col testimonials-card-text" style={{ width: 'min(70vw, 368px)', gap: '30px' }}>
-                <h3
-                  className="font-[Poppins] font-medium text-black m-0 testimonials-card-title"
-                  style={{ fontSize: '20px', lineHeight: '30px', letterSpacing: '0%' }}
-                >
-                  {item.title}
-                </h3>
-                <p
-                  className="font-[Inter] text-black m-0 testimonials-card-quote"
-                  style={{
-                    width: 'min(68vw, 362px)',
-                    fontSize: '16px',
-                    lineHeight: '19px',
-                    fontWeight: 400,
-                  }}
-                >
-                  {item.quote}
-                </p>
-              </div>
-              <div
-                className="testimonials-card-divider"
-                style={{
-                  width: 'min(75vw, 400px)',
-                  borderTop: '1px solid rgba(0,0,0,0.25)',
-                  transform: 'rotate(0.27deg)',
-                }}
-              />
-              <img
-                src={item.logo}
-                alt={item.alt}
-                className="h-auto object-contain"
-                style={{ width: '128.65px', maxHeight: '45.95px' }}
-                loading="lazy"
-              />
-            </div>
-            </motion.div>
-          ))}
-        </div>
+      <div
+        className="emp-testimonials-slider-track"
+        style={{ transform: `translateX(-${active * 100}%)` }}
+      >
+        {data.map((t, i) => (
+          <div className="emp-testimonials-slider-slide" key={`${t.alt}-${i}`}>
+            <TestimonialCard t={t} />
+          </div>
+        ))}
       </div>
+    </div>
+  );
+});
+
+export function NavButtons({ carouselRef }) {
+  return (
+    <div className="emp-testimonials-nav-buttons">
+      <button
+        onPointerDown={(e) => { e.preventDefault(); carouselRef.current?.scroll("left"); }}
+        style={{
+          width: 40.97,
+          height: 40.97,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          background: "#EBEEF8",
+          border: "1px solid #004CA5",
+          borderRadius: 58.52,
+          cursor: "pointer",
+          boxSizing: "border-box",
+          flexShrink: 0,
+          padding: "11.7px 17.56px",
+          gap: 11.7,
+          touchAction: "manipulation",
+          WebkitTapHighlightColor: "transparent",
+        }}
+        aria-label="Previous"
+      >
+        <ChevronLeftIcon />
+      </button>
+      <button
+        onPointerDown={(e) => { e.preventDefault(); carouselRef.current?.scroll("right"); }}
+        style={{
+          width: 40.97,
+          height: 40.97,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          background: "#FFFFFF",
+          borderRadius: 58.52,
+          cursor: "pointer",
+          flexShrink: 0,
+          padding: "11.7px 17.56px",
+          gap: 11.7,
+          touchAction: "manipulation",
+          WebkitTapHighlightColor: "transparent",
+        }}
+        aria-label="Next"
+      >
+        <ChevronRightIcon />
+      </button>
+    </div>
   );
 }
+
+export default TestimonialsCarousel;

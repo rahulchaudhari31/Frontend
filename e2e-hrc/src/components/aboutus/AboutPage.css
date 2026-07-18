@@ -366,6 +366,8 @@
     width: 100% !important;
     justify-content: flex-end !important;
     height: auto !important;
+    position: relative !important;
+    z-index: 100 !important;
   }
 
   .about-testimonials > div > div:first-child > div:last-child > div > button {
@@ -376,6 +378,11 @@
     z-index: 100 !important;
     pointer-events: auto !important;
     touch-action: manipulation !important;
+  }
+
+  .about-testimonials > div > div:first-child {
+    position: relative !important;
+    z-index: 50 !important;
   }
 
   /* Testimonial cards — responsive on mobile */

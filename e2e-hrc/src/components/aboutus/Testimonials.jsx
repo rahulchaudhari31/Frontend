@@ -260,7 +260,7 @@ const Testimonials = () => {
             </p>
             <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 10, width: 91.93, height: 40.97, flexShrink: 0 }}>
               <button
-                onClick={() => scroll("left")}
+                onPointerDown={(e) => { e.preventDefault(); scroll("left"); }}
                 style={{
                   width: 40.97,
                   height: 40.97,
@@ -275,13 +275,15 @@ const Testimonials = () => {
                   cursor: "pointer",
                   boxSizing: "border-box",
                   flexShrink: 0,
+                  touchAction: "manipulation",
+                  WebkitTapHighlightColor: "transparent",
                 }}
                 aria-label="Previous"
               >
                 <ChevronLeftIcon />
               </button>
               <button
-                onClick={() => scroll("right")}
+                onPointerDown={(e) => { e.preventDefault(); scroll("right"); }}
                 style={{
                   width: 40.97,
                   height: 40.97,
@@ -294,6 +296,8 @@ const Testimonials = () => {
                   borderRadius: 58.52,
                   cursor: "pointer",
                   flexShrink: 0,
+                  touchAction: "manipulation",
+                  WebkitTapHighlightColor: "transparent",
                 }}
                 aria-label="Next"
               >

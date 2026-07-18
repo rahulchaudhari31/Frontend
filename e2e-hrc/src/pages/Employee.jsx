@@ -1,34 +1,14 @@
 ﻿import Navbar from '../components/shared/Navbar';
 import Footer from '../components/shared/Footer';
 import HeroSection from '../components/employee/HeroSection';
-import TestimonialsCarousel from '../components/employee/TestimonialsCarousel';
 import WhyChooseE2E from '../components/employee/WhyChooseE2E';
 import './Employee.css';
 
 import FAQAndCTA from '../components/FAQAndCTA';
 import LatestInsights from '../components/employee/LatestInsights';
 import IndustriesSection from '../components/employee/IndustriesSection';
-
-const testimonialsData = [
-  {
-    title: 'Efficient and Effective Hiring Process!',
-    quote: "The efficiency of E2E HRC's hiring process is commendable. Their intuitive approach, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.",
-    logo: '/images/employee/Union.png',
-    alt: 'Ford',
-  },
-  {
-    title: 'Top-Notch Talent at Our Fingertips!',
-    quote: "As an employer, finding top-notch talent is crucial for our success. E2E HRC has been our go-to partner for hiring. Their candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
-    logo: '/images/employee/disnep1.png',
-    alt: 'Disney',
-  },
-  {
-    title: 'Top-Notch Talent at Our Fingertips!',
-    quote: "As an employer, finding top-notch talent is crucial for our success. E2E HRC has been our go-to partner for hiring. Their candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
-    logo: '/images/employee/disnep1.png',
-    alt: 'Disney',
-  },
-];
+import EmployerTestimonials from '../components/employer/Testimonials';
+import '../components/employer/EmployerPage.css';
 
 export default function Employee() {
   return (
@@ -94,86 +74,7 @@ export default function Employee() {
       <LatestInsights />
 
       {/* ===== G. TESTIMONIALS ===== */}
-      <section
-        className="emp-testimonials"
-        style={{
-          position: "relative",
-          width: "100%",
-          padding: "43px 100px 59px",
-          gap: 50,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          background: "linear-gradient(0deg, rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(/images/employee/background%20Testimonials.png) center/cover no-repeat",
-          overflow: "hidden",
-          boxSizing: "border-box",
-        }}
-      >
-        <div className="emp-testimonials-inner" style={{ position: "relative", zIndex: 10, width: "100%", maxWidth: 1240, margin: "0 auto", boxSizing: "border-box" }}>
-          <div className="emp-testimonials-top" style={{ display: "flex", flexDirection: "column", gap: 40 }}>
-            <div className="emp-testimonials-header" style={{ display: "flex", flexDirection: "column", gap: 30 }}>
-              <div className="emp-testimonials-badge" style={{ display: "flex", alignItems: "center", gap: 20 }}>
-                <div style={{ width: 80, height: 0, borderTop: "1px solid #FFFFFF" }} />
-                <span
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    padding: "10px 20px",
-                    gap: 10,
-                    background: "#FFFFFF",
-                    borderRadius: 20,
-                    width: 135,
-                    height: 32,
-                    fontFamily: "Inter, sans-serif",
-                    fontWeight: 400,
-                    fontSize: 16,
-                    lineHeight: "19px",
-                    color: "#F39308",
-                  }}
-                >
-                  Testimonials
-                </span>
-              </div>
-              <h2
-                className="emp-testimonials-heading"
-                style={{
-                  fontFamily: "Poppins, sans-serif",
-                  fontWeight: 600,
-                  fontSize: 36,
-                  lineHeight: "76px",
-                  color: "#FFFFFF",
-                  margin: 0,
-                }}
-              >
-                What our candidates say
-              </h2>
-            </div>
-
-            <div className="emp-testimonials-controls" style={{ display: "flex", alignItems: "flex-start", gap: 568, width: "100%" }}>
-              <p
-                className="emp-testimonials-desc"
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: 400,
-                  fontSize: 16,
-                  lineHeight: "19px",
-                  color: "#FFFFFF",
-                  width: 580,
-                  margin: 0,
-                  display: "flex",
-                  alignItems: "flex-end",
-                }}
-              >
-                Discover the stories and experiences of individuals and companies who have found success and excellence through E2E HRC
-              </p>
-            </div>
-          </div>
-
-          <div style={{ marginTop: 20 }}>
-            <TestimonialsCarousel data={testimonialsData} speed={30} />
-          </div>
-        </div>
-      </section>
+      <EmployerTestimonials />
 
       <Footer />
     </div>

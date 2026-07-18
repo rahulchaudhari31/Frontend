@@ -230,7 +230,7 @@ export default function Testimonials() {
             </p>
             <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 10, width: 91.93 }}>
               <button
-                onClick={() => scroll("left")}
+                onPointerDown={(e) => { e.preventDefault(); scroll("left"); }}
                 style={{
                   width: 40.97,
                   height: 40.97,
@@ -245,13 +245,15 @@ export default function Testimonials() {
                   flexShrink: 0,
                   padding: "11.7px 17.56px",
                   gap: 11.7,
+                  touchAction: "manipulation",
+                  WebkitTapHighlightColor: "transparent",
                 }}
                 aria-label="Previous"
               >
                 <ChevronLeftIcon />
               </button>
               <button
-                onClick={() => scroll("right")}
+                onPointerDown={(e) => { e.preventDefault(); scroll("right"); }}
                 style={{
                   width: 40.97,
                   height: 40.97,
@@ -264,6 +266,8 @@ export default function Testimonials() {
                   flexShrink: 0,
                   padding: "11.7px 17.56px",
                   gap: 11.7,
+                  touchAction: "manipulation",
+                  WebkitTapHighlightColor: "transparent",
                 }}
                 aria-label="Next"
               >
