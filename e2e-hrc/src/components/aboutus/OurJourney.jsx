@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { getJourney } from "../../services/about/journeyService";
 
 const C = {
   navy: "#16213E",
@@ -13,26 +14,6 @@ const C = {
   border: "rgba(194,198,212,0.2)",
 };
 
-const MILESTONES = [
-  { year: "2007", title: "Founded in the United Kingdom", detail: "Khalid Mahmood founded the company in the UK, laying the foundation for what would grow into a multi-country consultancy group." },
-  { year: "2007", title: "First overseas office opens in India", detail: "We expanded beyond the UK for the first time, opening our first international office in India." },
-  { year: "2007", title: "Entered the GCC with a Dubai office", detail: "We set our first foothold in the Gulf region, opening an office in Dubai to serve clients across the GCC." },
-  { year: "2008", title: "David Robertson joins as Immigration Advisor & HR Consultant", detail: "David brought deep expertise in immigration advisory and HR consulting, strengthening our founding team\u2019s capability." },
-  { year: "2010", title: "Third overseas office opens in Pakistan", detail: "Continuing our international growth, we opened our third overseas office, this time in Pakistan." },
-  { year: "2014", title: "Rebranded into three specialist ventures", detail: "We reorganised under three industry-focused brands: e2e HRC, e2e Infosys, and Elite PiC \u2014 each built to serve a distinct part of our clients\u2019 needs." },
-  { year: "2014", title: "Aakanksha Chimote takes the helm of e2e HRC", detail: "Aakanksha stepped in to lead e2e HRC, guiding the venture\u2019s direction from that year onward." },
-  { year: "2018", title: "Secured a contract with the UAE Ministry of Education", detail: "A landmark contract win with the Ministry of Education in the UAE, marking our growing credibility with government clients." },
-  { year: "2019", title: "Our highest-ever number of consultancy projects", detail: "We closed out the year having completed more consultancy projects than in any year before it." },
-  { year: "2021", title: "Expanded globally into Germany", detail: "We took our first step into continental Europe, establishing a presence in Germany." },
-  { year: "2022", title: "Became a UKVI-approved English training & test provider", detail: "We earned UKVI approval to deliver Global English training and testing, expanding our service offering." },
-  { year: "2024", title: "Recognised as an NHS-approved healthcare supplier", detail: "We were recognised as an approved supplier to the NHS, marking our entry into the UK healthcare sector." },
-];
-
-const STATS = [
-  { number: "17+", label: "Years" },
-  { number: "8", label: "Countries" },
-  { number: "12", label: "Milestones" },
-];
 
 const R =
   typeof window !== "undefined" &&
@@ -172,7 +153,7 @@ function Card({ m, i, isLeft }) {
                   margin: 0, fontFamily: "'Inter',sans-serif", fontWeight: 400,
                   fontSize: 14, lineHeight: "24px", color: C.body,
                 }}>
-                  {m.detail}
+                  {m.description}
                 </p>
               </div>
             </div>
@@ -183,8 +164,24 @@ function Card({ m, i, isLeft }) {
   );
 }
 
-/* ── main ── */
 export default function OurJourney() {
+  const [data, setData] = useState({ section: null, cards: [] });
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getJourney();
+        setData(result || { section: null, cards: [] });
+      } catch (error) {
+        console.error("Failed to fetch journey:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   const secRef = useRef(null);
   const fillRef = useRef(null);
   const [hdr, hdrV] = useFade(0.08);
@@ -233,49 +230,67 @@ export default function OurJourney() {
         }}
       >
         {/* eyebrow */}
-        <span style={{
-          fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: 13,
-          letterSpacing: ".1em", textTransform: "uppercase", color: C.orange,
-          padding: "6px 18px", border: `1px solid ${C.orange}`,
-          borderRadius: 20, background: "rgba(245,135,31,.04)", marginBottom: 4,
-        }}>
-          2007 — 2024
-        </span>
+        {data.section?.badgeText && (
+          <span style={{
+            fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: 13,
+            letterSpacing: ".1em", textTransform: "uppercase", color: C.orange,
+            padding: "6px 18px", border: `1px solid ${C.orange}`,
+            borderRadius: 20, background: "rgba(245,135,31,.04)", marginBottom: 4,
+          }}>
+            {data.section.badgeText}
+          </span>
+        )}
 
-        <h2 style={{
-          margin: 0, fontFamily: "'Poppins',sans-serif", fontWeight: 800,
-          fontSize: 36, lineHeight: "48px", letterSpacing: "-.48px",
-          color: C.heading, textAlign: "center",
-        }}>
-          Our Journey
-        </h2>
+        {data.section?.sectionTitle && (
+          <h2 style={{
+            margin: 0, fontFamily: "'Poppins',sans-serif", fontWeight: 800,
+            fontSize: 36, lineHeight: "48px", letterSpacing: "-.48px",
+            color: C.heading, textAlign: "center",
+          }}>
+            {data.section.badgeSubText}
 
-        <p style={{
-          margin: 0, fontFamily: "'Poppins',sans-serif", fontWeight: 600,
-          fontSize: 17, color: C.orange, textAlign: "center",
-        }}>
-          Building a Legacy of Excellence
-        </p>
-
+          </h2>
+        )}
+        {data.section?.sectionTitle && (
+          <p style={{
+            margin: 0, fontFamily: "'Poppins',sans-serif", fontWeight: 600,
+            fontSize: 17, color: C.orange, textAlign: "center",
+          }}>
+            {data.section.sectionTitle}
+          </p>
+        )}
         <div style={{ width: 64, height: 4, background: C.blue, borderRadius: 2, marginTop: 2 }} />
-
-        <p style={{
-          margin: 0, fontFamily: "'Inter',sans-serif", fontWeight: 400,
-          fontSize: 17, lineHeight: "28px", color: C.body, textAlign: "center", maxWidth: 600,
-        }}>
-          From a single UK office to a global consultancy group — nearly two decades of growth, expansion, and impact.
-        </p>
+        {data.section?.sectionDescription && (
+          <p style={{
+            margin: 0, fontFamily: "'Inter',sans-serif", fontWeight: 400,
+            fontSize: 17, lineHeight: "28px", color: C.body, textAlign: "center", maxWidth: 600,
+          }}>
+            {data.section.sectionDescription}
+          </p>
+        )}
+        {data.section?.introText && (
+          <p style={{
+            margin: 0, fontFamily: "'Inter',sans-serif", fontWeight: 400,
+            fontSize: 17, lineHeight: "28px", color: C.body, textAlign: "center", maxWidth: 600,
+          }}>
+            {data.section.introText}
+          </p>
+        )}
       </div>
 
       {/* stats */}
       <div style={{ display: "flex", justifyContent: "center", gap: 24, marginBottom: 60, position: "relative", zIndex: 1, flexWrap: "wrap" }}>
-        {STATS.map(s => (
+        {[
+          { number: data.section?.statYears || 0, label: data.section?.statYearsLabel || "Years" },
+          { number: data.section?.statCountries || 0, label: data.section?.statCountriesLabel || "Countries" },
+          { number: data.section?.statMilestones || 0, label: data.section?.statMilestonesLabel || "Milestones" },
+        ].map(s => (
           <div key={s.label} style={{
             width: 176, background: C.white, border: `1.5px solid ${C.border}`,
             borderRadius: 16, padding: "28px 20px", textAlign: "center",
             boxShadow: "0 1px 4px rgba(0,0,0,.03)",
           }}>
-            <div style={{ fontFamily: "'Poppins',sans-serif", fontWeight: 800, fontSize: 34, lineHeight: "1", color: C.orange, marginBottom: 6 }}>{s.number}</div>
+            <div style={{ fontFamily: "'Poppins',sans-serif", fontWeight: 800, fontSize: 34, lineHeight: "1", color: C.orange, marginBottom: 6 }}>{s.number}{s.label === "Years" || s.label === "Countries" ? "+" : ""}</div>
             <div style={{ fontFamily: "'Inter',sans-serif", fontWeight: 500, fontSize: 12, letterSpacing: ".08em", textTransform: "uppercase", color: C.body }}>{s.label}</div>
           </div>
         ))}
@@ -288,9 +303,15 @@ export default function OurJourney() {
           <div ref={fillRef} style={{ position: "absolute", top: 0, left: 0, right: 0, height: "0%", borderRadius: 2, background: `linear-gradient(180deg, ${C.orange}, ${C.lime})`, transition: R ? "none" : "height .06s linear", willChange: "height" }} />
         </div>
 
-        {MILESTONES.map((m, i) => (
-          <Card key={i} m={m} i={i} isLeft={i % 2 === 0} />
-        ))}
+        {isLoading ? (
+          <div style={{ padding: "40px", textAlign: "center", color: C.body, fontFamily: "'Inter',sans-serif", background: C.white, borderRadius: 16, border: `1px solid ${C.border}` }}>
+            <span style={{ fontSize: 14 }}>Loading journey timeline...</span>
+          </div>
+        ) : (
+          data.cards.map((m, i) => (
+            <Card key={m._id || i} m={m} i={i} isLeft={m.side === "left"} />
+          ))
+        )}
       </div>
 
       <style>{`

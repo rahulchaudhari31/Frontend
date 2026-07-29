@@ -1,12 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import hiringImg from "../../assets/images/Career Growth imgs/hiring.jpg";
 import expertImg from "../../assets/images/Career Growth imgs/expert.png";
 import globalImg from "../../assets/images/Career Growth imgs/global.png";
 import complianceImg from "../../assets/images/Career Growth imgs/compliance 1.png";
+import { getWhyChooseData } from "../../services/about/whyChooseService";
 
-const DEFAULT_TITLE = "Why Choose E2E HRC?";
-const DEFAULT_DESC = "Delivering excellence through dedicated service and unparalleled market knowledge.";
-
+// ─── Icon renderer — hardcoded SVGs, never from backend ───────────────────────
 const getIcon = (type) => {
   const color = "#00458D";
   switch (type) {
@@ -50,14 +49,98 @@ const getIcon = (type) => {
   }
 };
 
+// ─── Image URL helper ─────────────────────────────────────────────────────────
+const getImageUrl = (path) => {
+  if (!path || path.trim() === "") return "";
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  return `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3000"}${path}`;
+};
+
+// ─── Fixed layout config — positions, icons, and fallback icons are
+//     hardcoded. Only title, description, and optional card image
+//     are driven by the backend. ──────────────────────────────────
+const CARD_LAYOUT = [
+  {
+    key: 0,
+    icon: "globe",
+    imgSrc: expertImg,          // fallback icon image (card 1)
+    dir: "column", pad: "32px",
+    hasImage: false,
+  },
+  {
+    key: 1,
+    icon: "shield",
+    imgSrc: globalImg,          // fallback icon image (card 2)
+    dir: "column", pad: "32px 32px 56px",
+    hasImage: false,
+  },
+  {
+    key: 2,
+    icon: "check",
+    imgSrc: complianceImg,      // fallback icon image (card 3)
+    dir: "column", pad: "32px 32px 56px",
+    hasImage: false,
+  },
+  {
+    key: 3,
+    icon: "bolt",
+    imgSrc: null,               // card 4 uses SVG icon, not a PNG
+    dir: "row", pad: "32px",
+    hasImage: true,             // shows the hiring photo panel
+  },
+  {
+    key: 4,
+    icon: "wrench",
+    imgSrc: null,               // card 5 uses SVG icon
+    dir: "column", pad: "32px",
+    hasImage: false,
+  },
+];
+
+// ─── Component ────────────────────────────────────────────────────────────────
 const WhyChooseUs = () => {
-  const cards = [
-    { id: 1, title: "Industry Expertise", desc: "In-depth knowledge across multiple sectors ensures we understand your specific technical and cultural requirements.", icon: "globe", imgSrc: expertImg, w: "404px", h: "244px", left: "0px", right: null, top: "0px", dir: "column", pad: "32px", descH: "96px" },
-    { id: 2, title: "Global Talent Network", desc: "Access to a vast, pre-vetted pool of skilled professionals not just locally, but from across the globe.", icon: "shield", imgSrc: globalImg, w: null, h: "244px", left: "428px", right: "428px", top: "0px", dir: "column", pad: "32px 32px 56px", descH: "72px" },
-    { id: 3, title: "Compliance Focused", desc: "Strict adherence to legal and ethical recruitment standards, mitigating risk for your business.", icon: "check", imgSrc: complianceImg, w: null, h: "244px", left: "856px", right: "0px", top: "0px", dir: "column", pad: "32px 32px 56px", descH: "72px" },
-    { id: 4, title: "Fast & Efficient Hiring", desc: "Streamlined processes and agile methodologies designed to save you time and cost without compromising on quality.", icon: "bolt", w: null, h: "230px", left: "0px", right: "428px", top: "278px", dir: "row", pad: "32px", descH: "48px", hasImage: true },
-    { id: 5, title: "Dedicated Account Managers", desc: "Personalised support throughout your entire recruitment journey, acting as an extension of your team.", icon: "wrench", w: null, h: "230px", left: "856px", right: "0px", top: "278px", dir: "column", pad: "32px", descH: "72px" },
-  ];
+  const [section, setSection] = useState(null);
+  const [apiCards, setApiCards] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      try {
+        const data = await getWhyChooseData();
+        if (!mounted) return;
+
+        if (data?.success && data?.data) {
+          setSection(data.data.section || null);
+
+          // Sort cards by displayOrder before storing
+          const sorted = Array.isArray(data.data.cards)
+            ? [...data.data.cards].sort(
+                (a, b) => Number(a.displayOrder || 0) - Number(b.displayOrder || 0)
+              )
+            : [];
+          setApiCards(sorted);
+        }
+      } catch (err) {
+        console.error("WhyChooseUs: failed to fetch data", err);
+        // Keep empty state — no crash, no broken layout
+      } finally {
+        if (mounted) setIsLoading(false);
+      }
+    };
+
+    load();
+    return () => { mounted = false; };
+  }, []);
+
+  // While loading, render nothing to avoid layout shift
+  if (isLoading) return null;
+
+  // If API returned no cards, render nothing (section won't appear)
+  if (apiCards.length === 0) return null;
+
+  const sectionTitle = section?.sectionTitle || "";
+  const sectionDesc = section?.sectionDescription || "";
 
   return (
     <section
@@ -77,41 +160,41 @@ const WhyChooseUs = () => {
           maxWidth: "100%",
           margin: "0 auto",
           position: "relative",
-          height: "692px",
+          height: "auto",
+          minHeight: "692px",
+          boxSizing: "border-box",
         }}
       >
+        {/* ── Section header ───────────────────────────────────────── */}
         <div
           className="about-wcu-header"
           style={{
-            position: "absolute",
+            margin: "0 auto",
             maxWidth: "768px",
-            height: "64px",
-            left: "256px",
-            right: "302px",
-            top: "40px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             gap: "16px",
-            paddingBottom: "40px",
+            paddingTop: "40px",
+            paddingBottom: "32px",
           }}
         >
-          <div style={{ width: "766px", height: "24px", display: "flex", justifyContent: "center" }}>
+          <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
             <h2
               style={{
                 margin: 0,
                 fontFamily: "Poppins, sans-serif",
                 fontWeight: 800,
                 fontSize: "36px",
-                lineHeight: "24px",
+                lineHeight: "1.3",
                 color: "#0F172A",
-                whiteSpace: "nowrap",
+                textAlign: "center",
               }}
             >
-              {DEFAULT_TITLE}
+              {sectionTitle}
             </h2>
           </div>
-          <div style={{ width: "766px", height: "24px", display: "flex", justifyContent: "center" }}>
+          <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
             <p
               style={{
                 margin: 0,
@@ -120,117 +203,173 @@ const WhyChooseUs = () => {
                 fontSize: "16px",
                 lineHeight: "24px",
                 color: "#424752",
+                textAlign: "center",
               }}
             >
-              {DEFAULT_DESC}
+              {sectionDesc}
             </p>
           </div>
         </div>
 
+        {/* ── Cards Grid ────────────────────────────────────────────── */}
         <div
           className="about-wcu-cards"
           style={{
-            position: "absolute",
-            height: "508px",
-            left: "32px",
-            right: "32px",
-            top: "128px",
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 404px)",
+            gap: "34px 24px",
+            justifyContent: "center",
+            paddingBottom: "50px",
           }}
         >
-          {cards.map((card) => (
-            <div
-              key={card.id}
-              style={{
-                position: "absolute",
-                ...(card.w ? { width: card.w } : {}),
-                height: card.h,
-                left: card.left,
-                ...(card.right ? { right: card.right } : {}),
-                top: card.top,
-                background: "#FFFFFF",
-                border: "1px solid #C9DB82",
-                borderRadius: "24px",
-                padding: card.pad,
-                display: "flex",
-                flexDirection: card.dir,
-                alignItems: "flex-start",
-                gap: card.dir === "row" ? "32px" : "12px",
-                boxSizing: "border-box",
-              }}
-            >
+          {apiCards.map((apiCard, index) => {
+            // Merge fixed layout with dynamic API data
+            const layout = CARD_LAYOUT[index];
+            if (!layout) return null; // guard: more than 5 cards from API
+
+            const row = Math.floor(index / 3);
+
+            // ── Image logic for card index 3 (the large "Fast Hiring" card)
+            const cardPhotoSrc =
+              layout.hasImage
+                ? (apiCard.image && apiCard.image.trim() !== ""
+                    ? getImageUrl(apiCard.image)
+                    : hiringImg)
+                : null;
+
+            // ── Icon: always from CARD_LAYOUT — never from backend
+            const iconEl = layout.imgSrc ? (
+              <img
+                src={layout.imgSrc}
+                alt=""
+                style={{ width: "100%", height: "100%", objectFit: "contain" }}
+              />
+            ) : (
+              getIcon(layout.icon)
+            );
+
+            const iconBoxW = layout.imgSrc
+              ? "28.52px"
+              : layout.icon === "globe"
+              ? "28.52px"
+              : "30px";
+            const iconBoxH = layout.imgSrc
+              ? "30px"
+              : layout.icon === "bolt"
+              ? "24px"
+              : layout.icon === "wrench"
+              ? "27px"
+              : "30px";
+
+            return (
               <div
+                key={apiCard._id || layout.key}
                 style={{
+                  gridColumn: index === 3 ? "span 2" : "span 1",
+                  minHeight: row === 0 ? "244px" : "230px",
+                  height: "auto",
+                  background: "#FFFFFF",
+                  border: "1px solid #C9DB82",
+                  borderRadius: "24px",
+                  padding: layout.pad,
                   display: "flex",
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                  gap: "12px",
-                  ...(card.dir === "row" ? { width: "459.11px", height: "124px", flexShrink: 0 } : {}),
+                  flexDirection: layout.dir,
+                  alignItems: "stretch",
+                  gap: layout.dir === "row" ? "32px" : "12px",
+                  boxSizing: "border-box",
                 }}
               >
-                <div style={{ width: card.imgSrc ? "28.52px" : card.icon === "globe" ? "28.52px" : card.icon === "wrench" ? "30px" : "30px", height: card.imgSrc ? "30px" : card.icon === "bolt" ? "24px" : card.icon === "wrench" ? "27px" : "30px" }}>
-                  {card.imgSrc ? (
-                    <img src={card.imgSrc} alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
-                  ) : (
-                    getIcon(card.icon)
-                  )}
-                </div>
-                <div style={{ width: card.dir === "row" ? "459.11px" : "338px", height: "28px", paddingTop: "4px" }}>
-                  <h3
-                    style={{
-                      margin: 0,
-                      fontFamily: "Poppins, sans-serif",
-                      fontWeight: 600,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      color: "#0F172A",
-                    }}
-                  >
-                    {card.title}
-                  </h3>
-                </div>
-                <div style={{ width: card.dir === "row" ? "459.11px" : "338px", height: card.descH }}>
-                  <p
-                    style={{
-                      margin: 0,
-                      fontFamily: "Inter, sans-serif",
-                      fontWeight: 400,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      color: "#424752",
-                    }}
-                  >
-                    {card.desc}
-                  </p>
-                </div>
-              </div>
-              {card.hasImage && (
+                {/* Left / text column */}
                 <div
                   style={{
-                    width: "245.55px",
-                    height: "160px",
-                    borderRadius: "12px",
-                    overflow: "hidden",
-                    background: "#ECEEF0",
                     display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    gap: "12px",
+                    flex: 1,
+                    minWidth: 0,
                   }}
                 >
-                  <img
-                    src={hiringImg}
-                    alt="Fast Hiring"
+                  {/* Icon */}
+                  <div style={{ width: iconBoxW, height: iconBoxH, display: "flex", alignItems: "center", justifyContent: "flex-start" }}>
+                    {iconEl}
+                  </div>
+
+                  {/* Title — from API */}
+                  <div
+                    style={{
+                      width: "100%",
+                      paddingTop: "4px",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        margin: 0,
+                        fontFamily: "Poppins, sans-serif",
+                        fontWeight: 600,
+                        fontSize: "16px",
+                        lineHeight: "24px",
+                        color: "#0F172A",
+                      }}
+                    >
+                      {apiCard.title || ""}
+                    </h3>
+                  </div>
+
+                  {/* Description — from API */}
+                  <div
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <p
+                      style={{
+                        margin: 0,
+                        fontFamily: "Inter, sans-serif",
+                        fontWeight: 400,
+                        fontSize: "16px",
+                        lineHeight: "24px",
+                        color: "#424752",
+                        whiteSpace: "normal",
+                        wordBreak: "break-word",
+                        overflowWrap: "anywhere",
+                      }}
+                    >
+                      {apiCard.description || ""}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Photo panel — only on card 4, always shows an image */}
+                {layout.hasImage && (
+                  <div
                     style={{
                       width: "245.55px",
-                      height: "160px",
-                      objectFit: "cover",
-                      opacity: 0.8,
+                      borderRadius: "12px",
+                      overflow: "hidden",
+                      background: "#ECEEF0",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                      alignSelf: "stretch",
                     }}
-                  />
-                </div>
-              )}
-            </div>
-          ))}
+                  >
+                    <img
+                      src={cardPhotoSrc}
+                      alt={apiCard.title || "Card image"}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        opacity: 0.8,
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

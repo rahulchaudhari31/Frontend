@@ -1,43 +1,15 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import backgroundImg from "../../assets/images/Career Growth imgs/background employerr.png";
-import fordLogo from "../../assets/images/Career Growth imgs/ford 1.png";
-import disneyLogo from "../../assets/images/Career Growth imgs/disnep1.png";
+import { getEmployerTestimonials } from "../../services/employer/employerTestimonialsService";
 
-const testimonials = [
-  {
-    id: 1,
-    title: "Efficient and Effective Hiring Process!",
-    quote:
-      "The efficiency of E2E HRC's hiring process is commendable. Their intuitive approach, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.",
-    brand: "Ford",
-    logo: fordLogo,
-  },
-  {
-    id: 2,
-    title: "Top-Notch Talent at Our Fingertips!",
-    quote:
-      "As an employer, finding top-notch talent is crucial for our success. E2E HRC has been our go-to partner for hiring. Their candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
-    brand: "Disney",
-    logo: disneyLogo,
-  },
-  {
-    id: 3,
-    title: "Top-Notch Talent at Our Fingertips!",
-    quote:
-      "As an employer, finding top-notch talent is crucial for our success. E2E HRC has been our go-to partner for hiring. Their candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
-    brand: "Disney",
-    logo: disneyLogo,
-  },
-  {
-    id: 4,
-    title: "Efficient and Effective Hiring Process!",
-    quote:
-      "The efficiency of E2E HRC's hiring process is commendable. Their intuitive approach, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.",
-    brand: "Ford",
-    logo: fordLogo,
-  },
-];
+// ─── Image URL helper ────────────────────────────────────────────────────────
+const getImageUrl = (path) => {
+  if (!path) return "";
+  if (path.startsWith("http")) return path;
+  return `${import.meta.env.VITE_API_BASE_URL || ""}${path}`;
+};
 
+// ─── Icons ───────────────────────────────────────────────────────────────────
 const ChevronLeftIcon = () => (
   <svg width="8.98" height="15.58" viewBox="0 0 9 16" fill="none">
     <path d="M8 1L1 8L8 15" stroke="#004CA5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -50,7 +22,10 @@ const ChevronRightIcon = () => (
   </svg>
 );
 
+// ─── Card Component ───────────────────────────────────────────────────────────
 function TestimonialCard({ t }) {
+  const logoSrc = getImageUrl(t.companyLogo);
+
   return (
     <div
       className="testimonial-card"
@@ -85,6 +60,7 @@ function TestimonialCard({ t }) {
               margin: 0,
             }}
           >
+            {/* backend field: title */}
             {t.title}
           </h3>
           <p
@@ -98,7 +74,8 @@ function TestimonialCard({ t }) {
               maxWidth: 362,
             }}
           >
-            {t.quote}
+            {/* backend field: reviewText */}
+            {t.reviewText}
           </p>
         </div>
         <div
@@ -109,29 +86,90 @@ function TestimonialCard({ t }) {
             transform: "rotate(0.27deg)",
           }}
         />
-        <div style={{ display: "flex", alignItems: "center", justifyContent: t.brand === "Ford" ? "center" : "flex-start" }}>
-          <img src={t.logo} alt={t.brand} style={{ width: 128.65, height: 45.95, objectFit: "contain" }} />
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start" }}>
+          {logoSrc ? (
+            <img
+              src={logoSrc}
+              alt={t.companyName || "Company logo"}
+              style={{ width: 128.65, height: 45.95, objectFit: "contain" }}
+            />
+          ) : t.companyName ? (
+            <span
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontWeight: 600,
+                fontSize: 18,
+                color: "#004CA5",
+              }}
+            >
+              {t.companyName}
+            </span>
+          ) : null}
         </div>
       </div>
     </div>
   );
 }
 
+// ─── Main Component ───────────────────────────────────────────────────────────
 export default function Testimonials() {
-  const doubled = [...testimonials, ...testimonials];
+  const [section, setSection] = useState(null);
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const trackRef = useRef(null);
   const scrollOffset = useRef(0);
   const animRef = useRef(null);
   const pausedRef = useRef(false);
+  // Keep a ref to the current cards count so the animation loop always sees latest value
+  const cardsCountRef = useRef(0);
 
+  // ── Fetch data ──────────────────────────────────────────────────────────────
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const raw = await getEmployerTestimonials();
+
+        // Support: { success, data: { section, cards } }  ← backend shape
+        //          { data: { section, cards } }
+        //          { section, cards }
+        const payload = raw?.data || raw;
+        const fetchedSection = payload?.section ?? null;
+        let fetchedCards = [];
+        if (Array.isArray(payload?.cards)) {
+          fetchedCards = payload.cards;
+        } else if (Array.isArray(payload)) {
+          fetchedCards = payload;
+        }
+
+        setSection(fetchedSection);
+        setCards(fetchedCards);
+        cardsCountRef.current = fetchedCards.length;
+      } catch (err) {
+        console.error("[EmployerTestimonials] fetch error:", err);
+        setError("Failed to load testimonials.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // ── Infinite auto-scroll animation ─────────────────────────────────────────
+  // Depends on cards being loaded; resets offset when cards change
+  useEffect(() => {
+    scrollOffset.current = 0;
     let lastTime = performance.now();
+    const cardWidth = 574; // card width (530) + gap (44)
+
     const animate = (time) => {
-      if (trackRef.current && !pausedRef.current) {
+      if (trackRef.current && !pausedRef.current && cardsCountRef.current > 0) {
         const delta = time - lastTime;
         scrollOffset.current -= delta * 0.05;
-        const cardWidth = 574;
-        const totalWidth = testimonials.length * cardWidth;
+        const totalWidth = cardsCountRef.current * cardWidth;
         if (Math.abs(scrollOffset.current) >= totalWidth) {
           scrollOffset.current = 0;
         }
@@ -140,10 +178,12 @@ export default function Testimonials() {
       lastTime = time;
       animRef.current = requestAnimationFrame(animate);
     };
+
     animRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animRef.current);
-  }, []);
+  }, [cards]);
 
+  // ── Manual scroll buttons ───────────────────────────────────────────────────
   const scroll = (dir) => {
     if (!trackRef.current) return;
     const cardWidth = 574;
@@ -156,6 +196,16 @@ export default function Testimonials() {
     trackRef.current.style.transform = `translateX(${scrollOffset.current}px)`;
     setTimeout(() => { pausedRef.current = false; }, 2000);
   };
+
+  // Duplicate cards for seamless infinite loop (same as original doubled logic)
+  const doubled = cards.length > 0 ? [...cards, ...cards] : [];
+
+  // Badge text with fallback
+  const badgeText = section?.badgeText || "Testimonials";
+  const sectionTitle = section?.sectionTitle || "Trusted by Businesses Worldwide";
+  const sectionDescription =
+    section?.sectionDescription ||
+    "Discover the stories and experiences of individuals and companies who have found success and excellence through E2E HRC";
 
   return (
     <section
@@ -195,7 +245,8 @@ export default function Testimonials() {
                   color: "#F39308",
                 }}
               >
-                Testimonials
+                {/* backend field: section.badgeText */}
+                {badgeText}
               </span>
             </div>
             <h2
@@ -208,7 +259,8 @@ export default function Testimonials() {
                 margin: 0,
               }}
             >
-              Trusted by Businesses Worldwide
+              {/* backend field: section.sectionTitle */}
+              {sectionTitle}
             </h2>
           </div>
 
@@ -226,7 +278,8 @@ export default function Testimonials() {
                 alignItems: "flex-end",
               }}
             >
-              Discover the stories and experiences of individuals and companies who have found success and excellence through E2E HRC
+              {/* backend field: section.sectionDescription */}
+              {sectionDescription}
             </p>
             <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 10, width: 91.93 }}>
               <button
@@ -275,11 +328,25 @@ export default function Testimonials() {
 
         {/* Continuous scroller */}
         <div className="testimonials-track-wrapper">
-          <div className="testimonials-track" ref={trackRef}>
-            {doubled.map((t, i) => (
-              <TestimonialCard key={`${t.id}-${i}`} t={t} />
-            ))}
-          </div>
+          {loading ? (
+            <div style={{ color: "#FFFFFF", fontFamily: "Inter, sans-serif", fontSize: 14, padding: "20px 0" }}>
+              Loading testimonials...
+            </div>
+          ) : error ? (
+            <div style={{ color: "#FFFFFF", fontFamily: "Inter, sans-serif", fontSize: 14, padding: "20px 0" }}>
+              {error}
+            </div>
+          ) : cards.length === 0 ? (
+            <div style={{ color: "#FFFFFF", fontFamily: "Inter, sans-serif", fontSize: 14, padding: "20px 0" }}>
+              No testimonials available at the moment.
+            </div>
+          ) : (
+            <div className="testimonials-track" ref={trackRef}>
+              {doubled.map((t, i) => (
+                <TestimonialCard key={`${t._id || t.id}-${i}`} t={t} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

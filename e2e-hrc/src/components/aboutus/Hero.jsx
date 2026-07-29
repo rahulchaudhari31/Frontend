@@ -1,15 +1,40 @@
-import React from "react";
-import bgImage from "../../assets/image/About us image.jpg";
+import React, { useEffect, useState } from "react";
+import { getAboutHero } from "../../services/about/aboutHeroService";
 import { ArrowRight, Search } from "lucide-react";
 
 export default function HeroSection() {
-  const subtitle = "Trusted";
-  const description =
-    "We are more than a recruitment agency; we are strategic partners in your growth. E2E Consultancy connects visionary organizations with exceptional human capital across the globe, ensuring precision, compliance, and long-term success.";
+  const [hero, setHero] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const fetchHero = async () => {
+      try {
+        setLoading(true);
+        setError(false);
+        const response = await getAboutHero();
+        setHero(response?.data || null);
+      } catch (err) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHero();
+  }, []);
+
+  const title = hero?.mainTitle || hero?.maintitle || "";
+  const subtitle = hero?.subtitle || hero?.subTitle || "";
+  const description = hero?.description || "";
+  const button1Text = hero?.button1Text || "";
+  const button1Link = hero?.button1Link || "";
+  const button2Text = hero?.button2Text || "";
+  const button2Link = hero?.button2Link || "";
+  const image = hero?.heroImage || hero?.image || "";
 
   return (
     <section
-      className="about-hero"
       style={{
         position: "relative",
         width: "100%",
@@ -17,21 +42,20 @@ export default function HeroSection() {
         display: "flex",
         alignItems: "center",
         overflow: "hidden",
-        fontFamily: "'Inter', sans-serif",
+        fontFamily:
+          "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
       }}
     >
-      {/* Background image */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: `url(${bgImage})`,
+          backgroundImage: image ? `url(${image})` : "url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       />
 
-      {/* Dark overlay */}
       <div
         style={{
           position: "absolute",
@@ -41,7 +65,6 @@ export default function HeroSection() {
         }}
       />
 
-      {/* Content */}
       <div
         style={{
           position: "relative",
@@ -50,7 +73,6 @@ export default function HeroSection() {
           padding: "48px 64px",
         }}
       >
-        {/* Eyebrow badge */}
         <div
           style={{
             display: "inline-flex",
@@ -73,61 +95,94 @@ export default function HeroSection() {
               display: "inline-block",
             }}
           />
-          <span style={{ color: "#ffffff", fontSize: "13px", fontWeight: 500 }}>
-            {subtitle}
+          <span
+            style={{
+              color: "#ffffff",
+              fontSize: "13px",
+              fontWeight: 500,
+            }}
+          >
+            {loading ? "Loading" : error ? "Unavailable" : "Trusted"}
           </span>
         </div>
 
-        {/* Heading */}
-        <h1
-          style={{
-            margin: 0,
-            fontSize: "48px",
-            lineHeight: 1.15,
-            fontWeight: 800,
-            color: "#ffffff",
-          }}
-        >
-          <span style={{ color: "#FFFFFF" }}>Connecting Talent.</span>
-          <br />
-          <span style={{ color: "#004CA5" }}>Building Futures.</span>
-        </h1>
+        {loading ? (
+          <div style={{ color: "#fff", fontSize: "18px" }}>Loading content...</div>
+        ) : (
+          <>
+            <h1
+              style={{
+                margin: 0,
+                fontSize: "48px",
+                lineHeight: 1.15,
+                fontWeight: 800,
+                color: "#ffffff",
+              }}
+            >
+              <span style={{ color: "#FFFFFF" }}>{title}</span>
+              <br />
+              <span style={{ color: "#004CA5" }}>{subtitle}</span>
+            </h1>
 
-        {/* Description */}
-        <p
-          style={{
-            marginTop: "20px",
-            marginBottom: "32px",
-            fontSize: "16px",
-            lineHeight: 1.6,
-            color: "rgba(255,255,255,0.85)",
-            maxWidth: "540px",
-          }}
-        >
-          {description}
-        </p>
+            <p
+              style={{
+                marginTop: "20px",
+                marginBottom: "32px",
+                fontSize: "16px",
+                lineHeight: 1.6,
+                color: "rgba(255,255,255,0.85)",
+                maxWidth: "540px",
+              }}
+            >
+              {description || "We are more than a recruitment agency; we are strategic partners in your growth."}
+            </p>
 
-        {/* Button group */}
-        <div className="flex flex-wrap items-start gap-4 pt-4">
-          {/* Button 1 — Hire Talent (primary) */}
-          <a
-            href="#"
-            className="flex items-center justify-center gap-2 py-[17px] px-8 bg-[#F39308] hover:bg-[#d9820a] text-[#004CA5] font-inter font-semibold text-sm tracking-[0.7px] rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#00458D] no-underline"
-          >
-            Hire Talent
-            <ArrowRight className="w-[13.33px] h-[13.33px] text-[#004CA5]" strokeWidth={2} />
-          </a>
+            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+              {button1Text ? (
+                <a
+                  href={button1Link || "#"}
+                  className="flex items-center justify-center gap-2 py-[17px] px-8 bg-[#F39308] hover:bg-[#d9820a] text-[#004CA5] font-inter font-semibold text-sm tracking-[0.7px] rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#00458D] no-underline"
+                >
+                  {button1Text}
+                  <ArrowRight className="w-[13.33px] h-[13.33px] text-[#004CA5]" strokeWidth={2} />
+                </a>
 
-          {/* Button 2 — Find Opportunities (outline) */}
-          <a
-            href="#"
-            className="flex items-center justify-center gap-2 py-4 px-8 bg-[#F7F9FB] hover:bg-[#EDF0F4] border border-[#C2C6D4] text-[#004CA5] font-inter font-semibold text-sm tracking-[0.7px] rounded-full transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#00458D] no-underline"
-          >
-            Find Opportunities
-            <Search className="w-[15px] h-[15px] text-[#00458D]" strokeWidth={2} />
-          </a>
-        </div>
+              ) : null}
+
+              {button2Text ? (
+                <a
+                  href={button2Link || "#"}
+                  className="flex items-center justify-center gap-2 py-4 px-8 bg-[#F7F9FB] hover:bg-[#EDF0F4] border border-[#C2C6D4] text-[#004CA5] font-inter font-semibold text-sm tracking-[0.7px] rounded-full transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#00458D] no-underline"
+                >
+                  {button2Text}
+                  <Search className="w-[15px] h-[15px] text-[#00458D]" strokeWidth={2} />
+                </a>
+              ) : null}
+            </div>
+          </>
+        )}
       </div>
     </section>
   );
 }
+
+
+<div className="flex flex-wrap items-start gap-4 pt-4">
+  {/* Button 1 — Hire Talent (primary) */}
+  <a
+    href="#"
+    className="flex items-center justify-center gap-2 py-[17px] px-8 bg-[#F39308] hover:bg-[#d9820a] text-[#004CA5] font-inter font-semibold text-sm tracking-[0.7px] rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#00458D] no-underline"
+  >
+    Hire Talent
+    <ArrowRight className="w-[13.33px] h-[13.33px] text-[#004CA5]" strokeWidth={2} />
+  </a>
+
+  {/* Button 2 — Find Opportunities (outline) */}
+  <a
+    href="#"
+    className="flex items-center justify-center gap-2 py-4 px-8 bg-[#F7F9FB] hover:bg-[#EDF0F4] border border-[#C2C6D4] text-[#004CA5] font-inter font-semibold text-sm tracking-[0.7px] rounded-full transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#00458D] no-underline"
+  >
+    Find Opportunities
+    <Search className="w-[15px] h-[15px] text-[#00458D]" strokeWidth={2} />
+  </a>
+</div>

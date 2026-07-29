@@ -1,44 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import fordLogo from "../../assets/images/Career Growth imgs/ford 1.png";
-import disneyLogo from "../../assets/images/Career Growth imgs/disnep1.png";
+import { getTestimonials } from "../../services/about/testimonialService";
 
-const testimonials = [
-  {
-    _id: "1",
-    testimonialTitle: "Efficient and Effective Hiring Process!",
-    review: "The efficiency of E2E HRC's hiring process is commendable. Their intuitive approach, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.",
-    companyName: "Ford",
-    logo: fordLogo,
-  },
-  {
-    _id: "2",
-    testimonialTitle: "Top-Notch Talent at Our Fingertips!",
-    review: "As an employer, finding top-notch talent is crucial for our success. E2E HRC has been our go-to partner for hiring. Their candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
-    companyName: "Disney",
-    logo: disneyLogo,
-  },
-  {
-    _id: "3",
-    testimonialTitle: "Top-Notch Talent at Our Fingertips!",
-    review: "As an employer, finding top-notch talent is crucial for our success. E2E HRC has been our go-to partner for hiring. Their candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
-    companyName: "Disney",
-    logo: disneyLogo,
-  },
-  {
-    _id: "4",
-    testimonialTitle: "Efficient and Effective Hiring Process!",
-    review: "The efficiency of E2E HRC's hiring process is commendable. Their intuitive approach, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.",
-    companyName: "Ford",
-    logo: fordLogo,
-  },
-  {
-    _id: "5",
-    testimonialTitle: "Top-Notch Talent at Our Fingertips!",
-    review: "As an employer, finding top-notch talent is crucial for our success. E2E HRC has been our go-to partner for hiring. Their candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
-    companyName: "Disney",
-    logo: disneyLogo,
-  },
-];
+const getImageUrl = (path) => {
+  if (!path) return '';
+  if (path.startsWith('http')) return path;
+  return `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}${path.startsWith('/') ? '' : '/'}${path}`;
+};
 
 const ChevronLeftIcon = () => (
   <svg width="9" height="16" viewBox="0 0 9 16" fill="none">
@@ -54,7 +21,7 @@ const ChevronRightIcon = () => (
 
 function TestimonialCard({ t }) {
   const brand = t.companyName || "";
-  const isFord = brand.toLowerCase().includes("ford");
+  const isFord = brand.toLowerCase().includes("ford"); // Kept original logic if it matters for alignment
 
   return (
     <div
@@ -97,31 +64,39 @@ function TestimonialCard({ t }) {
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: 0, width: 368, height: 170 }}>
-          <h3
-            style={{
-              fontFamily: "Poppins, sans-serif",
-              fontWeight: 500,
-              fontSize: 20,
-              lineHeight: "30px",
-              color: "#000000",
-              margin: 0,
-            }}
-          >
-            {t.testimonialTitle}
-          </h3>
-          <p
-            style={{
-              fontFamily: "Inter, sans-serif",
-              fontWeight: 400,
-              fontSize: 16,
-              lineHeight: "19px",
-              color: "#000000",
-              margin: 0,
-              marginTop: 6,
-            }}
-          >
-            {t.review}
-          </p>
+          {t.title && (
+            <h3
+              style={{
+                fontFamily: "Poppins, sans-serif",
+                fontWeight: 500,
+                fontSize: 20,
+                lineHeight: "30px",
+                color: "#000000",
+                margin: 0,
+              }}
+            >
+              {t.title}
+            </h3>
+          )}
+          {t.description && (
+            <p
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontWeight: 400,
+                fontSize: 16,
+                lineHeight: "19px",
+                color: "#000000",
+                margin: 0,
+                marginTop: 6,
+                display: "-webkit-box",
+                WebkitLineClamp: 6,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden"
+              }}
+            >
+              {t.description}
+            </p>
+          )}
         </div>
         <div
           style={{
@@ -132,8 +107,8 @@ function TestimonialCard({ t }) {
           }}
         />
         <div style={{ display: "flex", alignItems: "center", justifyContent: isFord ? "center" : "flex-start", width: "100%" }}>
-          {t.logo ? (
-            <img src={t.logo} alt={brand} style={{ height: 40, objectFit: "contain" }} />
+          {t.companyLogo ? (
+            <img src={getImageUrl(t.companyLogo)} alt={brand} style={{ height: 40, objectFit: "contain", maxWidth: 150 }} />
           ) : (
             <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 600, fontSize: 16, color: "#2A2A2A" }}>{brand}</span>
           )}
@@ -144,14 +119,43 @@ function TestimonialCard({ t }) {
 }
 
 const Testimonials = () => {
-  const displayItems = testimonials;
-  const doubled = [...displayItems, ...displayItems];
+  const [sectionData, setSectionData] = useState(null);
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const displayItems = cards;
+  const doubled = displayItems.length > 0 ? [...displayItems, ...displayItems] : [];
+
   const trackRef = useRef(null);
   const scrollOffset = useRef(0);
   const animRef = useRef(null);
   const pausedRef = useRef(false);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getTestimonials();
+        if (response.success && response.data) {
+          setSectionData(response.data.section || {});
+
+          // Sort by order ASC just to be safe, though backend already sorts it
+          const sortedCards = (response.data.cards || []).sort((a, b) => (a.order || 0) - (b.order || 0));
+          setCards(sortedCards);
+        }
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load testimonials");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (displayItems.length === 0 || loading || error) return;
+
     let lastTime = performance.now();
     const animate = (time) => {
       if (trackRef.current && !pausedRef.current) {
@@ -169,10 +173,10 @@ const Testimonials = () => {
     };
     animRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animRef.current);
-  }, [displayItems.length]);
+  }, [displayItems.length, loading, error]);
 
   const scroll = (dir) => {
-    if (!trackRef.current) return;
+    if (!trackRef.current || displayItems.length === 0) return;
     const cardWidth = 574;
     pausedRef.current = true;
     if (dir === "left") {
@@ -204,60 +208,70 @@ const Testimonials = () => {
     >
       <div style={{ position: "relative", zIndex: 10, width: "100%" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 30, width: 403, height: 87 }}>
-            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 20, width: 235, height: 32 }}>
-              <div style={{ width: 80, height: 0, borderTop: "1px solid #FFFFFF" }} />
-              <span
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 20, width: 403, height: "auto" }}>
+
+            {sectionData?.badgeText && (
+              <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 20, width: 235, height: 32 }}>
+                <div style={{ width: 80, height: 0, borderTop: "1px solid #FFFFFF" }} />
+                <span
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "10px 20px",
+                    gap: 10,
+                    background: "#FFFFFF",
+                    borderRadius: 20,
+                    fontFamily: "Inter, sans-serif",
+                    fontWeight: 400,
+                    fontSize: 16,
+                    lineHeight: "19px",
+                    color: "#F39308",
+                    height: 32,
+                    whiteSpace: "nowrap"
+                  }}
+                >
+                  {sectionData.badgeText}
+                </span>
+              </div>
+            )}
+
+            {sectionData?.sectionTitle && (
+              <h2
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  padding: "10px 20px",
-                  gap: 10,
-                  background: "#FFFFFF",
-                  borderRadius: 20,
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: 400,
-                  fontSize: 16,
-                  lineHeight: "19px",
-                  color: "#F39308",
-                  height: 32,
+                  fontFamily: "Poppins, sans-serif",
+                  fontWeight: 600,
+                  fontSize: "30px",
+                  lineHeight: "38px",
+                  color: "#000",
+                  margin: 0,
+                  width: "100%",
+                  height: "auto",
                 }}
               >
-                Testimonials
-              </span>
-            </div>
-            <h2
-              style={{
-                fontFamily: "Poppins, sans-serif",
-                fontWeight: 600,
-                fontSize: 36,
-                lineHeight: "76px",
-                color: "#000000",
-                margin: 0,
-                width: 403,
-                height: 25,
-              }}
-            >
-              What They Are Saying
-            </h2>
+                {sectionData.sectionTitle}
+              </h2>
+            )}
+
           </div>
 
-          <div style={{ display: "flex", flexDirection: "row", alignItems: "flex-start", gap: 568, width: "100%", height: 40.97 }}>
-            <p
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontWeight: 400,
-                fontSize: 16,
-                lineHeight: "19px",
-                color: "#2A2A2A",
-                maxWidth: 580,
-                margin: 0,
-                display: "flex",
-                alignItems: "flex-end",
-              }}
-            >
-              Discover the stories and experiences of individuals and companies who have found success and excellence through E2E HRC
-            </p>
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "flex-start", gap: 568, width: "100%", minHeight: 40.97 }}>
+            <div style={{ maxWidth: 580, display: "flex", alignItems: "flex-end", flex: 1 }}>
+              {sectionData?.sectionDescription && (
+                <p
+                  style={{
+                    fontFamily: "Inter, sans-serif",
+                    fontWeight: 400,
+                    fontSize: 20,
+                    lineHeight: "19px",
+                    color: "#2A2A2A",
+                    margin: 0,
+                    lineHeight: "20px",
+                  }}
+                >
+                  {sectionData.sectionDescription}
+                </p>
+              )}
+            </div>
             <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 10, width: 91.93, height: 40.97, flexShrink: 0 }}>
               <button
                 onClick={() => scroll("left")}
@@ -304,11 +318,23 @@ const Testimonials = () => {
         </div>
 
         <div className="testimonials-track-wrapper">
-          <div className="testimonials-track" ref={trackRef}>
-            {doubled.map((t, i) => (
-              <TestimonialCard key={`${t._id || i}-${i}`} t={t} />
-            ))}
-          </div>
+          {loading ? (
+            <div style={{ display: 'flex', gap: 44, marginTop: 20 }}>
+              {[1, 2, 3].map(i => (
+                <div key={i} style={{ minWidth: 530, height: 388, background: "rgba(255,255,255,0.4)", borderRadius: 12, animation: "pulse 1.5s infinite" }} />
+              ))}
+            </div>
+          ) : error || cards.length === 0 ? (
+            <div style={{ width: '100%', padding: '40px 0', textAlign: 'center', color: '#fff', fontFamily: 'Inter, sans-serif' }}>
+              {error || "No testimonials available at the moment."}
+            </div>
+          ) : (
+            <div className="testimonials-track" ref={trackRef}>
+              {doubled.map((t, i) => (
+                <TestimonialCard key={`${t._id || i}-${i}`} t={t} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -319,6 +345,7 @@ const Testimonials = () => {
           overflow: hidden;
           width: 100%;
           padding: 10px 0;
+          margin-top: 20px;
         }
 
         .testimonials-track {
@@ -335,6 +362,11 @@ const Testimonials = () => {
         .testimonial-card:hover {
           transform: scale(1.05);
           z-index: 10;
+        }
+
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: .5; }
         }
       `}</style>
     </section>

@@ -1,4 +1,12 @@
+import React, { useState, useEffect } from 'react';
 import discoveryIcon from "../../assets/images/Career Growth imgs/DISCOVERY.png";
+import { getEmployerHowWeWorkSteps } from '../../services/employer/employerHowWeWorkService';
+
+const getImageUrl = (path) => {
+  if (!path || path.trim() === "") return "";
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  return `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3000"}${path}`;
+};
 
 const stepIcons = [
   <img key="discovery" src={discoveryIcon} alt="Discovery" style={{ width: 66, height: 55, objectFit: "contain" }} />,
@@ -35,16 +43,39 @@ const stepIcons = [
   </svg>,
 ];
 
-const displaySteps = [
-  { _id: "1", title: "Discovery", description: "Understanding your business, culture, and requirements.", order: 1 },
-  { _id: "2", title: "Requirement Planning", description: "Defining the ideal candidate profile and timeline.", order: 2 },
-  { _id: "3", title: "Candidate Search", description: "Active headhunting across our talent network.", order: 3 },
-  { _id: "4", title: "Shortlisting", description: "Presenting only the best-matched candidates.", order: 4 },
-  { _id: "5", title: "Interview Support", description: "Full coordination and coaching throughout.", order: 5 },
-  { _id: "6", title: "Successful Hire", description: "Placement, onboarding support, and follow-up.", order: 6 },
-];
-
 export default function HowWeWork() {
+  const [steps, setSteps] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchSteps = async () => {
+      try {
+        const data = await getEmployerHowWeWorkSteps();
+        if (mounted) {
+          if (Array.isArray(data) && data.length > 0) {
+            // Sort by order/displayOrder if available
+            const sortedData = [...data].sort((a, b) => {
+               const orderA = a.order ?? a.displayOrder ?? 0;
+               const orderB = b.order ?? b.displayOrder ?? 0;
+               return orderA - orderB;
+            });
+            setSteps(sortedData);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch how we work steps:", error);
+      } finally {
+        if (mounted) setIsLoading(false);
+      }
+    };
+    fetchSteps();
+    return () => { mounted = false; };
+  }, []);
+
+  if (isLoading) return null;
+  if (steps.length === 0) return null;
+
   return (
     <section className="how-we-work-section">
       <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: 1220, margin: "0 auto", padding: "0 15px", boxSizing: "border-box" }}>
@@ -95,9 +126,15 @@ export default function HowWeWork() {
             position: "relative",
           }}
         >
-          {displaySteps.slice(0, 6).map((step, index) => {
+          {steps.map((step, index) => {
             const isTopRow = index < 3;
             const col = index % 3;
+            
+            let iconElement = stepIcons[index % stepIcons.length];
+            const iconSrc = step.icon || step.image;
+            if (iconSrc && iconSrc.trim() !== "") {
+                iconElement = <img src={getImageUrl(iconSrc)} alt={step.title || ""} style={{ width: 66, height: 55, objectFit: "contain" }} />;
+            }
 
             return (
               <div
@@ -109,7 +146,7 @@ export default function HowWeWork() {
                   padding: isTopRow ? "0 0 17px" : "17px 0",
                   gap: 17,
                   borderRight: col < 2 ? "1px solid rgba(0,0,0,0.1)" : "none",
-                  borderBottom: isTopRow ? "none" : "none",
+                  borderBottom: "none",
                   boxSizing: "border-box",
                 }}
               >
@@ -149,7 +186,7 @@ export default function HowWeWork() {
                       zIndex: 1,
                     }}
                   >
-                    {stepIcons[index] || stepIcons[0]}
+                    {iconElement}
                   </div>
                 </div>
 
