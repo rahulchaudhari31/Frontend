@@ -1,16 +1,116 @@
-# React + Vite
+# E2E HRC – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Official marketing website frontend for **E2E Human Resource Consultancy Ltd**, connecting talent with opportunity. Built with React, Vite, and Tailwind CSS.
 
-Currently, two official plugins are available:
+🔗 Live contact: [info@e2ehrc.co.uk](mailto:info@e2ehrc.co.uk)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Modern, responsive landing page with smooth Framer Motion animations
+- Separate flows for **Employers** and **Employees**
+- Workforce Solutions, About Us, and Become a Partner pages
+- Blog listing with individual blog article routes
+- "Get in Touch" modal with context-aware contact type (employer/employee)
+- Client-side routing via React Router
 
-## Expanding the Oxlint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+| Category   | Technology |
+|------------|------------|
+| Framework  | React 19 |
+| Build Tool | Vite |
+| Styling    | Tailwind CSS |
+| Animation  | Framer Motion |
+| Routing    | React Router DOM v7 |
+| Icons      | Lucide React, React Icons |
+| Linting    | Oxlint |
+
+## 📁 Project Structure
+
+```
+Frontend/
+├── public/                # Static assets (logo, favicon, images)
+├── src/
+│   ├── assets/            # Images used across the app
+│   ├── components/        # Reusable UI components (Navbar, Footer, Modal, etc.)
+│   ├── context/            # React context (Modal, Contact type)
+│   ├── hooks/              # Custom hooks
+│   ├── pages/              # Route-level pages (Home, About, Employer, Employee, Blogs, etc.)
+│   ├── App.jsx             # App routes
+│   └── main.jsx            # App entry point
+├── index.html
+├── package.json
+└── vite.config.js
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) v18 or higher
+- npm (comes with Node.js)
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/rahulchaudhari31/Frontend.git
+
+# Move into the project directory
+cd Frontend
+
+# Install dependencies
+npm install
+```
+
+### Run the development server
+
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`.
+
+### Build for production
+
+```bash
+npm run build
+```
+
+### Preview the production build
+
+```bash
+npm run preview
+```
+
+### Lint the code
+
+```bash
+npm run lint
+```
+
+## 🤖 Using OpenCode in VS Code
+
+You can use [OpenCode](https://opencode.ai) — an open-source AI coding agent — directly inside VS Code's integrated terminal to help you work on this project.
+
+**1. Install OpenCode** (one-time setup):
+
+```bash
+curl -fsSL https://opencode.ai/install | bash
+```
+
+**2. Open the integrated terminal in VS Code** (`` Ctrl+` `` on Windows/Linux, `` Cmd+` `` on Mac), navigate to the project folder, then run:
+
+```bash
+opencode
+```
+
+This launches OpenCode's TUI inside your terminal and automatically installs the VS Code extension so it can read your open files, selections, and project context. From here you can ask it to explain, refactor, or extend this codebase.
+
+> Make sure you run `opencode` from **inside VS Code's own integrated terminal** (not an external terminal) — that's how it detects the editor.
+
+## 📄 License
+
+All Rights Reserved © 2026 E2E Human Resource Consultancy Ltd. 
