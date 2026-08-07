@@ -83,7 +83,8 @@ export default function BlogArticle() {
           transition: color 0.3s ease;
         }
         .article-card {
-          width: 312px;
+          width: 100%;
+          max-width: 312px;
           display: flex;
           flex-direction: column;
           align-items: flex-start;
@@ -102,16 +103,24 @@ export default function BlogArticle() {
           color: #004CA5;
         }
         .card-image {
-          width: 312px;
+          width: 100%;
+          max-width: 312px;
           height: 187.5px;
           background: #F0EDED;
           border-radius: 24px;
           overflow: hidden;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
         .card-image img {
-          width: 312px;
-          height: 187.5px;
+          width: 115%;
+          height: 100%;
+          max-width: none;
+          margin-left: -7.5%;
           object-fit: cover;
+          object-position: center;
+          display: block;
           transition: transform 0.3s ease;
         }
         .card-title {
@@ -168,7 +177,8 @@ export default function BlogArticle() {
           .blog-article-body h2 { font-size: 18px !important; line-height: 26px !important; }
           .blog-article-body p { font-size: 13px !important; line-height: 20px !important; }
           .article-card { width: 100% !important; }
-          .card-image, .card-image img { width: 100% !important; height: auto !important; }
+          .card-image { width: 100% !important; height: auto !important; }
+          .card-image img { width: 115% !important; height: 100% !important; margin-left: -7.5% !important; object-fit: cover !important; object-position: center !important; }
           .tag-wrap { flex-wrap: wrap !important; }
         }
         .blog-article-body p {
@@ -300,7 +310,7 @@ export default function BlogArticle() {
             </div>
 
             {/* Section 5: Article Cards */}
-            <div style={{ width: 312, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 50 }}>
+            <div style={{ width: '100%', maxWidth: 312, margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 50 }}>
               {relatedArticles.map((article) => (
                 <div key={article.title} className="article-card">
                   {/* Image */}
@@ -308,11 +318,11 @@ export default function BlogArticle() {
                     <img src={article.image} alt={article.title} />
                   </div>
                   {/* Text */}
-                  <div style={{ width: 312, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    <p style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 400, fontSize: 14, lineHeight: '20px', color: '#424752', margin: 0, width: 312, height: 20 }}>
+                  <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <p style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 400, fontSize: 14, lineHeight: '20px', color: '#424752', margin: 0, width: '100%', height: 20 }}>
                       {article.date} • {article.readTime}
                     </p>
-                    <h4 className="card-title" style={{ width: 312, height: 56 }}>
+                    <h4 className="card-title" style={{ width: '100%', height: 56 }}>
                       {article.title}
                     </h4>
                   </div>
