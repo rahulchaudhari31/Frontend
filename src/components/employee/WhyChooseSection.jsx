@@ -1,4 +1,4 @@
-﻿import buildingImage from '../../assets/images/building.jpg';
+﻿import buildingImage from '../../assets/new photos for website developing/Human approach .jpeg';
 import manImage from '../../assets/images/Man.jpg';
 import randomImage from '../../assets/images/random image.jpg';
 

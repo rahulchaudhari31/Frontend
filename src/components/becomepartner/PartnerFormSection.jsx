@@ -1,6 +1,6 @@
 ﻿import { useState } from 'react';
 
-import teamPhoto from '../../assets/background coonecting reqrirment/background connectivity.jpeg';
+import teamPhoto from '../../assets/new photos for website developing/Connecting  recruitment partners.png';
 import nameIcon from '../../assets/background coonecting reqrirment/NAME.png';
 import mailIcon from '../../assets/background coonecting reqrirment/MAIL ICON.png';
 

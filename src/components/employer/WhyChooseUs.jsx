@@ -1,3 +1,5 @@
+import humanApproachImg from '../../assets/new photos for website developing/Human approach .jpeg';
+
 const rows = [
   {
     letter: 'H',
@@ -7,7 +9,7 @@ const rows = [
       { value: '500+', label: 'Active Clients' },
       { value: '98%', label: 'Client Retention' },
     ],
-    image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=80',
+    image: humanApproachImg,
     reversed: false,
   },
   {

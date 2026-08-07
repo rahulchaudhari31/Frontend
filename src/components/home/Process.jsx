@@ -156,10 +156,10 @@ function Process() {
                   position: "absolute", zIndex: 0,
                 }}
               >
-                <span className="e2e-dot e2e-dot-orange-top" style={{ position: "absolute", top: 0, left: "48%", width: "4%", height: 8, background: "#F5A300", borderRadius: 4 }} />
-                <span className="e2e-dot e2e-dot-orange-bottom" style={{ position: "absolute", bottom: 0, left: "48%", width: "4%", height: 8, background: "#F5A300", borderRadius: 4 }} />
-                <span className="e2e-dot e2e-dot-green-left" style={{ position: "absolute", left: 0, top: "48%", width: 8, height: "4%", background: "#C8D96F", borderRadius: 4 }} />
-                <span className="e2e-dot e2e-dot-green-right" style={{ position: "absolute", right: 0, top: "48%", width: 8, height: "4%", background: "#C8D96F", borderRadius: 4 }} />
+                <span className="e2e-dot e2e-dot-orange-top" style={{ position: "absolute", top: -6, left: "50%", transform: "translateX(-50%)", width: 12, height: 12, background: "#F5A300", borderRadius: "50%", boxShadow: "0 0 8px rgba(245,163,0,0.5)" }} />
+                <span className="e2e-dot e2e-dot-orange-bottom" style={{ position: "absolute", bottom: -6, left: "50%", transform: "translateX(-50%)", width: 12, height: 12, background: "#F5A300", borderRadius: "50%", boxShadow: "0 0 8px rgba(245,163,0,0.5)" }} />
+                <span className="e2e-dot e2e-dot-green-left" style={{ position: "absolute", left: -6, top: "50%", transform: "translateY(-50%)", width: 12, height: 12, background: "#C8D96F", borderRadius: "50%", boxShadow: "0 0 8px rgba(200,217,111,0.5)" }} />
+                <span className="e2e-dot e2e-dot-green-right" style={{ position: "absolute", right: -6, top: "50%", transform: "translateY(-50%)", width: 12, height: 12, background: "#C8D96F", borderRadius: "50%", boxShadow: "0 0 8px rgba(200,217,111,0.5)" }} />
               </div>
               <div
                 className="e2e-blue-ring"

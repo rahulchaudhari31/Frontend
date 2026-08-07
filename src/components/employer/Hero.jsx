@@ -1,4 +1,4 @@
-import backgroundImage from '../../assets/image/EMPLOYER BACKGROUND.jpg';
+import backgroundImage from '../../assets/new photos for website developing/Employer recuritment .jpeg';
 
 export default function Hero() {
 

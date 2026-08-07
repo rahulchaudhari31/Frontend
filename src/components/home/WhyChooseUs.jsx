@@ -1,6 +1,6 @@
 import img1 from "../../assets/image/childrenssss.jpg";
 import img2 from "../../assets/image/mann.jpg";
-import img3 from "../../assets/image/buiding.jpg";
+import img3 from "../../assets/new photos for website developing/Human approach .jpeg";
 
 const cards = [
   {

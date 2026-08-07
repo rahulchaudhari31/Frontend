@@ -1,3 +1,6 @@
+import candidateApproachImg from '../../assets/new photos for website developing/Candidate approach .png';
+import employeeRecruitmentBannerImg from '../../assets/new photos for website developing/Employee recruitment banner.jpeg';
+
 export default function WhyChooseE2E() {
   return (
     <section className="py-12 sm:py-16 md:py-20" style={{ background: 'url(/images/employee/background.jpg) center/cover no-repeat' }}>
@@ -19,7 +22,7 @@ export default function WhyChooseE2E() {
         {/* Feature Card 1 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
           <div>
-            <img src="/images/employee/client2.png" alt="Candidate-Centric Approach" className="w-full h-[250px] lg:h-[420px] object-cover rounded-[16px]" loading="lazy" />
+            <img src={candidateApproachImg} alt="Candidate-Centric Approach" className="w-full h-[250px] lg:h-[420px] object-cover rounded-[16px]" loading="lazy" />
           </div>
           <div className="bg-[#F8FAFC] rounded-[16px] p-8 sm:p-14 flex flex-col justify-center">
             <p className="font-[Poppins] text-base uppercase tracking-[1.6px] text-[#F39308] mb-2">
@@ -69,7 +72,7 @@ export default function WhyChooseE2E() {
             </div>
           </div>
           <div className="order-1 lg:order-2">
-            <img src="/images/employee/client1.jpg" alt="A Career That Moves You" className="w-full h-[250px] lg:h-[420px] object-cover rounded-[16px]" loading="lazy" />
+            <img src={employeeRecruitmentBannerImg} alt="A Career That Moves You" className="w-full h-[250px] lg:h-[420px] object-cover rounded-[16px]" loading="lazy" />
           </div>
         </div>
       </div>

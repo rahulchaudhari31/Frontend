@@ -1,5 +1,5 @@
 import React from "react";
-import towerBridgeImg from "../../assets/images/Career Growth imgs/uk1.jpg";
+import towerBridgeImg from "../../assets/new photos for website developing/Human approach .jpeg";
 import manScarfImg from "../../assets/image/mann.jpg";
 import childrenImg from "../../assets/image/childrenssss.jpg";
 

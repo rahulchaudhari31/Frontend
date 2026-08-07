@@ -1,8 +1,8 @@
 ﻿import { FiMapPin } from 'react-icons/fi';
-import ukImage from '../../assets/images/united kingdom.png';
+import ukImage from '../../assets/new photos for website developing/Uk .jpeg';
 import uaeImage from '../../assets/images/united arab.png';
-import europeImage from '../../assets/images/building.jpg';
-import indiaImage from '../../assets/images/india.png.png';
+import europeImage from '../../assets/new photos for website developing/Europee.png';
+import indiaImage from '../../assets/new photos for website developing/India..png';
 
 const defaultLocations = [
   { name: 'United Kingdom', image: ukImage, pinColor: '#004CA5', label: 'United Kingdom' },
