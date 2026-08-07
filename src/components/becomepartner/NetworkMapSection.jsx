@@ -161,6 +161,7 @@ export default function NetworkMapSection() {
                   data={officeData[m.id]}
                   isVisible={activeOfficeCard === m.id}
                   isModal={isMobile}
+                  className="partner-map-office-card"
                   style={{ right: 'calc(100% + 12px)', top: m.cardTop, zIndex: 100 }}
                   onClose={hideCard}
                   onMouseEnter={isMobile ? undefined : makeHandleEnter(m.id)}
@@ -183,6 +184,37 @@ export default function NetworkMapSection() {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .office-info-card.partner-map-office-card {
+            width: 320px !important;
+            padding: 24px 20px !important;
+            border-radius: 18px !important;
+          }
+          .office-info-card.partner-map-office-card h2 {
+            font-size: 22px !important;
+            margin-bottom: 16px !important;
+          }
+          .office-info-card.partner-map-office-card h3 {
+            font-size: 17px !important;
+            margin-top: 16px !important;
+            margin-bottom: 8px !important;
+          }
+          .office-info-card.partner-map-office-card p {
+            font-size: 13px !important;
+            line-height: 1.5 !important;
+            margin-bottom: 16px !important;
+          }
+          .office-info-card.partner-map-office-card div > div span {
+            font-size: 13px !important;
+          }
+          .office-info-card.partner-map-office-card button {
+            padding: 12px !important;
+            font-size: 14px !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

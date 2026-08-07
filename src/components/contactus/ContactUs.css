@@ -21,6 +21,7 @@
     line-height: 38px !important;
     white-space: normal !important;
     margin-bottom: 32px !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
   }
 
   /* FORM SECTION */
@@ -95,6 +96,7 @@
     font-size: 28px !important;
     line-height: 32px !important;
     margin-bottom: 24px !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
   }
 
   /* FORM SECTION */

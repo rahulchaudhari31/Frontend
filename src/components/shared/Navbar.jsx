@@ -1,6 +1,6 @@
-﻿import { useRef } from 'react';
+﻿import { useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiArrowRight } from 'react-icons/fi';
+import { FiArrowRight, FiMenu, FiX } from 'react-icons/fi';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from 'react-icons/fa';
 import logoImage from '../../assets/image/logo.png';
 import { useModal } from '../../context/ModalContext';
@@ -32,6 +32,7 @@ export default function Navbar({ variant = 'home', onCtaAction }) {
   const { openWhoAreYouAtPosition, activeModal } = useModal();
   const ctaButtonRef = useRef(null);
   const hoverTimeoutRef = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const activeStyle = isEmployer ? 'text-[#0085d5]' : 'text-navy';
   const ctaBg = 'bg-[#F39308] hover:bg-[#E07D00]';
@@ -166,15 +167,58 @@ export default function Navbar({ variant = 'home', onCtaAction }) {
               {navLinks.map((link) => renderLink(link, 'flex items-center px-3 py-2 text-[13px] font-semibold whitespace-nowrap rounded-md transition-colors duration-150'))}
             </nav>
 
-            <button
-              ref={ctaButtonRef}
-              onMouseEnter={handleCtaMouseEnter}
-              onMouseLeave={handleCtaMouseLeave}
-              className={`hidden xl:inline-flex items-center justify-center text-white text-[14px] font-semibold px-6 py-2.5 rounded-pill transition-colors duration-150 shrink-0 ${ctaBg}`}
-            >
-              Submit Vacancy / CV
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                ref={ctaButtonRef}
+                onMouseEnter={handleCtaMouseEnter}
+                onMouseLeave={handleCtaMouseLeave}
+                onClick={handleCtaClick}
+                className={`hidden xl:inline-flex items-center justify-center text-white text-[14px] font-semibold px-6 py-2.5 rounded-pill transition-colors duration-150 shrink-0 ${ctaBg}`}
+              >
+                Submit Vacancy / CV
+              </button>
+              <button
+                type="button"
+                aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={menuOpen}
+                onClick={() => setMenuOpen((o) => !o)}
+                className="xl:hidden flex items-center justify-center w-10 h-10 text-[#004CA5] rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                {menuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+              </button>
+            </div>
           </div>
+
+          {/* Mobile menu */}
+          {menuOpen && (
+            <div className="xl:hidden bg-white border-t border-[#F3F4F6] shadow-lg">
+              <nav aria-label="Mobile navigation" className="flex flex-col px-4 py-3 max-h-[calc(100vh-130px)] overflow-y-auto">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.label}
+                    to={link.to}
+                    onClick={() => setMenuOpen(false)}
+                    className={`px-3 py-3 text-[15px] font-semibold border-b border-gray-50 last:border-0 transition-colors ${
+                      activePage === link.to || (link.to === '/blogs' && activePage.startsWith('/blogs'))
+                        ? activeStyle
+                        : 'text-primary hover:text-accent'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                <button
+                  onClick={() => {
+                    setMenuOpen(false);
+                    handleCtaClick();
+                  }}
+                  className={`mt-3 inline-flex items-center justify-center text-white text-[14px] font-semibold px-6 py-3 rounded-pill transition-colors ${ctaBg}`}
+                >
+                  Submit Vacancy / CV
+                </button>
+              </nav>
+            </div>
+          )}
         </header>
       </div>
 

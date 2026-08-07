@@ -54,7 +54,7 @@ html {
     width: 82.1% !important;
     height: auto !important;
     aspect-ratio: 1 !important;
-    left: 6.1% !important;
+    left: calc((100% - 82.1%) / 2) !important;
     top: -4.9% !important;
     transform: none !important;
   }
@@ -65,7 +65,7 @@ html {
     width: 66.3% !important;
     height: auto !important;
     aspect-ratio: 1 !important;
-    left: 16.9% !important;
+    left: calc((100% - 66.3%) / 2) !important;
     top: 6.3% !important;
     transform: none !important;
   }
