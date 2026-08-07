@@ -2,7 +2,7 @@
 
 Official marketing website frontend for **E2E Human Resource Consultancy Ltd**, connecting talent with opportunity. Built with React, Vite, and Tailwind CSS.
 
-🔗 Live contact: [https://humanresource-seven.vercel.app](mailto:info@e2ehrc.co.uk)
+🔗 Live contact: [humanresource-seven.vercel.app](mailto:info@e2ehrc.co.uk)
 
 ---
 
