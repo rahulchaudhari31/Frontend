@@ -23,17 +23,169 @@
                 linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
             background-size: 40px 40px;
         }
+
+        /* ===== DESKTOP: 1024px+ (unchanged) ===== */
+        @media (min-width: 1024px) {
+            .hero-section-custom {
+                min-height: 100vh;
+            }
+        }
+
+        /* ===== RESPONSIVE: Small Phones (320px–480px) ===== */
+        @media (max-width: 480px) {
+            .hero-section-custom {
+                min-height: auto;
+                height: auto;
+            }
+            .hero-section-custom .hero-grid {
+                grid-template-columns: 1fr !important;
+                gap: 24px !important;
+            }
+            .hero-section-custom .left-col {
+                padding: 24px 16px !important;
+                order: 1 !important;
+            }
+            .hero-section-custom .left-col h1 {
+                font-size: 28px !important;
+                line-height: 1.3 !important;
+            }
+            .hero-section-custom .tag-badge {
+                font-size: 10px !important;
+                padding: 6px 12px !important;
+            }
+            .hero-section-custom .hero-para {
+                font-size: 14px !important;
+                line-height: 1.6 !important;
+            }
+            .hero-section-custom .stats-card {
+                padding: 16px !important;
+            }
+            .hero-section-custom .stats-grid {
+                gap: 16px !important;
+            }
+            .hero-section-custom .stat-item {
+                gap: 8px !important;
+            }
+            .hero-section-custom .stat-icon {
+                width: 32px !important;
+                height: 32px !important;
+            }
+            .hero-section-custom .stat-value {
+                font-size: 16px !important;
+            }
+            .hero-section-custom .stat-label {
+                font-size: 11px !important;
+            }
+            .hero-section-custom .right-col {
+                order: 2 !important;
+            }
+            .hero-section-custom .curved-image {
+                border-radius: 16px !important;
+            }
+            .hero-section-custom .hero-img {
+                height: 280px !important;
+            }
+            .hero-section-custom .decor-blur {
+                display: none !important;
+            }
+            .blog-custom .blog-header {
+                flex-direction: column !important;
+                gap: 16px !important;
+            }
+            .blog-custom .blog-grid {
+                grid-template-columns: 1fr !important;
+                height: auto !important;
+            }
+            .blog-custom .blog-grid > div {
+                height: auto !important;
+            }
+            .blog-custom .blog-featured-img {
+                height: 200px !important;
+            }
+            .blog-custom .blog-featured-card {
+                flex-direction: column !important;
+            }
+            .blog-custom .blog-small-card {
+                flex-direction: column !important;
+                gap: 12px !important;
+            }
+            .blog-custom .blog-small-img {
+                width: 100% !important;
+                height: 160px !important;
+            }
+            .blog-custom .blog-small-content {
+                gap: 6px !important;
+            }
+        }
+
+        /* ===== RESPONSIVE: Tablets / Mobile Landscape (481px–768px) ===== */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .hero-section-custom {
+                min-height: auto;
+                height: auto;
+            }
+            .hero-section-custom .hero-grid {
+                grid-template-columns: 1fr !important;
+                gap: 32px !important;
+            }
+            .hero-section-custom .left-col {
+                padding: 32px 24px !important;
+                order: 1 !important;
+            }
+            .hero-section-custom .left-col h1 {
+                font-size: 36px !important;
+                line-height: 1.3 !important;
+            }
+            .hero-section-custom .tag-badge {
+                font-size: 11px !important;
+            }
+            .hero-section-custom .hero-para {
+                font-size: 15px !important;
+            }
+            .hero-section-custom .stats-card {
+                padding: 24px !important;
+            }
+            .hero-section-custom .stats-grid {
+                gap: 20px !important;
+            }
+            .hero-section-custom .right-col {
+                order: 2 !important;
+            }
+            .hero-section-custom .curved-image {
+                border-radius: 20px !important;
+            }
+            .hero-section-custom .hero-img {
+                height: 350px !important;
+            }
+            .hero-section-custom .decor-blur {
+                display: none !important;
+            }
+            .blog-custom .blog-grid {
+                grid-template-columns: 1fr !important;
+                height: auto !important;
+            }
+            .blog-custom .blog-grid > div {
+                height: auto !important;
+            }
+            .blog-custom .blog-featured-img {
+                height: 260px !important;
+            }
+            .blog-custom .blog-small-img {
+                width: 120px !important;
+                height: 110px !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-white">
     <!-- Hero Section -->
-    <section class="min-h-screen relative overflow-hidden">
+    <section class="hero-section-custom relative">
         <div class="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-20">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="hero-grid grid lg:grid-cols-2 gap-12 items-center">
                 <!-- Left Column -->
-                <div class="space-y-10">
+                <div class="left-col space-y-10 bg-[#004CA5] rounded-2xl p-10">
                     <!-- Tag -->
-                    <div class="inline-flex items-center bg-yellow-100 px-6 py-3 rounded-full">
+                    <div class="tag-badge inline-flex items-center bg-yellow-100 px-6 py-3 rounded-full">
                         <span class="text-sm font-bold text-gray-700 tracking-widest uppercase">
                             STRATEGIC • FLEXIBLE • GLOBAL
                         </span>
@@ -41,59 +193,60 @@
                     
                     <!-- Heading -->
                     <h1 class="text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-relaxed">
-                        <span class="text-blue-600">Workforce Solutions<br>That Drive</span><br>
-                        <span class="text-orange-500">Business Growth</span>
+                        <span style="color: #FFFFFF;">Ready to get started?</span><br>
+                        <span style="color: #FFFFFF;">Let's Build Success</span><br>
+                        <span style="color: #FFFFFF;">Together</span>
                     </h1>
                     
                     <!-- Paragraph -->
-                    <p class="text-lg text-gray-600 leading-relaxed max-w-xl">
+                    <p class="hero-para text-lg text-gray-600 leading-relaxed max-w-xl">
                         At E2E Human Resource Consultancy, we provide end-to-end workforce solutions that help organisations attract, recruit, manage, and retain exceptional talent.
                     </p>
                     
                     <!-- Statistics Card -->
-                    <div class="bg-white rounded-2xl shadow-xl" style="padding-top: 32px; padding-right: 64px; padding-bottom: 40px; padding-left: 64px;">
-                        <div class="grid grid-cols-2 gap-16">
+                    <div class="stats-card bg-white rounded-2xl shadow-xl" style="padding-top: 32px; padding-right: 64px; padding-bottom: 40px; padding-left: 64px;">
+                        <div class="stats-grid grid grid-cols-2 gap-16">
                             <!-- Stat 1 -->
-                            <div class="flex items-start space-x-3">
-                                <div class="flex-shrink-0 w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                            <div class="stat-item flex items-start space-x-3">
+                                <div class="stat-icon flex-shrink-0 w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
                                     <i data-lucide="award" class="w-5 h-5 text-yellow-600"></i>
                                 </div>
                                 <div>
-                                    <p class="text-xl lg:text-2xl font-bold text-gray-900">18+</p>
-                                    <p class="text-sm text-gray-500">Years Experience</p>
+                                    <p class="stat-value text-xl lg:text-2xl font-bold text-gray-900">18+</p>
+                                    <p class="stat-label text-sm text-gray-500">Years Experience</p>
                                 </div>
                             </div>
                             
                             <!-- Stat 2 -->
-                            <div class="flex items-start space-x-3">
-                                <div class="flex-shrink-0 w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                            <div class="stat-item flex items-start space-x-3">
+                                <div class="stat-icon flex-shrink-0 w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
                                     <i data-lucide="users" class="w-5 h-5 text-yellow-600"></i>
                                 </div>
                                 <div>
-                                    <p class="text-xl lg:text-2xl font-bold text-gray-900">450+</p>
-                                    <p class="text-sm text-gray-500">Clients Served</p>
+                                    <p class="stat-value text-xl lg:text-2xl font-bold text-gray-900">450+</p>
+                                    <p class="stat-label text-sm text-gray-500">Clients Served</p>
                                 </div>
                             </div>
                             
                             <!-- Stat 3 -->
-                            <div class="flex items-start space-x-3">
-                                <div class="flex-shrink-0 w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                            <div class="stat-item flex items-start space-x-3">
+                                <div class="stat-icon flex-shrink-0 w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
                                     <i data-lucide="check-square" class="w-5 h-5 text-yellow-600"></i>
                                 </div>
                                 <div>
-                                    <p class="text-xl lg:text-2xl font-bold text-gray-900">12K+</p>
-                                    <p class="text-sm text-gray-500">Placements</p>
+                                    <p class="stat-value text-xl lg:text-2xl font-bold text-gray-900">12K+</p>
+                                    <p class="stat-label text-sm text-gray-500">Placements</p>
                                 </div>
                             </div>
                             
                             <!-- Stat 4 -->
-                            <div class="flex items-start space-x-3">
-                                <div class="flex-shrink-0 w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                            <div class="stat-item flex items-start space-x-3">
+                                <div class="stat-icon flex-shrink-0 w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
                                     <i data-lucide="globe" class="w-5 h-5 text-yellow-600"></i>
                                 </div>
                                 <div>
-                                    <p class="text-xl lg:text-2xl font-bold text-gray-900">4</p>
-                                    <p class="text-sm text-gray-500">Global Offices</p>
+                                    <p class="stat-value text-xl lg:text-2xl font-bold text-gray-900">4</p>
+                                    <p class="stat-label text-sm text-gray-500">Global Offices</p>
                                 </div>
                             </div>
                         </div>
@@ -101,7 +254,7 @@
                 </div>
                 
                 <!-- Right Column -->
-                <div class="relative">
+                <div class="right-col relative">
                     <div class="relative">
                         <!-- Image with curved border -->
                         <div class="curved-image overflow-hidden shadow-2xl relative">
@@ -109,13 +262,13 @@
                             <img 
                                 src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
                                 alt="Modern Office Interior" 
-                                class="w-full h-[500px] lg:h-[600px] object-cover"
+                                class="hero-img w-full h-[500px] lg:h-[600px] object-cover"
                             >
                         </div>
                         
                         <!-- Decorative elements -->
-                        <div class="absolute -bottom-4 -right-4 w-24 h-24 bg-blue-500 rounded-full opacity-20 blur-2xl"></div>
-                        <div class="absolute -top-4 -left-4 w-32 h-32 bg-orange-500 rounded-full opacity-20 blur-2xl"></div>
+                        <div class="decor-blur absolute -bottom-4 -right-4 w-24 h-24 bg-blue-500 rounded-full opacity-20 blur-2xl"></div>
+                        <div class="decor-blur absolute -top-4 -left-4 w-32 h-32 bg-orange-500 rounded-full opacity-20 blur-2xl"></div>
                     </div>
                 </div>
             </div>
@@ -123,6 +276,106 @@
         
         <!-- Bottom Blue Strip -->
         <div class="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-500 to-blue-600"></div>
+    </section>
+    
+    <!-- Blog Section -->
+    <section class="blog-custom py-16 lg:py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <!-- Header -->
+            <div class="blog-header flex flex-col sm:flex-row sm:items-center sm:justify-between mb-12">
+                <div>
+                    <p class="text-sm font-semibold text-blue-600 uppercase tracking-widest mb-2">Latest Blog</p>
+                    <h2 class="text-3xl lg:text-4xl font-extrabold text-gray-900">Career Growth Strategies for Professionals</h2>
+                </div>
+                <a href="#" class="mt-4 sm:mt-0 inline-flex items-center text-blue-600 font-semibold hover:underline">
+                    View All Blog
+                    <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+
+            <!-- Blog Grid -->
+            <div class="blog-grid grid lg:grid-cols-2 gap-8 h-[600px]">
+                <!-- Featured Blog (Left) -->
+                <div class="blog-featured-card bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col h-full">
+                    <div class="blog-featured-img relative h-64 lg:h-80">
+                        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Hiring Trends" class="w-full h-full object-cover">
+                        <span class="absolute top-4 left-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">Hiring Trends</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-1">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Hiring Trends in the UK: What Employers Need to Know in 2025</h3>
+                        <p class="text-gray-600 text-sm flex-1">From AI-driven screening to flexible working demands, the UK recruitment landscape is shifting rapidly. Here's what the data tells us about the year ahead.</p>
+                        <div class="flex items-center text-xs text-gray-500 mt-4">
+                            <span class="font-semibold text-gray-700">Sarah Mitchell</span>
+                            <span class="mx-2">·</span>
+                            <span>5 min read</span>
+                            <span class="mx-2">·</span>
+                            <span>28 May 2025</span>
+                        </div>
+                        <a href="#" class="mt-4 inline-flex items-center text-blue-600 font-semibold text-sm hover:underline">
+                            Read More
+                            <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Blog List (Right) -->
+                <div class="flex flex-col gap-4 h-full">
+                    <!-- Blog 2 -->
+                    <div class="blog-small-card bg-white rounded-2xl shadow-lg p-5 flex gap-5 flex-1">
+                        <div class="blog-small-img w-32 h-28 flex-shrink-0 rounded-xl overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Talent Acquisition" class="w-full h-full object-cover">
+                        </div>
+                        <div class="blog-small-content flex flex-col justify-between flex-1">
+                            <div>
+                                <span class="text-xs font-bold text-blue-600 uppercase">Strategy</span>
+                                <h4 class="text-base font-bold text-gray-900 mt-1">Talent Acquisition Strategies That Actually Work</h4>
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <span>4 min read</span>
+                                <span class="mx-2">·</span>
+                                <span>20 May 2025</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Blog 3 -->
+                    <div class="blog-small-card bg-white rounded-2xl shadow-lg p-5 flex gap-5 flex-1">
+                        <div class="blog-small-img w-32 h-28 flex-shrink-0 rounded-xl overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Workforce Planning" class="w-full h-full object-cover">
+                        </div>
+                        <div class="blog-small-content flex flex-col justify-between flex-1">
+                            <div>
+                                <span class="text-xs font-bold text-blue-600 uppercase">Workforce Planning</span>
+                                <h4 class="text-base font-bold text-gray-900 mt-1">Future Workforce Planning: Building Teams for Tomorrow</h4>
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <span>6 min read</span>
+                                <span class="mx-2">·</span>
+                                <span>12 May 2025</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Blog 4 -->
+                    <div class="blog-small-card bg-white rounded-2xl shadow-lg p-5 flex gap-5 flex-1">
+                        <div class="blog-small-img w-32 h-28 flex-shrink-0 rounded-xl overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="High Performing Teams" class="w-full h-full object-cover">
+                        </div>
+                        <div class="blog-small-content flex flex-col justify-between flex-1">
+                            <div>
+                                <span class="text-xs font-bold text-blue-600 uppercase">Leadership</span>
+                                <h4 class="text-base font-bold text-gray-900 mt-1">Building High Performing Teams From Day One</h4>
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <span>5 min read</span>
+                                <span class="mx-2">·</span>
+                                <span>5 May 2025</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
     
     <script>

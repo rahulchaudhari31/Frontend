@@ -1,6 +1,6 @@
-﻿import { useState, useRef } from 'react';
+﻿import { useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiArrowRight, FiMenu, FiX } from 'react-icons/fi';
+import { FiArrowRight } from 'react-icons/fi';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from 'react-icons/fa';
 import logoImage from '../../assets/image/logo.png';
 import { useModal } from '../../context/ModalContext';
@@ -27,10 +27,9 @@ const NAV_HEIGHT = 81;
 const TOP_BAR_HEIGHT = 48;
 
 export default function Navbar({ variant = 'home', onCtaAction }) {
-  const [mobileOpen, setMobileOpen] = useState(false);
   const isEmployer = variant === 'employer';
   const location = useLocation();
-  const { openWhoAreYouAtPosition, activeModal, openEmployeeModal } = useModal();
+  const { openWhoAreYouAtPosition, activeModal } = useModal();
   const ctaButtonRef = useRef(null);
   const hoverTimeoutRef = useRef(null);
 
@@ -175,33 +174,7 @@ export default function Navbar({ variant = 'home', onCtaAction }) {
             >
               Submit Vacancy / CV
             </button>
-
-            <button
-              className="xl:hidden p-2 rounded-md transition-colors"
-              style={{ color: '#0F2A52', minWidth: '44px', minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: mobileOpen ? '#f3f4f6' : 'transparent' }}
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={mobileOpen}
-            >
-              {mobileOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-            </button>
           </div>
-
-          {mobileOpen && (
-            <div className="xl:hidden bg-white border-t border-gray-100 px-4 pb-5 sm:px-6">
-              <nav aria-label="Mobile navigation" className="flex flex-col mt-2">
-                {navLinks.map((link) => renderLink(link, 'flex items-center justify-between py-3 text-sm font-semibold border-b border-gray-50 transition-colors duration-150', () => setMobileOpen(false)))}
-              </nav>
-              <div className="mt-4">
-                <button
-                  onClick={() => { setMobileOpen(false); openWhoAreYouAtPosition({ bottom: window.innerHeight / 2, left: window.innerWidth / 2, width: 200 }); }}
-                  className={`flex items-center justify-center text-white text-sm font-semibold px-5 py-3 rounded-pill transition-colors duration-150 w-full ${ctaBg}`}
-                >
-                  Submit Vacancy / CV
-                </button>
-              </div>
-            </div>
-          )}
         </header>
       </div>
 
