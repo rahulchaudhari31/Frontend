@@ -20,6 +20,7 @@ export default function OfficeInfoCard({
   isModal = false,
   onMouseEnter,
   onMouseLeave,
+  className = '',
 }) {
   const { officeName, address, phone, email, hours, aboutText, directionsQuery } = data;
 
@@ -61,6 +62,7 @@ export default function OfficeInfoCard({
         role={isModal ? 'dialog' : 'tooltip'}
         aria-label={officeName}
         aria-modal={isModal}
+        className={`office-info-card ${className}`.trim()}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         style={{

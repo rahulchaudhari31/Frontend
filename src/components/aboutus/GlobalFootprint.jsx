@@ -83,6 +83,7 @@ function OfficeCard({ data, visible, pos, onEnter, onLeave, onClose }) {
   return (
     <div
       role="tooltip"
+      className="office-info-card about-map-office-card"
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
       style={{
@@ -261,19 +262,44 @@ export default function GlobalFootprint() {
                 {m.label}
               </div>
 
-              <OfficeCard
-                data={officeData[m.id]}
-                visible={isActive}
-                pos={{ right: "calc(100% + 14px)", top: -20 }}
-                onEnter={() => enter(m.id)}
-                onLeave={() => leave(m.id)}
-                onClose={hide}
-              />
-            </div>
-          );
-        })}
+      <OfficeCard
+        data={officeData[m.id]}
+        visible={isActive}
+        pos={{ right: "calc(100% + 14px)", top: -20 }}
+        onEnter={() => enter(m.id)}
+        onLeave={() => leave(m.id)}
+        onClose={hide}
+      />
       </div>
+    );
+  })}
+  </div>
 
-    </section>
-  );
+  <style>{`
+    @media (max-width: 768px) {
+      .office-info-card.about-map-office-card {
+        width: 320px !important;
+        padding: 24px 20px !important;
+        border-radius: 18px !important;
+      }
+      .office-info-card.about-map-office-card h3 {
+        font-size: 18px !important;
+        margin-bottom: 12px !important;
+      }
+      .office-info-card.about-map-office-card p {
+        font-size: 13px !important;
+        line-height: 1.5 !important;
+        margin-top: 12px !important;
+      }
+      .office-info-card.about-map-office-card div > div span {
+        font-size: 13px !important;
+      }
+      .office-info-card.about-map-office-card button {
+        padding: 12px !important;
+        font-size: 14px !important;
+      }
+    }
+  `}</style>
+</section>
+);
 }

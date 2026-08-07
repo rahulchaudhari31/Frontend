@@ -23,8 +23,17 @@
     height: 160px !important;
   }
 
+  .blog-banner-section .banner-overlay {
+    opacity: 0.85 !important;
+  }
+
   .blog-banner-section h1 {
     font-size: 36px !important;
+  }
+
+  .blog-banner-section h1,
+  .blog-banner-section span {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
   }
 
   /* FEATURED ARTICLE */
@@ -114,8 +123,17 @@
     height: 120px !important;
   }
 
+  .blog-banner-section .banner-overlay {
+    opacity: 0.85 !important;
+  }
+
   .blog-banner-section h1 {
     font-size: 28px !important;
+  }
+
+  .blog-banner-section h1,
+  .blog-banner-section span {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
   }
 
   /* FEATURED ARTICLE */
