@@ -1,4 +1,4 @@
-﻿import heroBg from '../../assets/about us images/about us background.jpg';
+﻿import heroBg from '../../assets/new photos for website developing/Connect with e2e.jpeg';
 
 export default function HeroSection() {
   return (

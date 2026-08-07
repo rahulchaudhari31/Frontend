@@ -1,12 +1,12 @@
 ﻿import { useRef } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import manufacturingImg from '../../assets/sectors/manuifacturing.jpg';
+import manufacturingImg from '../../assets/new photos for website developing/Manufacturingg.png';
 import healthcareImg from '../../assets/sectors/healthcare.jpg';
-import engineeringImg from '../../assets/sectors/engineering.jpg';
+import engineeringImg from '../../assets/new photos for website developing/Engineering vertical -ezremove.png';
 import constructionImg from '../../assets/sectors/construction.jpg';
-import logisticsImg from '../../assets/sectors/logistics.jpg';
-import financeImg from '../../assets/sectors/finance.jpg';
-import educationImg from '../../assets/sectors/education.jpg';
+import logisticsImg from '../../assets/new photos for website developing/Logistics vertical..png';
+import financeImg from '../../assets/new photos for website developing/Finance verticalll.png';
+import educationImg from '../../assets/new photos for website developing/Education vertical -ezremove.png';
 
 const industries = [
   {

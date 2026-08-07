@@ -1,9 +1,9 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import ukImg from "../../assets/images/uk-location.png";
+import ukImg from "../../assets/new photos for website developing/Uk .jpeg";
 import uaeImg from "../../assets/images/uae-location.png";
-import europeImg from "../../assets/images/europe-location.png";
-import indiaImg from "../../assets/images/india-location.png";
+import europeImg from "../../assets/new photos for website developing/Europee.png";
+import indiaImg from "../../assets/new photos for website developing/India..png";
 import locationIcon from "../../assets/images/Career Growth imgs/DUBAI LOCATION.png";
 import arrowIcon from "../../assets/images/Career Growth imgs/arrrow.png";
 
