@@ -2,13 +2,15 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FiArrowRight } from 'react-icons/fi';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { getWorkforceFAQ } from '../services/workforceSolution/workforceFAQService';
+import { getWorkforceCTA } from '../services/workforceSolution/workforceCTAService';
 
 import plusIcon from '../assets/icons of field/\+.png';
 import browseIcon from '../assets/icons of field/browse.png';
 import communityIcon from '../assets/icons of field/community.png';
 import searchIcon from '../assets/icons of field/search.png';
 
-const faqs = [
+const DEFAULT_FAQS = [
     {
         q: 'How does E2E HRC source candidates for employer roles?',
         a: 'We use a multi-channel approach including our extensive talent database, professional networks, job boards, and direct headhunting to find the best candidates for your specific needs.',
@@ -29,6 +31,8 @@ const faqs = [
 
 export default function WorkforceFAQAndCTA() {
     const [openIndex, setOpenIndex] = useState(null);
+    const [faqsData, setFaqsData] = useState([]);
+    const [ctaData, setCtaData] = useState(null);
     const [ref, visible] = useScrollReveal();
     const ctaRef = useRef(null);
     const [isMobile, setIsMobile] = useState(false);
@@ -40,7 +44,46 @@ export default function WorkforceFAQAndCTA() {
         return () => window.removeEventListener('resize', check);
     }, []);
 
+    useEffect(() => {
+        let isMounted = true;
+
+        const fetchFAQData = async () => {
+            try {
+                const res = await getWorkforceFAQ();
+                if (isMounted && res?.success && Array.isArray(res.data) && res.data.length > 0) {
+                    setFaqsData(res.data);
+                }
+            } catch (err) {
+                console.error("Failed to load Workforce FAQ data:", err);
+            }
+        };
+
+        const fetchCTAData = async () => {
+            try {
+                const res = await getWorkforceCTA();
+                if (isMounted && res?.success && res?.data) {
+                    setCtaData(res.data);
+                }
+            } catch (err) {
+                console.error("Failed to load Workforce CTA data:", err);
+            }
+        };
+
+        fetchFAQData();
+        fetchCTAData();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
     const toggle = (i) => setOpenIndex(openIndex === i ? null : i);
+
+    const displayFaqs = faqsData.length > 0 ? faqsData : DEFAULT_FAQS;
+    const title = ctaData?.ctaTitle || "Let's Build Your Workforce Together";
+    const description = ctaData?.ctaDescription || "Partner with E2E HRC and experience recruitment solutions that drive growth, efficiency and long-term success.";
+    const btnText = ctaData?.buttonText || "Submit a Vacancy";
+    const btnLink = ctaData?.buttonLink || "#";
 
     return (
         <section id="faq" className="bg-bg-section py-16 md:py-20 px-4">
@@ -49,18 +92,20 @@ export default function WorkforceFAQAndCTA() {
                 className={`max-w-7xl mx-auto grid lg:grid-cols-2 gap-6 md:gap-10 items-start reveal ${visible ? 'visible' : ''}`}
             >
 
-                {/* LEFT â€” FAQ */}
+                {/* LEFT — FAQ */}
                 <div>
                     <p className="text-xs font-semibold tracking-widest uppercase mb-6" style={{ color: '#003679' }}>
                         Frequently Asked Questions
                     </p>
                     <div className="flex flex-col gap-3" role="list">
-                        {faqs.map(({ q, a }, i) => {
+                        {displayFaqs.map((faq, i) => {
+                            const q = faq.question || faq.q;
+                            const a = faq.answer || faq.a;
                             const isOpen = openIndex === i;
                             const panelId = `faq-panel-${i}`;
                             const btnId = `faq-btn-${i}`;
                             return (
-                                <div key={i} className="bg-white rounded-xl overflow-hidden shadow-sm" role="listitem">
+                                <div key={faq._id || i} className="bg-white rounded-xl overflow-hidden shadow-sm" role="listitem">
                                     <button
                                         id={btnId}
                                         aria-expanded={isOpen}
@@ -116,7 +161,7 @@ export default function WorkforceFAQAndCTA() {
                     </div>
                 </div>
 
-                {/* RIGHT â€” CTA Card */}
+                {/* RIGHT — CTA Card */}
                 <motion.div
                     ref={ctaRef}
                     initial={{ opacity: 0, x: 40 }}
@@ -141,7 +186,7 @@ export default function WorkforceFAQAndCTA() {
                                     lineHeight: '1.25',
                                 }}
                             >
-                                Let's Build Your Workforce Together
+                                {title}
                             </h3>
                             <p
                                 style={{
@@ -153,13 +198,12 @@ export default function WorkforceFAQAndCTA() {
                                     maxWidth: 448,
                                 }}
                             >
-                                Partner with E2E HRC and experience recruitment solutions that drive
-                                growth, efficiency and long-term success.
+                                {description}
                             </p>
                         </div>
 
                         <a
-                            href="#"
+                            href={btnLink}
                             className="self-center md:self-start inline-flex items-center gap-2"
                             style={{
                                 borderRadius: 9999,
@@ -182,7 +226,7 @@ export default function WorkforceFAQAndCTA() {
                                 e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
                             }}
                         >
-                            Submit a Vacancy
+                            {btnText}
                             <FiArrowRight size={14} />
                         </a>
                     </div>
