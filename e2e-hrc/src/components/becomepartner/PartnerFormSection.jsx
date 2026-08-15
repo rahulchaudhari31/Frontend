@@ -1,13 +1,45 @@
-﻿import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import teamPhoto from '../../assets/background coonecting reqrirment/background connectivity.jpeg';
 import nameIcon from '../../assets/background coonecting reqrirment/NAME.png';
 import mailIcon from '../../assets/background coonecting reqrirment/MAIL ICON.png';
+import { getActiveRecruitmentPartner } from '../../services/becomePartner/recruitmentPartnersService';
+import { submitPartnershipEnquiry } from '../../services/becomePartner/partnershipEnquiryService';
+
+const getImageUrl = (path) => {
+  if (!path || typeof path !== 'string' || path.trim() === '') return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+  return `${baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
+};
 
 export default function PartnerFormSection() {
   const [formData, setFormData] = useState({ name: '', email: '', phoneCode: '+971', phone: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [errors, setErrors] = useState({});
+  const [partnerData, setPartnerData] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchData = async () => {
+      try {
+        const response = await getActiveRecruitmentPartner();
+        if (mounted && response?.success && response?.data) {
+          setPartnerData(response.data);
+        }
+      } catch (error) {
+        console.error('Failed to load Recruitment Partners:', error);
+      }
+    };
+    fetchData();
+    return () => { mounted = false; };
+  }, []);
+
+  const title = partnerData?.title || 'Connecting\nRecruitment Partners';
+  const highlightText = partnerData?.highlightText || 'Worldwide';
+  const bgImage = partnerData?.backgroundImage ? getImageUrl(partnerData.backgroundImage) : teamPhoto;
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -24,10 +56,30 @@ export default function PartnerFormSection() {
     return Object.keys(err).length === 0;
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (validate()) {
-      setSubmitted(true);
+      setIsSubmitting(true);
+      setSubmitError('');
+      try {
+        const payload = {
+          name: formData.name,
+          email: formData.email,
+          countryCode: formData.phoneCode,
+          contactNumber: formData.phone,
+          message: formData.message,
+        };
+        const response = await submitPartnershipEnquiry(payload);
+        if (response?.success) {
+          setSubmitted(true);
+          setFormData({ name: '', email: '', phoneCode: '+971', phone: '', message: '' });
+        }
+      } catch (error) {
+        const msg = error?.response?.data?.message || 'Failed to submit your enquiry. Please try again.';
+        setSubmitError(msg);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   }
 
@@ -38,7 +90,7 @@ export default function PartnerFormSection() {
           <div
             className="relative w-full min-h-[340px] lg:h-[463px]"
             style={{
-              backgroundImage: `url(${teamPhoto})`,
+              backgroundImage: `url(${bgImage})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
@@ -85,9 +137,8 @@ export default function PartnerFormSection() {
                     margin: 0,
                   }}
                 >
-                  <span style={{ display: 'block' }}>Connecting</span>
-                  <span style={{ display: 'block' }}>Recruitment Partners</span>
-                  <span style={{ display: 'block', color: '#F39308' }}>Worldwide</span>
+                  <span style={{ display: 'block', whiteSpace: 'pre-line' }}>{title}</span>
+                  <span style={{ display: 'block', color: '#F39308' }}>{highlightText}</span>
                 </h1>
                 <h1
                   className="lg:hidden text-white"
@@ -101,7 +152,7 @@ export default function PartnerFormSection() {
                     filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
                   }}
                 >
-                  Connecting<br />Recruitment Partners<br /><span style={{ color: '#F39308' }}>Worldwide</span>
+                  <span style={{ whiteSpace: 'pre-line' }}>{title}</span><br /><span style={{ color: '#F39308' }}>{highlightText}</span>
                 </h1>
               </div>
             </div>
@@ -151,11 +202,16 @@ export default function PartnerFormSection() {
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
                   </div>
-                  <p className="font-semibold text-[#004CA5] text-base">Thank you!</p>
+                  <p className="font-semibold text-[#004CA5] text-base">Your enquiry has been submitted successfully!</p>
                   <p className="text-[#424752] text-sm">We will get back to you shortly.</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col" style={{ gap: '19px', marginTop: '24px' }}>
+                  {submitError && (
+                    <div className="bg-red-50 text-red-500 text-sm p-3 rounded-lg border border-red-100">
+                      {submitError}
+                    </div>
+                  )}
                   <div>
                     <label
                       className="block"
@@ -267,7 +323,8 @@ export default function PartnerFormSection() {
 
                   <button
                     type="submit"
-                    className="w-full text-white"
+                    disabled={isSubmitting}
+                    className="w-full text-white disabled:opacity-70"
                     style={{
                       fontFamily: "'Source Sans 3', sans-serif",
                       fontWeight: 700,
@@ -277,13 +334,13 @@ export default function PartnerFormSection() {
                       height: '44px',
                       border: 'none',
                       borderRadius: '12px',
-                      cursor: 'pointer',
+                      cursor: isSubmitting ? 'not-allowed' : 'pointer',
                       boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)',
                     }}
-                    onMouseEnter={(e) => e.target.style.background = '#003b82'}
-                    onMouseLeave={(e) => e.target.style.background = '#004CA5'}
+                    onMouseEnter={(e) => !isSubmitting && (e.target.style.background = '#003b82')}
+                    onMouseLeave={(e) => !isSubmitting && (e.target.style.background = '#004CA5')}
                   >
-                    Submit
+                    {isSubmitting ? 'Submitting...' : 'Submit'}
                   </button>
                 </form>
               )}
