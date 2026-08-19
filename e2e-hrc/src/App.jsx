@@ -50,7 +50,7 @@ function AppContent() {
         } />
         <Route path="/employee" element={<Employee />} />
         <Route path="/blogs" element={<Blogs />} />
-        <Route path="/blogs/:slug" element={<BlogArticle />} />
+        <Route path="/blog/:slug" element={<BlogArticle />} />
         <Route path="/become-a-partner" element={<BecomePartner />} />
         <Route path="/contact-us" element={<ContactUs />} />
       </Routes>

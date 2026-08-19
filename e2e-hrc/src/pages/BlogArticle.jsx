@@ -1,37 +1,189 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import Navbar from '../components/shared/Navbar';
 import Footer from '../components/shared/Footer';
+import { getBlogBySlug, getActiveBlogs } from '../services/blog/blogService';
+import { getActiveBlogCta } from '../services/blog/blogCtaService';
 
-import heroImg from '../assets/blogs page credentials/image employees.jpg';
-import peoplesImg from '../assets/blogs page credentials/peoples.jpg';
-import vegasProImg from '../assets/blogs page credentials/vegas pro.jpg';
-import corelDrawImg from '../assets/blogs page credentials/corel draw.png';
-import ultimateDefragImg from '../assets/blogs page credentials/UltimateDefrag.png';
 import copyLinkIcon from '../assets/blogs page credentials/copy link.png';
 import linkedinIcon from '../assets/blogs page credentials/likdin.png';
 import newsletterIcon from '../assets/blogs page credentials/Newsletter.png';
-import hierarchicalIcon from '../assets/blogs page credentials/hierachical.png';
-import modularIcon from '../assets/blogs page credentials/modular.png';
-import columnarIcon from '../assets/blogs page credentials/columnar.png';
 
-const relatedArticles = [
-  { title: 'SketchUp Portable for PC [no Virus] [x86x64] Final…', date: '04/12/2026', readTime: '5 min read', image: peoplesImg },
-  { title: 'Vegas Pro twixtor Portable tool [Clean] Latest Bypass', date: '04/12/2026', readTime: '6 min read', image: vegasProImg },
-  { title: 'CorelDRAW 2023 Activated [Windows] [Final] FileCR', date: '04/12/2026', readTime: '4 min read', image: corelDrawImg },
-  { title: 'UltimateDefrag Crack + Activator [Clean] (x86-x64)', date: '04/12/2026', readTime: '7 min read', image: ultimateDefragImg },
-];
+/**
+ * Format date to readable format (e.g., "April 11, 2026")
+ */
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString('en-US', options);
+};
 
-const tags = ['Leadership', 'Tech Startups', 'Talent Strategy', 'Scale-Up'];
+/**
+ * Get initials from author name
+ */
+const getInitials = (name) => {
+  if (!name) return 'AB';
+  return name
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .substring(0, 2);
+};
 
-const bentoCards = [
-  { title: 'Columnar', icon: columnarIcon, desc: 'Traditional vertical reporting lines. Best for clear accountability and functional specialization in departments like Finance or Legal.' },
-  { title: 'Modular', icon: modularIcon, desc: 'Cross-functional "squads" or "tribes." Common in product development, allowing for rapid iteration and autonomy across silos.' },
-  { title: 'Hierarchical', icon: hierarchicalIcon, desc: 'Content organized by importance. Used in executive reporting where strategic priorities dictate resource allocation over fixed structures.' },
-];
+const stripHtml = (html = '') => {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+
+  return (div.textContent || div.innerText || '')
+    .replace(/\s+/g, ' ')
+    .trim();
+};
 
 export default function BlogArticle() {
+  const { slug } = useParams();
+  const [blog, setBlog] = useState(null);
+  const [cta, setCta] = useState(null);
+  const [relatedBlogs, setRelatedBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [ctaLoading, setCtaLoading] = useState(true);
+  const [relatedBlogsLoading, setRelatedBlogsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
+
+  // Fetch blog data when slug changes
+  useEffect(() => {
+    const fetchBlog = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await getBlogBySlug(slug);
+
+        if (response?.success && response.data) {
+          setBlog(response.data);
+
+          // Update SEO tags dynamically
+          if (response.data.seo) {
+            document.title = response.data.seo.metaTitle || 'Blog Article';
+
+            // Update or create meta description tag
+            let metaDescriptionTag = document.querySelector('meta[name="description"]');
+            if (!metaDescriptionTag) {
+              metaDescriptionTag = document.createElement('meta');
+              metaDescriptionTag.name = 'description';
+              document.head.appendChild(metaDescriptionTag);
+            }
+            metaDescriptionTag.content = response.data.seo.metaDescription || '';
+
+            // Update or create meta keywords tag if available
+            if (response.data.seo.keywords) {
+              let metaKeywordsTag = document.querySelector('meta[name="keywords"]');
+              if (!metaKeywordsTag) {
+                metaKeywordsTag = document.createElement('meta');
+                metaKeywordsTag.name = 'keywords';
+                document.head.appendChild(metaKeywordsTag);
+              }
+              metaKeywordsTag.content = response.data.seo.keywords || '';
+            }
+          }
+        } else {
+          setError('Blog not found');
+        }
+      } catch (err) {
+        console.error('Error fetching blog:', err);
+        setError('Failed to load blog');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (slug) {
+      fetchBlog();
+    }
+  }, [slug]);
+
+  // Fetch CTA data (independent of blog)
+  useEffect(() => {
+    const fetchCta = async () => {
+      try {
+        setCtaLoading(true);
+        const response = await getActiveBlogCta();
+
+        if (response?.success && response.data) {
+          setCta(response.data);
+        }
+      } catch (err) {
+        console.error('Error fetching CTA:', err);
+        // Don't set error for CTA - let blog render even if CTA fails
+      } finally {
+        setCtaLoading(false);
+      }
+    };
+
+    fetchCta();
+  }, []);
+
+  // Fetch related blogs for the Related Reading section
+  useEffect(() => {
+    const fetchRelatedBlogs = async () => {
+      try {
+        setRelatedBlogsLoading(true);
+        const response = await getActiveBlogs();
+
+        if (response?.success && Array.isArray(response.data)) {
+          // Get first 4 blogs for the Related Reading section
+          const limitedBlogs = response.data.slice(0, 4);
+          setRelatedBlogs(limitedBlogs);
+        }
+      } catch (err) {
+        console.error('Error fetching related blogs:', err);
+        // Don't set error for related blogs - let blog render even if this fails
+        setRelatedBlogs([]);
+      } finally {
+        setRelatedBlogsLoading(false);
+      }
+    };
+
+    fetchRelatedBlogs();
+  }, []);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Navbar variant="blog" />
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 16, color: '#424752' }}>Loading blog...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error || !blog) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Navbar variant="blog" />
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 16, color: '#DD4C4C' }}>Blog not found.</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Get first tag for badge (or use tags[0] if available)
+  const badgeTag = blog.tags && blog.tags.length > 0 ? blog.tags[0] : 'Blog';
+
+  // Get author initials
+  const authorInitials = getInitials(blog.author);
+
+  // Format publish date for display
+  const formattedDate = formatDate(blog.publishDate);
+
+  // Calculate approximate read time if not provided
+  const readTime = blog.readTime || '5 min read';
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -40,7 +192,7 @@ export default function BlogArticle() {
   };
 
   return (
-    <div className="min-h-screen bg-white overflow-hidden" style={{ overflow: 'hidden' }}>
+    <div className="min-h-screen bg-white" style={{ width: '100%', overflowX: 'hidden' }}>
       <style>{`
         .sidebar-share-btn {
           display: flex;
@@ -83,7 +235,8 @@ export default function BlogArticle() {
           transition: color 0.3s ease;
         }
         .article-card {
-          width: 312px;
+          width: 100%;
+          max-width: 312px;
           display: flex;
           flex-direction: column;
           align-items: flex-start;
@@ -102,16 +255,24 @@ export default function BlogArticle() {
           color: #004CA5;
         }
         .card-image {
-          width: 312px;
+          width: 100%;
+          max-width: 312px;
           height: 187.5px;
           background: #F0EDED;
           border-radius: 24px;
           overflow: hidden;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
         .card-image img {
-          width: 312px;
-          height: 187.5px;
+          width: 115%;
+          height: 100%;
+          max-width: none;
+          margin-left: -7.5%;
           object-fit: cover;
+          object-position: center;
+          display: block;
           transition: transform 0.3s ease;
         }
         .card-title {
@@ -128,20 +289,40 @@ export default function BlogArticle() {
           transition: color 0.3s ease;
         }
         @media (max-width: 1024px) {
-          .blog-layout { flex-direction: column !important; }
-          .blog-sidebar { position: relative !important; left: 0 !important; right: 0 !important; width: 100% !important; height: auto !important; padding: 0 0 32px !important; margin-bottom: 32px; }
-          .blog-article-body { position: relative !important; left: 0 !important; right: 0 !important; width: 100% !important; height: auto !important; }
-          .blog-main-container { padding-top: 24px !important; }
-          .article-card { width: 100% !important; }
-          .card-image, .card-image img { width: 100% !important; }
+          .blog-main-container { flex-direction: column !important; padding-left: 16px !important; padding-right: 16px !important; }
+          .blog-sidebar { width: 100% !important; }
+          .blog-article-body { width: 100% !important; }
+        }
+        @media (max-width: 768px) {
+          .blog-article-body { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; }
+          .blog-article-body div { max-width: 100% !important; width: 100% !important; }
+          .blog-sidebar .sidebar-inner { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; padding: 0 !important; }
+          .blog-sidebar .sidebar-inner > div { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; }
+          .newsletter-section { width: 100% !important; max-width: 100% !important; padding: 40px 16px !important; box-sizing: border-box !important; }
+          .newsletter-inner { width: 100% !important; max-width: 100% !important; }
+          .newsletter-heading { font-size: 28px !important; line-height: 34px !important; width: 100% !important; }
+          .newsletter-desc { font-size: 14px !important; line-height: 22px !important; width: 100% !important; }
+          .newsletter-label { width: auto !important; }
+          .newsletter-form { width: 100% !important; flex-direction: column !important; gap: 12px !important; }
+          .newsletter-input { width: 100% !important; box-sizing: border-box !important; }
+          .newsletter-btn { width: 100% !important; box-sizing: border-box !important; }
+          .newsletter-privacy { width: 100% !important; padding-top: 16px !important; }
+          .blog-article-body h1 { font-size: 28px !important; line-height: 36px !important; }
+          .blog-article-body h2 { font-size: 20px !important; line-height: 28px !important; }
+          .blog-article-body p { font-size: 14px !important; line-height: 22px !important; }
+          .tag-wrap { flex-wrap: wrap !important; }
         }
         @media (max-width: 640px) {
-          .blog-sidebar .sidebar-inner { width: 100% !important; }
-          .blog-article-body h1 { font-size: 32px !important; line-height: 40px !important; }
-          .newsletter-section { padding: 4px 24px 61px !important; }
-          .newsletter-form { flex-direction: column !important; }
-          .newsletter-input { width: 100% !important; }
-          .newsletter-btn { width: 100% !important; }
+          .blog-main-container { padding-left: 12px !important; padding-right: 12px !important; }
+          .blog-article-body h1 { font-size: 24px !important; line-height: 32px !important; }
+          .newsletter-section { padding: 32px 16px !important; }
+          .newsletter-heading { font-size: 24px !important; line-height: 30px !important; }
+          .newsletter-desc { font-size: 13px !important; line-height: 20px !important; }
+          .blog-article-body h2 { font-size: 18px !important; line-height: 26px !important; }
+          .blog-article-body p { font-size: 13px !important; line-height: 20px !important; }
+          .article-card { width: 100% !important; }
+          .card-image { width: 100% !important; }
+          .tag-wrap { flex-wrap: wrap !important; }
         }
         .blog-article-body p {
           font-family: 'Inter', sans-serif;
@@ -158,78 +339,53 @@ export default function BlogArticle() {
 
       <Navbar variant="blog" />
 
-      {/* Main Layout */}
-      <div className="blog-main-container" style={{ position: 'relative', maxWidth: 1440, margin: '0 auto', paddingTop: 40 }}>
+      {/* Main Layout - Changed from absolute positioning to flex layout */}
+      <div className="blog-main-container" style={{ maxWidth: 1440, margin: '0 auto', paddingTop: 40, display: 'flex', gap: 40, paddingLeft: 61, paddingRight: 61 }}>
 
-        {/* Aside - Sticky Left Sidebar */}
-        <aside
-          className="blog-sidebar"
-          style={{
-            position: 'absolute',
-            left: 61,
-            right: 1067.5,
-            top: 0,
-            width: 311.5,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            padding: '0 0 1618.8px',
-            height: 3387.8,
-          }}
-        >
+        {/* Aside - Left Sidebar */}
+        <aside className="blog-sidebar" style={{ width: 311.5, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', flexShrink: 0 }}>
           {/* Container */}
-          <div className="sidebar-inner" style={{ width: 311.5, display: 'flex', flexDirection: 'column', gap: 32 }}>
+          <div className="sidebar-inner" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 32 }}>
             {/* Section 1: Badge + Author */}
-            <div style={{ width: 311.5, display: 'flex', flexDirection: 'column', gap: 16, padding: '2px 0 0' }}>
+            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 16, padding: '2px 0 0' }}>
               {/* Badge */}
-              <span
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  padding: '4px 12px',
-                  background: '#004CA5',
-                  borderRadius: 9999,
-                  fontFamily: "'Source Sans 3', sans-serif",
-                  fontWeight: 700,
-                  fontSize: 12,
-                  lineHeight: '16px',
-                  letterSpacing: 1.2,
-                  textTransform: 'uppercase',
-                  color: '#FFFFFF',
-                  width: 144.08,
-                  height: 24,
-                }}
-              >
-                Executive Search
+              <span style={{ display: 'inline-flex', alignItems: 'center', padding: '4px 12px', background: '#004CA5', borderRadius: 9999, fontFamily: "'Source Sans 3', sans-serif", fontWeight: 700, fontSize: 12, lineHeight: '16px', letterSpacing: 1.2, textTransform: 'uppercase', color: '#FFFFFF' }}>
+                {badgeTag}
               </span>
 
               {/* Section 2: Author */}
-              <div style={{ width: 311.5, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 14, lineHeight: '20px', color: '#424752', margin: 0, width: 311.5, height: 20 }}>
+              <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 14, lineHeight: '20px', color: '#424752', margin: 0, width: '100%' }}>
                   Authored by
                 </p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, width: 311.5, height: 40 }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, width: '100%' }}>
                   <div style={{ width: 40, height: 40, borderRadius: '50%', background: '#D8E2FF', display: 'flex', justifyContent: 'center', alignItems: 'center', flexShrink: 0 }}>
-                    <span style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 700, fontSize: 16, lineHeight: '24px', color: '#004CA5' }}>JD</span>
+                    <span style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 700, fontSize: 16, lineHeight: '24px', color: '#004CA5' }}>
+                      {authorInitials}
+                    </span>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', width: 121, height: 40 }}>
-                    <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: 16, lineHeight: '24px', color: '#1B1C1C', height: 24 }}>Jane Doe</span>
-                    <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 12, lineHeight: '16px', color: '#424752', height: 16 }}>Senior HR Consultant</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', width: '100%', minWidth: 0 }}>
+                    <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: 16, lineHeight: '24px', color: '#1B1C1C', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                      {blog.author}
+                    </span>
+                    <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 12, lineHeight: '16px', color: '#424752', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                      {blog.authorDesignation || 'Consultant'}
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Section 3: Share Insight */}
-            <div style={{ width: 311.5, borderTop: '1px solid #EAE8E7', paddingTop: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#737783', textTransform: 'uppercase', margin: 0, width: 311.5, height: 24 }}>
+            <div style={{ width: '100%', borderTop: '1px solid #EAE8E7', paddingTop: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#737783', textTransform: 'uppercase', margin: 0, width: '100%' }}>
                 SHARE INSIGHT
               </p>
 
               {/* Share Buttons */}
-              <div style={{ width: 311.5, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {/* Copy Link */}
-                <button onClick={handleCopyLink} className="sidebar-share-btn" style={{ width: 247.68, height: 36 }}>
+                <button onClick={handleCopyLink} className="sidebar-share-btn" style={{ width: '100%' }}>
                   <div className="share-icon-box" style={{ width: 34, height: 36 }}>
                     {copied ? (
                       <span style={{ color: '#166534', fontSize: 14, fontWeight: 700 }}>✓</span>
@@ -237,274 +393,232 @@ export default function BlogArticle() {
                       <img src={copyLinkIcon} alt="Copy Link" style={{ width: 18, height: 20 }} />
                     )}
                   </div>
-                  <span className="share-text" style={{ width: 66, height: 20 }}>
-                    {copied ? 'Copied' : 'Copy Link'}
-                  </span>
+                  <span className="share-text">{copied ? 'Copied' : 'Copy Link'}</span>
                 </button>
 
                 {/* LinkedIn */}
-                <button onClick={() => window.open('https://linkedin.com', '_blank')} className="sidebar-share-btn" style={{ width: 250.26, height: 36 }}>
+                <button onClick={() => window.open('https://linkedin.com', '_blank')} className="sidebar-share-btn" style={{ width: '100%' }}>
                   <div className="share-icon-box" style={{ width: 36, height: 36 }}>
                     <img src={linkedinIcon} alt="LinkedIn" style={{ width: 20, height: 20 }} />
                   </div>
-                  <span className="share-text" style={{ width: 56, height: 20 }}>
-                    LinkedIn
-                  </span>
+                  <span className="share-text">LinkedIn</span>
                 </button>
 
                 {/* Newsletter */}
-                <button className="sidebar-share-btn" style={{ width: 250.89, height: 32 }}>
+                <button className="sidebar-share-btn" style={{ width: '100%' }}>
                   <div className="share-icon-box" style={{ width: 36, height: 32 }}>
                     <img src={newsletterIcon} alt="Newsletter" style={{ width: 20, height: 16 }} />
                   </div>
-                  <span className="share-text" style={{ width: 73, height: 20 }}>
-                    Newsletter
-                  </span>
+                  <span className="share-text">Newsletter</span>
                 </button>
               </div>
             </div>
 
             {/* Section 4: Related Reading Box */}
-            <div style={{ width: 311.5, background: '#F6F3F2', border: '1px solid #EAE8E7', borderRadius: 16, padding: '21px 24px 24px', display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: 16, lineHeight: '24px', color: '#004CA5', margin: 0, width: 261.5 }}>
+            <div style={{ width: '100%', background: '#F6F3F2', border: '1px solid #EAE8E7', borderRadius: 16, padding: '21px 24px 24px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: 16, lineHeight: '24px', color: '#004CA5', margin: 0, width: '100%' }}>
                 Related Reading
               </p>
             </div>
 
             {/* Section 5: Article Cards */}
-            <div style={{ width: 312, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 50 }}>
-              {relatedArticles.map((article) => (
-                <div key={article.title} className="article-card">
-                  {/* Image */}
-                  <div className="card-image">
-                    <img src={article.image} alt={article.title} />
+            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 50 }}>
+              {relatedBlogsLoading && (
+                <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 14, lineHeight: '20px', color: '#424752', margin: 0, width: '100%', textAlign: 'center' }}>
+                  Loading...
+                </p>
+              )}
+              {!relatedBlogsLoading && relatedBlogs.length === 0 && (
+                <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 14, lineHeight: '20px', color: '#424752', margin: 0, width: '100%', textAlign: 'center' }}>
+                  No related blogs available.
+                </p>
+              )}
+              {!relatedBlogsLoading && relatedBlogs.length > 0 && relatedBlogs.map((article) => (
+                <Link key={article._id} to={`/blog/${article.slug}`} style={{ textDecoration: 'none', width: '100%' }}>
+                  <div className="article-card" style={{ cursor: 'pointer' }}>
+                    <div className="card-image">
+                      <img src={article.image} alt={article.blogHeading} />
+                    </div>
+                    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                      <p style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 400, fontSize: 14, lineHeight: '20px', color: '#424752', margin: 0, width: '100%' }}>
+                        {formatDate(article.publishDate)} • {article.readTime || '5 min read'}
+                      </p>
+                      <h4 className="card-title" style={{ width: '100%' }}>
+                        {article.blogHeading}
+                      </h4>
+                    </div>
                   </div>
-                  {/* Text */}
-                  <div style={{ width: 312, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    <p style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 400, fontSize: 14, lineHeight: '20px', color: '#424752', margin: 0, width: 312, height: 20 }}>
-                      {article.date} • {article.readTime}
-                    </p>
-                    <h4 className="card-title" style={{ width: 312, height: 56 }}>
-                      {article.title}
-                    </h4>
-                  </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
         </aside>
 
         {/* Central Article Body */}
-        <div
-          className="blog-article-body"
-          style={{
-            position: 'absolute',
-            left: 396.5,
-            right: 61,
-            top: 0,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 16,
-            height: 2579.8,
-          }}
-        >
+        <div className="blog-article-body" style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 16 }}>
           {/* Header */}
           <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 16 }}>
             {/* Breadcrumbs */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16, height: 20 }}>
-              <span style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 600, fontSize: 14, lineHeight: '20px', color: '#424752' }}>April 11, 2026</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, height: 'auto', flexWrap: 'wrap' }}>
+              <span style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 600, fontSize: 14, lineHeight: '20px', color: '#424752' }}>
+                {formattedDate}
+              </span>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#C3C6D4', flexShrink: 0 }} />
-              <span style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 600, fontSize: 14, lineHeight: '20px', color: '#424752' }}>8 min read</span>
+              <span style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 600, fontSize: 14, lineHeight: '20px', color: '#424752' }}>
+                {readTime}
+              </span>
             </div>
 
             {/* Title */}
-            <h1 className="blog-article-body h1" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: 56, lineHeight: '70px', color: '#004CA5', margin: 0, maxWidth: 896 }}>
-              Navigating Leadership Transitions in Fast-Growing Tech Firms
+            <h1 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 400, fontSize: 56, lineHeight: '70px', color: '#004CA5', margin: 0, maxWidth: '100%', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              {stripHtml(blog.blogHeading)}
             </h1>
 
             {/* Intro */}
-            <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '26px', color: '#424752', margin: 0, maxWidth: 768, textAlign: 'left', whiteSpace: 'normal' }}>
-              As tech startups move from seed funding to scale-up phases, the leadership requirements shift dramatically. Identifying "transitional talent"—leaders who can navigate the chaos of growth while building sustainable systems—is the primary challenge for modern executive search.
+            <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '26px', color: '#424752', margin: 0, maxWidth: '100%', textAlign: 'left', whiteSpace: 'normal', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              {stripHtml(blog.paragraph1)}
             </p>
           </div>
 
           {/* Hero Image */}
-          <div style={{ width: '100%', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.04))', borderRadius: 24, overflow: 'hidden' }}>
-            <img src={heroImg} alt="HR Strategy Meeting" style={{ width: '100%', height: 445.8, objectFit: 'cover' }} />
+          <div style={{ width: '100%', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.04))', borderRadius: 24, overflow: 'hidden', maxHeight: '600px' }}>
+            <img src={blog.image} alt={blog.blogHeading} style={{ width: '100%', height: 'auto', minHeight: '300px', objectFit: 'cover', display: 'block' }} />
           </div>
 
           {/* Article Body */}
-          <div style={{ width: 768, maxWidth: 768, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 16 }}>
+          <div style={{ width: '100%', maxWidth: 768, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 16, wordWrap: 'break-word', overflowWrap: 'break-word' }}>
             {/* Opening paragraph */}
-            <div style={{ width: '100%' }}>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#424752', margin: 0, maxWidth: 768, textAlign: 'left', whiteSpace: 'normal' }}>
-                The transition from a founding team to a professionalized leadership tier is often the most precarious period for a fast-growing tech firm. Cultural erosion, process friction, and loss of momentum are common pitfalls that occur when leadership growth fails to keep pace with operational scaling.
-              </p>
-            </div>
+            {blog.paragraph2 && (
+              <div style={{ width: '100%' }}>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#424752', margin: 0, maxWidth: '100%', textAlign: 'left', whiteSpace: 'normal', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  {stripHtml(blog.paragraph2)}
+                </p>
+              </div>
+            )}
 
-            {/* H2: The Cultural Fit Paradox */}
-            <div style={{ width: '100%', paddingTop: 16 }}>
-              <h2 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: 24, lineHeight: '36px', color: '#004CA5', margin: 0, maxWidth: 768 }}>
-                The Cultural Fit Paradox
-              </h2>
-            </div>
+            {/* H2: Heading 2 */}
+            {blog.heading2 && (
+              <div style={{ width: '100%', paddingTop: 16 }}>
+                <h2 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: 24, lineHeight: '36px', color: '#004CA5', margin: 0, maxWidth: '100%', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  {blog.heading2}
+                </h2>
+              </div>
+            )}
 
             {/* Paragraph + Quote container */}
-            <div style={{ width: '100%', paddingBottom: 32, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 0 }}>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#424752', margin: 0, maxWidth: 768, textAlign: 'left', whiteSpace: 'normal' }}>
-                In the early days of a startup, "culture fit" often means shared interests and late-night coding sessions. However, as a firm grows, culture fit must evolve into "culture add." This requires leaders who don't just mimic the existing environment but bring the professional maturity needed to stabilize it. Executive search in this domain isn't just about matching resumes; it's about identifying individuals who can translate founder vision into scalable corporate strategy without extinguishing the entrepreneurial spark.
-              </p>
+            {(blog.paragraph3 || blog.quote) && (
+              <div style={{ width: '100%', paddingBottom: 32, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 0 }}>
+                {blog.paragraph3 && (
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#424752', margin: 0, maxWidth: '100%', textAlign: 'left', whiteSpace: 'normal', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                    {stripHtml(blog.paragraph3)}
+                  </p>
+                )}
 
-              {/* Executive Insight Pull Quote */}
-              <div style={{ width: 768, maxWidth: 768, marginTop: 16, padding: '0 32px 32px', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.04))', borderRadius: 16, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 16 }}>
-                <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 16 }}>
-                  <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#FFFFFF', margin: 0 }}>
-                    Executive Insight:
-                  </h3>
-                  <div style={{ width: '100%', opacity: 0.9 }}>
-                    <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', fontStyle: 'italic', color: '#424752', margin: 0, textAlign: 'left', whiteSpace: 'normal' }}>
-                      "The best transitional leaders act as a bridge between the 'move fast and break things' mentality and the 'build to last' infrastructure required for IPO readiness."
-                    </p>
+                {/* Executive Insight Pull Quote */}
+                {blog.quote && (
+                  <div style={{ width: '100%', maxWidth: 768, marginTop: 16, padding: '0 32px 32px', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.04))', borderRadius: 16, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 16, boxSizing: 'border-box' }}>
+                    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 16 }}>
+                      <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#FFFFFF', margin: 0 }}>
+                        Executive Insight:
+                      </h3>
+                      <div style={{ width: '100%', opacity: 0.9 }}>
+                        <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', fontStyle: 'italic', color: '#424752', margin: 0, textAlign: 'left', whiteSpace: 'normal', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                          "{blog.quote}"
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
-            </div>
+            )}
 
-            {/* H2: Common Grid Structures */}
-            <div style={{ width: '100%', paddingTop: 32 }}>
-              <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 700, fontSize: 24, lineHeight: '36px', color: '#004CA5', margin: 0, maxWidth: 768 }}>
-                Common Grid Structures
-              </h2>
-            </div>
-
-            {/* Paragraph */}
-            <div style={{ width: '100%' }}>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#424752', margin: 0, maxWidth: 768, textAlign: 'left', whiteSpace: 'normal' }}>
-                Understanding how to structure an organization during hyper-growth is critical. Much like a UI grid provides a framework for design, an organizational grid provides a framework for communication and accountability. We identify three primary structures used in modern tech environments:
-              </p>
-            </div>
-
-            {/* Bento Grid */}
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-start', padding: '24px 0 0', gap: 24, width: 768, height: 358 }}>
-              {/* Columnar */}
-              <div style={{ width: 240, height: 314, background: '#FFFFFF', border: '1px solid #F2F2F2', boxShadow: '0px 1px 2px rgba(0,0,0,0.05)', borderRadius: 16, padding: '24px 24px 48px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8, boxSizing: 'border-box', order: 0, flexGrow: 1 }}>
-                <div style={{ width: 48, height: 48, background: 'rgba(0,76,165,0.1)', borderRadius: 12, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 0, order: 0 }}>
-                  <img src={columnarIcon} alt="Columnar icon" style={{ width: 17.98, height: 14, objectFit: 'contain' }} />
-                </div>
-                <div style={{ width: 190, height: 36, padding: '8px 0 0', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', order: 1, alignSelf: 'stretch', flexGrow: 0 }}>
-                  <h4 style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 700, fontSize: 18, lineHeight: '28px', color: '#1B1C1C', margin: 0, width: 190, height: 28, display: 'flex', alignItems: 'center' }}>
-                    Columnar
-                  </h4>
-                </div>
-                <div style={{ width: 190, height: 140, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: 0, order: 2, alignSelf: 'stretch', flexGrow: 0 }}>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 14, lineHeight: '20px', color: '#424752', margin: 0, width: 190, height: 140, display: 'flex', alignItems: 'center' }}>
-                    Traditional vertical reporting lines. Best for clear accountability and functional specialization in departments like Finance or Legal.
-                  </p>
-                </div>
+            {/* H2: Heading 3 */}
+            {blog.heading3 && (
+              <div style={{ width: '100%', paddingTop: 32 }}>
+                <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 700, fontSize: 24, lineHeight: '36px', color: '#004CA5', margin: 0, maxWidth: '100%', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  {blog.heading3}
+                </h2>
               </div>
+            )}
 
-              {/* Modular */}
-              <div style={{ width: 240, height: 334, background: '#FFFFFF', border: '1px solid #F2F2F2', boxShadow: '0px 1px 2px rgba(0,0,0,0.05)', borderRadius: 16, padding: '24px 24px 48px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8, boxSizing: 'border-box', order: 1, flexGrow: 1 }}>
-                <div style={{ width: 48, height: 48, background: 'rgba(0,76,165,0.1)', borderRadius: 12, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 0, order: 0 }}>
-                  <img src={modularIcon} alt="Modular icon" style={{ width: 18, height: 18, objectFit: 'contain' }} />
-                </div>
-                <div style={{ width: 190, height: 36, padding: '8px 0 0', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', order: 1, alignSelf: 'stretch', flexGrow: 0 }}>
-                  <h4 style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 700, fontSize: 18, lineHeight: '28px', color: '#1B1C1C', margin: 0, width: 190, height: 28, display: 'flex', alignItems: 'center' }}>
-                    Modular
-                  </h4>
-                </div>
-                <div style={{ width: 190, height: 160, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: 0, order: 2, alignSelf: 'stretch', flexGrow: 0 }}>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 14, lineHeight: '20px', color: '#424752', margin: 0, width: 190, height: 160, display: 'flex', alignItems: 'center' }}>
-                    Cross-functional "squads" or "tribes." Common in product development, allowing for rapid iteration and autonomy across silos.
-                  </p>
-                </div>
+            {/* Paragraph after heading 3 */}
+            {blog.paragraph4 && (
+              <div style={{ width: '100%' }}>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#424752', margin: 0, maxWidth: '100%', textAlign: 'left', whiteSpace: 'normal', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  {stripHtml(blog.paragraph4)}
+                </p>
               </div>
-
-              {/* Hierarchical */}
-              <div style={{ width: 240, height: 314, background: '#FFFFFF', border: '1px solid #F2F2F2', boxShadow: '0px 1px 2px rgba(0,0,0,0.05)', borderRadius: 16, padding: '24px 24px 48px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8, boxSizing: 'border-box', order: 2, flexGrow: 1 }}>
-                <div style={{ width: 48, height: 48, background: 'rgba(0,76,165,0.1)', borderRadius: 12, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 0, order: 0 }}>
-                  <img src={hierarchicalIcon} alt="Hierarchical icon" style={{ width: 20, height: 18, objectFit: 'contain' }} />
-                </div>
-                <div style={{ width: 190, height: 36, padding: '8px 0 0', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', order: 1, alignSelf: 'stretch', flexGrow: 0 }}>
-                  <h4 style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 700, fontSize: 18, lineHeight: '28px', color: '#1B1C1C', margin: 0, width: 190, height: 28, display: 'flex', alignItems: 'center' }}>
-                    Hierarchical
-                  </h4>
-                </div>
-                <div style={{ width: 190, height: 140, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: 0, order: 2, alignSelf: 'stretch', flexGrow: 0 }}>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 14, lineHeight: '20px', color: '#424752', margin: 0, width: 190, height: 140, display: 'flex', alignItems: 'center' }}>
-                    Content organized by importance. Used in executive reporting where strategic priorities dictate resource allocation over fixed structures.
-                  </p>
-                </div>
-              </div>
-            </div>
+            )}
 
             {/* Paragraph after bento */}
-            <div style={{ width: '100%', paddingTop: 24 }}>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#424752', margin: 0, maxWidth: 768, textAlign: 'left', whiteSpace: 'normal' }}>
-                When scaling, firms often start with a flat (Columnar) structure and must pivot toward a Modular or Matrix approach to maintain agility. The role of HR consultancy is to diagnose which "grid" best supports the current growth stage and to source the executive talent capable of managing that specific architecture.
-              </p>
-            </div>
+            {blog.paragraph5 && (
+              <div style={{ width: '100%', paddingTop: 24 }}>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#424752', margin: 0, maxWidth: '100%', textAlign: 'left', whiteSpace: 'normal', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  {stripHtml(blog.paragraph5)}
+                </p>
+              </div>
+            )}
 
-            {/* H2: Identifying the Gap */}
-            <div style={{ width: '100%', paddingTop: 16 }}>
-              <h2 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: 24, lineHeight: '36px', color: '#004CA5', margin: 0, maxWidth: 768 }}>
-                Identifying the Gap
-              </h2>
-            </div>
+            {/* H2: Heading 4 */}
+            {blog.heading4 && (
+              <div style={{ width: '100%', paddingTop: 16 }}>
+                <h2 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700, fontSize: 24, lineHeight: '36px', color: '#004CA5', margin: 0, maxWidth: '100%', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  {blog.heading4}
+                </h2>
+              </div>
+            )}
 
             {/* Final paragraph */}
-            <div style={{ width: '100%' }}>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#424752', margin: 0, maxWidth: 768, textAlign: 'left', whiteSpace: 'normal' }}>
-                The gap is rarely one of technical skill. In our experience, leadership failures in tech firms usually stem from a lack of "emotional intelligence at scale." Can the leader manage 50 people with the same empathy they managed 5? This is where the Executive Search methodology must transcend traditional metrics and dive deep into behavioral psychology and organizational health markers.
-              </p>
-            </div>
+            {blog.paragraph6 && (
+              <div style={{ width: '100%' }}>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#424752', margin: 0, maxWidth: '100%', textAlign: 'left', whiteSpace: 'normal', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  {stripHtml(blog.paragraph6)}
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Tags */}
-          <div style={{ display: 'flex', gap: 8, paddingTop: 32, maxWidth: 768 }}>
-            {tags.map((tag) => (
-              <div
-                key={tag}
-                style={{
-                  background: '#F2F2F2',
-                  borderRadius: 9999,
-                  padding: '6px 16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
+          <div className="tag-wrap" style={{ display: 'flex', gap: 8, paddingTop: 32, maxWidth: '100%', flexWrap: 'wrap' }}>
+            {blog.tags && blog.tags.length > 0 ? (
+              blog.tags.map((tag) => (
+                <div key={tag} style={{ background: '#F2F2F2', borderRadius: 9999, padding: '6px 16px', display: 'flex', alignItems: 'center' }}>
+                  <span style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 600, fontSize: 14, lineHeight: '20px', color: '#424752' }}>
+                    {tag}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <div style={{ background: '#F2F2F2', borderRadius: 9999, padding: '6px 16px', display: 'flex', alignItems: 'center' }}>
                 <span style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 600, fontSize: 14, lineHeight: '20px', color: '#424752' }}>
-                  {tag}
+                  Blog
                 </span>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
 
-      {/* Spacer for absolute layout */}
-      <div style={{ height: 2200 }} />
-
       {/* Newsletter Section */}
-      <section className="newsletter-section" style={{ position: 'relative', width: 1440, height: 437, background: '#FFFFFF', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '4px 304px 61px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '5.5px 0 0', gap: 24, width: 672, maxWidth: 672, height: 355 }}>
-          <p style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 700, fontSize: 12, lineHeight: '16px', letterSpacing: 1.2, textTransform: 'uppercase', color: '#003679', textAlign: 'center', width: 98.25, height: 16, margin: 0 }}>
+      <section className="newsletter-section" style={{ position: 'relative', width: '100%', background: '#FFFFFF', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '60px 16px', boxSizing: 'border-box', marginTop: 40 }}>
+        <div className="newsletter-inner" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 24, width: '100%', maxWidth: 672 }}>
+          <p className="newsletter-label" style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 700, fontSize: 12, lineHeight: '16px', letterSpacing: 1.2, textTransform: 'uppercase', color: '#003679', textAlign: 'center', margin: 0 }}>
             STAY INFORMED
           </p>
-          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 400, fontSize: 48, lineHeight: '48px', color: '#1B1C1C', textAlign: 'center', width: 641.05, height: 96, margin: 0, padding: '2.5px 0 0' }}>
-            Get executive insights directly to your inbox
+          <h2 className="newsletter-heading" style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 400, fontSize: 48, lineHeight: '48px', color: '#1B1C1C', textAlign: 'center', margin: 0, maxWidth: '100%', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+            {cta?.title || 'Get executive insights directly to your inbox'}
           </h2>
-          <p style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#424752', textAlign: 'center', width: 606.22, height: 48, margin: 0 }}>
-            Join over 2,500 HR leaders who receive our weekly briefing on talent strategy, market intelligence, and leadership best practices.
+          <p className="newsletter-desc" style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 400, fontSize: 16, lineHeight: '24px', color: '#424752', textAlign: 'center', margin: 0, maxWidth: '100%', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+            {cta?.description || 'Join over 2,500 HR leaders who receive our weekly briefing on talent strategy, market intelligence, and leadership best practices.'}
           </p>
-          <div className="newsletter-form" style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: 16, width: 672, height: 59 }}>
+          <div className="newsletter-form" style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: 16, width: '100%', maxWidth: 672, boxSizing: 'border-box' }}>
             <input
               className="newsletter-input"
               type="email"
               placeholder="Enter your business email"
               style={{
-                width: 473.48,
-                height: 59,
+                flex: 1,
+                minWidth: 0,
                 padding: '17px 16px',
                 background: '#FFFFFF',
                 border: '1px solid #EAE8E7',
@@ -516,22 +630,17 @@ export default function BlogArticle() {
                 color: '#6B7280',
                 outline: 'none',
                 boxSizing: 'border-box',
-                flex: 'none',
-                order: 0,
-                alignSelf: 'stretch',
-                flexGrow: 1,
               }}
             />
             <button
               className="newsletter-btn"
+              onClick={() => window.open(cta?.buttonLink || '#', '_self')}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
                 padding: '17px 40px',
-                width: 182.52,
-                height: 58,
                 background: '#003679',
                 borderRadius: 12,
                 border: 'none',
@@ -543,17 +652,18 @@ export default function BlogArticle() {
                 lineHeight: '24px',
                 color: '#FFFFFF',
                 textAlign: 'center',
-                flex: 'none',
-                order: 1,
-                flexGrow: 0,
+                flexShrink: 0,
                 isolation: 'isolate',
                 position: 'relative',
+                whiteSpace: 'nowrap',
               }}
             >
-              <span style={{ position: 'relative', zIndex: 1 }}>Subscribe Now</span>
+              <span style={{ position: 'relative', zIndex: 1 }}>
+                {cta?.buttonText || 'Subscribe Now'}
+              </span>
             </button>
           </div>
-          <p style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 400, fontSize: 12, lineHeight: '16px', color: '#737783', textAlign: 'center', width: 368.88, height: 16, margin: 0, padding: '16px 0 0' }}>
+          <p className="newsletter-privacy" style={{ fontFamily: "'Source Sans 3', sans-serif", fontWeight: 400, fontSize: 12, lineHeight: '16px', color: '#737783', textAlign: 'center', margin: 0, paddingTop: 16, maxWidth: '100%', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
             We respect your privacy. Read our <Link to="#" style={{ textDecoration: 'underline', color: '#004CA5' }}>Privacy Policy</Link>.
           </p>
         </div>

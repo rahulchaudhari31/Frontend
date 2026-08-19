@@ -1,10 +1,8 @@
-﻿import { FiCalendar, FiClock } from 'react-icons/fi';
+﻿import { useEffect, useState } from 'react';
+import { FiCalendar, FiClock } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { getActiveBlogs } from '../../services/blog/blogService';
 
-import executiveImg from '../../assets/our blog images/executive search.jpg';
-import complianceImg from '../../assets/our blog images/compliance.png';
-import cultureImg from '../../assets/our blog images/culture.jpg';
-import datadrivenImg from '../../assets/our blog images/requirement.jpg';
 import trendingIcon from '../../assets/icon trending now/trendinng now.png';
 import expertIcon from '../../assets/icon trending now/expert categories.png';
 import industryIcon from '../../assets/icon trending now/industry resources.png';
@@ -16,41 +14,6 @@ import talentIcon from '../../assets/exepert categories/talent analytics.png';
 import leadershipIcon from '../../assets/exepert categories/leadership.png';
 import arrowIcon from '../../assets/exepert categories/arrow.png';
 
-const articles = [
-  {
-    tag: 'Executive Search',
-    title: 'Navigating Leadership Transitions in Fast-Growing Tech Firms',
-    desc: 'A comprehensive guide to managing executive turnover and ensuring smooth transitions during periods of rapid company growth.',
-    date: 'April 8, 2026',
-    readTime: '5 min read',
-    image: executiveImg,
-  },
-  {
-    tag: 'Compliance',
-    title: '2026 Employment Law Updates: What HR Teams Need to Know',
-    desc: 'Stay compliant with our breakdown of the latest employment regulations affecting businesses across the UK and EMEA regions.',
-    date: 'April 3, 2026',
-    readTime: '6 min read',
-    image: complianceImg,
-  },
-  {
-    tag: 'Culture',
-    title: 'Building Remote-First Cultures That Actually Work',
-    desc: 'Strategies for maintaining team cohesion, productivity, and wellbeing when your workforce is distributed across time zones.',
-    date: 'March 29, 2026',
-    readTime: '7 min read',
-    image: cultureImg,
-  },
-  {
-    tag: 'Recruitment',
-    title: 'Data-Driven Hiring: Metrics That Truly Matter',
-    desc: 'Move beyond time-to-fill and cost-per-hire. Discover the new metrics that indicate true recruitment success.',
-    date: 'March 21, 2026',
-    readTime: '4 min read',
-    image: datadrivenImg,
-  },
-];
-
 const categories = [
   { name: 'Recruitment Strategy', icon: recruitmentIcon, w: 20, h: 20 },
   { name: 'Executive Search', icon: executiveCatIcon, w: 20.5, h: 19.5 },
@@ -59,9 +22,65 @@ const categories = [
   { name: 'Leadership Development', icon: leadershipIcon, w: 24, h: 12 },
 ];
 
+/**
+ * Format date to readable format (e.g., "April 8, 2026")
+ */
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString('en-US', options);
+};
+
+const stripHtml = (html = '') => {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+
+  return (div.textContent || div.innerText || '')
+    .replace(/\s+/g, ' ')
+    .trim();
+};
+
 export default function BlogPostsGrid() {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await getActiveBlogs();
+        
+        if (response?.success && Array.isArray(response.data)) {
+          setBlogs(response.data);
+        } else {
+          setError('Failed to load blogs');
+          setBlogs([]);
+        }
+      } catch (err) {
+        console.error('Error fetching blogs:', err);
+        setError('Failed to load blogs');
+        setBlogs([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
   return (
     <section className="blog-grid-section bg-[#F7F9FB] px-16 py-20 max-sm:px-4 max-sm:py-10 max-md:px-6 max-md:py-12">
+      <style>{`
+        .blog-article-desc {
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      `}</style>
       <div className="blog-grid-layout flex gap-10 max-lg:flex-col max-w-[1440px] mx-auto">
         <div className="flex-1 min-w-0 overflow-hidden">
           <div className="flex items-center justify-between mb-8 max-sm:flex-col max-sm:items-start max-sm:gap-2">
@@ -74,41 +93,63 @@ export default function BlogPostsGrid() {
           </div>
 
           <div className="grid grid-cols-2 max-md:grid-cols-1 gap-8">
-            {articles.map((item) => (
-              <article
-                key={item.title}
-                className="bg-white border border-[#EAE8E7] rounded-2xl overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.05)] flex flex-col min-w-0"
+            {loading && (
+              <div className="col-span-2 flex items-center justify-center min-h-48">
+                <p className="font-body text-base text-[#424752]">Loading blogs...</p>
+              </div>
+            )}
+            {error && !loading && (
+              <div className="col-span-2 flex items-center justify-center min-h-48">
+                <p className="font-body text-base text-[#DD4C4C]">Failed to load blogs.</p>
+              </div>
+            )}
+            {!loading && !error && blogs.length === 0 && (
+              <div className="col-span-2 flex items-center justify-center min-h-48">
+                <p className="font-body text-base text-[#424752]">No blogs available.</p>
+              </div>
+            )}
+            {!loading && !error && blogs.length > 0 && blogs.map((blog) => (
+              <Link
+                key={blog._id}
+                to={`/blog/${blog.slug}`}
+                className="no-underline"
               >
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                  <span className="absolute top-4 left-4 px-3.5 py-1.5 bg-white/85 backdrop-blur rounded-full font-['Hanken_Grotesk',sans-serif] font-bold text-[11px] tracking-[0.96px] uppercase text-[#1B1C1C]">
-                    {item.tag}
-                  </span>
-                </div>
-                <div className="p-6 flex flex-col flex-1">
-                  <h3 className="blog-article-title font-heading text-xl leading-7 text-[#1B1C1C] mb-3">
-                    {item.title}
-                  </h3>
-                  <p className="blog-article-desc font-body text-sm leading-5 text-[#424752] mb-5 flex-1">
-                    {item.desc}
-                  </p>
-                  <div className="border-t border-[#EAE8E7] pt-4 flex items-center gap-4 font-body text-xs text-[#424752]">
-                    <span className="flex items-center gap-1.5">
-                      <FiCalendar size={14} aria-hidden="true" />
-                      {item.date}
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <FiClock size={14} aria-hidden="true" />
-                      {item.readTime}
-                    </span>
+                <article className="bg-white border border-[#EAE8E7] rounded-2xl overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.05)] flex flex-col min-w-0 h-full hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-shadow duration-200">
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={blog.image}
+                      alt={blog.blogHeading}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                    {blog.tags && blog.tags.length > 0 && (
+                      <span className="absolute top-4 left-4 px-3.5 py-1.5 bg-white/85 backdrop-blur rounded-full font-['Hanken_Grotesk',sans-serif] font-bold text-[11px] tracking-[0.96px] uppercase text-[#1B1C1C]">
+                        {blog.tags[0]}
+                      </span>
+                    )}
                   </div>
-                </div>
-              </article>
+                  <div className="p-6 flex flex-col flex-1">
+                    <h3 className="blog-article-title font-heading text-xl leading-7 text-[#1B1C1C] mb-3">
+                      {blog.blogHeading}
+                    </h3>
+                    <p className="blog-article-desc font-body text-sm leading-5 text-[#424752] mb-5">
+                      {stripHtml(blog.paragraph1)}
+                    </p>
+                    <div className="border-t border-[#EAE8E7] pt-4 flex items-center gap-4 font-body text-xs text-[#424752] mt-auto">
+                      <span className="flex items-center gap-1.5">
+                        <FiCalendar size={14} aria-hidden="true" />
+                        {formatDate(blog.publishDate)}
+                      </span>
+                      {blog.readTime && (
+                        <span className="flex items-center gap-1.5">
+                          <FiClock size={14} aria-hidden="true" />
+                          {blog.readTime}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              </Link>
             ))}
           </div>
         </div>
