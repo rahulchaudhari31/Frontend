@@ -8,7 +8,7 @@ import OurJourney from "../components/aboutus/OurJourney.jsx";
 import WhyChooseUs from "../components/aboutus/WhyChooseUs.jsx";
 import MissionVision from "../components/aboutus/MissionVision.jsx";
 import Testimonials from "../components/aboutus/Testimonials.jsx";
-import GlobalFootprint from "../components/aboutus/GlobalFootprint.jsx";
+import GlobalFootprint from "../components/becomepartner/NetworkMapSection.jsx";
 import CallToAction from "../components/aboutus/CallToAction.jsx";
 import "../components/aboutus/AboutPage.css";
 

@@ -54,7 +54,7 @@ function AnimatedStat({ target, suffix = "+", label, containerWidth, duration = 
         <span style={{
           fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: "12px", lineHeight: "16px",
           display: "flex", alignItems: "center", letterSpacing: "0.5px",
-          textTransform: "uppercase", color: "#43474F",
+          textTransform: "uppercase", color: "#43474Fff",
         }}>
           {label}
         </span>

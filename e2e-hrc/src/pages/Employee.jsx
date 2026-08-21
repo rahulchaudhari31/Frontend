@@ -7,7 +7,7 @@ import WhyChooseE2E from '../components/employee/WhyChooseE2E';
 import './Employee.css';
 
 import FAQAndCTA from '../components/employee/FAQAndCTA';
-import LatestInsights from '../components/employee/LatestInsights';
+import LatestInsights from '../components/home/BlogSection';
 import IndustriesSection from '../components/employee/IndustriesSection';
 
 

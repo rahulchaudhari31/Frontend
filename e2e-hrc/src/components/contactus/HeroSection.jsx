@@ -1,6 +1,39 @@
-﻿import heroBg from '../../assets/about us images/about us background.jpg';
+﻿import { useState, useEffect } from 'react';
+import heroBg from '../../assets/about us images/about us background.jpg';
+import { getContactUsSection } from '../../services/contactUs/contactUsService';
 
 export default function HeroSection() {
+  const [section, setSection] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSection = async () => {
+      try {
+        setLoading(true);
+        const data = await getContactUsSection();
+        setSection(data);
+      } catch (error) {
+        console.error('Error loading Contact Us section:', error);
+        // Use fallback data if API fails
+        setSection(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSection();
+  }, []);
+
+  // Don't render if section is inactive or doesn't exist
+  if (!loading && (!section || section.isActive === false)) {
+    return null;
+  }
+
+  // Use API data or fallback to defaults
+  const title = section?.title || 'Connect With';
+  const highlightedText = section?.highlightedText || 'E2E HRC';
+  const backgroundImage = section?.backgroundImage || heroBg;
+
   return (
     <section
       className="hero-section"
@@ -23,7 +56,7 @@ export default function HeroSection() {
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: `url(${heroBg})`,
+          backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -51,7 +84,7 @@ export default function HeroSection() {
           marginBottom: '60px',
         }}
       >
-        Connect With <span style={{ color: '#F39308' }}>E2E HRC</span>
+        {title} <span style={{ color: '#F39308' }}>{highlightedText}</span>
       </h1>
     </section>
   );

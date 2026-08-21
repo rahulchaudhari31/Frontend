@@ -1,7 +1,9 @@
 import React from "react";
 import { FiArrowRight, FiUpload } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const CallToAction = () => {
+  const navigate = useNavigate()
   return (
     <section
       className="about-cta"
@@ -71,6 +73,7 @@ const CallToAction = () => {
           }}
         >
           <a
+          onClick={()=>navigate("/contact-us")}
             href="#"
             style={{
               display: "flex",
@@ -91,11 +94,13 @@ const CallToAction = () => {
               boxShadow: "0px 10px 15px -3px rgba(0,0,0,0.1), 0px 4px 6px -4px rgba(0,0,0,0.1)",
             }}
           >
+          
             Submit a Vacancy
             <FiArrowRight size={16} />
           </a>
 
           <a
+           onClick={()=>navigate("/contact-us")}
             href="#"
             style={{
               display: "flex",

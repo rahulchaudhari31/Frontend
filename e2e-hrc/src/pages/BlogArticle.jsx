@@ -186,9 +186,21 @@ export default function BlogArticle() {
   const readTime = blog.readTime || '5 min read';
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    navigator.clipboard.writeText(window.location.href)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      })
+      .catch((err) => {
+        console.error('Failed to copy link:', err);
+        // Optionally show an error message to user
+        setCopied(false);
+      });
+  };
+
+  const handleLinkedInShare = () => {
+    const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`;
+    window.open(shareUrl, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -397,7 +409,7 @@ export default function BlogArticle() {
                 </button>
 
                 {/* LinkedIn */}
-                <button onClick={() => window.open('https://linkedin.com', '_blank')} className="sidebar-share-btn" style={{ width: '100%' }}>
+                <button onClick={handleLinkedInShare} className="sidebar-share-btn" style={{ width: '100%' }}>
                   <div className="share-icon-box" style={{ width: 36, height: 36 }}>
                     <img src={linkedinIcon} alt="LinkedIn" style={{ width: 20, height: 20 }} />
                   </div>

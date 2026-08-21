@@ -1,8 +1,10 @@
-﻿import { useState } from 'react';
+﻿import { useState, useRef } from 'react';
 import { FiMapPin, FiClock, FiGlobe } from 'react-icons/fi';
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 
 import dropIcon from '../../assets/about us images/drop icon.png';
+import { submitContactEnquiry } from '../../services/contactUs/contactUsService';
+import { useContactUsData } from '../../hooks/contactUs/useContactUsData';
 
 export default function ContactFormSection() {
   const [formData, setFormData] = useState({
@@ -15,14 +17,147 @@ export default function ContactFormSection() {
     message: '',
   });
 
+  const [attachment, setAttachment] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const fileInputRef = useRef(null);
+
+  // Fetch dynamic Head Office and Contact Card data
+  const { headOffice, contactCard } = useContactUsData();
+
   function handleChange(e) {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    // Clear error/success messages when user starts typing
+    if (errorMessage || successMessage) {
+      setErrorMessage('');
+      setSuccessMessage('');
+    }
   }
 
-  function handleSubmit(e) {
+  function handleFileChange(e) {
+    const file = e.target.files?.[0];
+    if (file) {
+      setAttachment(file);
+    }
+  }
+
+  function handleDropZoneClick() {
+    fileInputRef.current?.click();
+  }
+
+  // Map frontend role values to backend iam values
+  function mapRoleToIam(role) {
+    const roleMap = {
+      employer: 'employer',
+      employee: 'job_seeker',
+      partner: 'recruitment_partner',
+      other: 'other',
+    };
+    return roleMap[role] || role;
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+
+    // Clear previous messages
+    setErrorMessage('');
+    setSuccessMessage('');
+
+    // Basic validation
+    if (!formData.firstName.trim()) {
+      setErrorMessage('First name is required.');
+      return;
+    }
+
+    if (!formData.lastName.trim()) {
+      setErrorMessage('Last name is required.');
+      return;
+    }
+
+    if (!formData.company.trim()) {
+      setErrorMessage('Company is required.');
+      return;
+    }
+
+    if (!formData.email.trim()) {
+      setErrorMessage('Email is required.');
+      return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      setErrorMessage('Please provide a valid email address.');
+      return;
+    }
+
+    if (!formData.role) {
+      setErrorMessage('Please select an option for "I AM...".');
+      return;
+    }
+
+    if (!formData.subject.trim()) {
+      setErrorMessage('Subject is required.');
+      return;
+    }
+
+    if (!formData.message.trim()) {
+      setErrorMessage('Message is required.');
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+
+      // Create FormData object
+      const submitData = new FormData();
+      submitData.append('firstName', formData.firstName.trim());
+      submitData.append('lastName', formData.lastName.trim());
+      submitData.append('company', formData.company.trim());
+      submitData.append('email', formData.email.trim());
+      submitData.append('iam', mapRoleToIam(formData.role));
+      submitData.append('subject', formData.subject.trim());
+      submitData.append('message', formData.message.trim());
+
+      // Add attachment only if a file is selected
+      if (attachment) {
+        submitData.append('attachment', attachment);
+      }
+
+      // Submit to backend
+      const response = await submitContactEnquiry(submitData);
+
+      if (response.success) {
+        setSuccessMessage(response.message || 'Your enquiry has been submitted successfully.');
+
+        // Reset form
+        setFormData({
+          firstName: '',
+          lastName: '',
+          company: '',
+          email: '',
+          role: '',
+          subject: '',
+          message: '',
+        });
+        setAttachment(null);
+
+        // Clear file input
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+      } else {
+        setErrorMessage(response.message || 'Something went wrong. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      const errorMsg = error.response?.data?.message || 'Something went wrong. Please try again.';
+      setErrorMessage(errorMsg);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -55,6 +190,40 @@ export default function ContactFormSection() {
           >
             Send Us A Message
           </h2>
+
+          {successMessage && (
+            <div
+              style={{
+                marginTop: '24px',
+                padding: '12px 16px',
+                borderRadius: '8px',
+                backgroundColor: '#D4EDDA',
+                border: '1px solid #C3E6CB',
+                color: '#155724',
+                fontFamily: "'Inter', sans-serif",
+                fontSize: '14px',
+              }}
+            >
+              {successMessage}
+            </div>
+          )}
+
+          {errorMessage && (
+            <div
+              style={{
+                marginTop: '24px',
+                padding: '12px 16px',
+                borderRadius: '8px',
+                backgroundColor: '#F8D7DA',
+                border: '1px solid #F5C6CB',
+                color: '#721C24',
+                fontFamily: "'Inter', sans-serif",
+                fontSize: '14px',
+              }}
+            >
+              {errorMessage}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} style={{ marginTop: '32px' }}>
             {/* Row 1: First Name / Last Name */}
@@ -371,8 +540,16 @@ export default function ContactFormSection() {
               >
                 ATTACH RESUME / BRIEF (OPTIONAL)
               </label>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,.doc,.docx,image/*"
+                onChange={handleFileChange}
+                style={{ display: 'none' }}
+              />
               <div
                 className="flex flex-col items-center justify-center w-full cursor-pointer"
+                onClick={handleDropZoneClick}
                 style={{
                   border: '2px dashed #F1F2F9',
                   borderRadius: '16px',
@@ -382,20 +559,41 @@ export default function ContactFormSection() {
                   boxSizing: 'border-box',
                 }}
               >
-                <img src={dropIcon} alt="" width={22} height={16} />
-                <p
-                  style={{
-                    fontFamily: "'Source Sans 3', sans-serif",
-                    fontWeight: 400,
-                    fontSize: '16px',
-                    lineHeight: '24px',
-                    color: '#424752',
-                    margin: 0,
-                    textAlign: 'center',
-                  }}
-                >
-                  Click to upload or drag and drop
-                </p>
+                {attachment ? (
+                  <>
+                    <img src={dropIcon} alt="" width={22} height={16} />
+                    <p
+                      style={{
+                        fontFamily: "'Source Sans 3', sans-serif",
+                        fontWeight: 400,
+                        fontSize: '14px',
+                        lineHeight: '24px',
+                        color: '#004CA5',
+                        margin: 0,
+                        textAlign: 'center',
+                      }}
+                    >
+                      ✓ {attachment.name}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <img src={dropIcon} alt="" width={22} height={16} />
+                    <p
+                      style={{
+                        fontFamily: "'Source Sans 3', sans-serif",
+                        fontWeight: 400,
+                        fontSize: '16px',
+                        lineHeight: '24px',
+                        color: '#424752',
+                        margin: 0,
+                        textAlign: 'center',
+                      }}
+                    >
+                      Click to upload or drag and drop
+                    </p>
+                  </>
+                )}
               </div>
             </div>
 
@@ -403,9 +601,10 @@ export default function ContactFormSection() {
             <div style={{ marginTop: '32px' }}>
               <button
                 type="submit"
+                disabled={isSubmitting}
                 className="w-full text-white border-none cursor-pointer"
                 style={{
-                  background: '#004CA5',
+                  background: isSubmitting ? '#999999' : '#004CA5',
                   borderRadius: '16px',
                   height: '44px',
                   padding: '16px 0',
@@ -417,11 +616,13 @@ export default function ContactFormSection() {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
+                  opacity: isSubmitting ? 0.7 : 1,
+                  cursor: isSubmitting ? 'not-allowed' : 'pointer',
                 }}
-                onMouseEnter={(e) => e.target.style.background = '#003b82'}
-                onMouseLeave={(e) => e.target.style.background = '#004CA5'}
+                onMouseEnter={(e) => !isSubmitting && (e.target.style.background = '#003b82')}
+                onMouseLeave={(e) => !isSubmitting && (e.target.style.background = '#004CA5')}
               >
-                Submit Inquiry
+                {isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
               </button>
             </div>
           </form>
@@ -450,7 +651,7 @@ export default function ContactFormSection() {
                 margin: 0,
               }}
             >
-              Head Office Birmingham
+              {headOffice?.title || 'Head Office Birmingham'}
             </h3>
 
             <div className="flex flex-col" style={{ gap: '24px', marginTop: '24px' }}>
@@ -465,7 +666,9 @@ export default function ContactFormSection() {
                     color: '#1B1C1C',
                   }}
                 >
-                  1204B Stratford Road, Hall Green, Birmingham, West Midlands, B28 8AS
+                  {headOffice
+                    ? `${headOffice.address_line}, ${headOffice.city}, ${headOffice.state}, ${headOffice.postal_code}`
+                    : '1204B Stratford Road, Hall Green, Birmingham, West Midlands, B28 8AS'}
                 </span>
               </div>
 
@@ -481,7 +684,7 @@ export default function ContactFormSection() {
                       color: '#1B1C1C',
                     }}
                   >
-                    Opening Hours
+                    {headOffice?.opening_hours_title || 'Opening Hours'}
                   </span>
                   <br />
                   <span
@@ -493,7 +696,7 @@ export default function ContactFormSection() {
                       color: '#424752',
                     }}
                   >
-                    Monday â€“ Friday: 09:00 â€“ 18:00
+                    {headOffice?.opening_hours ? headOffice.opening_hours.split('\\n')[0] : 'Monday – Friday: 09:00 – 18:00'}
                   </span>
                   <br />
                   <span
@@ -505,7 +708,7 @@ export default function ContactFormSection() {
                       color: '#424752',
                     }}
                   >
-                    Saturday â€“ Sunday: Closed
+                    {headOffice?.opening_hours ? headOffice.opening_hours.split('\\n')[1] : 'Saturday – Sunday: Closed'}
                   </span>
                 </div>
               </div>
@@ -522,7 +725,7 @@ export default function ContactFormSection() {
                       color: '#1B1C1C',
                     }}
                   >
-                    Global Inquiries
+                    {headOffice?.global_inquiries_title || 'Global Inquiries'}
                   </span>
                   <br />
                   <span
@@ -534,7 +737,8 @@ export default function ContactFormSection() {
                       color: '#424752',
                     }}
                   >
-                    Available via virtual consultation in GMT, GST, and IST time zones.
+                    {headOffice?.global_inquiries_description ||
+                      'Available via virtual consultation in GMT, GST, and IST time zones.'}
                   </span>
                 </div>
               </div>
@@ -543,7 +747,7 @@ export default function ContactFormSection() {
 
           {/* Ready to Connect Card */}
           <div
-            className="w-full bg-white"
+            className="w-full bg-white ready-connect-card"
             style={{
               borderRadius: '24px',
               padding: '40px',
@@ -560,12 +764,13 @@ export default function ContactFormSection() {
                 margin: 0,
               }}
             >
-              Ready to Connect? Contact Us Today.
+             
+              {contactCard?.title || "Ready to Connect? Contact Us Today"}
             </h3>
 
             <div className="flex flex-col" style={{ gap: '16px', marginTop: '32px' }}>
               <div
-                className="bg-white"
+                className="bg-white contact-action-btn"
                 style={{
                   border: '1px solid rgba(228,226,225,0.5)',
                   borderRadius: '24px',
@@ -598,7 +803,7 @@ export default function ContactFormSection() {
                       margin: 0,
                     }}
                   >
-                    Call Us
+                   {contactCard?.phone_title || "Call Us"} 
                   </p>
                   <p
                     style={{
@@ -610,13 +815,13 @@ export default function ContactFormSection() {
                       margin: 0,
                     }}
                   >
-                    +44 121 778 2400
+                    {contactCard?.phone_number || '+44 121 778 2400'}
                   </p>
                 </div>
               </div>
 
               <div
-                className="bg-white"
+                className="bg-white contact-action-btn"
                 style={{
                   border: '1px solid rgba(228,226,225,0.5)',
                   borderRadius: '24px',
@@ -649,7 +854,7 @@ export default function ContactFormSection() {
                       margin: 0,
                     }}
                   >
-                    Email Us
+                  {contactCard?.email_title || "Email Us"}
                   </p>
                   <p
                     style={{
@@ -661,13 +866,13 @@ export default function ContactFormSection() {
                       margin: 0,
                     }}
                   >
-                    info@e2ehrc.co.uk
+                    {contactCard?.email_address || 'info@e2ehrc.co.uk'}
                   </p>
                 </div>
               </div>
 
               <div
-                className="bg-white"
+                className="bg-white contact-action-btn"
                 style={{
                   border: '1px solid rgba(228,226,225,0.5)',
                   borderRadius: '24px',
@@ -700,7 +905,7 @@ export default function ContactFormSection() {
                       margin: 0,
                     }}
                   >
-                    Visit Office
+                    {contactCard?.office_title || "Visit Office"}
                   </p>
                   <p
                     style={{
@@ -712,7 +917,7 @@ export default function ContactFormSection() {
                       margin: 0,
                     }}
                   >
-                    Birmingham, B28 8AS
+                    {contactCard?.office_address || 'Birmingham, B28 8AS'}
                   </p>
                 </div>
               </div>
@@ -723,3 +928,4 @@ export default function ContactFormSection() {
     </section>
   );
 }
+

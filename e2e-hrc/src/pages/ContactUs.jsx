@@ -2,7 +2,7 @@ import Navbar from '../components/shared/Navbar';
 import Footer from '../components/shared/Footer';
 import HeroSection from '../components/contactus/HeroSection';
 import ContactFormSection from '../components/contactus/ContactFormSection';
-import GlobalNetworkSection from '../components/contactus/GlobalNetworkSection';
+import GlobalNetworkSection from '../components/becomepartner/NetworkMapSection';
 import '../components/contactus/ContactUs.css';
 
 export default function ContactUs() {
