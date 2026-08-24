@@ -1,3 +1,4 @@
+import SEO from '../components/SEO/SEO';
 import Navbar from '../components/shared/Navbar';
 import Footer from '../components/shared/Footer';
 import BlogBanner from '../components/blogs/BlogBanner';
@@ -8,6 +9,7 @@ import '../components/blogs/Blogs.css';
 export default function Blogs() {
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
+      <SEO pageKey="blog" />
       <Navbar />
       <BlogBanner />
       <FeaturedArticle />

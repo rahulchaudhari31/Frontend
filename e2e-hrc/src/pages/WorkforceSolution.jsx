@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import SEO from "../components/SEO/SEO";
 import Navbar from "../components/shared/Navbar.jsx"
 import Footer from "../components/shared/Footer.jsx"
 import WorkforceHeroSection from "../components/WorkforceSolution/WorkforceHeroSection.jsx";
@@ -13,6 +14,7 @@ const Testimonials = lazy(() => import("../components/Testimonials"));
 function WorkforceSolution() {
   return (
     <>
+      <SEO pageKey="workforce-solutions" />
       <Navbar />
       <WorkforceHeroSection />
       <WhyChooseE2E />

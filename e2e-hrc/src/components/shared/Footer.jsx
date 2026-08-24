@@ -27,12 +27,6 @@ export default function Footer() {
           getFooterNavigation(),
           getFooterOfficeLocation(),
         ]);
-
-        console.log('Footer Company:', companyResponse);
-        console.log('Footer Contact:', contactResponse);
-        console.log('Footer Navigation:', navigationResponse);
-        console.log('Footer Office:', officeResponse);
-
         setCompany(companyResponse || null);
         setContact(contactResponse || null);
         setNavigation(Array.isArray(navigationResponse) ? navigationResponse : []);

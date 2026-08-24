@@ -1,7 +1,22 @@
 import { useState, useRef, useEffect, forwardRef } from "react";
-import { Check, Phone, Mail, User, MapPin, Briefcase, CloudUpload, ChevronDown, ArrowRight, Search } from "lucide-react";
+import {
+  Check,
+  Phone,
+  Mail,
+  User,
+  MapPin,
+  Briefcase,
+  CloudUpload,
+  ChevronDown,
+  ArrowRight,
+  Search,
+} from "lucide-react";
 import { useContactType } from "../../context/ContactTypeContext";
 import { getContactCTA } from "../../services/home/contactCTAService";
+import {
+  createEmployeeContact,
+  createEmployerContact,
+} from "../../services/home/contactApi";
 
 const COUNTRIES = [
   { name: "United Kingdom", code: "GB", dial: "+44", flag: "🇬🇧" },
@@ -44,15 +59,20 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
     location: "",
     organization: "",
     vacancy: "",
+    message: "",
     attachment: null,
   });
+  const [submitting, setSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [selectedCountry, setSelectedCountry] = useState(
-    COUNTRIES.find((c) => c.code === "AE")
+    COUNTRIES.find((c) => c.code === "AE"),
   );
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [search, setSearch] = useState("");
   const dropdownRef = useRef(null);
+  const attachmentInputRef = useRef(null);
 
   // Fetch CTA data on mount
   useEffect(() => {
@@ -66,11 +86,9 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
           response?.data?.section ||
           response?.data ||
           response;
-        console.log('Contact CTA API:', response);
-        console.log('Extracted Data:', payload);
         setCtaData(payload);
       } catch (error) {
-        console.error('Error loading contact CTA:', error);
+        console.error("Error loading contact CTA:", error);
         setCtaData(null);
       } finally {
         setLoading(false);
@@ -83,23 +101,38 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
   // Get content based on contact type - use API data if available, fallback to default
   // Backend fields: headingLine1, highlightText, headingLine2, description
   const formHeading = ctaData
-    ? [ctaData.headingLine1, ctaData.highlightText, ctaData.headingLine2].filter(Boolean).join(' ')
+    ? [ctaData.headingLine1, ctaData.highlightText, ctaData.headingLine2]
+        .filter(Boolean)
+        .join(" ")
     : null;
-  const content = ctaData ? {
-    employer: {
-      title: formHeading || defaultContent.employer.title,
-      description: ctaData.description || defaultContent.employer.description,
-    },
-    employee: {
-      title: formHeading || defaultContent.employee.title,
-      description: ctaData.description || defaultContent.employee.description,
-    },
-  } : defaultContent;
-
-  console.log('Component State:', ctaData);
+  const content = ctaData
+    ? {
+        employer: {
+          title: formHeading || defaultContent.employer.title,
+          description:
+            ctaData.description || defaultContent.employer.description,
+        },
+        employee: {
+          title: formHeading || defaultContent.employee.title,
+          description:
+            ctaData.description || defaultContent.employee.description,
+        },
+      }
+    : defaultContent;
 
   useEffect(() => {
-    setFormData({ name: "", email: "", contactNumber: "", location: "", organization: "", vacancy: "", attachment: null });
+    setSuccessMessage("");
+    setErrorMessage("");
+    setFormData({
+      name: "",
+      email: "",
+      contactNumber: "",
+      location: "",
+      organization: "",
+      vacancy: "",
+      message: "",
+      attachment: null,
+    });
   }, [type]);
 
   useEffect(() => {
@@ -116,7 +149,7 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
   const filteredCountries = COUNTRIES.filter(
     (c) =>
       c.name.toLowerCase().includes(search.toLowerCase()) ||
-      c.dial.includes(search)
+      c.dial.includes(search),
   );
 
   const handleChange = (e) => {
@@ -125,15 +158,68 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
   };
 
   const handleFileChange = (e) => {
-    setFormData((prev) => ({ ...prev, attachment: e.target.files?.[0] || null }));
+    setFormData((prev) => ({
+      ...prev,
+      attachment: e.target.files?.[0] || null,
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const removeAttachment = () => {
+    setFormData((prev) => ({ ...prev, attachment: null }));
+    if (attachmentInputRef.current) {
+      attachmentInputRef.current.value = "";
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", {
-      ...formData,
-      countryCode: selectedCountry.dial,
-    });
+    if (submitting) return;
+    setSuccessMessage("");
+    setErrorMessage("");
+
+    const submitData = new FormData();
+    submitData.append("name", formData.name.trim());
+    submitData.append("email", formData.email.trim());
+    submitData.append(
+      "phone",
+      `${selectedCountry.dial} ${formData.contactNumber.trim()}`.trim(),
+    );
+    submitData.append("location", formData.location.trim());
+    submitData.append("organizationName", formData.organization.trim());
+    submitData.append("message", formData.message.trim());
+
+    if (type === "employer") {
+      submitData.append("vacancy", formData.vacancy.trim());
+    }
+    if (formData.attachment instanceof File) {
+      submitData.append("attachment", formData.attachment);
+    }
+
+    try {
+      setSubmitting(true);
+      const submitContact =
+        type === "employee" ? createEmployeeContact : createEmployerContact;
+      await submitContact(submitData);
+      setSuccessMessage("Form submitted successfully!");
+      setFormData({
+        name: "",
+        email: "",
+        contactNumber: "",
+        location: "",
+        organization: "",
+        vacancy: "",
+        message: "",
+        attachment: null,
+      });
+      if (attachmentInputRef.current) {
+        attachmentInputRef.current.value = "";
+      }
+    } catch (error) {
+      console.error("Error submitting contact form:", error);
+      setErrorMessage("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const labelStyle = {
@@ -166,41 +252,55 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
         <div className="text-white">
           <span className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white text-sm font-medium px-4 py-1.5 rounded-full mb-6">
             <span className="w-2 h-2 rounded-full bg-emerald-400" />
-            {ctaData?.badgeText || 'Ready to get started?'}
+            {ctaData?.badgeText || "Ready to get started?"}
           </span>
           <h2 className="text-4xl sm:text-5xl font-serif font-bold leading-tight mb-6 text-white">
             {ctaData?.headingLine1 || "Let's Build"}{" "}
-            <span className="text-[#FFB800]">{ctaData?.highlightText || 'Success'}</span>
+            <span className="text-[#FFB800]">
+              {ctaData?.highlightText || "Success"}
+            </span>
             <br />
-            {ctaData?.headingLine2 || 'Together'}
+            {ctaData?.headingLine2 || "Together"}
           </h2>
           <p className="text-white/80 text-base sm:text-lg max-w-md mb-8">
-            {ctaData?.description || "Whether you're hiring exceptional talent or searching for your next opportunity, we are here to help every step of the way."}
+            {ctaData?.description ||
+              "Whether you're hiring exceptional talent or searching for your next opportunity, we are here to help every step of the way."}
           </p>
           <div className="space-y-3 mb-10">
-            {(ctaData?.feature1 || 'Dedicated consultant assigned to you') && (
+            {(ctaData?.feature1 || "Dedicated consultant assigned to you") && (
               <div className="flex items-center gap-3">
                 <span className="flex items-center justify-center w-5 h-5 rounded-full border border-emerald-400">
                   <Check className="w-3 h-3 text-emerald-400" strokeWidth={3} />
                 </span>
-                <span className="text-white/90">{ctaData?.feature1 || 'Dedicated consultant assigned to you'}</span>
+                <span className="text-white/90">
+                  {ctaData?.feature1 || "Dedicated consultant assigned to you"}
+                </span>
               </div>
             )}
-            {(ctaData?.feature2 || 'Response within 24 hours') && (
+            {(ctaData?.feature2 || "Response within 24 hours") && (
               <div className="flex items-center gap-3">
                 <span className="flex items-center justify-center w-5 h-5 rounded-full border border-emerald-400">
                   <Check className="w-3 h-3 text-emerald-400" strokeWidth={3} />
                 </span>
-                <span className="text-white/90">{ctaData?.feature2 || 'Response within 24 hours'}</span>
+                <span className="text-white/90">
+                  {ctaData?.feature2 || "Response within 24 hours"}
+                </span>
               </div>
             )}
           </div>
           <div className="flex flex-wrap items-center gap-4">
-            <button type="button" className="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-300 transition-colors text-[#0b3a91] font-semibold px-6 py-3 rounded-full">
-              {ctaData?.button1Text || 'Hire Talent'} <ArrowRight className="w-4 h-4" />
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-300 transition-colors text-[#0b3a91] font-semibold px-6 py-3 rounded-full"
+            >
+              {ctaData?.button1Text || "Hire Talent"}{" "}
+              <ArrowRight className="w-4 h-4" />
             </button>
-            <button type="button" className="inline-flex items-center gap-2 bg-transparent border border-white/40 hover:border-white transition-colors text-white font-semibold px-6 py-3 rounded-full">
-              {ctaData?.button2Text || 'Explore Opportunities'}
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 bg-transparent border border-white/40 hover:border-white transition-colors text-white font-semibold px-6 py-3 rounded-full"
+            >
+              {ctaData?.button2Text || "Explore Opportunities"}
             </button>
           </div>
         </div>
@@ -214,33 +314,83 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
             background: "#FFFFFF",
             border: "1px solid #F1F2F9",
             borderRadius: "24px",
-            boxShadow: "0px 4px 32px -4px rgba(111,108,143,0.12), 0px 3px 12px -2px rgba(170,170,190,0.06)",
+            boxShadow:
+              "0px 4px 32px -4px rgba(111,108,143,0.12), 0px 3px 12px -2px rgba(170,170,190,0.06)",
             padding: "32px",
             maxHeight: "600px",
           }}
         >
           <div className="flex items-start justify-between mb-2 shrink-0">
             <div className="flex-1 pr-3">
-              <h3 style={{ fontFamily: "Inter, sans-serif", fontWeight: 600, fontSize: "20px", lineHeight: "1.3", color: "#170F49", margin: 0 }}>
+              <h3
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: 600,
+                  fontSize: "20px",
+                  lineHeight: "1.3",
+                  color: "#170F49",
+                  margin: 0,
+                }}
+              >
                 {content[type]?.title || content.employer.title}
               </h3>
             </div>
-            <div className="shrink-0" style={{ width: "80px", height: "60px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "36px" }}>
+            <div
+              className="shrink-0"
+              style={{
+                width: "80px",
+                height: "60px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "36px",
+              }}
+            >
               👥
             </div>
           </div>
-          <p style={{ fontFamily: "Inter, sans-serif", fontWeight: 400, fontSize: "12px", lineHeight: "1.5", color: "#6F6C8F", margin: 0, marginBottom: "20px" }}>
+          <p
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontWeight: 400,
+              fontSize: "12px",
+              lineHeight: "1.5",
+              color: "#6F6C8F",
+              margin: 0,
+              marginBottom: "20px",
+            }}
+          >
             {content[type]?.description || content.employer.description}
           </p>
 
-          <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto pr-2 contact-scroll" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          <form
+            onSubmit={handleSubmit}
+            className="flex-1 overflow-y-auto pr-2 contact-scroll"
+            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+          >
             {/* Name */}
             <div>
               <label style={labelStyle}>Name</label>
               <div style={{ position: "relative" }}>
-                <User size={16} color="#A0A3BD" style={{ position: "absolute", left: "16px", top: "50%", transform: "translateY(-50%)" }} />
-                <input id="name" name="name" type="text" value={formData.name} onChange={handleChange} placeholder="Name"
-                  style={{ ...inputStyle, paddingLeft: "44px" }} />
+                <User
+                  size={16}
+                  color="#A0A3BD"
+                  style={{
+                    position: "absolute",
+                    left: "16px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                  }}
+                />
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Name"
+                  style={{ ...inputStyle, paddingLeft: "44px" }}
+                />
               </div>
             </div>
 
@@ -248,9 +398,25 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
             <div>
               <label style={labelStyle}>Email</label>
               <div style={{ position: "relative" }}>
-                <Mail size={16} color="#A0A3BD" style={{ position: "absolute", left: "16px", top: "50%", transform: "translateY(-50%)" }} />
-                <input id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="Enter your email"
-                  style={{ ...inputStyle, paddingLeft: "44px" }} />
+                <Mail
+                  size={16}
+                  color="#A0A3BD"
+                  style={{
+                    position: "absolute",
+                    left: "16px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                  }}
+                />
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Enter your email"
+                  style={{ ...inputStyle, paddingLeft: "44px" }}
+                />
               </div>
             </div>
 
@@ -270,33 +436,151 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
                 }}
               >
                 <Phone size={16} color="#A0A3BD" />
-                <button type="button" onClick={() => setDropdownOpen((o) => !o)} className="flex items-center gap-1 shrink-0" style={{ borderRight: "1px solid #F1F2F9", paddingRight: "12px" }}>
-                  <span style={{ fontSize: "16px", lineHeight: 1 }}>{selectedCountry.flag}</span>
-                  <span style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#6F6C8F", fontWeight: 500 }}>{selectedCountry.dial}</span>
+                <button
+                  type="button"
+                  onClick={() => setDropdownOpen((o) => !o)}
+                  className="flex items-center gap-1 shrink-0"
+                  style={{
+                    borderRight: "1px solid #F1F2F9",
+                    paddingRight: "12px",
+                  }}
+                >
+                  <span style={{ fontSize: "16px", lineHeight: 1 }}>
+                    {selectedCountry.flag}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "14px",
+                      color: "#6F6C8F",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {selectedCountry.dial}
+                  </span>
                   <ChevronDown size={14} color="#A0A3BD" />
                 </button>
-                <input id="contactNumber" name="contactNumber" type="tel" value={formData.contactNumber} onChange={handleChange} placeholder="(000) 000-0000"
-                  style={{ flex: 1, border: "none", outline: "none", fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#170F49", background: "transparent" }} />
+                <input
+                  id="contactNumber"
+                  name="contactNumber"
+                  type="tel"
+                  value={formData.contactNumber}
+                  onChange={handleChange}
+                  placeholder="(000) 000-0000"
+                  style={{
+                    flex: 1,
+                    border: "none",
+                    outline: "none",
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: "14px",
+                    color: "#170F49",
+                    background: "transparent",
+                  }}
+                />
               </div>
               {dropdownOpen && (
-                <div style={{ position: "absolute", zIndex: 20, marginTop: "8px", width: "280px", maxHeight: "224px", background: "#FFFFFF", border: "1px solid #F1F2F9", borderRadius: "16px", boxShadow: "0px 4px 24px rgba(0,0,0,0.12)", overflow: "hidden" }}>
-                  <div style={{ padding: "8px", borderBottom: "1px solid #F1F2F9" }}>
+                <div
+                  style={{
+                    position: "absolute",
+                    zIndex: 20,
+                    marginTop: "8px",
+                    width: "280px",
+                    maxHeight: "224px",
+                    background: "#FFFFFF",
+                    border: "1px solid #F1F2F9",
+                    borderRadius: "16px",
+                    boxShadow: "0px 4px 24px rgba(0,0,0,0.12)",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div
+                    style={{
+                      padding: "8px",
+                      borderBottom: "1px solid #F1F2F9",
+                    }}
+                  >
                     <div className="relative">
-                      <Search size={14} color="#A0A3BD" style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)" }} />
-                      <input autoFocus type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search country or code"
-                        style={{ width: "100%", border: "1px solid #F1F2F9", borderRadius: "9999px", padding: "8px 12px 8px 32px", fontSize: "14px", outline: "none", fontFamily: "Inter, sans-serif" }} />
+                      <Search
+                        size={14}
+                        color="#A0A3BD"
+                        style={{
+                          position: "absolute",
+                          left: "12px",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                        }}
+                      />
+                      <input
+                        autoFocus
+                        type="text"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Search country or code"
+                        style={{
+                          width: "100%",
+                          border: "1px solid #F1F2F9",
+                          borderRadius: "9999px",
+                          padding: "8px 12px 8px 32px",
+                          fontSize: "14px",
+                          outline: "none",
+                          fontFamily: "Inter, sans-serif",
+                        }}
+                      />
                     </div>
                   </div>
-                  <ul style={{ maxHeight: "180px", overflowY: "auto", padding: 0, margin: 0, listStyle: "none" }}>
-                    {filteredCountries.length === 0 && <li style={{ padding: "12px 16px", fontSize: "14px", color: "#A0A3BD" }}>No matches found</li>}
+                  <ul
+                    style={{
+                      maxHeight: "180px",
+                      overflowY: "auto",
+                      padding: 0,
+                      margin: 0,
+                      listStyle: "none",
+                    }}
+                  >
+                    {filteredCountries.length === 0 && (
+                      <li
+                        style={{
+                          padding: "12px 16px",
+                          fontSize: "14px",
+                          color: "#A0A3BD",
+                        }}
+                      >
+                        No matches found
+                      </li>
+                    )}
                     {filteredCountries.map((c) => (
                       <li key={c.code}>
-                        <button type="button" onClick={() => { setSelectedCountry(c); setDropdownOpen(false); setSearch(""); }}
-                          style={{ width: "100%", display: "flex", alignItems: "center", gap: "12px", padding: "8px 16px", border: "none", background: "transparent", cursor: "pointer", textAlign: "left", fontFamily: "Inter, sans-serif", fontSize: "14px" }}
-                          onMouseEnter={(e) => (e.currentTarget.style.background = "#F8F9FF")}
-                          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedCountry(c);
+                            setDropdownOpen(false);
+                            setSearch("");
+                          }}
+                          style={{
+                            width: "100%",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "12px",
+                            padding: "8px 16px",
+                            border: "none",
+                            background: "transparent",
+                            cursor: "pointer",
+                            textAlign: "left",
+                            fontFamily: "Inter, sans-serif",
+                            fontSize: "14px",
+                          }}
+                          onMouseEnter={(e) =>
+                            (e.currentTarget.style.background = "#F8F9FF")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.currentTarget.style.background = "transparent")
+                          }
+                        >
                           <span style={{ fontSize: "16px" }}>{c.flag}</span>
-                          <span style={{ flex: 1, color: "#170F49" }}>{c.name}</span>
+                          <span style={{ flex: 1, color: "#170F49" }}>
+                            {c.name}
+                          </span>
                           <span style={{ color: "#A0A3BD" }}>{c.dial}</span>
                         </button>
                       </li>
@@ -306,14 +590,30 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
               )}
             </div>
 
-            {/* Location - Employee only */}
-            {type === "employee" && (
+            {/* Location */}
+            {(
               <div>
                 <label style={labelStyle}>Location</label>
                 <div style={{ position: "relative" }}>
-                  <MapPin size={16} color="#A0A3BD" style={{ position: "absolute", left: "16px", top: "50%", transform: "translateY(-50%)" }} />
-                  <input id="location" name="location" type="text" value={formData.location} onChange={handleChange} placeholder="Location"
-                    style={{ ...inputStyle, paddingLeft: "44px" }} />
+                  <MapPin
+                    size={16}
+                    color="#A0A3BD"
+                    style={{
+                      position: "absolute",
+                      left: "16px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                    }}
+                  />
+                  <input
+                    id="location"
+                    name="location"
+                    type="text"
+                    value={formData.location}
+                    onChange={handleChange}
+                    placeholder="Location"
+                    style={{ ...inputStyle, paddingLeft: "44px" }}
+                  />
                 </div>
               </div>
             )}
@@ -322,9 +622,25 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
             <div>
               <label style={labelStyle}>Organization Name</label>
               <div style={{ position: "relative" }}>
-                <Briefcase size={16} color="#A0A3BD" style={{ position: "absolute", left: "16px", top: "50%", transform: "translateY(-50%)" }} />
-                <input id="organization" name="organization" type="text" value={formData.organization} onChange={handleChange} placeholder="Enter your Organization Name"
-                  style={{ ...inputStyle, paddingLeft: "44px" }} />
+                <Briefcase
+                  size={16}
+                  color="#A0A3BD"
+                  style={{
+                    position: "absolute",
+                    left: "16px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                  }}
+                />
+                <input
+                  id="organization"
+                  name="organization"
+                  type="text"
+                  value={formData.organization}
+                  onChange={handleChange}
+                  placeholder="Enter your Organization Name"
+                  style={{ ...inputStyle, paddingLeft: "44px" }}
+                />
               </div>
             </div>
 
@@ -333,15 +649,31 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
               <div>
                 <label style={labelStyle}>Vacancy</label>
                 <div style={{ position: "relative" }}>
-                  <Briefcase size={16} color="#A0A3BD" style={{ position: "absolute", left: "16px", top: "50%", transform: "translateY(-50%)" }} />
-                  <input id="vacancy" name="vacancy" type="text" value={formData.vacancy} onChange={handleChange} placeholder="Vacancy"
-                    style={{ ...inputStyle, paddingLeft: "44px" }} />
+                  <Briefcase
+                    size={16}
+                    color="#A0A3BD"
+                    style={{
+                      position: "absolute",
+                      left: "16px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                    }}
+                  />
+                  <input
+                    id="vacancy"
+                    name="vacancy"
+                    type="text"
+                    value={formData.vacancy}
+                    onChange={handleChange}
+                    placeholder="Vacancy"
+                    style={{ ...inputStyle, paddingLeft: "44px" }}
+                  />
                 </div>
               </div>
             )}
 
-            {/* File Upload - Employee only */}
-            {type === "employee" && (
+            {/* File Upload */}
+            {(
               <div>
                 <label style={labelStyle}>Upload and attach files</label>
                 <label
@@ -361,19 +693,116 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
                   }}
                 >
                   <CloudUpload size={24} color="#004CA5" />
-                  <span style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#6F6C8F" }}>
-                    Drag and drop your file here or <span style={{ color: "#004CA5", fontWeight: 500 }}>Browse</span>
+                  <span
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "12px",
+                      color: "#6F6C8F",
+                    }}
+                  >
+                    Drag and drop your file here or{" "}
+                    <span style={{ color: "#004CA5", fontWeight: 500 }}>
+                      Browse
+                    </span>
                   </span>
-                  <span style={{ fontFamily: "Inter, sans-serif", fontSize: "10px", color: "#6F7885" }}>
+                  <span
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "10px",
+                      color: "#6F7885",
+                    }}
+                  >
                     PDF, DOC, DOCX (Max. 10MB)
                   </span>
-                  <input id="attachment" name="attachment" type="file" accept=".pdf,.doc,.docx" onChange={handleFileChange} className="hidden" />
+                  <input
+                    id="attachment"
+                    name="attachment"
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    onChange={handleFileChange}
+                    ref={attachmentInputRef}
+                    className="hidden"
+                  />
                 </label>
+                {formData.attachment && (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: "12px",
+                      marginTop: "8px",
+                      padding: "8px 12px",
+                      border: "1px solid #F1F2F9",
+                      borderRadius: "12px",
+                      background: "#FFFFFF",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "12px",
+                        color: "#170F49",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {formData.attachment.name}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={removeAttachment}
+                      style={{
+                        border: "none",
+                        background: "transparent",
+                        color: "#004CA5",
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "12px",
+                        fontWeight: 500,
+                        cursor: "pointer",
+                        flexShrink: 0,
+                      }}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 
+            {/* Message */}
+            <div>
+              <label style={labelStyle}>Message</label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Tell us how we can help"
+                rows={3}
+                style={{ ...inputStyle, height: "auto", resize: "vertical" }}
+              />
+            </div>
+
             {/* Divider */}
-            <div style={{ width: "100%", height: "1px", background: "#F1F2F9" }} />
+            <div
+              style={{ width: "100%", height: "1px", background: "#F1F2F9" }}
+            />
+
+            {(successMessage || errorMessage) && (
+              <p
+                role="status"
+                style={{
+                  margin: 0,
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "18px",
+                  color: successMessage ? "#15803D" : "#B91C1C",
+                }}
+              >
+                {successMessage || errorMessage}
+              </p>
+            )}
 
             {/* Submit */}
             <button
@@ -389,7 +818,8 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
                 fontSize: "14px",
                 color: "#FFFFFF",
                 cursor: "pointer",
-                boxShadow: "0px 2px 3px rgba(55,52,209,0.21), inset 0px -2px 2px rgba(80,70,189,0.6), inset 0px 1px 1px rgba(255,255,255,0.35), inset 0px 3px 4px rgba(223,229,255,0.3)",
+                boxShadow:
+                  "0px 2px 3px rgba(55,52,209,0.21), inset 0px -2px 2px rgba(80,70,189,0.6), inset 0px 1px 1px rgba(255,255,255,0.35), inset 0px 3px 4px rgba(223,229,255,0.3)",
                 transition: "transform 0.2s, box-shadow 0.2s",
               }}
               onMouseEnter={(e) => {
@@ -398,8 +828,9 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "scale(1)";
               }}
+              disabled={submitting}
             >
-              Submit
+              {submitting ? "Submitting..." : "Submit"}
             </button>
           </form>
         </div>

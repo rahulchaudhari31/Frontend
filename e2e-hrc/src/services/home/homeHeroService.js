@@ -10,7 +10,6 @@ export const getHomeHero = async () => {
     
     // Handle different response structures
     const data = response.data?.data || response.data;
-    
     return data;
   } catch (error) {
     console.error('Error fetching home hero data:', error);

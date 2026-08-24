@@ -1,4 +1,5 @@
 import React from "react";
+import SEO from "../components/SEO/SEO";
 import Hero from "../components/aboutus/Hero.jsx";
 import Navbar from "../components/shared/Navbar.jsx"
 import Footer from "../components/shared/Footer.jsx"
@@ -15,6 +16,7 @@ import "../components/aboutus/AboutPage.css";
 const About = () => {
   return (
     <main className="font-sans">
+      <SEO pageKey="about-us" />
       <Navbar></Navbar>
       <Hero />
       <WhoWeAre2 />

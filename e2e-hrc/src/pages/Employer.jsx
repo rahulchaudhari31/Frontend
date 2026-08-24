@@ -1,4 +1,5 @@
 import React from 'react';
+import SEO from '../components/SEO/SEO';
 import Navbar from "../components/shared/Navbar.jsx"
 import Hero from '../components/employer/Hero';
 import HowWeWork from '../components/employer/HowWeWork';
@@ -11,6 +12,7 @@ import '../components/employer/EmployerPage.css';
 const Employer = () => {
   return (
     <div className="employer-page">
+      <SEO pageKey="employer" />
       <Navbar></Navbar>
       <Hero />
       <HowWeWork />

@@ -1,4 +1,5 @@
-﻿import Navbar from '../components/shared/Navbar';
+﻿import SEO from '../components/SEO/SEO';
+import Navbar from '../components/shared/Navbar';
 import Footer from '../components/shared/Footer';
 import HeroSection from '../components/employee/HeroSection';
 import Journeysection from '../components/employee/Journeysection';
@@ -14,6 +15,7 @@ import IndustriesSection from '../components/employee/IndustriesSection';
 export default function Employee() {
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
+      <SEO pageKey="employee" />
       <Navbar variant="employee" />
 
       {/* ===== C. HERO SECTION ===== */}

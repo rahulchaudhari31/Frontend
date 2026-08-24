@@ -1,3 +1,4 @@
+import SEO from '../components/SEO/SEO';
 import Navbar from '../components/shared/Navbar';
 import Footer from '../components/shared/Footer';
 import HeroSection from '../components/contactus/HeroSection';
@@ -8,6 +9,7 @@ import '../components/contactus/ContactUs.css';
 export default function ContactUs() {
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
+      <SEO pageKey="contact-us" />
       <Navbar variant="home" />
       <HeroSection />
       <ContactFormSection />

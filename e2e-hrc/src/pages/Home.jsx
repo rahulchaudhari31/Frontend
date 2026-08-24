@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 
+import SEO from '../components/SEO/SEO';
 import Navbar from '../components/shared/Navbar';
 import Footer from '../components/shared/Footer';
 import Hero from "../components/home/Hero";
@@ -21,6 +22,7 @@ function Home() {
 
   return (
     <>
+    <SEO pageKey="home" />
     <Navbar/>
       <Hero
         onHireTalent={() => scrollToContact("employer")}
