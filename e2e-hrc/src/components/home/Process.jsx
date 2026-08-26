@@ -1,9 +1,26 @@
 import { useState, useEffect } from "react";
 import { getHowWeWork } from "../../services/home/howWeWorkService";
 
-function StepItem({ stepNumber, title, description, isBlue, isLast }) {
+function StepItem({ stepNumber, title, description, isBlue, isLast, stepIndex, journeyType, isExpanded, onToggleExpand }) {
+  const handleClick = () => {
+    onToggleExpand(journeyType, stepIndex);
+  };
+
   return (
-    <div className="flex items-start" style={{ gap: 16, padding: 0 }}>
+    <div 
+      className="flex items-start cursor-pointer"
+      style={{ gap: 16, padding: 0 }}
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          handleClick();
+        }
+      }}
+      aria-expanded={isExpanded}
+      aria-label={`${title} - Click to expand description`}
+    >
       <div className="flex flex-col items-center" style={{ width: 36, minWidth: 36 }}>
         <div
           className="flex items-center justify-center shrink-0"
@@ -44,10 +61,11 @@ function StepItem({ stepNumber, title, description, isBlue, isLast }) {
           {title}
         </h4>
         <p
-          className="font-body font-normal"
+          className={`font-body font-normal ${isExpanded ? '' : 'line-clamp-1'}`}
           style={{ fontSize: 14, lineHeight: "20px", color: "#64748B", margin: 0, marginTop: 4 }}
         >
           {description}
+          {!isExpanded && description && '...'}
         </p>
       </div>
     </div>
@@ -89,6 +107,10 @@ function StepSkeleton({ isBlue, isLast }) {
 function Process() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [expandedSteps, setExpandedSteps] = useState({
+    employer: {},
+    employee: {}
+  });
 
   useEffect(() => {
     const fetchHowWeWork = async () => {
@@ -106,6 +128,16 @@ function Process() {
 
     fetchHowWeWork();
   }, []);
+
+  const handleToggleExpand = (journeyType, stepIndex) => {
+    setExpandedSteps(prev => ({
+      ...prev,
+      [journeyType]: {
+        ...prev[journeyType],
+        [stepIndex]: !prev[journeyType][stepIndex]
+      }
+    }));
+  };
 
   // Extract data with fallbacks
   const sectionTitle = data?.sectionTitle || "How We Work";
@@ -179,6 +211,10 @@ function Process() {
                     description={step.description || ""}
                     isBlue={true}
                     isLast={index === employerSteps.length - 1}
+                    stepIndex={index}
+                    journeyType="employer"
+                    isExpanded={expandedSteps.employer[index] || false}
+                    onToggleExpand={handleToggleExpand}
                   />
                 ))}
             </div>
@@ -262,6 +298,10 @@ function Process() {
                     description={step.description || ""}
                     isBlue={false}
                     isLast={index === employeeSteps.length - 1}
+                    stepIndex={index}
+                    journeyType="employee"
+                    isExpanded={expandedSteps.employee[index] || false}
+                    onToggleExpand={handleToggleExpand}
                   />
                 ))}
             </div>

@@ -22,12 +22,14 @@ function Home() {
 
   return (
     <>
-    <SEO pageKey="home" />
-    <Navbar/>
-      <Hero
-        onHireTalent={() => scrollToContact("employer")}
-        onFindOpportunities={() => scrollToContact("employee")}
-      />
+      <SEO pageKey="home" />
+      <Navbar />
+      <div className="relative z-10 w-full">
+        <Hero
+          onHireTalent={() => scrollToContact("employer")}
+          onFindOpportunities={() => scrollToContact("employee")}
+        />
+      </div>
 
       <LazySection height={500}>
         <Suspense fallback={<Loading />}>
@@ -76,7 +78,7 @@ function Home() {
       <Suspense fallback={<Loading />}>
         <ContactSection ref={contactRef} />
       </Suspense>
-      <Footer/>
+      <Footer />
     </>
   );
 }

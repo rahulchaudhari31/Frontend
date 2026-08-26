@@ -1,33 +1,31 @@
 import { useState, useEffect } from "react";
 import useCountUp from "../../hooks/useCountUp";
 import { getHomeHero } from "../../services/home/homeHeroService";
+import { renderTitleWithHighlight } from "../../utils/heroTextHighlighter";
 
 function HeroSkeleton() {
   return (
-    <section
-      className="relative overflow-hidden"
-      style={{ background: "#FFFFFF" }}
-    >
-      <div
-        className="animate-pulse mx-auto"
-        style={{
-          maxWidth: "1440px",
-          padding: "2px 53.5px 79px",
-          height: "638px",
-        }}
-      >
-        <div className="h-6 bg-gray-200 rounded-full w-72 mt-16" />
-        <div className="space-y-3 mt-6">
-          <div className="h-14 bg-gray-200 rounded-lg w-3/4" />
-          <div className="h-14 bg-gray-200 rounded-lg w-2/3" />
-        </div>
-        <div className="space-y-2 mt-6">
-          <div className="h-5 bg-gray-200 rounded w-1/2" />
-          <div className="h-5 bg-gray-200 rounded w-2/5" />
-        </div>
-        <div className="flex gap-4 pt-2 mt-6">
-          <div className="h-13 bg-gray-200 rounded-full w-48" />
-          <div className="h-13 bg-gray-200 rounded-full w-48" />
+    <section className="relative bg-white w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+        <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-center">
+          {/* Left content skeleton */}
+          <div className="w-full lg:w-1/2 space-y-4">
+            <div className="h-6 bg-gray-200 rounded-full w-64" />
+            <div className="space-y-3">
+              <div className="h-14 bg-gray-200 rounded-lg w-3/4" />
+              <div className="h-14 bg-gray-200 rounded-lg w-2/3" />
+            </div>
+            <div className="space-y-2 mt-4">
+              <div className="h-5 bg-gray-200 rounded w-1/2" />
+              <div className="h-5 bg-gray-200 rounded w-2/5" />
+            </div>
+            <div className="flex gap-4 pt-4 flex-wrap">
+              <div className="h-12 bg-gray-200 rounded-full flex-1 min-w-32 max-w-xs" />
+              <div className="h-12 bg-gray-200 rounded-full flex-1 min-w-32 max-w-xs" />
+            </div>
+          </div>
+          {/* Right image skeleton */}
+          <div className="w-full lg:w-1/2 h-64 sm:h-80 lg:h-96 bg-gray-200 rounded-2xl" />
         </div>
       </div>
     </section>
@@ -38,7 +36,6 @@ function AnimatedStat({
   target,
   suffix = "+",
   label,
-  containerWidth,
   duration = 1500,
   delay = 0,
 }) {
@@ -52,66 +49,48 @@ function AnimatedStat({
 
   return (
     <div
+      className="flex flex-col items-center text-center px-2 py-4 min-w-0 flex-1"
       style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "0px 0px 24px",
-        width: containerWidth,
-        height: "72px",
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(10px)",
         transition: "opacity 0.4s ease-out, transform 0.4s ease-out",
       }}
     >
-      <span
-        style={{
-          fontFamily: "Inter, sans-serif",
-          fontWeight: 800,
-          fontSize: "28px",
-          lineHeight: "32px",
-          color: "#004CA5",
-          display: "flex",
-          alignItems: "center",
-          height: "32px",
-          marginLeft: "-64px",
-          transform: done ? "scale(1.12)" : "scale(1)",
-          transition: "transform 0.3s ease-out",
-        }}
-      >
-        {count}
-        {suffix}
-      </span>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          padding: "0px",
-          width: containerWidth,
-          height: "16px",
-        }}
-      >
+      <div className="font-inter font-bold text-2xl sm:text-3xl text-[#004CA5] leading-tight">
         <span
           style={{
-            fontFamily: "Inter, sans-serif",
-            fontWeight: 500,
-            fontSize: "12px",
-            lineHeight: "16px",
-            display: "flex",
-            alignItems: "center",
-            letterSpacing: "0.5px",
-            textTransform: "uppercase",
-            color: "#43474Fff",
+            transform: done ? "scale(1.12)" : "scale(1)",
+            transition: "transform 0.3s ease-out",
+            display: "inline-block",
           }}
         >
-          {label}
+          {count}
+          {suffix}
         </span>
+      </div>
+      <div className="font-inter text-xs sm:text-sm font-medium text-gray-600 uppercase tracking-wide mt-2 whitespace-normal break-words text-center leading-snug min-h-[32px]">
+        {label}
       </div>
     </div>
   );
 }
+
+const parseStatValue = (value) => {
+  const stringValue = String(value ?? "");
+  const match = stringValue.match(/^(\d+)(.*)$/);
+
+  if (match) {
+    return {
+      numeric: parseInt(match[1], 10),
+      suffix: match[2],
+    };
+  }
+
+  return {
+    numeric: 0,
+    suffix: stringValue,
+  };
+};
 
 function Hero({ onHireTalent, onFindOpportunities }) {
   const [heroData, setHeroData] = useState(null);
@@ -123,7 +102,6 @@ function Hero({ onHireTalent, onFindOpportunities }) {
       try {
         setLoading(true);
         const data = await getHomeHero();
-        console.log(data);
         setHeroData(data);
       } catch (error) {
         console.error("Failed to fetch hero data:", error);
@@ -140,419 +118,132 @@ function Hero({ onHireTalent, onFindOpportunities }) {
     return <HeroSkeleton />;
   }
 
-  // If no hero data, render nothing
-  if (!heroData) {
-    return null;
-  }
-
   // Extract hero data with fallbacks
   const title = heroData.title || "Connecting Talent. Building Futures.";
+  const highlightedText = heroData.highlightedText || "";
+  const subtitle = heroData.subtitle || "TRUSTED RECRUITMENT SPECIALISTS IN THE UK";
   const description =
     heroData.description ||
     "Helping UK employers find exceptional talent and helping candidates discover opportunities to grow and thrive in their careers.";
-  const primaryButtonText = heroData.buttonText || "Hire Talent";
-  const primaryButtonLink = heroData.buttonLink || "#";
+  const buttonText = heroData.buttonText || "Hire Talent";
+  const buttonLink = heroData.buttonLink || "#";
   const heroImage = heroData.heroImage || "";
   const stats = Array.isArray(heroData.stats) ? heroData.stats : [];
 
   return (
-    <section
-      className="relative"
-      style={{
-        width: "100%",
-        maxWidth: "1440px",
-        height: "638px",
-        margin: "0 auto",
-        padding: "2px 53.5px 79px",
-        boxSizing: "border-box",
-        zIndex: 2,
-      }}
-    >
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          maxWidth: "1333px",
-          height: "636px",
-        }}
-      >
-        {/* Right column: Image Content */}
-        <div
-          style={{
-            position: "absolute",
-            height: "572px",
-            left: "685px",
-            right: "16px",
-            top: "64px",
-          }}
-        >
-          <div
-            style={{
-              position: "absolute",
-              width: "519px",
-              height: "519px",
-              left: "calc(50% - 519px/2 - 18px)",
-              top: "calc(50% - 519px/2 - 54.5px)",
-              background: "#C2D760",
-              opacity: 0.33,
-              borderRadius: "9999px",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              width: "419px",
-              height: "419px",
-              left: "calc(50% - 419px/2)",
-              top: "calc(50% - 419px/2 - 40.5px)",
-              boxSizing: "border-box",
-              border: "1px dashed #C2D760",
-              borderRadius: "9999px",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              width: "697px",
-              left: "calc(50% - 697px/2 - 40px)",
-              top: "0",
-              bottom: "14.16%",
-            }}
-          >
-            {!imgLoaded && heroImage && (
-              <div className="absolute inset-0 bg-gray-100 animate-pulse rounded-2xl" />
-            )}
-            {heroImage && (
-              <img
-                src={heroImage}
-                alt="Hero Image"
-                loading="lazy"
-                decoding="async"
-                onLoad={() => setImgLoaded(true)}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  display: "block",
-                  opacity: imgLoaded ? 1 : 0,
-                  transition: "opacity 0.5s",
+
+    <section className="relative z-10 bg-white w-full overflow-visible">
+
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-[53.5px] py-8 sm:py-12 lg:py-20 min-h-[400px]">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start lg:items-center min-w-0">
+
+
+          {/* Left column: Text Content */}
+          <div className="w-full lg:w-1/2 flex flex-col gap-4 sm:gap-6 min-w-0">
+
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 bg-[#C9DB82] px-3 sm:px-4 py-2 rounded-full w-fit min-w-0 max-w-full">
+              <div className="w-3 h-3 rounded-full bg-[#166534] flex-shrink-0" />
+              <span className="font-inter font-semibold text-xs text-[#166534] truncate min-w-0">
+                {subtitle}
+              </span>
+            </div>
+
+            {/* Heading */}
+            <div className="min-w-0">
+              <h1 className="font-inter font-extrabold text-2xl sm:text-4xl md:text-4xl lg:text-5xl leading-tight text-[#004CA5] break-words">
+                {renderTitleWithHighlight(title)}
+                {highlightedText && (
+                  <span className="text-[#F39308]">
+                    {highlightedText}
+                  </span>
+                )}
+              </h1>
+
+            </div>
+
+            {/* Description */}
+            <div className="min-w-0 max-w-[514px]">
+              <p className="font-inter font-normal text-base sm:text-lg text-gray-900 leading-relaxed break-words whitespace-pre-wrap">
+                {description}
+              </p>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full min-w-0">
+              <a
+                href={buttonLink}
+                onClick={(e) => {
+                  if (buttonLink === "#") {
+                    e.preventDefault();
+                    onHireTalent?.();
+                  }
                 }}
-              />
+                className="inline-flex items-center justify-center gap-2 bg-[#F39308] hover:bg-orange-600 active:bg-orange-700 text-white font-inter font-semibold px-6 sm:px-8 py-3 rounded-full text-sm sm:text-base transition-colors flex-1 sm:flex-none min-w-0 min-h-[52px]"
+              >
+                <span className="truncate">{buttonText}</span>
+                <span className="flex-shrink-0">→</span>
+              </a>
+              <button
+                onClick={onFindOpportunities}
+                className="inline-flex items-center justify-center gap-2 border-2 border-[#004CA5] text-[#004CA5] hover:bg-blue-50 active:bg-blue-100 font-inter font-semibold px-6 sm:px-8 py-3 rounded-full text-sm sm:text-base transition-colors flex-1 sm:flex-none min-w-0 min-h-[52px]"
+              >
+                <span className="truncate">Find Opportunities</span>
+              </button>
+            </div>
+
+            {/* Stats */}
+            {stats.length > 0 && (
+              <div className="w-full pt-6 mt-2 border-t border-gray-200 min-w-0">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-6 min-w-0">
+                  {stats.map((stat, index) => {
+                    const { numeric, suffix } = parseStatValue(stat.value);
+                    return (
+                      <AnimatedStat
+                        key={`${stat.label}-${index}`}
+                        target={numeric}
+                        suffix={suffix}
+                        label={stat.label}
+                        duration={1500}
+                        delay={index * 200}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
             )}
           </div>
-        </div>
 
-        {/* Left column: Text Content */}
-        <div
-          style={{
-            position: "absolute",
-            height: "572px",
-            left: "5px",
-            right: "696px",
-            top: "64px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            padding: "0px 0px 41px",
-            gap: "24px",
-            marginTop: 10,
-          }}
-        >
-          {/* Badge */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              padding: "4px 12px",
-              gap: "6px",
-              width: "291.94px",
-              height: "24px",
-              background: "#C9DB82",
-              borderRadius: "9999px",
-              flex: "none",
-              order: 0,
-            }}
-          >
-            <div
-              style={{
-                width: "12px",
-                height: "12px",
-                borderRadius: "9999px",
-                background: "#166534",
-                flex: "none",
-                order: 0,
-              }}
-            />
-            <span
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontStyle: "normal",
-                fontWeight: 600,
-                fontSize: "12px",
-                lineHeight: "16px",
-                color: "#166534",
-                flex: "none",
-                order: 1,
-              }}
-            >
-              {heroData.subtitle || title}
-            </span>
-          </div>
+          {/* Right column: Image Content */}
+          <div className="w-full lg:w-1/2 flex items-center justify-center min-h-[300px] sm:min-h-[400px] md:min-h-[450px] lg:min-h-0 order-first lg:order-last">
+            <div className="relative w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-full aspect-square lg:aspect-auto md:h-[450px] lg:h-[500px] min-w-0">
 
-          {/* Heading */}
-          <div
-            style={{
-              width: "632px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              padding: "0px",
-              flex: "none",
-              order: 1,
-            }}
-          >
-            <h1
-              style={{
-                margin: 0,
-                marginTop: 10,
-                fontFamily: "Inter, sans-serif",
-                fontStyle: "normal",
-                fontWeight: 800,
-                fontSize: "60px",
-                lineHeight: "60px",
-                letterSpacing: "0px",
-                color: "#004CA5",
-                width: "632px",
-                height: "120px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "flex-start",
-                flex: "none",
-                order: 0,
-                alignSelf: "stretch",
-                flexGrow: 0,
-              }}
-            >
-              <span>{title.split(".")[0]}.</span>
-              <span>
-                {title.split(".")[1]?.trim() || "Building"}{" "}
-                <span style={{ color: "#F39308" }}>
-                  {title.split(".")[2]?.trim() || "Futures."}
-                </span>
-              </span>
-            </h1>
-          </div>
+              {/*  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="absolute w-64 h-64 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] lg:w-[519px] lg:h-[519px] bg-[#C2D760] rounded-full opacity-30 blur-sm" />
 
-          {/* Description */}
-          <div
-            style={{
-              width: "632px",
-              height: "88px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              padding: "0px",
-              flex: "none",
-              order: 2,
-            }}
-          >
-            <p
-              style={{
-                margin: 0,
-                marginTop: 20,
-                fontFamily: "Inter, sans-serif",
-                fontStyle: "normal",
-                fontWeight: 400,
-                fontSize: "18px",
-                lineHeight: "29px",
-                color: "#000000",
-                width: "514px",
-                height: "88px",
-              }}
-            >
-              {description}
-            </p>
-          </div>
+                <div className="absolute w-52 h-52 sm:w-64 sm:h-64 md:w-[330px] md:h-[330px] lg:w-[419px] lg:h-[419px] border-2 border-dashed border-[#C2D760] rounded-full" />
+              </div> */}
 
-          {/* CTA Buttons */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "flex-start",
-              padding: "8px 0px",
-              gap: "16px",
-              width: "632px",
-              height: "68px",
-              flex: "none",
-              order: 3,
-            }}
-          >
-            <a
-              href={primaryButtonLink}
-              onClick={(e) => {
-                if (primaryButtonLink === "#") {
-                  e.preventDefault();
-                  onHireTalent?.();
-                }
-              }}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "12px 32px 12px 28px",
-                gap: "8px",
-                width: "200px",
-                height: "52px",
-                background: "#F39308",
-                borderRadius: "9999px",
-                fontFamily: "Inter, sans-serif",
-                fontStyle: "normal",
-                fontWeight: 600,
-                fontSize: "16px",
-                lineHeight: "24px",
-                color: "#FFFFFF",
-                cursor: "pointer",
-                border: "none",
-                textDecoration: "none",
-              }}
-            >
-              {primaryButtonText}
-              <span style={{ marginLeft: "4px" }}>→</span>
-            </a>
-            <button
-              onClick={onFindOpportunities}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "12px 32px",
-                width: "200px",
-                height: "52px",
-                background: "transparent",
-                border: "2px solid #004CA5",
-                borderRadius: "9999px",
-                cursor: "pointer",
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: 600,
-                  fontStyle: "normal",
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                  letterSpacing: "0px",
-                  textAlign: "center",
-                  color: "#004CA5",
-                  width: "145px",
-                  height: "24px",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                Find Opportunities
-              </span>
-            </button>
-          </div>
-
-          {/* Stats */}
-          {stats.length > 0 && (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "0px 3px 8px",
-                gap: "10px",
-                width: "632px",
-                height: "95px",
-                borderTop: "1px solid #F3F4F6",
-                flex: "none",
-                order: 4,
-                boxSizing: "border-box",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "flex-start",
-                  padding: "0px",
-                  gap: "24px",
-                  width: "576.25px",
-                  height: "70px",
-                }}
-              >
-                {stats.map((stat, index) => {
-                  const containerWidth =
-                    index < 2 ? (index === 0 ? "96px" : "131px") : "138.62px";
-                  return (
-                    <div
-                      key={`${stat.label}-${index}`}
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        padding: "0px 0px 24px",
-                        width: containerWidth,
-                        height: "72px",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontFamily: "Inter, sans-serif",
-                          fontStyle: "normal",
-                          fontWeight: 700,
-                          fontSize: "24px",
-                          lineHeight: "32px",
-                          color: "#004CA5",
-                          display: "flex",
-                          alignItems: "center",
-                          height: "32px",
-                          marginLeft: "-64px",
-                        }}
-                      >
-                        {stat.value}
-                      </span>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "flex-start",
-                          padding: "0px",
-                          width: containerWidth,
-                          height: "16px",
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontFamily: "Inter, sans-serif",
-                            fontStyle: "Bold",
-                            fontWeight: 700,
-                            fontSize: "12px",
-                            lineHeight: "16px",
-                            display: "flex",
-                            alignItems: "center",
-                            letterSpacing: "0.3px",
-                            textTransform: "uppercase",
-                            color: "#000000",
-                          }}
-                        >
-                          {stat.label}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="relative w-full h-full flex items-center justify-center z-10">
+                {heroImage ? (
+                  <img
+                    src={heroImage}
+                    alt="Hero Image"
+                    loading="eager"
+                    decoding="async"
+                    onLoad={() => setImgLoaded(true)}
+                    className="w-[90%] h-[90%] sm:w-[88%] sm:h-[88%] md:w-[92%] md:h-[92%] lg:w-7/5 lg:h-7/5 object-contain rounded-2xl"
+                    style={{
+                      opacity: imgLoaded ? 1 : 0,
+                      transition: "opacity 0.5s ease-out",
+                    }}
+                  />
+                ) : (
+                  <div className="w-[90%] h-[90%] bg-gray-100 rounded-2xl" />
+                )}
               </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </section>

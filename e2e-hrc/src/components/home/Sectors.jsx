@@ -95,11 +95,12 @@ function Sectors() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-8 lg:mb-10 lg:pl-[51px] lg:pr-[32px] gap-4">
           <div className="lg:w-[629.76px]">
             <span className="inline-flex items-center bg-[#C8D96F] text-[#004CA5] font-body font-semibold text-[12px] px-3 py-[6px] rounded-full mb-2">
-              Industries We Serve
+              UK INDUSTRIES WE SERVE
             </span>
-            <h2 className="font-heading font-[800] text-2xl sm:text-3xl lg:text-[36px] lg:leading-[40px] tracking-[0px] text-[#004CA5]">
-              Deep expertise across 25+ sectors
+            <h2 className="font-heading font-[800] text-2xl sm:text-3xl lg:text-[26px] lg:leading-[40px] tracking-[0px] text-[#004CA5]">
+              Deep Expertise Across the Sectors that Matter
             </h2>
+            <p></p>
           </div>
           <div className="hidden sm:flex items-center gap-[8px] lg:w-[96px]">
             <button

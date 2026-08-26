@@ -35,6 +35,7 @@ export default function HeroSection() {
 
   return (
     <section
+      className="about-hero"
       style={{
         position: "relative",
         width: "100%",
@@ -102,7 +103,7 @@ export default function HeroSection() {
               fontWeight: 500,
             }}
           >
-            {loading ? "Loading" : error ? "Unavailable" : "Trusted"}
+            {loading ? "Loading" : error ? "Unavailable" : "About Us"}
           </span>
         </div>
 
@@ -113,15 +114,15 @@ export default function HeroSection() {
             <h1
               style={{
                 margin: 0,
-                fontSize: "48px",
-                lineHeight: 1.15,
+                fontSize: "45px",
+                lineHeight: 1.25,
                 fontWeight: 800,
                 color: "#ffffff",
               }}
             >
               <span style={{ color: "#FFFFFF" }}>{title}</span>
               <br />
-              <span style={{ color: "#004CA5" }}>{subtitle}</span>
+              <span style={{ color: "#094283" }}>{subtitle}</span>
             </h1>
 
             <p

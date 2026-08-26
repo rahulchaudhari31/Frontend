@@ -32,6 +32,7 @@ const WhoWeAre = () => {
 
   return (
     <section
+      className="about-whoweare2"
       style={{
         position: "relative",
         width: "100%",
@@ -82,6 +83,7 @@ const WhoWeAre = () => {
 
       {/* Main flex container */}
       <div
+        className="about-whoweare2-container"
         style={{
           display: "flex",
           flexDirection: "row",
@@ -148,6 +150,7 @@ const WhoWeAre = () => {
 
         {/* Right side - Image container */}
         <div
+          className="about-whoweare2-image"
           style={{
             position: "relative",
             width: "593px",
@@ -156,6 +159,7 @@ const WhoWeAre = () => {
         >
           {/* Image with border + shadow */}
           <div
+            className="about-whoweare2-image-box"
             style={{
               width: "593px",
               height: "432px",

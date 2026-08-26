@@ -1,0 +1,76 @@
+/* Mission & Vision - Responsive Fix */
+
+@media (max-width: 768px) {
+  .about-missionvision {
+    padding: 40px 16px !important;
+  }
+
+  .about-mv-container {
+    width: 100% !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    position: relative !important;
+  }
+
+  /* Mission Card */
+  .about-mv-mission {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 24px !important;
+    border-radius: 20px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Vision Card */
+  .about-mv-vision {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 24px !important;
+    border-radius: 20px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Inner content */
+  .about-mv-mission > div:last-child,
+  .about-mv-vision > div {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  /* Description wrappers */
+  .about-mv-mission p,
+  .about-mv-vision p {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    font-size: 15px !important;
+    line-height: 24px !important;
+  }
+
+  /* Title */
+  .about-mv-mission h3,
+  .about-mv-vision h3 {
+    font-size: 28px !important;
+    line-height: 34px !important;
+    height: auto !important;
+  }
+
+  /* Remove fixed title wrapper height */
+  .about-mv-mission h3,
+  .about-mv-vision h3 {
+    width: 100% !important;
+  }
+}

@@ -59,7 +59,7 @@ function ConnectSection() {
 
   return (
     <section
-      className="w-full py-12 lg:py-24 relative overflow-hidden"
+      className="w-full py-8 sm:py-12 lg:py-20 xl:py-24 relative overflow-hidden"
       style={{
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
@@ -71,16 +71,16 @@ function ConnectSection() {
       <div className="absolute inset-0 bg-black/50" />
 
       {/* Content Container */}
-      <div className="max-w-[1440px] mx-auto relative z-10 px-5 sm:px-8 lg:px-[92px]">
+      <div className="w-full max-w-7xl mx-auto relative z-10 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-center text-center">
           {/* Title */}
           {title && (
             <p
-              className="text-white mb-2 lg:mb-4"
+              className="text-white mb-3 sm:mb-4 lg:mb-6"
               style={{
                 fontFamily: 'Inter, sans-serif',
                 fontWeight: 400,
-                fontSize: 'clamp(24px, 5vw, 48px)',
+                fontSize: 'clamp(18px, 5vw, 48px)',
                 lineHeight: '1.3',
                 letterSpacing: '-0.5px',
               }}
@@ -92,11 +92,11 @@ function ConnectSection() {
           {/* Highlighted Text */}
           {highlightedText && (
             <h2
-              className="text-orange-500"
+              className="text-[#F39308]"
               style={{
                 fontFamily: 'Poppins, sans-serif',
                 fontWeight: 700,
-                fontSize: 'clamp(32px, 7vw, 64px)',
+                fontSize: 'clamp(28px, 7vw, 64px)',
                 lineHeight: '1.2',
                 letterSpacing: '-0.8px',
               }}

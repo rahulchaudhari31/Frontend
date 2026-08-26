@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, forwardRef } from "react";
+import groupIcon from "../../assets/images/Career Growth imgs/Group.png";
 import {
   Check,
   Phone,
@@ -102,22 +103,22 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
   // Backend fields: headingLine1, highlightText, headingLine2, description
   const formHeading = ctaData
     ? [ctaData.headingLine1, ctaData.highlightText, ctaData.headingLine2]
-        .filter(Boolean)
-        .join(" ")
+      .filter(Boolean)
+      .join(" ")
     : null;
   const content = ctaData
     ? {
-        employer: {
-          title: formHeading || defaultContent.employer.title,
-          description:
-            ctaData.description || defaultContent.employer.description,
-        },
-        employee: {
-          title: formHeading || defaultContent.employee.title,
-          description:
-            ctaData.description || defaultContent.employee.description,
-        },
-      }
+      employer: {
+        title: formHeading || defaultContent.employer.title,
+        description:
+          ctaData.description || defaultContent.employer.description,
+      },
+      employee: {
+        title: formHeading || defaultContent.employee.title,
+        description:
+          ctaData.description || defaultContent.employee.description,
+      },
+    }
     : defaultContent;
 
   useEffect(() => {
@@ -314,53 +315,23 @@ const ContactSection = forwardRef(function ContactSection(props, ref) {
             background: "#FFFFFF",
             border: "1px solid #F1F2F9",
             borderRadius: "24px",
-            boxShadow:
-              "0px 4px 32px -4px rgba(111,108,143,0.12), 0px 3px 12px -2px rgba(170,170,190,0.06)",
+            boxShadow: "0px 4px 32px -4px rgba(111,108,143,0.12), 0px 3px 12px -2px rgba(170,170,190,0.06)",
             padding: "32px",
             maxHeight: "600px",
           }}
         >
           <div className="flex items-start justify-between mb-2 shrink-0">
             <div className="flex-1 pr-3">
-              <h3
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: 600,
-                  fontSize: "20px",
-                  lineHeight: "1.3",
-                  color: "#170F49",
-                  margin: 0,
-                }}
-              >
-                {content[type]?.title || content.employer.title}
+              <h3 style={{ fontFamily: "Inter, sans-serif", fontWeight: 600, fontSize: "20px", lineHeight: "1.3", color: "#170F49", margin: 0 }}>
+                {defaultContent[type]?.title || defaultContent.employer.title}
               </h3>
             </div>
-            <div
-              className="shrink-0"
-              style={{
-                width: "80px",
-                height: "60px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "36px",
-              }}
-            >
-              👥
+            <div className="shrink-0">
+              <img src={groupIcon} alt="" style={{ width: "80px", height: "60px" }} />
             </div>
           </div>
-          <p
-            style={{
-              fontFamily: "Inter, sans-serif",
-              fontWeight: 400,
-              fontSize: "12px",
-              lineHeight: "1.5",
-              color: "#6F6C8F",
-              margin: 0,
-              marginBottom: "20px",
-            }}
-          >
-            {content[type]?.description || content.employer.description}
+          <p style={{ fontFamily: "Inter, sans-serif", fontWeight: 400, fontSize: "12px", lineHeight: "1.5", color: "#6F6C8F", margin: 0, marginBottom: "20px" }}>
+            {defaultContent[type]?.description || defaultContent.employer.description}
           </p>
 
           <form

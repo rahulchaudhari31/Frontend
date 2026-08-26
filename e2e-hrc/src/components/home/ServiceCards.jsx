@@ -47,16 +47,14 @@ function ServiceCards() {
     return (
       <div
         key={card._id || card.id}
+        className="w-full sm:flex-1 flex flex-col"
         style={{
           background: bgColor,
           borderRadius: '20px',
           padding: 'clamp(24px, 4vw, 40px)',
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'relative',
-          minHeight: '334px',
+          minHeight: '300px',
           boxSizing: 'border-box',
-          flex: '1',
+          gap: '24px',
         }}
       >
         {/* Badge */}
@@ -69,7 +67,6 @@ function ServiceCards() {
           border: '0.8px solid #F39308',
           borderRadius: '9999px',
           width: 'fit-content',
-          marginBottom: '24px',
         }}>
           <img src={employeeIcon} alt="" style={{ width: '14px', height: '14px' }} />
           <span style={{
@@ -87,11 +84,10 @@ function ServiceCards() {
         <h2 style={{
           fontFamily: 'Poppins, sans-serif',
           fontWeight: 700,
-          fontSize: '36px',
-          lineHeight: '45px',
+          fontSize: 'clamp(24px, 5vw, 36px)',
+          lineHeight: 'clamp(32px, 6vw, 45px)',
           color: textColor,
           margin: 0,
-          marginBottom: '16px',
         }}>
           {titleLine}
           <br />
@@ -102,18 +98,17 @@ function ServiceCards() {
         <p style={{
           fontFamily: 'Inter, sans-serif',
           fontWeight: 400,
-          fontSize: '16px',
+          fontSize: 'clamp(14px, 2vw, 16px)',
           lineHeight: '26px',
           color: descColor,
           margin: 0,
-          marginBottom: '24px',
-          maxWidth: '519px',
+          flexGrow: 1,
         }}>
           {description}
         </p>
 
-        {/* Button - bottom right */}
-        <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'flex-end' }}>
+        {/* Button - bottom */}
+        <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
           <a
             href={buttonLink}
             style={{
@@ -146,9 +141,9 @@ function ServiceCards() {
   // Show skeleton while loading
   if (loading) {
     return (
-      <section style={{ background: '#FFFFFF' }}>
-        <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 16px' }} className="sm:px-8">
-          <div className="flex flex-col sm:flex-row gap-0">
+      <section className="w-full bg-white">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
             {[1, 2].map((i) => (
               <div
                 key={i}
@@ -157,7 +152,7 @@ function ServiceCards() {
                   background: '#F3F4F6',
                   borderRadius: '20px',
                   padding: '40px',
-                  minHeight: '334px',
+                  minHeight: '300px',
                   display: 'flex',
                   flexDirection: 'column',
                 }}
@@ -182,9 +177,9 @@ function ServiceCards() {
   }
 
   return (
-    <section style={{ background: '#FFFFFF' }}>
-      <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 16px' }} className="sm:px-8">
-        <div className="flex flex-col sm:flex-row gap-0">
+    <section className="w-full bg-white">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
           {cards.map((card) => renderCard(card))}
         </div>
       </div>

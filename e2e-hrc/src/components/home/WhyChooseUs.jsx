@@ -25,306 +25,182 @@ function WhyChooseUs() {
 
     fetchCards();
   }, []);
+  
   return (
-    <section
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        padding: "60px 54px 0px 61px",
-        gap: "34px",
-        width: "100%",
-        maxWidth: "1440px",
-        margin: "0 auto",
-        boxSizing: "border-box",
-        backgroundColor: "#ffffff",
-      }}
-    >
-      {/* Header */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          width: "100%",
-          gap: "12px",
-        }}
-      >
-        <span
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "6px 12px",
-            gap: "8px",
-            background: "#E8EDF5",
-            borderRadius: "9999px",
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 600,
-            fontSize: "12px",
-            lineHeight: "16px",
-            textAlign: "center",
-            color: "#004CA5",
-          }}
-        >
-          Why Choose E2E HRC
-        </span>
-        <h2
-          style={{
-            margin: 0,
-            fontFamily: "'Poppins', sans-serif",
-            fontWeight: 800,
-            fontSize: "36px",
-            lineHeight: "40px",
-            textAlign: "center",
-            color: "#004CA5",
-          }}
-        >
-          What makes us different
-        </h2>
-      </div>
+    <section className="w-full bg-white py-12 sm:py-16 lg:py-20">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="flex flex-col items-center justify-center gap-3 sm:gap-4 mb-12 lg:mb-16">
+          <span
+            className="inline-flex items-center justify-center px-3 py-1.5 bg-[#E8EDF5] text-[#004CA5] rounded-full text-xs font-semibold"
+          >
+            Why Choose E2E HRC
+          </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#004CA5] text-center leading-tight">
+            What makes us different
+          </h2>
+        </div>
 
-      {/* Cards */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "30px",
-          width: "100%",
-        }}
-      >
-        {cards.map((card, i) => {
-          // Determine badge color, stat color, and decorative letter based on badge text
-          const getBadgeColor = () => {
-            const badgeText = (card.badge || "").toUpperCase();
-            if (badgeText.includes("PEOPLE") || badgeText.includes("HUMAN")) return "#004CA5";
-            if (badgeText.includes("MEASURABLE") || badgeText.includes("RESULT")) return "#F39308";
-            if (badgeText.includes("PARTNERSHIP") || badgeText.includes("COMMITMENT")) return "#C9DB82";
-            return "#004CA5";
-          };
+        {/* Cards */}
+        <div className="flex flex-col gap-8 lg:gap-10">
+          {cards.map((card, i) => {
+            // Determine badge color, stat color, and decorative letter based on badge text
+            const getBadgeColor = () => {
+              const badgeText = (card.badge || "").toUpperCase();
+              if (badgeText.includes("PEOPLE") || badgeText.includes("HUMAN")) return "#004CA5";
+              if (badgeText.includes("MEASURABLE") || badgeText.includes("RESULT")) return "#F39308";
+              if (badgeText.includes("PARTNERSHIP") || badgeText.includes("COMMITMENT")) return "#C9DB82";
+              return "#004CA5";
+            };
 
-          const getDecorativeLetter = () => {
-            const titleText = (card.title || "").toUpperCase();
-            return titleText.charAt(0) || "E";
-          };
+            const badgeColor = getBadgeColor();
+            const reversed = i % 2 === 1;
 
-          const badgeColor = getBadgeColor();
-          const reversed = i % 2 === 1;
-          const letter = getDecorativeLetter();
-
-          return (
-            <div
-              key={card._id || i}
-              style={{
-                position: "relative",
-                width: "100%",
-                height: "420px",
-                borderRadius: "20px",
-                overflow: "hidden",
-              }}
-            >
-              {/* Content card */}
+            return (
               <div
-                style={{
-                  position: "absolute",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  padding: reversed ? "0px 40px" : "0px 1px 0px 40px",
-                  justifyContent: reversed ? "flex-start" : "flex-end",
-                  width: "100%",
-                  height: "420px",
-                  top: "0px",
-                  zIndex: 2,
-                }}
+                key={card._id || i}
+                className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-center"
               >
-                {/* Text side */}
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "flex-start",
-                    padding: "1px 40px 40px 50px",
-                    background: "#F8FAFC",
-                    borderRadius: "16px",
-                    width: "755px",
-                    height: "420px",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <p
-                    style={{
-                      margin: 0,
-                      fontFamily: "'Inter', sans-serif",
-                      fontWeight: 600,
-                      fontSize: "12px",
-                      lineHeight: "16px",
-                      letterSpacing: "1.2px",
-                      textTransform: "uppercase",
-                      color: badgeColor,
-                      paddingBottom: "8px",
-                    }}
-                  >
-                    {card.badge}
-                  </p>
-                  <h3
-                    style={{
-                      margin: 0,
-                      fontFamily: "'Poppins', sans-serif",
-                      fontWeight: 800,
-                      fontSize: "30px",
-                      lineHeight: "36px",
-                      color: "#004CA5",
-                      paddingBottom: "16px",
-                    }}
-                  >
-                    {card.title}
-                  </h3>
-                  <p
-                    style={{
-                      margin: 0,
-                      fontFamily: "'Inter', sans-serif",
-                      fontWeight: 400,
-                      fontSize: "16px",
-                      lineHeight: "26px",
-                      color: "#475569",
-                      maxWidth: "460px",
-                    }}
-                  >
-                    {card.description}
-                  </p>
+                {/* Image side */}
+                <div className={`w-full ${reversed ? "lg:order-2" : "lg:order-1"} h-64 sm:h-80 lg:h-96 rounded-2xl overflow-hidden flex-shrink-0`}>
+                  {card.image ? (
+                    <img
+                      src={card.image}
+                      alt={card.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-[#E8EDF5]" />
+                  )}
                   <div
+                    className="absolute inset-0"
                     style={{
+                      background:
+                        "linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(248,250,252,0.15) 100%)",
+                    }}
+                  />
+                </div>
+
+                {/* Content side */}
+                <div className={`w-full lg:w-1/2 ${reversed ? "lg:order-1" : "lg:order-2"}`}>
+                  <div
+                    className="bg-[#F8FAFC] rounded-2xl p-6 sm:p-8 lg:p-10"
+                    style={{
+                      minHeight: "300px",
                       display: "flex",
-                      flexDirection: "row",
-                      alignItems: "flex-start",
-                      padding: "32px 0px 0px",
-                      gap: "24px",
+                      flexDirection: "column",
+                      justifyContent: "center",
                     }}
                   >
-                    <div>
-                      <p
-                        style={{
-                          margin: 0,
-                          fontFamily: "'Poppins', sans-serif",
-                          fontWeight: 800,
-                          fontSize: "24px",
-                          lineHeight: "32px",
-                          color: badgeColor,
-                        }}
-                      >
-                        {card.stat1Value}
-                      </p>
-                      <p
-                        style={{
-                          margin: 0,
-                          fontFamily: "'Inter', sans-serif",
-                          fontWeight: 500,
-                          fontSize: "12px",
-                          lineHeight: "16px",
-                          color: "#64748B",
-                        }}
-                      >
-                        {card.stat1Label}
-                      </p>
-                    </div>
-                    <div>
-                      <p
-                        style={{
-                          margin: 0,
-                          fontFamily: "'Poppins', sans-serif",
-                          fontWeight: 800,
-                          fontSize: "24px",
-                          lineHeight: "32px",
-                          color: badgeColor,
-                        }}
-                      >
-                        {card.stat2Value}
-                      </p>
-                      <p
-                        style={{
-                          margin: 0,
-                          fontFamily: "'Inter', sans-serif",
-                          fontWeight: 500,
-                          fontSize: "12px",
-                          lineHeight: "16px",
-                          color: "#64748B",
-                        }}
-                      >
-                        {card.stat2Label}
-                      </p>
+                    <p
+                      style={{
+                        margin: 0,
+                        fontFamily: "'Inter', sans-serif",
+                        fontWeight: 600,
+                        fontSize: "12px",
+                        lineHeight: "16px",
+                        letterSpacing: "1.2px",
+                        textTransform: "uppercase",
+                        color: badgeColor,
+                        paddingBottom: "8px",
+                      }}
+                    >
+                      {card.badge}
+                    </p>
+                    <h3
+                      style={{
+                        margin: 0,
+                        fontFamily: "'Poppins', sans-serif",
+                        fontWeight: 800,
+                        fontSize: "clamp(24px, 5vw, 30px)",
+                        lineHeight: "1.2",
+                        color: "#004CA5",
+                        paddingBottom: "16px",
+                      }}
+                    >
+                      {card.title}
+                    </h3>
+                    <p
+                      style={{
+                        margin: 0,
+                        fontFamily: "'Inter', sans-serif",
+                        fontWeight: 400,
+                        fontSize: "14px",
+                        lineHeight: "26px",
+                        color: "#475569",
+                        marginBottom: "24px",
+                      }}
+                    >
+                      {card.description}
+                    </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "flex-start",
+                        gap: "24px",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <div>
+                        <p
+                          style={{
+                            margin: 0,
+                            fontFamily: "'Poppins', sans-serif",
+                            fontWeight: 800,
+                            fontSize: "24px",
+                            lineHeight: "32px",
+                            color: badgeColor,
+                          }}
+                        >
+                          {card.stat1Value}
+                        </p>
+                        <p
+                          style={{
+                            margin: 0,
+                            fontFamily: "'Inter', sans-serif",
+                            fontWeight: 500,
+                            fontSize: "12px",
+                            lineHeight: "16px",
+                            color: "#64748B",
+                          }}
+                        >
+                          {card.stat1Label}
+                        </p>
+                      </div>
+                      <div>
+                        <p
+                          style={{
+                            margin: 0,
+                            fontFamily: "'Poppins', sans-serif",
+                            fontWeight: 800,
+                            fontSize: "24px",
+                            lineHeight: "32px",
+                            color: badgeColor,
+                          }}
+                        >
+                          {card.stat2Value}
+                        </p>
+                        <p
+                          style={{
+                            margin: 0,
+                            fontFamily: "'Inter', sans-serif",
+                            fontWeight: 500,
+                            fontSize: "12px",
+                            lineHeight: "16px",
+                            color: "#64748B",
+                          }}
+                        >
+                          {card.stat2Label}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-
-              {/* Image side */}
-              <div
-                style={{
-                  position: "absolute",
-                  width: "498px",
-                  height: "420px",
-                  left: reversed ? undefined : "0px",
-                  right: reversed ? "0px" : undefined,
-                  top: "0px",
-                  borderRadius: "16px",
-                  overflow: "hidden",
-                  zIndex: 1,
-                }}
-              >
-                {card.image ? (
-                  <img
-                    src={card.image}
-                    alt={card.title}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      display: "block",
-                    }}
-                  />
-                ) : (
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      background: "#E8EDF5",
-                    }}
-                  />
-                )}
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background:
-                      "linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(248,250,252,0.15) 100%)",
-                  }}
-                />
-              </div>
-
-              {/* Decorative letter */}
-              <span
-                style={{
-                  position: "absolute",
-                  fontFamily: "'Poppins', sans-serif",
-                  fontWeight: 800,
-                  fontSize: "233px",
-                  lineHeight: "233px",
-                  color: badgeColor,
-                  opacity: 0.05,
-                  left: reversed ? undefined : "0px",
-                  right: reversed ? "0px" : undefined,
-                  top: "12px",
-                  zIndex: 3,
-                  pointerEvents: "none",
-                }}
-              >
-                {letter}
-              </span>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </section>
   );

@@ -41,6 +41,7 @@ const BridgingGap = () => {
 
   return (
     <section
+      className="about-whoweare"
       style={{
         width: "100%",
         maxWidth: "1440px",
@@ -52,6 +53,7 @@ const BridgingGap = () => {
       }}
     >
       <div
+        className="about-whoweare-container"
         style={{
           display: "flex",
           flexDirection: "row",
@@ -64,12 +66,14 @@ const BridgingGap = () => {
       >
         {/* Left side - Image */}
         <div
+          className="about-whoweare-image"
           style={{
             width: "500px",
             flexShrink: 0,
           }}
         >
           <div
+            className="about-whoweare-image-box"
             style={{
               width: "500px",
               height: "420px",

@@ -104,32 +104,29 @@ function Locations() {
   return (
     <motion.section
       ref={sectionRef}
-      className="w-full pt-8 pb-20"
+      className="w-full py-8 sm:py-12 lg:py-16"
       variants={sectionVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
     >
       <motion.div
-        className="text-center px-6"
+        className="text-center px-4 sm:px-6 lg:px-8"
         variants={sectionVariants}
       >
-        <span className="bg-[#f4f7fb] text-[#004CA5] px-4 py-2 rounded-full text-sm font-medium">
+        <span className="inline-block bg-[#f4f7fb] text-[#004CA5] px-3 py-1.5 rounded-full text-xs font-medium mb-3">
           Our Locations
         </span>
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#004CA5] mt-3">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#004CA5]">
           Our Office Locations
         </h2>
       </motion.div>
 
-      <div className="mt-12" style={{ overflow: "visible" }}>
+      <div className="mt-12 sm:mt-16 w-full overflow-x-auto">
         <motion.div
           ref={scrollRef}
-          className="locations-scroll flex"
+          className="locations-scroll flex px-4 sm:px-6 lg:px-8"
           style={{
-            overflowX: "auto",
-            overflowY: "hidden",
-            paddingLeft: "32px",
-            paddingRight: "20px",
+            gap: "24px",
             paddingTop: "40px",
             paddingBottom: "6px",
             cursor: "grab",
@@ -150,12 +147,12 @@ function Locations() {
               className="location-card snap-center relative flex-shrink-0"
               variants={cardVariants}
               style={{
-                width: "344.59px",
-                height: "309.74px",
+                width: "280px",
+                minWidth: "280px",
+                height: "280px",
                 borderRadius: "28px",
                 background: "transparent",
                 boxShadow: "0px 2.58px 12.91px 0px rgba(0,0,0,0.08)",
-                flexShrink: 0,
                 willChange: "transform",
                 animation: `floating 5s ease-in-out ${i * 0.7}s infinite`,
               }}
@@ -201,15 +198,13 @@ function Locations() {
                     style={{
                       fontFamily: "Poppins, sans-serif",
                       fontWeight: 800,
-                      fontSize: "31.08px",
-                      lineHeight: "58.08px",
+                      fontSize: "clamp(20px, 5vw, 31px)",
+                      lineHeight: "1.2",
                       letterSpacing: "-1.29px",
                       color: "#FFFFFF",
                       textAlign: "center",
-                      verticalAlign: "middle",
                       opacity: 0.87,
-                      whiteSpace: "normal",
-                      maxWidth: "245px",
+                      maxWidth: "80%",
                     }}
                   >
                     {loc.highlight}
@@ -226,22 +221,22 @@ function Locations() {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "flex-start",
-                    padding: "0 16px 7.74px 16px",
+                    padding: "12px 16px",
                     gap: "5.16px",
                   }}
                 >
                   <div className="flex items-center" style={{ gap: "5.16px" }}>
                     <div
                       style={{
-                        width: "18.07px", height: "18.07px", borderRadius: "17322056px",
+                        width: "18.07px", height: "18.07px", borderRadius: "50%",
                         background: loc.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
                       }}
                     >
                       <img src={locationIcon} alt="" style={{ width: "8.39px", height: "8.39px" }} />
                     </div>
                     <span style={{
-                      fontFamily: "Poppins, sans-serif", fontWeight: 600, fontSize: "7.74px",
-                      lineHeight: "10.32px", color: "#FFFFFF",
+                      fontFamily: "Poppins, sans-serif", fontWeight: 600, fontSize: "11px",
+                      lineHeight: "16px", color: "#FFFFFF",
                     }}>
                       {loc.name}
                     </span>
@@ -253,7 +248,7 @@ function Locations() {
                     className="flex items-center"
                     style={{
                       gap: "4px", fontFamily: "Poppins, sans-serif", fontWeight: 600,
-                      fontSize: "7.74px", lineHeight: "10.32px", color: loc.color,
+                      fontSize: "10px", lineHeight: "14px", color: loc.color,
                       display: "inline-flex", alignItems: "center", textDecoration: "none",
                     }}
                   >
@@ -281,10 +276,8 @@ function Locations() {
           transform-origin: center center;
           cursor: pointer;
           flex-shrink: 0;
-          margin: 0 24px;
+          margin: 0;
         }
-        .location-card:first-child { margin-left: 0; }
-        .location-card:last-child  { margin-right: 0; }
 
         .location-card:hover {
           transform: translateY(-18px) scale(1.20) !important;
