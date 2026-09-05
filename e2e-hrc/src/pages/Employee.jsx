@@ -9,7 +9,7 @@ import './Employee.css';
 
 import FAQAndCTA from '../components/employee/FAQAndCTA';
 import LatestInsights from '../components/home/BlogSection';
-import IndustriesSection from '../components/employee/IndustriesSection';
+import IndustriesSection from '../components/home/Sectors';
 
 
 export default function Employee() {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import useCountUp from "../../hooks/useCountUp";
 import { getHomeHero } from "../../services/home/homeHeroService";
 import { renderTitleWithHighlight } from "../../utils/heroTextHighlighter";
@@ -39,16 +39,38 @@ function AnimatedStat({
   duration = 1500,
   delay = 0,
 }) {
-  const { count, done } = useCountUp(target, duration, delay);
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+  const { count, done } = useCountUp(target, duration, delay, inView);
   const [visible, setVisible] = useState(false);
 
+  // Trigger count-up when the element enters the viewport on any screen size
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Fade-in after delay (existing behavior preserved)
+  useEffect(() => {
+    if (!inView) return;
     const t = setTimeout(() => setVisible(true), delay);
     return () => clearTimeout(t);
-  }, [delay]);
+  }, [inView, delay]);
 
   return (
     <div
+      ref={ref}
       className="flex flex-col items-center text-center px-2 py-4 min-w-0 flex-1"
       style={{
         opacity: visible ? 1 : 0,
@@ -121,7 +143,8 @@ function Hero({ onHireTalent, onFindOpportunities }) {
   // Extract hero data with fallbacks
   const title = heroData.title || "Connecting Talent. Building Futures.";
   const highlightedText = heroData.highlightedText || "";
-  const subtitle = heroData.subtitle || "TRUSTED RECRUITMENT SPECIALISTS IN THE UK";
+  const subtitle =
+    heroData.subtitle || "TRUSTED RECRUITMENT SPECIALISTS IN THE UK";
   const description =
     heroData.description ||
     "Helping UK employers find exceptional talent and helping candidates discover opportunities to grow and thrive in their careers.";
@@ -131,16 +154,11 @@ function Hero({ onHireTalent, onFindOpportunities }) {
   const stats = Array.isArray(heroData.stats) ? heroData.stats : [];
 
   return (
-
     <section className="relative z-10 bg-white w-full overflow-visible">
-
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-[53.5px] py-8 sm:py-12 lg:py-20 min-h-[400px]">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start lg:items-center min-w-0">
-
-
           {/* Left column: Text Content */}
           <div className="w-full lg:w-1/2 flex flex-col gap-4 sm:gap-6 min-w-0">
-
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-[#C9DB82] px-3 sm:px-4 py-2 rounded-full w-fit min-w-0 max-w-full">
               <div className="w-3 h-3 rounded-full bg-[#166534] flex-shrink-0" />
@@ -154,12 +172,9 @@ function Hero({ onHireTalent, onFindOpportunities }) {
               <h1 className="font-inter font-extrabold text-2xl sm:text-4xl md:text-4xl lg:text-5xl leading-tight text-[#004CA5] break-words">
                 {renderTitleWithHighlight(title)}
                 {highlightedText && (
-                  <span className="text-[#F39308]">
-                    {highlightedText}
-                  </span>
+                  <span className="text-[#F39308]">{highlightedText}</span>
                 )}
               </h1>
-
             </div>
 
             {/* Description */}
@@ -215,15 +230,14 @@ function Hero({ onHireTalent, onFindOpportunities }) {
           </div>
 
           {/* Right column: Image Content */}
-          <div className="w-full lg:w-1/2 flex items-center justify-center min-h-[300px] sm:min-h-[400px] md:min-h-[450px] lg:min-h-0 order-first lg:order-last">
+          {/* Right column: Image Content */}
+          <div className="w-full lg:w-1/2 flex items-center justify-center min-w-0 order-first lg:order-last lg:-translate-y-24">
             <div className="relative w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-full aspect-square lg:aspect-auto md:h-[450px] lg:h-[500px] min-w-0">
-
-              {/*  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              {/*<div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div className="absolute w-64 h-64 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] lg:w-[519px] lg:h-[519px] bg-[#C2D760] rounded-full opacity-30 blur-sm" />
 
                 <div className="absolute w-52 h-52 sm:w-64 sm:h-64 md:w-[330px] md:h-[330px] lg:w-[419px] lg:h-[419px] border-2 border-dashed border-[#C2D760] rounded-full" />
-              </div> */}
-
+              </div> */} 
               <div className="relative w-full h-full flex items-center justify-center z-10">
                 {heroImage ? (
                   <img
@@ -232,14 +246,19 @@ function Hero({ onHireTalent, onFindOpportunities }) {
                     loading="eager"
                     decoding="async"
                     onLoad={() => setImgLoaded(true)}
-                    className="w-[90%] h-[90%] sm:w-[88%] sm:h-[88%] md:w-[92%] md:h-[92%] lg:w-7/5 lg:h-7/5 object-contain rounded-2xl"
+                    className="
+                        w-full
+                        h-full
+                        object-cover
+                        rounded-2xl
+                              "
                     style={{
                       opacity: imgLoaded ? 1 : 0,
                       transition: "opacity 0.5s ease-out",
                     }}
                   />
                 ) : (
-                  <div className="w-[90%] h-[90%] bg-gray-100 rounded-2xl" />
+                  <div className="w-full h-full bg-gray-100 rounded-2xl" />
                 )}
               </div>
             </div>
@@ -248,6 +267,7 @@ function Hero({ onHireTalent, onFindOpportunities }) {
       </div>
     </section>
   );
+  ``;
 }
 
 export default Hero;

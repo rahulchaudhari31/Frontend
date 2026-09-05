@@ -33,7 +33,6 @@ export default function HeroSection() {
   const title = section?.title || 'Connect With';
   const highlightedText = section?.highlightedText || 'E2E HRC';
   const backgroundImage = section?.backgroundImage || heroBg;
-
   return (
     <section
       className="hero-section"
@@ -52,21 +51,28 @@ export default function HeroSection() {
       }}
     >
       {/* Background image */}
-      <div
+      <img
+        src={backgroundImage}
+        alt=""
+        className="hero-bg-image"
         style={{
           position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          objectPosition: 'center',
         }}
       />
       {/* Dark overlay */}
       <div
         style={{
           position: 'absolute',
-          inset: 0,
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
           background: 'linear-gradient(0deg, rgba(0,0,0,0.3), rgba(0,0,0,0.3))',
         }}
       />

@@ -114,6 +114,7 @@ export default function FAQAndCTA() {
           <p className="text-xs font-semibold tracking-widest uppercase mb-6" style={{ color: '#003679' }}>
             Frequently Asked Questions
           </p>
+
           <div className="flex flex-col gap-3" role="list">
             {faqsLoading ? (
               <p className="text-gray-500 text-sm" style={{ fontFamily: '"Source Sans 3", sans-serif' }}>Loading FAQs...</p>
@@ -215,19 +216,71 @@ export default function FAQAndCTA() {
                 {/* backend field: ctaTitle */}
                 {ctaData?.ctaTitle || ''}
               </h3>
-              <p
-                style={{
+              {/* backend field: ctaDescription — rendered with newline + bullet preservation */}
+              {(() => {
+                const raw = ctaData?.ctaDescription || '';
+                if (!raw.trim()) return null;
+
+                // Shared text style (matches the original <p> exactly)
+                const textStyle = {
                   fontFamily: '"Source Sans 3", sans-serif',
                   fontWeight: 400,
                   fontSize: 14,
                   lineHeight: '22.75px',
                   color: '#FFFFFFE5',
                   maxWidth: 448,
-                }}
-              >
-                {/* backend field: ctaDescription */}
-                {ctaData?.ctaDescription || ''}
-              </p>
+                };
+
+                // Split on any newline sequence, keeping blank lines as visual gaps
+                const lines = raw.split(/\r?\n/);
+
+                // Detect whether a line starts with a bullet prefix (•, -, *)
+                const isBullet = (line) => /^[\u2022\-\*]\s*/.test(line.trimStart());
+
+                return (
+                  <div style={{ ...textStyle, display: 'flex', flexDirection: 'column', gap: 0 }}>
+                    {lines.map((line, idx) => {
+                      const trimmed = line.trim();
+
+                      // Empty line → small spacer preserving paragraph breaks
+                      if (!trimmed) {
+                        return <span key={idx} style={{ display: 'block', height: '0.6em' }} />;
+                      }
+
+                      // Bullet line → keep character, indent wrapped text
+                      if (isBullet(trimmed)) {
+                        // Separate the bullet character from the rest of the text
+                        const match = trimmed.match(/^([\u2022\-\*])\s*(.*)/s);
+                        const bullet = match ? match[1] : '•';
+                        const text   = match ? match[2] : trimmed;
+
+                        return (
+                          <div
+                            key={idx}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'flex-start',
+                              gap: 6,
+                              lineHeight: '22.75px',
+                            }}
+                          >
+                            {/* Bullet glyph — fixed width so text always aligns */}
+                            <span style={{ flexShrink: 0, userSelect: 'none' }}>{bullet}</span>
+                            <span style={{ flex: 1, wordBreak: 'break-word' }}>{text}</span>
+                          </div>
+                        );
+                      }
+
+                      // Normal text line
+                      return (
+                        <span key={idx} style={{ display: 'block', wordBreak: 'break-word' }}>
+                          {trimmed}
+                        </span>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
             </div>
 
             <a

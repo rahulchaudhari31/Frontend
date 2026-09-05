@@ -1,4 +1,4 @@
-﻿import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { FiMapPin, FiClock, FiX, FiCompass } from 'react-icons/fi';
 import { FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
@@ -86,16 +86,37 @@ export default function GlobalNetworkSection() {
   const hideCard = useCallback(() => setActiveOfficeCard(null), []);
 
   function AnimatedStat({ target, suffix, label, delay }) {
-    const { count, done } = useCountUp(target, 1500, delay);
+    const ref = useRef(null);
+    const [inView, setInView] = useState(false);
+    const { count, done } = useCountUp(target, 1500, delay, inView);
     const [visible, setVisible] = useState(false);
 
+    // Trigger count-up only when element enters the viewport (fixes mobile)
     useEffect(() => {
+      const el = ref.current;
+      if (!el) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setInView(true);
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.1 }
+      );
+      observer.observe(el);
+      return () => observer.disconnect();
+    }, []);
+
+    // Fade-in after delay, but only once in view
+    useEffect(() => {
+      if (!inView) return;
       const t = setTimeout(() => setVisible(true), delay);
       return () => clearTimeout(t);
-    }, [delay]);
+    }, [inView, delay]);
 
     return (
-      <div className="text-center" style={{ flex: '1 1 40%', maxWidth: '244px' }}>
+      <div ref={ref} className="text-center" style={{ flex: '1 1 40%', maxWidth: '244px' }}>
         <p
           className="font-['Hanken_Grotesk'] font-bold text-[32px] leading-[38px] md:text-[48px] md:leading-[56px] tracking-[-0.64px] md:tracking-[-0.96px] text-[#004CA5]"
           style={{
@@ -118,6 +139,7 @@ export default function GlobalNetworkSection() {
       </div>
     );
   }
+
 
   return (
     <>

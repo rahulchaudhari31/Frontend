@@ -1,4 +1,4 @@
-﻿import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 
 import OfficeInfoCard from '../OfficeInfoCard';
 import { getActiveLocations } from '../../services/becomePartner/locationService';
@@ -8,39 +8,59 @@ import mapBg from '../../assets/background coonecting reqrirment/Connecting Recr
 // ─── Animated Stat Component ────────────────────────────────────────────────
 function AnimatedStat({ value, label, animationKey }) {
   const [displayValue, setDisplayValue] = useState('0');
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const elementRef = useRef(null);
   const animationFrameRef = useRef(null);
 
   useEffect(() => {
-    // Extract numeric value and suffix from the string
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasAnimated]);
+
+  useEffect(() => {
+    setHasAnimated(false);
+    setDisplayValue('0');
+  }, [value, animationKey]);
+
+  useEffect(() => {
+    if (!hasAnimated) return;
+
     const parseValue = (val) => {
       if (!val || typeof val !== 'string') return { num: 0, suffix: '', original: val };
 
       const original = val.trim();
       
-      // Check if it's a non-numeric value (like "Global", "Available")
       if (!/\d/.test(original)) {
         return { num: 0, suffix: '', original, isNonNumeric: true };
       }
 
-      // Extract numeric part and suffix
       const match = original.match(/^([\d,.]+)([^0-9]*)$/);
       if (!match) return { num: 0, suffix: '', original };
 
-      const numStr = match[1].replace(/,/g, ''); // Remove commas for parsing
-      const suffix = match[2]; // Preserve suffix (+, k, %, etc.)
+      const numStr = match[1].replace(/,/g, '');
+      const suffix = match[2];
       const num = parseFloat(numStr);
 
       return { num: isNaN(num) ? 0 : num, suffix, original };
     };
 
-    // Format a number with k, M suffixes where applicable
     const formatNumber = (num, originalSuffix, originalValue) => {
-      // If original value is non-numeric, return as-is
       if (!originalValue || !/\d/.test(originalValue.toString())) {
         return originalValue;
       }
 
-      // Check if original had 'k' - if so, format current num with k
       if (originalSuffix && (originalSuffix.includes('k') || originalSuffix.includes('K'))) {
         const divisor = 1000;
         if (num >= divisor) {
@@ -49,7 +69,6 @@ function AnimatedStat({ value, label, animationKey }) {
         return Math.floor(num) + originalSuffix;
       }
 
-      // Check if original had 'm' or 'M'
       if (originalSuffix && (originalSuffix.includes('m') || originalSuffix.includes('M'))) {
         const divisor = 1000000;
         if (num >= divisor) {
@@ -58,19 +77,16 @@ function AnimatedStat({ value, label, animationKey }) {
         return Math.floor(num) + originalSuffix;
       }
 
-      // For regular numbers with suffix like +, %, just return floor + suffix
       return Math.floor(num) + originalSuffix;
     };
 
     const parsed = parseValue(value);
 
-    // If non-numeric, just display as-is without animation
     if (parsed.isNonNumeric) {
       setDisplayValue(parsed.original);
       return;
     }
 
-    // Animation duration in ms
     const duration = 1200;
     const startTime = Date.now();
     const startValue = 0;
@@ -80,7 +96,6 @@ function AnimatedStat({ value, label, animationKey }) {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
 
-      // Ease-out cubic function for smooth deceleration
       const easeOut = 1 - Math.pow(1 - progress, 3);
       const current = startValue + (endValue - startValue) * easeOut;
 
@@ -92,18 +107,16 @@ function AnimatedStat({ value, label, animationKey }) {
       }
     };
 
-    // Start animation
     animationFrameRef.current = requestAnimationFrame(animate);
 
-    // Cleanup
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [value, animationKey]); // Re-trigger animation when value or key changes
+  }, [value, animationKey, hasAnimated]);
 
-  return displayValue;
+  return <span ref={elementRef}>{displayValue}</span>;
 }
 
 // ─── Static marker positions (map coordinates) ────────────────────────────
@@ -318,41 +331,53 @@ export default function NetworkMapSection() {
                 <p className="text-sm text-[#424752]">Unable to load location data. Please try again later.</p>
               </div>
             ) : (
-              markers.map((m) => (
-                <div key={m.id} className="absolute" style={{ left: m.left, top: m.top }}>
-                  <button
-                    tabIndex={0}
-                    className={`relative ${m.size} rounded-full cursor-pointer hover:scale-125 transition-transform focus:outline-2 focus:outline-offset-2`}
-                    style={{
-                      background: m.color,
-                      boxShadow: `0 0 0 4px ${m.shadow}`,
-                      outlineColor: m.focus,
-                    }}
-                    aria-label={m.label}
-                    onClick={() => handleSelectLocation(m.location)}
-                    onMouseEnter={() => {
-                      makeHandleEnter(m.id)();
-                      // Trigger animation on hover for yellow dots only
-                      if (m.isRegional) {
-                        handleYellowDotHover(m.location);
-                      }
-                    }}
-                    onMouseLeave={isMobile ? undefined : makeHandleLeave(m.id)}
-                    onFocus={() => setActiveOfficeCard(m.id)}
-                  >
-                    <span className="sr-only">{m.label}</span>
-                  </button>
+              <>
+                {markers.map((m) => (
+                  <div key={m.id} className="absolute" style={{ left: m.left, top: m.top }}>
+                    <button
+                      tabIndex={0}
+                      className={`relative ${m.size} rounded-full cursor-pointer hover:scale-125 transition-transform focus:outline-2 focus:outline-offset-2`}
+                      style={{
+                        background: m.color,
+                        boxShadow: `0 0 0 4px ${m.shadow}`,
+                        outlineColor: m.focus,
+                      }}
+                      aria-label={m.label}
+                      onClick={() => handleSelectLocation(m.location)}
+                      onMouseEnter={() => {
+                        makeHandleEnter(m.id)();
+                        if (m.isRegional) {
+                          handleYellowDotHover(m.location);
+                        }
+                      }}
+                      onMouseLeave={isMobile ? undefined : makeHandleLeave(m.id)}
+                      onFocus={() => setActiveOfficeCard(m.id)}
+                    >
+                      <span className="sr-only">{m.label}</span>
+                    </button>
+                    {!isMobile && (
+                      <OfficeInfoCard
+                        data={getOfficeCardData(m.location)}
+                        isVisible={activeOfficeCard === m.id}
+                        isModal={false}
+                        style={{ right: 'calc(100% + 12px)', top: m.cardTop, zIndex: 100 }}
+                        onClose={hideCard}
+                        onMouseEnter={makeHandleEnter(m.id)}
+                        onMouseLeave={makeHandleLeave(m.id)}
+                      />
+                    )}
+                  </div>
+                ))}
+                {isMobile && activeOfficeCard && (
                   <OfficeInfoCard
-                    data={getOfficeCardData(m.location)}
-                    isVisible={activeOfficeCard === m.id}
-                    isModal={isMobile}
-                    style={{ right: 'calc(100% + 12px)', top: m.cardTop, zIndex: 100 }}
+                    data={getOfficeCardData(markers.find((m) => m.id === activeOfficeCard)?.location)}
+                    isVisible={true}
+                    isModal={true}
+                    style={{ zIndex: 100 }}
                     onClose={hideCard}
-                    onMouseEnter={isMobile ? undefined : makeHandleEnter(m.id)}
-                    onMouseLeave={isMobile ? undefined : makeHandleLeave(m.id)}
                   />
-                </div>
-              ))
+                )}
+              </>
             )}
           </div>
 

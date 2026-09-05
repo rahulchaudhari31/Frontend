@@ -4,6 +4,7 @@ import { getWhoWeAre } from "../../services/about/whoWeAreService";
 const WhoWeAre = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     const fetchWhoWeAre = async () => {
@@ -25,7 +26,7 @@ const WhoWeAre = () => {
   const title = data?.title || "Who We Are";
   const description1 = data?.description1 || "Established in 2007, E2E Human Resource Consultancy has evolved from a boutique agency into a premier global recruitment powerhouse. We specialize in identifying, attracting, and securing top-tier talent for organizations that demand excellence.";
   const description2 = data?.description2 || "Our approach is deeply consultative. We don't just fill vacancies; we analyze workforce requirements, understand corporate cultures, and deliver talent solutions that drive measurable business outcomes. With deep multi-sector expertise ranging from Engineering to Healthcare, our consultants operate as an extension of your own internal teams.";
-  const description3 = data?.description3 || "In an era of automated hiring, we remain staunch advocates for the human element\u2014balancing cutting-edge sourcing technology with nuanced human judgment to create perfect professional alignments.";
+  const description3 = data?.description3 || "";
   const image = data?.image || "";
   const experienceYears = data?.experienceYears || "15+";
   const experienceLabel = data?.experienceLabel || "Years of Excellence";
@@ -46,6 +47,42 @@ const WhoWeAre = () => {
         boxSizing: "border-box",
       }}
     >
+      <style>{`
+        .about-whoweare2-desc-wrapper::-webkit-scrollbar {
+          width: 6px;
+        }
+        .about-whoweare2-desc-wrapper::-webkit-scrollbar-track {
+          background: #f1f5f9;
+          border-radius: 4px;
+        }
+        .about-whoweare2-desc-wrapper::-webkit-scrollbar-thumb {
+          background: #cbd5e1;
+          border-radius: 4px;
+        }
+        @media (max-width: 1024px) {
+          .about-whoweare2 {
+            padding: 40px 24px !important;
+          }
+          .about-whoweare2-container {
+            flex-direction: column !important;
+            gap: 40px !important;
+          }
+          .about-whoweare2-image {
+            width: 100% !important;
+            max-width: 593px !important;
+            margin: 0 auto;
+          }
+          .about-whoweare2-image-box {
+            width: 100% !important;
+            height: auto !important;
+            aspect-ratio: 593 / 432;
+          }
+          .about-whoweare2-image-box img, .about-whoweare2-image-box > div {
+            width: 100% !important;
+            height: 100% !important;
+          }
+        }
+      `}</style>
       {/* Orange decorative circle */}
       <div
         style={{
@@ -127,6 +164,7 @@ const WhoWeAre = () => {
 
           {/* Who We Are paragraphs */}
           <div
+            className="about-whoweare2-desc-wrapper"
             style={{
               display: "flex",
               flexDirection: "column",
@@ -134,18 +172,57 @@ const WhoWeAre = () => {
               gap: "20px",
               width: "100%",
               marginTop: "8px",
+
+              // Keep description area stable
+              maxHeight: isExpanded ? "280px" : "200px",
+
+              // Only description scrolls when expanded
+              overflowY: isExpanded ? "auto" : "hidden",
+
+              paddingRight: isExpanded ? "12px" : "0",
+
+              boxSizing: "border-box",
             }}
           >
-            <p style={{ margin: 0, fontFamily: "Inter, sans-serif", fontWeight: 400, fontSize: "18px", lineHeight: "28px", color: "#424752" }}>
-              {description1}
-            </p>
-            <p style={{ margin: 0, fontFamily: "Inter, sans-serif", fontWeight: 400, fontSize: "18px", lineHeight: "28px", color: "#424752" }}>
-              {description2}
-            </p>
-            <p style={{ margin: 0, fontFamily: "Inter, sans-serif", fontWeight: 400, fontSize: "18px", lineHeight: "28px", color: "#424752" }}>
-              {description3}
-            </p>
+            {description1 && (
+              <p style={{ margin: 0, fontFamily: "Inter, sans-serif", fontWeight: 400, fontSize: "18px", lineHeight: "28px", color: "#424752" }}>
+                {description1}
+              </p>
+            )}
+            {description2 && (
+              <p style={{ margin: 0, fontFamily: "Inter, sans-serif", fontWeight: 400, fontSize: "18px", lineHeight: "28px", color: "#424752" }}>
+                {description2}
+              </p>
+            )}
+            {description3 && (
+              <p style={{ margin: 0, fontFamily: "Inter, sans-serif", fontWeight: 400, fontSize: "18px", lineHeight: "28px", color: "#424752" }}>
+                {description3}
+              </p>
+            )}
           </div>
+
+          <button
+            type="button"
+            onClick={() => setIsExpanded(!isExpanded)}
+            aria-expanded={isExpanded}
+            style={{
+              marginTop: "4px",
+              fontFamily: "Inter, sans-serif",
+              fontWeight: 600,
+              fontSize: "16px",
+              lineHeight: "24px",
+              color: "#00458D",
+              background: "none",
+              border: "none",
+              padding: 0,
+              cursor: "pointer",
+              textDecoration: "underline",
+              display: "inline-flex",
+              alignItems: "center",
+            }}
+          >
+            {isExpanded ? "Read Less" : "Read More"}
+          </button>
         </div>
 
         {/* Right side - Image container */}
@@ -217,34 +294,3 @@ const WhoWeAre = () => {
 };
 
 export default WhoWeAre;
-
-
-
-<div
-  className="absolute bg-white/85 backdrop-blur-md rounded-3xl flex flex-col gap-1 z-20 max-lg:-left-4 max-lg:-bottom-4 max-lg:p-5 max-lg:w-[180px]"
-  style={{
-    left: "-32px",
-    bottom: "-32px",
-    width: "220px",
-    padding: "32px",
-    border: "1px solid rgba(226, 232, 240, 0.8)",
-    boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.05)",
-  }}
->
-  <span
-    className="font-poppins font-semibold"
-    style={{
-      fontSize: "32px",
-      lineHeight: "40px",
-      color: "#00458D",
-    }}
-  >
-    15+ Years
-  </span>
-  <span
-    className="font-inter font-semibold text-sm uppercase"
-    style={{ letterSpacing: "0.7px", color: "#424752" }}
-  >
-    OF EXCELLENCE
-  </span>
-</div>

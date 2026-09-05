@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { FiGlobe, FiHome, FiLayers } from 'react-icons/fi';
 
 import trustPhoto from '../../assets/background coonecting reqrirment/build on trust.jpg';
@@ -29,8 +29,70 @@ const getImageUrl = (path) => {
   return `${baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
 };
 
+const renderDescription = (data) => {
+  if (!data.description && (!data.bullets || data.bullets.length === 0)) return null;
+  
+  if (data.bullets && Array.isArray(data.bullets) && data.bullets.length > 0) {
+    return (
+      <div className="flex flex-col gap-2">
+        {data.description && <p className="m-0">{data.description}</p>}
+        <ul className="list-disc pl-5 m-0 flex flex-col gap-1">
+          {data.bullets.map((bullet, i) => {
+            const cleanText = typeof bullet === 'string' ? bullet.replace(/^([•●\-\*])\s*/, '').trim() : bullet;
+            return cleanText ? <li key={`bullet-${i}`}>{cleanText}</li> : null;
+          })}
+        </ul>
+      </div>
+    );
+  }
+
+  if (!data.description) return null;
+
+  const lines = data.description.split(/\r?\n/);
+  const elements = [];
+  let currentList = [];
+
+  const pushList = (keySuffix) => {
+    if (currentList.length > 0) {
+      elements.push(
+        <ul key={`ul-${keySuffix}`} className="list-disc pl-5 m-0 flex flex-col gap-1">
+          {currentList}
+        </ul>
+      );
+      currentList = [];
+    }
+  };
+
+  lines.forEach((line, i) => {
+    const trimmed = line.trim();
+    if (!trimmed) return;
+
+    const match = trimmed.match(/^([•●\-\*])\s*(.*)/);
+    if (match) {
+      const bulletText = match[2].trim();
+      if (bulletText) {
+        currentList.push(<li key={`li-${i}`}>{bulletText}</li>);
+      }
+    } else {
+      pushList(i);
+      elements.push(
+        <p key={`p-${i}`} className="m-0">
+          {trimmed}
+        </p>
+      );
+    }
+  });
+
+  pushList('end');
+
+  return <div className="flex flex-col gap-2">{elements}</div>;
+};
+
 export default function BuiltOnTrustSection() {
   const [trustData, setTrustData] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+  const descRef = useRef(null);
 
   useEffect(() => {
     let mounted = true;
@@ -53,6 +115,23 @@ export default function BuiltOnTrustSection() {
       mounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (descRef.current) {
+        setIsOverflowing(descRef.current.scrollHeight > descRef.current.clientHeight + 2);
+      }
+    };
+    
+    // Slight delay to ensure DOM is fully rendered before measuring
+    const timer = setTimeout(checkOverflow, 50);
+    window.addEventListener('resize', checkOverflow);
+    
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', checkOverflow);
+    };
+  }, [trustData, isExpanded]);
 
   const safeTrustData = trustData || {
     title: 'Built on Trust and Transparency Since 2007',
@@ -104,17 +183,35 @@ export default function BuiltOnTrustSection() {
             >
               {safeTrustData.title}
             </h2>
-            <p
-              style={{
-                fontFamily: "'Source Sans 3', sans-serif",
-                fontWeight: 400,
-                fontSize: '16px',
-                lineHeight: '24px',
-                color: '#424752',
-              }}
-            >
-              {safeTrustData.description}
-            </p>
+            {safeTrustData.description && (
+              <div className="flex flex-col gap-2">
+                <div
+                  ref={descRef}
+                  style={{
+                    maxHeight: '120px',
+                    overflowY: isExpanded ? 'auto' : 'hidden',
+                    overflowX: 'hidden',
+                    fontFamily: "'Source Sans 3', sans-serif",
+                    fontWeight: 400,
+                    fontSize: '16px',
+                    lineHeight: '24px',
+                    color: '#424752',
+                  }}
+                  className="pr-1"
+                >
+                  {renderDescription(safeTrustData)}
+                </div>
+                {isOverflowing && (
+                  <button
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="self-start text-[#003679] font-semibold text-[15px] hover:underline"
+                    style={{ fontFamily: "'Source Sans 3', sans-serif" }}
+                  >
+                    {isExpanded ? 'Read Less' : 'Read More'}
+                  </button>
+                )}
+              </div>
+            )}
             <div className="flex flex-col gap-6 pt-4">
               {featureItems.map((item, i) => {
                 const Icon = checkItems[i]?.icon || FiGlobe;
@@ -137,7 +234,7 @@ export default function BuiltOnTrustSection() {
                       >
                         {item.title}
                       </h4>
-                      <p
+                      <div
                         className="text-[14px] md:text-[16px] leading-[22px] md:leading-[24px]"
                         style={{
                           fontFamily: "'Source Sans 3', sans-serif",
@@ -145,8 +242,8 @@ export default function BuiltOnTrustSection() {
                           color: '#424752',
                         }}
                       >
-                        {item.description}
-                      </p>
+                        {renderDescription({ description: item.description })}
+                      </div>
                     </div>
                   </div>
                 );

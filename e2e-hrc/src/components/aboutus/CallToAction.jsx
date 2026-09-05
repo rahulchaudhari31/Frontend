@@ -50,16 +50,14 @@ const CallToAction = () => {
             margin: 0,
             fontFamily: "'Inter', sans-serif",
             fontWeight: 400,
-            fontSize: "15px",
+            fontSize: "14px",
             lineHeight: "28px",
             textAlign: "center",
             color: "rgba(255, 255, 255, 0.8)",
             maxWidth: "672px",
           }}
         >
-          Whether you are an organization seeking elite talent or a
-          professional looking for your next strategic career move, E2E
-          Consultancy is your trusted partner.
+          Whether you are a business looking to fill a critical role or a professional ready for your next step, e2e HRC is here to help. Tell us what you need, and a dedicated consultant will be in touch
         </p>
 
         <div
@@ -73,7 +71,7 @@ const CallToAction = () => {
           }}
         >
           <a
-          onClick={()=>navigate("/contact-us")}
+            onClick={() => navigate("/contact-us")}
             href="#"
             style={{
               display: "flex",
@@ -94,13 +92,12 @@ const CallToAction = () => {
               boxShadow: "0px 10px 15px -3px rgba(0,0,0,0.1), 0px 4px 6px -4px rgba(0,0,0,0.1)",
             }}
           >
-          
-            Submit a Vacancy
+            For Employers
             <FiArrowRight size={16} />
           </a>
 
           <a
-           onClick={()=>navigate("/contact-us")}
+            onClick={() => navigate("/contact-us")}
             href="#"
             style={{
               display: "flex",
@@ -121,8 +118,8 @@ const CallToAction = () => {
               boxSizing: "border-box",
             }}
           >
-            Upload CV
-            <FiUpload size={16} />
+            For Candidates
+            <FiArrowRight size={16} />
           </a>
         </div>
       </div>

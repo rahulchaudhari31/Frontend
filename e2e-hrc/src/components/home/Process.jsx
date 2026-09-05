@@ -1,25 +1,31 @@
 import { useState, useEffect } from "react";
 import { getHowWeWork } from "../../services/home/howWeWorkService";
 
-function StepItem({ stepNumber, title, description, isBlue, isLast, stepIndex, journeyType, isExpanded, onToggleExpand }) {
-  const handleClick = () => {
-    onToggleExpand(journeyType, stepIndex);
-  };
+function StepItem({
+  stepNumber,
+  title,
+  description,
+  isBlue,
+  isLast,
+  stepIndex,
+  journeyType,
+  isHovered,
+  onHoverStep,
+  onLeaveStep,
+}) {
+  const showFullDescription = Boolean(isHovered);
 
   return (
-    <div 
-      className="flex items-start cursor-pointer"
-      style={{ gap: 16, padding: 0 }}
-      onClick={handleClick}
-      role="button"
+    <div
+      className="flex items-start"
+      style={{ gap: 16, padding: 0, outline: "none" }}
+      onMouseEnter={() => onHoverStep(journeyType, stepIndex)}
+      onMouseLeave={() => onLeaveStep(journeyType)}
+      onFocus={() => onHoverStep(journeyType, stepIndex)}
+      onBlur={() => onLeaveStep(journeyType)}
       tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          handleClick();
-        }
-      }}
-      aria-expanded={isExpanded}
-      aria-label={`${title} - Click to expand description`}
+      aria-expanded={showFullDescription}
+      aria-label={`${title} process step`}
     >
       <div className="flex flex-col items-center" style={{ width: 36, minWidth: 36 }}>
         <div
@@ -61,11 +67,18 @@ function StepItem({ stepNumber, title, description, isBlue, isLast, stepIndex, j
           {title}
         </h4>
         <p
-          className={`font-body font-normal ${isExpanded ? '' : 'line-clamp-1'}`}
-          style={{ fontSize: 14, lineHeight: "20px", color: "#64748B", margin: 0, marginTop: 4 }}
+          className={`font-body font-normal ${showFullDescription ? "" : "line-clamp-1"}`}
+          style={{
+            fontSize: 14,
+            lineHeight: "20px",
+            color: "#64748B",
+            margin: 0,
+            marginTop: 4,
+            transition: "opacity 0.2s ease, max-height 0.2s ease",
+            opacity: 1,
+          }}
         >
-          {description}
-          {!isExpanded && description && '...'}
+          {showFullDescription ? description : `${description || ""}${description ? "..." : ""}`}
         </p>
       </div>
     </div>
@@ -107,9 +120,9 @@ function StepSkeleton({ isBlue, isLast }) {
 function Process() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [expandedSteps, setExpandedSteps] = useState({
-    employer: {},
-    employee: {}
+  const [hoveredStep, setHoveredStep] = useState({
+    employer: null,
+    employee: null,
   });
 
   useEffect(() => {
@@ -129,13 +142,17 @@ function Process() {
     fetchHowWeWork();
   }, []);
 
-  const handleToggleExpand = (journeyType, stepIndex) => {
-    setExpandedSteps(prev => ({
+  const handleHoverStep = (journeyType, stepIndex) => {
+    setHoveredStep((prev) => ({
       ...prev,
-      [journeyType]: {
-        ...prev[journeyType],
-        [stepIndex]: !prev[journeyType][stepIndex]
-      }
+      [journeyType]: stepIndex,
+    }));
+  };
+
+  const handleLeaveStep = (journeyType) => {
+    setHoveredStep((prev) => ({
+      ...prev,
+      [journeyType]: null,
     }));
   };
 
@@ -213,8 +230,9 @@ function Process() {
                     isLast={index === employerSteps.length - 1}
                     stepIndex={index}
                     journeyType="employer"
-                    isExpanded={expandedSteps.employer[index] || false}
-                    onToggleExpand={handleToggleExpand}
+                    isHovered={hoveredStep.employer === index}
+                    onHoverStep={handleHoverStep}
+                    onLeaveStep={handleLeaveStep}
                   />
                 ))}
             </div>
@@ -300,8 +318,9 @@ function Process() {
                     isLast={index === employeeSteps.length - 1}
                     stepIndex={index}
                     journeyType="employee"
-                    isExpanded={expandedSteps.employee[index] || false}
-                    onToggleExpand={handleToggleExpand}
+                    isHovered={hoveredStep.employee === index}
+                    onHoverStep={handleHoverStep}
+                    onLeaveStep={handleLeaveStep}
                   />
                 ))}
             </div>

@@ -18,7 +18,9 @@ export default function Hero() {
       try {
         const data = await getEmployerHero();
         if (mounted) {
+          console.log("Employer Hero Data:", data);
           setHeroData(data);
+
         }
       } catch (error) {
         console.error("Failed to fetch employer hero data:", error);
@@ -38,7 +40,7 @@ export default function Hero() {
 
   const bgImage = heroData?.backgroundImage ? getImageUrl(heroData.backgroundImage) : defaultBackgroundImage;
   const title = heroData?.title || "Employer Recruitment";
-  const description = heroData?.description || "Helping businesses hire the right talent.";
+  const description = heroData?.subtitle || "Helping businesses hire the right talent.";
 
   return (
     <section
@@ -75,11 +77,12 @@ export default function Hero() {
               width: "100%",
               fontFamily: "Inter, sans-serif",
               fontWeight: 800,
-              fontSize: "60px",
+              fontSize: "clamp(24px, 4vw, 60px)",
               lineHeight: "1.1",
               letterSpacing: "0px",
               color: "#F39308",
               marginBottom: "0px",
+              wordBreak: "break-word",
             }}
           >
             {title}
@@ -102,14 +105,12 @@ export default function Hero() {
         {description && (
           <div
             style={{
-              width: "100%",
-              maxWidth: "627px",
-              fontFamily: "Inter, sans-serif",
-              fontWeight: 800,
-              fontSize: "60px",
-              lineHeight: "76.8px",
-              letterSpacing: "0px",
-              color: "#FFFFFF",
+              marginTop: "20px",
+              marginBottom: "32px",
+              fontSize: "17px",
+              lineHeight: 1.4,
+              color: "rgba(255, 255, 255, 0.95)",
+              maxWidth: "540px",
             }}
           >
             {description}

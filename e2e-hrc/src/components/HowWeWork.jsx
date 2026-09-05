@@ -16,6 +16,38 @@ const DEFAULT_ICONS = [FiBriefcase, FiTarget, FiSearch, FiClipboard, FiSettings,
 
 const delayClass = ['', 'reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3', 'reveal-delay-4', 'reveal-delay-5'];
 
+const HowWeWorkStepItem = ({ icon: Icon, step, title, description, i, stepsVisible }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const hasDescription = description && description.trim().length > 0;
+
+  return (
+    <div
+      className={`relative z-10 flex flex-col items-center text-center gap-3
+                  reveal ${delayClass[i % delayClass.length]} ${stepsVisible ? 'visible' : ''}`}
+    >
+      <span className="w-11 h-11 rounded-full bg-primary flex items-center justify-center shadow-card
+                       hover:bg-primary-dark transition-colors duration-200 shrink-0">
+        <Icon size={18} className="text-white" aria-hidden="true" />
+      </span>
+      <div className="flex flex-col gap-1 items-center w-full">
+        <span className="text-text-body text-xs font-medium">{step}</span>
+        <span 
+          className={`font-heading font-semibold text-sm text-primary leading-snug ${hasDescription ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
+          onClick={() => { if (hasDescription) setIsExpanded(!isExpanded); }}
+          title={hasDescription ? "Click to expand/collapse description" : ""}
+        >
+          {title}
+        </span>
+        {hasDescription && isExpanded && (
+          <div className="text-text-body text-xs leading-relaxed mt-1 text-center w-full">
+            {description}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 export default function HowWeWork() {
   const [headerRef, headerVisible] = useScrollReveal();
   const [stepsRef, stepsVisible] = useScrollReveal();
@@ -65,6 +97,7 @@ export default function HowWeWork() {
                 : `Step ${item.stepNumber}`
               : `Step ${index + 1}`,
             title: item.title,
+            description: item.description,
             id: item._id || index,
           }))
       : DEFAULT_STEPS.map((s, i) => ({ ...s, id: i }));
@@ -91,21 +124,16 @@ export default function HowWeWork() {
                           border-t-2 border-dashed border-accent opacity-40 z-0" aria-hidden="true" />
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-y-10 gap-x-4">
-            {displaySteps.map(({ icon: Icon, step, title, id }, i) => (
-              <div
+            {displaySteps.map(({ icon: Icon, step, title, description, id }, i) => (
+              <HowWeWorkStepItem
                 key={id || step}
-                className={`relative z-10 flex flex-col items-center text-center gap-3
-                            reveal ${delayClass[i % delayClass.length]} ${stepsVisible ? 'visible' : ''}`}
-              >
-                <span className="w-11 h-11 rounded-full bg-primary flex items-center justify-center shadow-card
-                                 hover:bg-primary-dark transition-colors duration-200">
-                  <Icon size={18} className="text-white" aria-hidden="true" />
-                </span>
-                <div className="flex flex-col gap-1">
-                  <span className="text-text-body text-xs font-medium">{step}</span>
-                  <span className="font-heading font-semibold text-sm text-primary leading-snug">{title}</span>
-                </div>
-              </div>
+                icon={Icon}
+                step={step}
+                title={title}
+                description={description}
+                i={i}
+                stepsVisible={stepsVisible}
+              />
             ))}
           </div>
         </div>

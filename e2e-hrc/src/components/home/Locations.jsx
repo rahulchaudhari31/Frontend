@@ -1,8 +1,50 @@
-import { useRef, useState, useEffect } from "react";
+
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import locationIcon from "../../assets/images/Career Growth imgs/DUBAI LOCATION.png";
 import arrowIcon from "../../assets/images/Career Growth imgs/arrrow.png";
 import { getLocationCards } from "../../services/home/locationCardService";
+
+const getSafeText = (value, fallback) => {
+  if (value === null || value === undefined || value === "") return fallback;
+  return value;
+};
+
+const normalizeLocationCard = (item, index) => {
+  if (!item || typeof item !== "object") {
+    return null;
+  }
+
+  const name =
+    getSafeText(
+      item.name ?? item.locationName ?? item.cityName ?? item.title ?? item.location,
+      `Location ${index + 1}`
+    );
+
+  const highlight =
+    getSafeText(
+      item.highlight ?? item.country ?? item.label ?? item.location ?? item.name ?? item.cityName,
+      name
+    );
+
+  const image =
+    getSafeText(
+      item.image ?? item.imageUrl ?? item.coverImage ?? item.photo ?? item.mediaUrl ?? item.media?.url,
+      ""
+    );
+
+  const link = getSafeText(item.link ?? item.mapLink ?? item.googleMapLink ?? item.directionsLink ?? item.locationLink, "#");
+  const color = getSafeText(item.color ?? item.accentColor ?? item.themeColor ?? item.borderColor, "#004CA5");
+
+  return {
+    ...item,
+    name,
+    highlight,
+    image,
+    link,
+    color,
+  };
+};
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 60 },
@@ -39,37 +81,50 @@ function Locations() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchLocations = async () => {
       try {
         setLoading(true);
-        const fetchedLocations = await getLocationCards();
-        // Sort by order field and filter active locations
-        const sortedLocations = fetchedLocations
-          .filter(loc => loc.isActive !== false)
-          .sort((a, b) => (a.order || 0) - (b.order || 0));
-        
-        // Map backend fields to component expectations and assign colors based on country/city
-        const mappedLocations = sortedLocations.map((loc, idx) => {
-          const colorMap = ["#004CA5", "#F39308", "#C9DB82", "#71DF14"];
-          return {
-            _id: loc._id,
-            name: loc.cityname || "",
-            highlight: loc.contryname || "",
-            image: loc.image || "",
-            link: "#",
-            color: colorMap[idx % colorMap.length],
-          };
-        });
-        setLocations(mappedLocations);
+        const response = await getLocationCards();
+        console.log("Fetched location cards:", response);
+
+        if (!isMounted) return;
+
+        const activeCards = Array.isArray(response)
+          ? response.filter((item) => {
+              if (!item || typeof item !== "object") return false;
+
+              const status = String(item.status ?? item.state ?? item.activeStatus ?? "").toLowerCase();
+              const isActive = item.isActive ?? item.active;
+
+              if (isActive === false) return false;
+              if (["inactive", "disabled", "archived", "deleted", "deactivated"].includes(status)) {
+                return false;
+              }
+
+              return true;
+            })
+          : [];
+
+        setLocations(activeCards.map(normalizeLocationCard).filter(Boolean));
       } catch (error) {
-        console.error('Error loading location cards:', error);
-        setLocations([]);
+        console.error("Error fetching location cards:", error);
+        if (isMounted) {
+          setLocations([]);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchLocations();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const scrollRef = useRef(null);
@@ -104,29 +159,32 @@ function Locations() {
   return (
     <motion.section
       ref={sectionRef}
-      className="w-full py-8 sm:py-12 lg:py-16"
+      className="w-full pt-8 pb-20"
       variants={sectionVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
     >
       <motion.div
-        className="text-center px-4 sm:px-6 lg:px-8"
+        className="text-center px-6"
         variants={sectionVariants}
       >
-        <span className="inline-block bg-[#f4f7fb] text-[#004CA5] px-3 py-1.5 rounded-full text-xs font-medium mb-3">
+        <span className="bg-[#f4f7fb] text-[#004CA5] px-4 py-2 rounded-full text-sm font-medium">
           Our Locations
         </span>
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#004CA5]">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#004CA5] mt-3">
           Our Office Locations
         </h2>
       </motion.div>
 
-      <div className="mt-12 sm:mt-16 w-full overflow-x-auto">
+      <div className="mt-12" style={{ overflow: "visible" }}>
         <motion.div
           ref={scrollRef}
-          className="locations-scroll flex px-4 sm:px-6 lg:px-8"
+          className="locations-scroll flex"
           style={{
-            gap: "24px",
+            overflowX: "auto",
+            overflowY: "hidden",
+            paddingLeft: "32px",
+            paddingRight: "20px",
             paddingTop: "40px",
             paddingBottom: "6px",
             cursor: "grab",
@@ -141,48 +199,67 @@ function Locations() {
           onMouseUp={onMouseUp}
           onMouseMove={onMouseMove}
         >
-          {locations.map((loc, i) => (
-            <motion.div
-              key={loc._id || i}
-              className="location-card snap-center relative flex-shrink-0"
-              variants={cardVariants}
+          {loading ? (
+            <div
               style={{
-                width: "280px",
-                minWidth: "280px",
-                height: "280px",
-                borderRadius: "28px",
-                background: "transparent",
-                boxShadow: "0px 2.58px 12.91px 0px rgba(0,0,0,0.08)",
-                willChange: "transform",
-                animation: `floating 5s ease-in-out ${i * 0.7}s infinite`,
+                width: "100%",
+                textAlign: "center",
+                color: "#004CA5",
+                fontFamily: "Poppins, sans-serif",
+                fontSize: "14px",
+                fontWeight: 500,
+                padding: "12px 0",
               }}
             >
+              Loading locations...
+            </div>
+          ) : locations.length === 0 ? (
+            <div
+              style={{
+                width: "100%",
+                textAlign: "center",
+                color: "#004CA5",
+                fontFamily: "Poppins, sans-serif",
+                fontSize: "14px",
+                fontWeight: 500,
+                padding: "12px 0",
+              }}
+            >
+              No locations available.
+            </div>
+          ) : (
+            locations.map((loc, i) => (
+              <motion.div
+                key={loc._id || loc.id || loc.name || i}
+                className="location-card snap-center relative flex-shrink-0"
+                variants={cardVariants}
+                style={{
+                  width: "344.59px",
+                  height: "309.74px",
+                  borderRadius: "28px",
+                  background: "transparent",
+                  boxShadow: "0px 2.58px 12.91px 0px rgba(0,0,0,0.08)",
+                  flexShrink: 0,
+                  willChange: "transform",
+                  animation: `floating 5s ease-in-out ${i * 0.7}s infinite`,
+                }}
+              >
               <div className="location-card-inner" style={{ position: "absolute", inset: 0, borderRadius: "28px", overflow: "hidden" }}>
-                {loc.image ? (
-                  <img
-                    src={loc.image}
-                    alt={loc.name}
-                    loading="lazy"
-                    decoding="async"
-                    className="location-card-img"
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      willChange: "transform",
-                    }}
-                  />
-                ) : (
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      background: "#E8EDF5",
-                    }}
-                  />
-                )}
+                <img
+                  src={loc.image}
+                  alt={loc?.countryname}
+                  loading="lazy"
+                  decoding="async"
+                  className="location-card-img"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    willChange: "transform",
+                  }}
+                />
 
                 <div className="location-card-overlay" />
 
@@ -198,16 +275,18 @@ function Locations() {
                     style={{
                       fontFamily: "Poppins, sans-serif",
                       fontWeight: 800,
-                      fontSize: "clamp(20px, 5vw, 31px)",
-                      lineHeight: "1.2",
+                      fontSize: "31.08px",
+                      lineHeight: "58.08px",
                       letterSpacing: "-1.29px",
                       color: "#FFFFFF",
                       textAlign: "center",
+                      verticalAlign: "middle",
                       opacity: 0.87,
-                      maxWidth: "80%",
+                      whiteSpace: "normal",
+                      maxWidth: "245px",
                     }}
                   >
-                    {loc.highlight}
+                    {loc.contryname}
                   </span>
                 </div>
 
@@ -221,24 +300,24 @@ function Locations() {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "flex-start",
-                    padding: "12px 16px",
+                    padding: "0 16px 7.74px 16px",
                     gap: "5.16px",
                   }}
                 >
                   <div className="flex items-center" style={{ gap: "5.16px" }}>
                     <div
                       style={{
-                        width: "18.07px", height: "18.07px", borderRadius: "50%",
+                        width: "18.07px", height: "18.07px", borderRadius: "17322056px",
                         background: loc.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
                       }}
                     >
                       <img src={locationIcon} alt="" style={{ width: "8.39px", height: "8.39px" }} />
                     </div>
                     <span style={{
-                      fontFamily: "Poppins, sans-serif", fontWeight: 600, fontSize: "11px",
-                      lineHeight: "16px", color: "#FFFFFF",
+                      fontFamily: "Poppins, sans-serif", fontWeight: 600, fontSize: "7.74px",
+                      lineHeight: "10.32px", color: "#FFFFFF",
                     }}>
-                      {loc.name}
+                      {loc.contryname}
                     </span>
                   </div>
                   <a
@@ -248,7 +327,7 @@ function Locations() {
                     className="flex items-center"
                     style={{
                       gap: "4px", fontFamily: "Poppins, sans-serif", fontWeight: 600,
-                      fontSize: "10px", lineHeight: "14px", color: loc.color,
+                      fontSize: "7.74px", lineHeight: "10.32px", color: loc.color,
                       display: "inline-flex", alignItems: "center", textDecoration: "none",
                     }}
                   >
@@ -258,7 +337,8 @@ function Locations() {
                 </div>
               </div>
             </motion.div>
-          ))}
+            ))
+          )}
         </motion.div>
       </div>
 
@@ -276,8 +356,10 @@ function Locations() {
           transform-origin: center center;
           cursor: pointer;
           flex-shrink: 0;
-          margin: 0;
+          margin: 0 24px;
         }
+        .location-card:first-child { margin-left: 0; }
+        .location-card:last-child  { margin-right: 0; }
 
         .location-card:hover {
           transform: translateY(-18px) scale(1.20) !important;

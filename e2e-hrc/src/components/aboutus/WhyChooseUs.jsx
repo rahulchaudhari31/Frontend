@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
-import hiringImg from "../../assets/images/Career Growth imgs/hiring.jpg";
-import expertImg from "../../assets/images/Career Growth imgs/expert.png";
-import globalImg from "../../assets/images/Career Growth imgs/global.png";
-import complianceImg from "../../assets/images/Career Growth imgs/compliance 1.png";
 import { getWhyChooseData } from "../../services/about/whyChooseService";
 
-// ─── Icon renderer — hardcoded SVGs, never from backend ───────────────────────
 const getIcon = (type) => {
-  const color = "#00458D";
+  const color = "#004CA5";
+
   switch (type) {
     case "globe":
       return (
-        <svg width="29" height="24" viewBox="0 0 29 24" fill="none">
+        <svg width="29" height="24" viewBox="0 0 29 24" fill="none" aria-hidden="true">
           <circle cx="14.5" cy="12" r="10" stroke={color} strokeWidth="2" fill="none" />
           <line x1="4.5" y1="12" x2="24.5" y2="12" stroke={color} strokeWidth="1.5" />
           <ellipse cx="14.5" cy="12" rx="5" ry="10" stroke={color} strokeWidth="1.5" fill="none" />
@@ -19,354 +15,314 @@ const getIcon = (type) => {
       );
     case "shield":
       return (
-        <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true">
           <path d="M15 3L4 8v7c0 6.5 4.7 12.6 11 14 6.3-1.4 11-7.5 11-14V8L15 3z" stroke={color} strokeWidth="2" fill="none" />
           <path d="M11 15l3 3 5-6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       );
     case "check":
       return (
-        <svg width="24" height="30" viewBox="0 0 24 30" fill="none">
+        <svg width="24" height="30" viewBox="0 0 24 30" fill="none" aria-hidden="true">
           <rect x="2" y="2" width="20" height="20" rx="3" stroke={color} strokeWidth="2" fill="none" />
           <path d="M7 15l4 4 6-8" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       );
     case "bolt":
       return (
-        <svg width="30" height="24" viewBox="0 0 30 24" fill="none">
+        <svg width="30" height="24" viewBox="0 0 30 24" fill="none" aria-hidden="true">
           <path d="M18 2L6 14h8l-2 8 12-12h-8l2-8z" fill={color} />
         </svg>
       );
     case "wrench":
       return (
-        <svg width="30" height="27" viewBox="0 0 30 27" fill="none">
+        <svg width="30" height="27" viewBox="0 0 30 27" fill="none" aria-hidden="true">
           <path d="M22 4a6 6 0 00-8.5 8.5L4 22l2 2 9.5-9.5A6 6 0 0022 4z" stroke={color} strokeWidth="2" fill="none" />
           <circle cx="22" cy="4" r="3" stroke={color} strokeWidth="2" fill="none" />
         </svg>
       );
     default:
-      return null;
+      return (
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+          <circle cx="13" cy="13" r="10" stroke={color} strokeWidth="2" />
+          <path d="M13 7v6l4 3" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
   }
 };
 
-// ─── Image URL helper ─────────────────────────────────────────────────────────
-const getImageUrl = (path) => {
-  if (!path || path.trim() === "") return "";
-  if (path.startsWith("http://") || path.startsWith("https://")) return path;
-  return `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3000"}${path}`;
-};
-
-// ─── Fixed layout config — positions, icons, and fallback icons are
-//     hardcoded. Only title, description, and optional card image
-//     are driven by the backend. ──────────────────────────────────
-const CARD_LAYOUT = [
-  {
-    key: 0,
-    icon: "globe",
-    imgSrc: expertImg,          // fallback icon image (card 1)
-    dir: "column", pad: "32px",
-    hasImage: false,
-  },
-  {
-    key: 1,
-    icon: "shield",
-    imgSrc: globalImg,          // fallback icon image (card 2)
-    dir: "column", pad: "32px 32px 56px",
-    hasImage: false,
-  },
-  {
-    key: 2,
-    icon: "check",
-    imgSrc: complianceImg,      // fallback icon image (card 3)
-    dir: "column", pad: "32px 32px 56px",
-    hasImage: false,
-  },
-  {
-    key: 3,
-    icon: "bolt",
-    imgSrc: null,               // card 4 uses SVG icon, not a PNG
-    dir: "row", pad: "32px",
-    hasImage: true,             // shows the hiring photo panel
-  },
-  {
-    key: 4,
-    icon: "wrench",
-    imgSrc: null,               // card 5 uses SVG icon
-    dir: "column", pad: "32px",
-    hasImage: false,
-  },
-];
-
-// ─── Component ────────────────────────────────────────────────────────────────
 const WhyChooseUs = () => {
   const [section, setSection] = useState(null);
   const [apiCards, setApiCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [expandedCards, setExpandedCards] = useState({});
 
   useEffect(() => {
     let mounted = true;
+
     const load = async () => {
       try {
         const data = await getWhyChooseData();
+
         if (!mounted) return;
 
         if (data?.success && data?.data) {
           setSection(data.data.section || null);
-
-          // Sort cards by displayOrder before storing
           const sorted = Array.isArray(data.data.cards)
-            ? [...data.data.cards].sort(
-                (a, b) => Number(a.displayOrder || 0) - Number(b.displayOrder || 0)
-              )
+            ? [...data.data.cards].sort((a, b) => Number(a.displayOrder || 0) - Number(b.displayOrder || 0))
             : [];
           setApiCards(sorted);
         }
       } catch (err) {
         console.error("WhyChooseUs: failed to fetch data", err);
-        // Keep empty state — no crash, no broken layout
       } finally {
         if (mounted) setIsLoading(false);
       }
     };
 
     load();
-    return () => { mounted = false; };
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
-  // While loading, render nothing to avoid layout shift
   if (isLoading) return null;
-
-  // If API returned no cards, render nothing (section won't appear)
   if (apiCards.length === 0) return null;
 
-  const sectionTitle = section?.sectionTitle || "";
+  const sectionTitle = section?.sectionTitle || "Why Choose E2E HRC?";
   const sectionDesc = section?.sectionDescription || "";
+
+  const setExpanded = (index, value) => {
+    setExpandedCards((prev) => ({
+      ...prev,
+      [index]: value,
+    }));
+  };
+
+  const toggleCard = (index) => {
+    setExpandedCards((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
 
   return (
     <section
-      className="about-whychooseus"
+      className="why-choose-us-section"
       style={{
         width: "100%",
-        background: "#F3F1ED",
+        background: "#F5F4F0",
         fontFamily: "'Inter', sans-serif",
-        position: "relative",
-        overflow: "hidden",
+        padding: "72px 0 80px",
+        boxSizing: "border-box",
       }}
     >
-      <div
-        className="about-wcu-container"
-        style={{
-          width: "1324px",
-          maxWidth: "100%",
-          margin: "0 auto",
-          position: "relative",
-          height: "auto",
-          minHeight: "692px",
-          boxSizing: "border-box",
-        }}
-      >
-        {/* ── Section header ───────────────────────────────────────── */}
-        <div
-          className="about-wcu-header"
-          style={{
-            margin: "0 auto",
-            maxWidth: "768px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "16px",
-            paddingTop: "40px",
-            paddingBottom: "32px",
-          }}
-        >
-          <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-            <h2
-              style={{
-                margin: 0,
-                fontFamily: "Poppins, sans-serif",
-                fontWeight: 800,
-                fontSize: "36px",
-                lineHeight: "1.3",
-                color: "#0F172A",
-                textAlign: "center",
-              }}
-            >
-              {sectionTitle}
-            </h2>
-          </div>
-          <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-            <p
-              style={{
-                margin: 0,
-                fontFamily: "Inter, sans-serif",
-                fontWeight: 400,
-                fontSize: "16px",
-                lineHeight: "24px",
-                color: "#424752",
-                textAlign: "center",
-              }}
-            >
-              {sectionDesc}
-            </p>
-          </div>
+      <style>{`
+        .why-choose-us-shell {
+          width: 100%;
+          max-width: 1000px;
+          margin: 0 auto;
+          padding: 0 20px;
+          box-sizing: border-box;
+        }
+
+        .why-choose-us-header {
+          text-align: center;
+          margin: 0 auto 32px;
+          max-width: 760px;
+        }
+
+        .why-choose-us-header h2 {
+          margin: 0;
+          font-family: "Poppins", sans-serif;
+          font-size: clamp(28px, 3vw, 42px);
+          font-weight: 800;
+          line-height: 1.2;
+          letter-spacing: -0.04em;
+          color: #0F172A;
+        }
+
+        .why-choose-us-header p {
+          margin: 16px 0 0;
+          font-family: "Inter", sans-serif;
+          font-size: 16px;
+          line-height: 26px;
+          color: #4B5563;
+        }
+
+        .why-choose-list {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          width: 100%;
+        }
+
+        .why-choose-item {
+          width: 100%;
+          background: #FFFFFF;
+          border: 1px solid rgba(0, 76, 165, 0.12);
+          border-radius: 12px;
+          padding: 18px 20px;
+          box-sizing: border-box;
+          box-shadow: 0 5px 14px rgba(15, 23, 42, 0.03);
+          transition: box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .why-choose-item:hover {
+          border-color: rgba(0, 76, 165, 0.22);
+          box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+        }
+
+        .why-choose-item-inner {
+          display: flex;
+          align-items: flex-start;
+          gap: 14px;
+        }
+
+        .why-choose-icon {
+          width: 32px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          color: #004CA5;
+        }
+
+        .why-choose-body {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .why-choose-title-wrap {
+          display: inline-block;
+          max-width: 100%;
+          cursor: pointer;
+          user-select: none;
+        }
+
+        .why-choose-title-wrap h3 {
+          margin: 0;
+          font-family: "Poppins", sans-serif;
+          font-size: clamp(18px, 1.4vw, 22px);
+          line-height: 1.35;
+          font-weight: 500;
+          color: #0F172A;
+        }
+
+        .why-choose-description {
+          margin-top: 6px;
+          overflow: hidden;
+          max-height: 28px;
+          transition: max-height 0.35s ease, opacity 0.3s ease;
+          opacity: 0.95;
+        }
+
+        .why-choose-item.expanded .why-choose-description {
+          max-height: 220px;
+          opacity: 1;
+        }
+
+        .why-choose-description p {
+          margin: 0;
+          font-family: "Inter", sans-serif;
+          font-size: 15px;
+          line-height: 24px;
+          color: #4B5563;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          word-break: break-word;
+          overflow-wrap: anywhere;
+        }
+
+        .why-choose-item.expanded .why-choose-description p {
+          display: block;
+          -webkit-line-clamp: unset;
+          -webkit-box-orient: unset;
+          overflow: visible;
+          text-overflow: unset;
+        }
+
+        @media (max-width: 768px) {
+          .why-choose-us-section {
+            padding: 56px 0 64px;
+          }
+
+          .why-choose-us-shell {
+            padding: 0 12px;
+          }
+
+          .why-choose-item {
+            padding: 16px 16px;
+            border-radius: 10px;
+          }
+
+          .why-choose-item-inner {
+            gap: 12px;
+          }
+
+          .why-choose-icon {
+            width: 28px;
+            height: 28px;
+          }
+
+          .why-choose-description {
+            max-height: 24px;
+          }
+        }
+      `}</style>
+
+      <div className="why-choose-us-shell">
+        <div className="why-choose-us-header">
+          <h2>{sectionTitle}</h2>
+          {sectionDesc ? <p>{sectionDesc}</p> : null}
         </div>
 
-        {/* ── Cards Grid ────────────────────────────────────────────── */}
-        <div
-          className="about-wcu-cards"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 404px)",
-            gap: "34px 24px",
-            justifyContent: "center",
-            paddingBottom: "50px",
-          }}
-        >
+        <div className="why-choose-list">
           {apiCards.map((apiCard, index) => {
-            // Merge fixed layout with dynamic API data
-            const layout = CARD_LAYOUT[index];
-            if (!layout) return null; // guard: more than 5 cards from API
-
-            const row = Math.floor(index / 3);
-
-            // ── Image logic for card index 3 (the large "Fast Hiring" card)
-            const cardPhotoSrc =
-              layout.hasImage
-                ? (apiCard.image && apiCard.image.trim() !== ""
-                    ? getImageUrl(apiCard.image)
-                    : hiringImg)
-                : null;
-
-            // ── Icon: always from CARD_LAYOUT — never from backend
-            const iconEl = layout.imgSrc ? (
-              <img
-                src={layout.imgSrc}
-                alt=""
-                style={{ width: "100%", height: "100%", objectFit: "contain" }}
-              />
-            ) : (
-              getIcon(layout.icon)
-            );
-
-            const iconBoxW = layout.imgSrc
-              ? "28.52px"
-              : layout.icon === "globe"
-              ? "28.52px"
-              : "30px";
-            const iconBoxH = layout.imgSrc
-              ? "30px"
-              : layout.icon === "bolt"
-              ? "24px"
-              : layout.icon === "wrench"
-              ? "27px"
-              : "30px";
+            const expanded = !!expandedCards[index];
+            const iconType = apiCard.icon || ["globe", "shield", "check", "bolt", "wrench"][index % 5];
 
             return (
               <div
-                key={apiCard._id || layout.key}
-                style={{
-                  gridColumn: index === 3 ? "span 2" : "span 1",
-                  minHeight: row === 0 ? "244px" : "230px",
-                  height: "auto",
-                  background: "#FFFFFF",
-                  border: "1px solid #C9DB82",
-                  borderRadius: "24px",
-                  padding: layout.pad,
-                  display: "flex",
-                  flexDirection: layout.dir,
-                  alignItems: "stretch",
-                  gap: layout.dir === "row" ? "32px" : "12px",
-                  boxSizing: "border-box",
-                }}
+                key={apiCard._id || apiCard.title || index}
+                className={`why-choose-item ${expanded ? "expanded" : ""}`}
               >
-                {/* Left / text column */}
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                    gap: "12px",
-                    flex: 1,
-                    minWidth: 0,
-                  }}
-                >
-                  {/* Icon */}
-                  <div style={{ width: iconBoxW, height: iconBoxH, display: "flex", alignItems: "center", justifyContent: "flex-start" }}>
-                    {iconEl}
-                  </div>
+                <div className="why-choose-item-inner">
+                  <div className="why-choose-icon">{getIcon(iconType)}</div>
 
-                  {/* Title — from API */}
-                  <div
-                    style={{
-                      width: "100%",
-                      paddingTop: "4px",
-                    }}
-                  >
-                    <h3
-                      style={{
-                        margin: 0,
-                        fontFamily: "Poppins, sans-serif",
-                        fontWeight: 600,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        color: "#0F172A",
+                  <div className="why-choose-body">
+                    <div
+                      className="why-choose-title-wrap"
+                      onMouseEnter={() => setExpanded(index, true)}
+                      onMouseLeave={() => setExpanded(index, false)}
+                      onClick={() => {
+                        if (window.matchMedia && window.matchMedia("(max-width: 768px)").matches) {
+                          toggleCard(index);
+                        }
+                      }}
+                      onTouchStart={() => toggleCard(index)}
+                      role="button"
+                      tabIndex={0}
+                      aria-expanded={expanded}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          toggleCard(index);
+                        }
                       }}
                     >
-                      {apiCard.title || ""}
-                    </h3>
-                  </div>
+                      <h3>{apiCard.title || "Feature"}</h3>
+                    </div>
 
-                  {/* Description — from API */}
-                  <div
-                    style={{
-                      width: "100%",
-                    }}
-                  >
-                    <p
-                      style={{
-                        margin: 0,
-                        fontFamily: "Inter, sans-serif",
-                        fontWeight: 400,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        color: "#424752",
-                        whiteSpace: "normal",
-                        wordBreak: "break-word",
-                        overflowWrap: "anywhere",
-                      }}
-                    >
-                      {apiCard.description || ""}
-                    </p>
+                    <div className="why-choose-description">
+                      <p>{apiCard.description || ""}</p>
+                    </div>
                   </div>
                 </div>
-
-                {/* Photo panel — only on card 4, always shows an image */}
-                {layout.hasImage && (
-                  <div
-                    style={{
-                      width: "245.55px",
-                      borderRadius: "12px",
-                      overflow: "hidden",
-                      background: "#ECEEF0",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                      alignSelf: "stretch",
-                    }}
-                  >
-                    <img
-                      src={cardPhotoSrc}
-                      alt={apiCard.title || "Card image"}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        opacity: 0.8,
-                      }}
-                    />
-                  </div>
-                )}
               </div>
             );
           })}

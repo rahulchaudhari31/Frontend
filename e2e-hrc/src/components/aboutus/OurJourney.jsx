@@ -129,7 +129,7 @@ function Card({ m, i, isLeft }) {
               }}>
                 {m.title}
               </h3>
-              {/* read-more */}
+              {/* read-more 
               <div style={{
                 display: "flex", alignItems: "center", gap: 6, marginTop: 8,
                 fontFamily: "'Inter',sans-serif", fontWeight: 500, fontSize: 12,
@@ -137,11 +137,11 @@ function Card({ m, i, isLeft }) {
               }}>
                 <span>{open ? "Show less" : "Read more"}</span>
                 <Chev open={open} />
-              </div>
+              </div> */}
             </div>
           </div>
 
-          {/* expandable — grid rows trick, no scrollHeight needed */}
+          {/* expandable — grid rows trick, no scrollHeight needed 
           <div style={{
             display: "grid",
             gridTemplateRows: open ? "1fr" : "0fr",
@@ -157,7 +157,7 @@ function Card({ m, i, isLeft }) {
                 </p>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

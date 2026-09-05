@@ -1,75 +1,79 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { getApproachCards } from "../../services/home/approachCardService";
+import towerBridgeImg from "../../assets/image/Human approach .jpeg";
+import manScarfImg from "../../assets/image/mann.jpg";
+import childrenImg from "../../assets/image/childrenssss.jpg";
 
-// Static watermark paths (these remain as they are design assets)
-const watermarkConfig = {
-  0: { letterSrc: "/watermark-H.png", letterW: "302.64px", letterH: "339.54px", letterTop: "68.23px", letterRight: "42.68px", letterOpacity: 0.1 },
-  1: { letterSrc: "/watermark-R.png", letterW: "255.84px", letterH: "348.37px", letterTop: "71.82px", letterRight: "36.08px", letterOpacity: 0.1 },
-  2: { letterSrc: "/watermark-C.png", letterW: "250.38px", letterH: "314.176px", letterTop: "44.41px", letterRight: "35.31px", letterOpacity: 0.4 },
-};
+const defaultImages = [towerBridgeImg, manScarfImg, childrenImg];
 
-// Color and layout configurations
-const layoutConfig = {
-  0: { eyebrowColor: "#004CA5", statColor: "#004CA5", imageWidth: "496px", imageRight: false, layout: "row1" },
-  1: { eyebrowColor: "#F39308", statColor: "#F39308", imageWidth: "527px", imageRight: true, layout: "row2" },
-  2: { eyebrowColor: "#C9DB82", statColor: "#C9DB82", imageWidth: "498px", imageRight: false, layout: "row3" },
-};
+const layoutConfigs = [
+  {
+    eyebrowColor: "#004CA5",
+    statColor: "#004CA5",
+    letterSrc: "/watermark-H.png",
+    letterW: "302.64px",
+    letterH: "339.54px",
+    letterTop: "68.23px",
+    letterRight: "150px",
+    letterColor: "#004CA5",
+    letterOpacity: 0.1,
+    imageWidth: "496px",
+    imageRight: false,
+    layout: "row1",
+  },
+  {
+    eyebrowColor: "#F39308",
+    statColor: "#F39308",
+    letterSrc: "/watermark-R.png",
+    letterW: "255.84px",
+    letterH: "348.37px",
+    letterTop: "71.82px",
+    letterRight: "36.08px",
+    letterColor: "#F39308",
+    letterOpacity: 0.1,
+    imageWidth: "527px",
+    imageRight: true,
+    layout: "row2",
+  },
+  {
+    eyebrowColor: "#C9DB82",
+    statColor: "#C9DB82",
+    letterSrc: "/watermark-C.png",
+    letterW: "250.38px",
+    letterH: "314.176px",
+    letterTop: "70px",
+    letterRight: "50px",
+    letterColor: "#C9DB82",
+    letterOpacity: 0.4,
+    imageWidth: "498px",
+    imageRight: false,
+    layout: "row3",
+  },
+];
 
-// Background decorative letter component
-function BackgroundLetter({ title }) {
-  const backgroundLetter = title?.trim()?.charAt(0)?.toUpperCase() || "";
-  
-  if (!backgroundLetter) return null;
-  
-  return (
-    <span
-      aria-hidden="true"
-      style={{
-        position: "absolute",
-        right: "150px",
-        top: "50%",
-        transform: "translateY(-50%)",
-        fontFamily: "Poppins, sans-serif",
-        fontWeight: 800,
-        fontSize: "640px",
-        lineHeight: 1,
-        color: "#0D4DA1",
-        opacity: 0.06,
-        zIndex: 0,
-        pointerEvents: "none",
-        userSelect: "none",
-        overflow: "hidden",
-      }}
-    >
-      {backgroundLetter}
-    </span>
-  );
-}
-
-function Watermark({ row, index }) {
-  const config = watermarkConfig[index] || watermarkConfig[0];
-  const letterColor = layoutConfig[index]?.eyebrowColor || "#004CA5";
-
-  if (letterColor) {
+function Watermark({ row }) {
+  if (row.letterColor) {
     return (
       <div
         aria-hidden="true"
         style={{
           position: "absolute",
-          width: config.letterW,
-          height: config.letterH,
-          top: config.letterTop,
-          right: config.letterRight,
-          backgroundColor: letterColor,
-          maskImage: `url(${config.letterSrc})`,
-          WebkitMaskImage: `url(${config.letterSrc})`,
+          width: row.letterW,
+          height: row.letterH,
+          top: row.letterTop,
+          ...(row.letterRight
+            ? { right: row.letterRight }
+            : { left: row.letterLeft }),
+          backgroundColor: row.letterColor,
+          maskImage: `url(${row.letterSrc})`,
+          WebkitMaskImage: `url(${row.letterSrc})`,
           maskSize: "contain",
           WebkitMaskSize: "contain",
           maskRepeat: "no-repeat",
           WebkitMaskRepeat: "no-repeat",
           maskPosition: "center",
           WebkitMaskPosition: "center",
-          opacity: config.letterOpacity,
+          opacity: 1,
           pointerEvents: "none",
           userSelect: "none",
           zIndex: 0,
@@ -80,17 +84,19 @@ function Watermark({ row, index }) {
 
   return (
     <img
-      src={config.letterSrc}
+      src={row.letterSrc}
       alt=""
       aria-hidden="true"
       draggable={false}
       style={{
         position: "absolute",
-        width: config.letterW,
-        height: config.letterH,
-        top: config.letterTop,
-        right: config.letterRight,
-        opacity: config.letterOpacity,
+        width: row.letterW,
+        height: row.letterH,
+        top: row.letterTop,
+        ...(row.letterRight
+          ? { right: row.letterRight }
+          : { left: row.letterLeft }),
+        opacity: 1,
         pointerEvents: "none",
         userSelect: "none",
         zIndex: 0,
@@ -99,10 +105,8 @@ function Watermark({ row, index }) {
   );
 }
 
-function Row1Card({ row, index, isExpanded, onToggleExpand }) {
-  const config = layoutConfig[index] || layoutConfig[0];
-  const hasStats = row.stats && row.stats.length > 0 && row.stats.some(stat => stat.value && stat.label);
-  const description = row.description || "";
+function Row1Card({ row, isExpanded, onToggleExpand }) {
+  const descriptionHeight = "104px";
 
   return (
     <div
@@ -110,123 +114,82 @@ function Row1Card({ row, index, isExpanded, onToggleExpand }) {
       style={{
         background: "#F8FAFC",
         borderRadius: "16px",
+        minHeight: "420px",
         overflow: "hidden",
+        padding: "56px 40px 40px 36px",
         display: "flex",
         flexDirection: "column",
-        paddingTop: "56px",
-        paddingLeft: "40px",
-        paddingRight: "40px",
-        paddingBottom: "40px",
-        width: "100%",
-        zIndex: 1,
       }}
     >
-      <BackgroundLetter title={row.title} />
-      <Watermark row={row} index={index} />
+      <Watermark row={row} />
 
-      {/* Eyebrow */}
-      <span
-        aria-hidden="true"
-        style={{
-          fontFamily: "Inter, sans-serif",
-          fontWeight: 600,
-          fontSize: "12px",
-          lineHeight: "16px",
-          letterSpacing: "1.2px",
-          textTransform: "uppercase",
-          color: config.eyebrowColor,
-          marginBottom: "8px",
-          zIndex: 2,
-          position: "relative",
-        }}
-      >
-        {row.badge}
-      </span>
-
-      {/* Heading */}
-      <h3
-        style={{
-          fontFamily: "Poppins, sans-serif",
-          fontWeight: 800,
-          fontSize: "30px",
-          lineHeight: "36px",
-          color: "#004CA5",
-          margin: "0 0 16px 0",
-          zIndex: 2,
-          position: "relative",
-          wordBreak: "break-word",
-        }}
-      >
-        {row.title}
-      </h3>
-
-      {/* Description Container — separate from stats */}
-      <div
-        style={{
-          marginBottom: "16px",
-          zIndex: 2,
-          position: "relative",
-          maxWidth: "460px",
-          flex: isExpanded ? "auto" : "none",
-        }}
-      >
-        {/* Description with line clamping */}
-        <p
+      <div className="home-diff-card-content" style={{ position: "relative", zIndex: 1, width: "464px", display: "flex", flexDirection: "column" }}>
+        <span
           style={{
+            fontFamily: "Inter, sans-serif",
+            fontWeight: 600,
+            fontSize: "12px",
+            lineHeight: "16px",
+            letterSpacing: "1.2px",
+            textTransform: "uppercase",
+            color: row.eyebrowColor,
+            marginBottom: "18px",
+          }}
+        >
+          {row.eyebrow}
+        </span>
+
+        <h3
+          style={{
+            marginLeft: "4px",
+            fontFamily: "Poppins, sans-serif",
+            fontWeight: 800,
+            fontSize: "30px",
+            lineHeight: "36px",
+            color: "#004CA5",
+            margin: "0 0 16px 4px",
+          }}
+        >
+          {row.title}
+        </h3>
+
+        <p
+          className="home-diff-desc-scroll"
+          style={{
+            marginLeft: "4px",
             fontFamily: "Inter, sans-serif",
             fontWeight: 400,
             fontSize: "16px",
             lineHeight: "26px",
             color: "#475569",
-            margin: 0,
+            margin: "0 0 0 12px",
             display: isExpanded ? "block" : "-webkit-box",
-            WebkitLineClamp: isExpanded ? "unset" : 3,
-            WebkitBoxOrient: isExpanded ? "unset" : "vertical",
-            overflow: isExpanded ? "visible" : "hidden",
-            textOverflow: isExpanded ? "unset" : "ellipsis",
-            width: "100%",
-            wordBreak: "break-word",
+            WebkitLineClamp: isExpanded ? "unset" : 6,
+            WebkitBoxOrient: "vertical",
+            overflow: isExpanded ? "auto" : "hidden",
+            overflowY: isExpanded ? "auto" : "hidden",
+            height: descriptionHeight,
+            maxHeight: descriptionHeight,
+            minHeight: descriptionHeight,
+            textOverflow: isExpanded ? "clip" : "ellipsis",
+            paddingRight: isExpanded ? "6px" : 0,
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
           }}
         >
-          {description}
+          {row.description}
         </p>
 
-        {/* Read More / Read Less button — belongs to description */}
-        <button
-          onClick={() => onToggleExpand(index)}
-          style={{
-            fontFamily: "Inter, sans-serif",
-            fontWeight: 600,
-            fontSize: "14px",
-            lineHeight: "20px",
-            color: config.eyebrowColor,
-            background: "none",
-            border: "none",
-            padding: "8px 0 0 0",
-            cursor: "pointer",
-            textDecoration: "underline",
-            display: "block",
-            textAlign: "left",
-          }}
-        >
-          {isExpanded ? "Read Less" : "Read More"}
-        </button>
-      </div>
-
-      {/* Stats — separate section, outside description container */}
-      {hasStats && (
-        <div
-          style={{
-            display: "flex",
-            gap: "24px",
-            zIndex: 2,
-            position: "relative",
-            marginTop: "0",
-            flexWrap: "wrap",
-          }}
-        >
-          {row.stats.map((stat) => (
-            stat.value && stat.label && (
+        {row.stats && row.stats.length > 0 && (
+          <div
+            style={{
+              marginLeft: "6px",
+              marginTop: "40px",
+              display: "flex",
+              gap: "24px",
+            }}
+          >
+            {row.stats.map((stat) => (
               <div key={stat.label}>
                 <div
                   style={{
@@ -234,7 +197,7 @@ function Row1Card({ row, index, isExpanded, onToggleExpand }) {
                     fontWeight: 800,
                     fontSize: "24px",
                     lineHeight: "32px",
-                    color: config.statColor,
+                    color: row.statColor,
                   }}
                 >
                   {stat.value}
@@ -251,19 +214,39 @@ function Row1Card({ row, index, isExpanded, onToggleExpand }) {
                   {stat.label}
                 </div>
               </div>
-            )
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+
+        <button
+          onClick={onToggleExpand}
+          style={{
+            marginLeft: "4px",
+            marginTop: "24px",
+            fontFamily: "Inter, sans-serif",
+            fontWeight: 600,
+            fontSize: "14px",
+            lineHeight: "20px",
+            color: row.eyebrowColor,
+            background: "none",
+            border: "none",
+            padding: "0",
+            cursor: "pointer",
+            textDecoration: "underline",
+            textAlign: "left",
+            alignSelf: "flex-start",
+          }}
+        >
+          {isExpanded ? "Read Less" : "Read More"}
+        </button>
+      </div>
     </div>
   );
 }
 
-function Row23Card({ row, index, isExpanded, onToggleExpand }) {
-  const config = layoutConfig[index] || layoutConfig[1];
-  const hasStats = row.stats && row.stats.length > 0 && row.stats.some(stat => stat.value && stat.label);
-  const padLeft = config.layout === "row2" ? "50px" : "58px";
-  const description = row.description || "";
+function Row23Card({ row, isExpanded, onToggleExpand }) {
+  const padLeft = row.layout === "row2" ? "50px" : "58px";
+  const descriptionHeight = "104px";
 
   return (
     <div
@@ -271,68 +254,50 @@ function Row23Card({ row, index, isExpanded, onToggleExpand }) {
       style={{
         background: "#F8FAFC",
         borderRadius: "16px",
+        minHeight: "420px",
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "flex-start",
+        justifyContent: "center",
         alignItems: "flex-start",
-        padding: `56px 40px 40px ${padLeft}`,
-        width: "100%",
-        zIndex: 1,
+        padding: `40px 40px 40px ${padLeft}`,
       }}
     >
-      <BackgroundLetter title={row.title} />
-      <Watermark row={row} index={index} />
+      <Watermark row={row} />
 
-      {/* Eyebrow */}
-      <span
-        style={{
-          display: "block",
-          fontFamily: "Inter, sans-serif",
-          fontWeight: 600,
-          fontSize: "12px",
-          lineHeight: "16px",
-          letterSpacing: "1.2px",
-          textTransform: "uppercase",
-          color: config.eyebrowColor,
-          marginBottom: "8px",
-          zIndex: 2,
-          position: "relative",
-        }}
-      >
-        {row.badge}
-      </span>
+      <div className="home-diff-card-content" style={{ position: "relative", zIndex: 1, width: "518.4px", display: "flex", flexDirection: "column", flex: 1 }}>
+        <span
+          style={{
+            display: "block",
+            fontFamily: "Inter, sans-serif",
+            fontWeight: 600,
+            fontSize: "12px",
+            lineHeight: "16px",
+            letterSpacing: "1.2px",
+            textTransform: "uppercase",
+            color: row.eyebrowColor,
+            marginBottom: "8px",
+            marginTop: "auto",
+          }}
+        >
+          {row.eyebrow}
+        </span>
 
-      {/* Heading */}
-      <h3
-        style={{
-          fontFamily: "Poppins, sans-serif",
-          fontWeight: 800,
-          fontSize: "30px",
-          lineHeight: "36px",
-          color: "#004CA5",
-          margin: "0 0 16px 0",
-          zIndex: 2,
-          position: "relative",
-          wordBreak: "break-word",
-        }}
-      >
-        {row.title}
-      </h3>
+        <h3
+          style={{
+            fontFamily: "Poppins, sans-serif",
+            fontWeight: 800,
+            fontSize: "30px",
+            lineHeight: "36px",
+            color: "#004CA5",
+            margin: "0 0 16px",
+          }}
+        >
+          {row.title}
+        </h3>
 
-      {/* Description Container — separate from stats */}
-      <div
-        style={{
-          marginBottom: "16px",
-          zIndex: 2,
-          position: "relative",
-          maxWidth: "460px",
-          width: "100%",
-          flex: isExpanded ? "auto" : "none",
-        }}
-      >
-        {/* Description with line clamping */}
         <p
+          className="home-diff-desc-scroll"
           style={{
             fontFamily: "Inter, sans-serif",
             fontWeight: 400,
@@ -342,52 +307,30 @@ function Row23Card({ row, index, isExpanded, onToggleExpand }) {
             margin: 0,
             display: isExpanded ? "block" : "-webkit-box",
             WebkitLineClamp: isExpanded ? "unset" : 3,
-            WebkitBoxOrient: isExpanded ? "unset" : "vertical",
-            overflow: isExpanded ? "visible" : "hidden",
-            textOverflow: isExpanded ? "unset" : "ellipsis",
-            width: "100%",
-            wordBreak: "break-word",
+            WebkitBoxOrient: "vertical",
+            overflow: isExpanded ? "auto" : "hidden",
+            overflowY: isExpanded ? "auto" : "hidden",
+            height: descriptionHeight,
+            maxHeight: descriptionHeight,
+            minHeight: descriptionHeight,
+            textOverflow: isExpanded ? "clip" : "ellipsis",
+            paddingRight: isExpanded ? "6px" : 0,
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
           }}
         >
-          {description}
+          {row.description}
         </p>
 
-        {/* Read More / Read Less button — belongs to description */}
-        <button
-          onClick={() => onToggleExpand(index)}
-          style={{
-            fontFamily: "Inter, sans-serif",
-            fontWeight: 600,
-            fontSize: "14px",
-            lineHeight: "20px",
-            color: config.eyebrowColor,
-            background: "none",
-            border: "none",
-            padding: "8px 0 0 0",
-            cursor: "pointer",
-            textDecoration: "underline",
-            display: "block",
-            textAlign: "left",
-          }}
-        >
-          {isExpanded ? "Read Less" : "Read More"}
-        </button>
-      </div>
-
-      {/* Stats — separate section, outside description container */}
-      {hasStats && (
-        <div
-          style={{
-            display: "flex",
-            gap: "24px",
-            zIndex: 2,
-            position: "relative",
-            marginTop: "0",
-            flexWrap: "wrap",
-          }}
-        >
-          {row.stats.map((stat) => (
-            stat.value && stat.label && (
+        {row.stats && row.stats.length > 0 && (
+          <div
+            style={{
+              display: "flex",
+              gap: "24px",
+              paddingTop: "32px",
+            }}
+          >
+            {row.stats.map((stat) => (
               <div key={stat.label}>
                 <div
                   style={{
@@ -395,7 +338,7 @@ function Row23Card({ row, index, isExpanded, onToggleExpand }) {
                     fontWeight: 800,
                     fontSize: "24px",
                     lineHeight: "32px",
-                    color: config.statColor,
+                    color: row.statColor,
                   }}
                 >
                   {stat.value}
@@ -412,53 +355,58 @@ function Row23Card({ row, index, isExpanded, onToggleExpand }) {
                   {stat.label}
                 </div>
               </div>
-            )
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+
+        <button
+          onClick={onToggleExpand}
+          style={{
+            marginTop: "24px",
+            marginBottom: "auto",
+            fontFamily: "Inter, sans-serif",
+            fontWeight: 600,
+            fontSize: "14px",
+            lineHeight: "20px",
+            color: row.eyebrowColor,
+            background: "none",
+            border: "none",
+            padding: "0",
+            cursor: "pointer",
+            textDecoration: "underline",
+            textAlign: "left",
+            alignSelf: "flex-start",
+          }}
+        >
+          {isExpanded ? "Read Less" : "Read More"}
+        </button>
+      </div>
     </div>
   );
 }
 
-function Row({ row, index, isExpanded, onToggleExpand }) {
-  const config = layoutConfig[index] || layoutConfig[0];
-  
+function Row({ row, isExpanded, onToggleExpand }) {
   const imageBlock = (
     <div
-      className="home-diff-image shrink-0 w-full lg:w-auto"
+      className="home-diff-image shrink-0 overflow-hidden"
       style={{
-        width: "100%",
-        maxWidth: config.imageWidth,
-        height: "auto",
-        aspectRatio: "16 / 9",
+        width: row.imageWidth,
+        height: "420px",
         borderRadius: "16px",
         position: "relative",
         isolation: "isolate",
-        flexShrink: 0,
-        flexGrow: 0,
-        overflow: "hidden",
       }}
     >
-      {row.image ? (
-        <img
-          src={row.image}
-          alt={row.title}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            display: "block",
-          }}
-        />
-      ) : (
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            background: "#E8EDF5",
-          }}
-        />
-      )}
+      <img
+        src={row.image}
+        alt={row.title}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          display: "block",
+        }}
+      />
       <div
         aria-hidden="true"
         style={{
@@ -467,91 +415,63 @@ function Row({ row, index, isExpanded, onToggleExpand }) {
           background:
             "linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(248,250,252,0.15) 100%)",
           zIndex: 1,
-          pointerEvents: "none",
         }}
       />
     </div>
   );
 
   const cardBlock =
-    config.layout === "row1" ? (
-      <Row1Card row={row} index={index} isExpanded={isExpanded} onToggleExpand={onToggleExpand} />
+    row.layout === "row1" ? (
+      <Row1Card row={row} isExpanded={isExpanded} onToggleExpand={onToggleExpand} />
     ) : (
-      <Row23Card row={row} index={index} isExpanded={isExpanded} onToggleExpand={onToggleExpand} />
+      <Row23Card row={row} isExpanded={isExpanded} onToggleExpand={onToggleExpand} />
     );
 
   return (
     <div
-      className="home-diff-row w-full"
+      className="home-diff-row"
       style={{
         borderRadius: "20px",
         overflow: "hidden",
         position: "relative",
-        display: "flex",
-        flexDirection: "row",
       }}
     >
-      {/* Desktop: side-by-side, Mobile: stacked vertically */}
-      <style>{`
-        @media (max-width: 1023px) {
-          .home-diff-row {
-            flex-direction: column !important;
-            gap: 24px;
-          }
-          .home-diff-row > div {
-            flex-direction: column !important;
-          }
-        }
-      `}</style>
-
-      {config.imageRight ? (
-        <>
-          <div
-            style={{
-              flex: 1,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              alignItems: "flex-start",
-              padding: config.layout === "row2" ? "0px 40px" : "0px 40px 0px 40px",
-            }}
-          >
-            {cardBlock}
-          </div>
-          <div
-            style={{
-              flex: "0 0 auto",
-              display: "flex",
-              alignItems: "flex-start",
-            }}
-          >
-            {imageBlock}
-          </div>
-        </>
+      {row.imageRight ? (
+        <div
+          className="home-diff-row-inner"
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            padding: row.layout === "row2" ? "0px 40px" : "0px 40px 0px 40px",
+          }}
+        >
+          {cardBlock}
+          {imageBlock}
+        </div>
       ) : (
-        <>
-          <div
-            style={{
-              flex: "0 0 auto",
-              display: "flex",
-              alignItems: "flex-start",
-            }}
-          >
-            {imageBlock}
-          </div>
-          <div
-            style={{
-              flex: 1,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              alignItems: "flex-start",
-              padding: config.layout === "row1" ? "0px 1px 0px 40px" : "0px 40px",
-            }}
-          >
-            {cardBlock}
-          </div>
-        </>
+        <div
+          className="home-diff-row-inner"
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            padding: row.layout === "row1" ? "0px 1px 0px 40px" : "0px 40px",
+          }}
+        >
+          {row.layout === "row1" ? (
+            <>
+              {imageBlock}
+              {cardBlock}
+            </>
+          ) : (
+            <>
+              {imageBlock}
+              {cardBlock}
+            </>
+          )}
+        </div>
       )}
     </div>
   );
@@ -560,73 +480,93 @@ function Row({ row, index, isExpanded, onToggleExpand }) {
 export default function WhatMakesUsDifferent() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [expandedRows, setExpandedRows] = useState({});
+  const [expandedCards, setExpandedCards] = useState({});
 
   useEffect(() => {
     const fetchCards = async () => {
       try {
         setLoading(true);
         const fetchedCards = await getApproachCards();
-        
-        // Sort by displayOrder and filter active cards
         const sortedCards = fetchedCards
-          .filter(card => card.isActive !== false)
+          .filter(c => c.isActive !== false)
           .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
-        
-        // Transform API data to match row structure
-        const transformedRows = sortedCards.map((card) => ({
-          badge: card.badge || "",
-          title: card.title || "",
-          description: card.description || "",
-          image: card.image || "",
-          stats: [
-            {
-              value: card.stat1Value || "",
-              label: card.stat1Label || "",
-            },
-            {
-              value: card.stat2Value || "",
-              label: card.stat2Label || "",
-            },
-          ],
-        }));
-        
-        setRows(transformedRows);
-        // Initialize all rows as collapsed
-        const initialExpanded = {};
-        transformedRows.forEach((_, index) => {
-          initialExpanded[index] = false;
+
+        const transformedRows = sortedCards.map((card, idx) => {
+          const config = layoutConfigs[idx % layoutConfigs.length];
+          const stats = [];
+          if (card.stat1Value && card.stat1Label) stats.push({ value: card.stat1Value, label: card.stat1Label });
+          if (card.stat2Value && card.stat2Label) stats.push({ value: card.stat2Value, label: card.stat2Label });
+
+          return {
+            ...config,
+            eyebrow: card.badge || "",
+            title: card.title || "",
+            description: card.description || "",
+            image: card.image || defaultImages[idx % defaultImages.length],
+            stats: stats,
+          };
         });
-        setExpandedRows(initialExpanded);
+
+        setRows(transformedRows);
       } catch (error) {
-        console.error('Error loading approach cards:', error);
-        setRows([]);
+        console.error('Error fetching cards:', error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchCards();
   }, []);
 
-  const handleToggleExpand = (index) => {
-    setExpandedRows(prev => ({
-      ...prev,
-      [index]: !prev[index]
-    }));
-  };
-
   return (
     <section
-      className="home-diff-section w-full"
+      className="home-diff-section"
       style={{
-        padding: "40px 20px lg:40px 54px lg:0px 61px",
+        padding: "0px 54px 0px 61px",
         background: "white",
-        overflowX: "hidden",
       }}
     >
+      <style>{`
+        .home-diff-desc-scroll {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+        .home-diff-desc-scroll::-webkit-scrollbar {
+          display: none;
+        }
+        @media (max-width: 1350px) {
+          .home-diff-header, .home-diff-heading-wrap, .home-diff-rows {
+            width: 100% !important;
+          }
+          .home-diff-row-inner {
+            padding: 0 20px !important;
+          }
+        }
+        @media (max-width: 1023px) {
+          .home-diff-section {
+            padding: 40px 24px !important;
+          }
+          .home-diff-row-inner {
+            flex-direction: column !important;
+            height: auto !important;
+            padding: 0 !important;
+            gap: 24px !important;
+          }
+          .home-diff-card {
+            min-height: auto !important;
+            padding: 40px 24px !important;
+          }
+          .home-diff-card-content {
+            width: 100% !important;
+          }
+          .home-diff-image {
+            width: 100% !important;
+            height: 300px !important;
+          }
+        }
+      `}</style>
+
       <div
-        className="home-diff-inner w-full"
+        className="home-diff-inner"
         style={{
           maxWidth: "1440px",
           margin: "0 auto",
@@ -635,29 +575,31 @@ export default function WhatMakesUsDifferent() {
           gap: "34px",
         }}
       >
-        {/* Header */}
+        {/* Header — 1325×84px */}
         <div
-          className="home-diff-header w-full"
+          className="home-diff-header"
           style={{
+            width: "1325px",
+            height: "84px",
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
+            alignItems: "flex-start",
           }}
         >
-          {/* Pill badge */}
+          {/* Pill badge — absolute centered per Figma */}
           <div
             style={{
               position: "relative",
               width: "100%",
               height: "44px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginBottom: "16px",
             }}
           >
             <span
               style={{
+                position: "absolute",
+                left: "50%",
+                top: "50%",
+                transform: "translate(-50%, -50%)",
                 display: "inline-flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -678,26 +620,26 @@ export default function WhatMakesUsDifferent() {
             </span>
           </div>
 
-          {/* Heading */}
+          {/* Heading — 36px/40px, all #004CA5, centered */}
           <div
-            className="home-diff-heading-wrap w-full"
+            className="home-diff-heading-wrap"
             style={{
+              width: "1325px",
+              height: "40px",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              padding: "0 20px",
             }}
           >
             <h2
               style={{
                 fontFamily: "Poppins, sans-serif",
                 fontWeight: 800,
-                fontSize: "clamp(24px, 6vw, 36px)",
-                lineHeight: "1.2",
+                fontSize: "36px",
+                lineHeight: "40px",
                 textAlign: "center",
                 color: "#004CA5",
                 margin: 0,
-                wordBreak: "break-word",
               }}
             >
               What makes us different
@@ -705,29 +647,35 @@ export default function WhatMakesUsDifferent() {
           </div>
         </div>
 
-        {/* Rows */}
+        {/* Rows — gap: 30px */}
         <div
-          className="home-diff-rows w-full"
+          className="home-diff-rows"
           style={{
             display: "flex",
             flexDirection: "column",
             gap: "30px",
-            maxWidth: "1325px",
-            margin: "0 auto",
-            width: "100%",
-            paddingLeft: "0",
-            paddingRight: "0",
+            width: "1325px",
           }}
         >
-          {rows.map((row, index) => (
-            <Row 
-              key={row.title} 
-              row={row} 
-              index={index}
-              isExpanded={expandedRows[index] || false}
-              onToggleExpand={handleToggleExpand}
-            />
-          ))}
+          {loading ? (
+            <div style={{ textAlign: "center", padding: "40px 0" }}>Loading...</div>
+          ) : rows.length === 0 ? (
+            <div style={{ textAlign: "center", padding: "40px 0" }}>No content available.</div>
+          ) : (
+            rows.map((row, i) => (
+              <Row
+                key={i}
+                row={row}
+                isExpanded={Boolean(expandedCards[i])}
+                onToggleExpand={() =>
+                  setExpandedCards((prev) => ({
+                    ...prev,
+                    [i]: !prev[i],
+                  }))
+                }
+              />
+            ))
+          )}
         </div>
       </div>
     </section>

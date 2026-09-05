@@ -40,7 +40,7 @@ const FALLBACK_CARDS = [
 ];
 
 // ─── Even-index card: image LEFT, text panel RIGHT (orange accents) ──────────
-function CardEven({ card }) {
+function CardEven({ card, isExpanded, onToggle, cardKey }) {
   const imgSrc = card.image ? getImageUrl(card.image) : '';
 
   return (
@@ -69,13 +69,48 @@ function CardEven({ card }) {
           {/* backend field: title */}
           {card.title}
         </h3>
-        <p className="font-[Inter] text-base text-[#43474F] leading-relaxed mb-6">
-          {/* backend field: description */}
-          {card.description}
-        </p>
+
+        <div
+  className="description-scroll-container"
+  style={{
+    height: '104px',
+    maxHeight: '104px',
+    overflowY: isExpanded ? 'scroll' : 'hidden',
+    overflowX: 'hidden',
+    scrollbarWidth: 'none',
+    msOverflowStyle: 'none',
+    marginBottom: '18px',
+    display: 'block',
+    flexShrink: 0,
+  }}
+>
+  <p
+    className="font-[Inter] text-base text-[#43474F] leading-relaxed m-0"
+    style={{
+      margin: 0,
+      padding: 0,
+    }}
+  >
+    {card.description}
+  </p>
+</div>
+
+        <button
+          type="button"
+          onClick={() => onToggle(cardKey)}
+          className="font-[Inter] text-sm font-semibold text-[#004CA5] bg-transparent border-0 p-0 text-left cursor-pointer"
+          style={{
+            width: 'fit-content',
+            lineHeight: '20px',
+            outline: 'none',
+          }}
+        >
+          {isExpanded ? 'Read Less' : 'Read More'}
+        </button>
+
         {/* Stats row — only rendered when values exist */}
         {(card.stat1Value || card.stat2Value) && (
-          <div className="flex gap-6 sm:gap-12">
+          <div className="flex gap-6 sm:gap-12 mt-6">
             {card.stat1Value && (
               <div>
                 <p className="font-['Hanken_Grotesk'] font-bold text-[24px] sm:text-[30px] text-[#F39308]">
@@ -108,7 +143,7 @@ function CardEven({ card }) {
 }
 
 // ─── Odd-index card: text panel LEFT (mirrored + blue accents + "R" watermark), image RIGHT ──
-function CardOdd({ card }) {
+function CardOdd({ card, isExpanded, onToggle, cardKey }) {
   const imgSrc = card.image ? getImageUrl(card.image) : '';
 
   return (
@@ -133,13 +168,41 @@ function CardOdd({ card }) {
           {/* backend field: title */}
           {card.title}
         </h3>
-        <p className="font-[Inter] text-base text-[#43474F] leading-relaxed mb-6">
-          {/* backend field: description */}
-          {card.description}
-        </p>
+
+        <div
+          className="description-scroll-container"
+          style={{
+            height: '104px',
+            overflowY: isExpanded ? 'auto' : 'hidden',
+            overflowX: 'hidden',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            marginBottom: '18px',
+            display: 'block',
+          }}
+        >
+          <p className="font-[Inter] text-base text-[#43474F] leading-relaxed m-0">
+            {/* backend field: description */}
+            {card.description}
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => onToggle(cardKey)}
+          className="font-[Inter] text-sm font-semibold text-[#004CA5] bg-transparent border-0 p-0 text-left cursor-pointer"
+          style={{
+            width: 'fit-content',
+            lineHeight: '20px',
+            outline: 'none',
+          }}
+        >
+          {isExpanded ? 'Read Less' : 'Read More'}
+        </button>
+
         {/* Stats row — only rendered when values exist */}
         {(card.stat1Value || card.stat2Value) && (
-          <div className="flex gap-6 sm:gap-12">
+          <div className="flex gap-6 sm:gap-12 mt-6">
             {card.stat1Value && (
               <div>
                 <p className="font-[Poppins] font-bold text-[24px] sm:text-[30px] text-[#004CA5]">
@@ -188,6 +251,7 @@ export default function WhyChooseE2E() {
   const [section, setSection] = useState(null);
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [expandedCards, setExpandedCards] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -207,6 +271,13 @@ export default function WhyChooseE2E() {
     fetchData();
   }, []);
 
+  const toggleExpanded = (cardKey) => {
+    setExpandedCards((prev) => ({
+      ...prev,
+      [cardKey]: !prev[cardKey],
+    }));
+  };
+
   // Resolve display values — API data takes priority, fallbacks used while loading / on error
   const badgeText    = section?.badgeText    || FALLBACK_SECTION.badgeText;
   const sectionTitle = section?.sectionTitle || FALLBACK_SECTION.sectionTitle;
@@ -217,6 +288,16 @@ export default function WhyChooseE2E() {
       className="py-12 sm:py-16 md:py-20"
       style={{ background: 'url(/images/employee/background.jpg) center/cover no-repeat' }}
     >
+      <style>{`
+        .description-scroll-container {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+
+        .description-scroll-container::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
       <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
         {/* Section badge */}
         <p
@@ -238,13 +319,14 @@ export default function WhyChooseE2E() {
         </h2>
 
         {/* Feature cards — rendered dynamically from backend, alternating layout by index */}
-        {displayCards.map((card, i) =>
-          i % 2 === 0 ? (
-            <CardEven key={card._id || i} card={card} />
+        {displayCards.map((card, i) => {
+          const cardKey = card._id || i;
+          return i % 2 === 0 ? (
+            <CardEven key={cardKey} card={card} cardKey={cardKey} isExpanded={!!expandedCards[cardKey]} onToggle={toggleExpanded} />
           ) : (
-            <CardOdd key={card._id || i} card={card} />
-          )
-        )}
+            <CardOdd key={cardKey} card={card} cardKey={cardKey} isExpanded={!!expandedCards[cardKey]} onToggle={toggleExpanded} />
+          );
+        })}
       </div>
     </section>
   );

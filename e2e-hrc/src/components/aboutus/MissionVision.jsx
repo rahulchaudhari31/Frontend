@@ -288,7 +288,7 @@ const MissionVision = () => {
                 {mission.title}
               </h3>
             </div>
-            <div style={{ width: "100%", height: "147px", padding: 0 }}>
+            <div style={{ width: "100%", flex: 1, overflowY: "auto", padding: 0 }}>
               <p
                 style={{
                   margin: 0,
@@ -395,25 +395,23 @@ const MissionVision = () => {
             <div
               style={{
                 width: "100%",
-                height: "147px",
+                flex: 1,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
                 padding: "0px",
+                overflowY: "auto",
               }}
             >
               <p
                 style={{
                   margin: 0,
                   width: "100%",
-                  height: "147px",
                   fontFamily: "'Inter', sans-serif",
                   fontWeight: 400,
                   fontSize: "18px",
                   lineHeight: "29px",
                   color: "rgba(255, 255, 255, 0.9)",
-                  display: "flex",
-                  alignItems: "center",
                   wordWrap: "break-word",
                 }}
               >

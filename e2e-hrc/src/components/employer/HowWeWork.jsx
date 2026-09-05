@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import discoveryIcon from "../../assets/images/Career Growth imgs/DISCOVERY.png";
 import { getEmployerHowWeWorkSteps } from '../../services/employer/employerHowWeWorkService';
 
@@ -42,6 +42,201 @@ const stepIcons = [
     <circle cx="33" cy="46" r="4" stroke="#2B2B2F" strokeWidth="2" />
   </svg>,
 ];
+
+/* ─────────────────────────────────────────────────────────────────────
+   StepCard — isolated sub-component so each card has its OWN state.
+   Expanding card 2 will NOT affect card 1 or card 3.
+   ───────────────────────────────────────────────────────────────────── */
+function StepCard({ step, index, isTopRow }) {
+  const col = index % 3;
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+  const descRef = useRef(null);
+
+  // CSS/layout-based overflow detection — no character counting.
+  // Compare the content's natural scrollHeight against the clamped clientHeight.
+  const checkOverflow = useCallback(() => {
+    const el = descRef.current;
+    if (!el) return;
+    setIsOverflowing(el.scrollHeight > el.clientHeight + 1);
+  }, []);
+
+  // Recheck whenever the description text changes (e.g. admin updates content).
+  useEffect(() => {
+    checkOverflow();
+  }, [step.description, checkOverflow]);
+
+  // Recheck on resize so Read More appears / disappears responsively.
+  useEffect(() => {
+    const el = descRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(checkOverflow);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [checkOverflow]);
+
+  // Icon — use API image if provided, otherwise fall back to built-in SVG.
+  let iconElement = stepIcons[index % stepIcons.length];
+  const iconSrc = step.icon || step.image;
+  if (iconSrc && iconSrc.trim() !== "") {
+    iconElement = (
+      <img
+        src={getImageUrl(iconSrc)}
+        alt={step.title || ""}
+        style={{ width: 66, height: 55, objectFit: "contain" }}
+      />
+    );
+  }
+
+  // Collapsed description height: ~5 lines at 34px line-height = 170px.
+  // This gives readers a useful preview before needing to click Read More.
+  const DESC_HEIGHT = 170;
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: isTopRow ? "0 0 17px" : "17px 0",
+        gap: 17,
+        borderRight: col < 2 ? "1px solid rgba(0,0,0,0.1)" : "none",
+        borderBottom: "none",
+        boxSizing: "border-box",
+      }}
+    >
+      {/* ── Icon container — completely unchanged ── */}
+      <div
+        style={{
+          position: "relative",
+          width: 144.53,
+          height: 144.53,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0,
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            width: 120,
+            height: 60,
+            background: "#71DF14",
+            opacity: 0.12,
+            transform: index % 2 === 0 ? "rotate(-40deg)" : "rotate(140deg)",
+            left: "50%",
+            top: "50%",
+            marginLeft: -60,
+            marginTop: -30,
+          }}
+        />
+        <div
+          style={{
+            position: "relative",
+            width: 120,
+            height: 120,
+            borderRadius: 60,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1,
+          }}
+        >
+          {iconElement}
+        </div>
+      </div>
+
+      {/* ── Text block ── */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          padding: "0 10px",
+          width: "100%",
+          boxSizing: "border-box",
+          overflow: "hidden",
+        }}
+      >
+        {/* Title — fixed, never affected by Read More */}
+        <h3
+          style={{
+            fontFamily: "Poppins, sans-serif",
+            fontWeight: 600,
+            fontSize: 24,
+            lineHeight: "22px",
+            color: "#2B2B2F",
+            textAlign: "center",
+            width: "100%",
+            margin: "0 0 8px",
+            flexShrink: 0,
+          }}
+        >
+          {step.title}
+        </h3>
+
+        {/* Description wrapper — ONLY this area changes between states.
+            Height is identical in both collapsed and expanded.
+            Collapsed → overflow hidden (clean clip, no scrollbar).
+            Expanded  → overflow-y auto (scrollable, subtle bar). */}
+        <div
+          ref={descRef}
+          style={{
+            height: `${DESC_HEIGHT}px`,
+            overflowY: isExpanded ? "auto" : "hidden",
+            width: "100%",
+            boxSizing: "border-box",
+            scrollbarWidth: "thin",
+            scrollbarColor: "rgba(43,43,47,0.25) transparent",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontWeight: 500,
+              fontSize: 18,
+              lineHeight: "34px",
+              textAlign: "center",
+              color: "#7A777E",
+              margin: 0,
+              width: "100%",
+            }}
+          >
+            {step.description}
+          </p>
+        </div>
+
+        {/* Read More / Read Less — only rendered when content overflows.
+            Link-style to match the existing design language. */}
+        {isOverflowing && (
+          <button
+            onClick={() => setIsExpanded((prev) => !prev)}
+            aria-expanded={isExpanded}
+            style={{
+              background: "none",
+              border: "none",
+              padding: "6px 0 0",
+              cursor: "pointer",
+              fontFamily: "Inter, sans-serif",
+              fontWeight: 600,
+              fontSize: 15,
+              lineHeight: "22px",
+              color: "#F39308",
+              textDecoration: "underline",
+              textUnderlineOffset: 2,
+              width: "100%",
+              textAlign: "center",
+              flexShrink: 0,
+            }}
+          >
+            {isExpanded ? "Read Less" : "Read More"}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function HowWeWork() {
   const [steps, setSteps] = useState([]);
@@ -124,112 +319,18 @@ export default function HowWeWork() {
             display: "grid",
             gridTemplateColumns: "repeat(3, 1fr)",
             position: "relative",
+            alignItems: "start",
           }}
         >
           {steps.map((step, index) => {
             const isTopRow = index < 3;
-            const col = index % 3;
-            
-            let iconElement = stepIcons[index % stepIcons.length];
-            const iconSrc = step.icon || step.image;
-            if (iconSrc && iconSrc.trim() !== "") {
-                iconElement = <img src={getImageUrl(iconSrc)} alt={step.title || ""} style={{ width: 66, height: 55, objectFit: "contain" }} />;
-            }
-
             return (
-              <div
+              <StepCard
                 key={step._id || `${step.title}-${index}`}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  padding: isTopRow ? "0 0 17px" : "17px 0",
-                  gap: 17,
-                  borderRight: col < 2 ? "1px solid rgba(0,0,0,0.1)" : "none",
-                  borderBottom: "none",
-                  boxSizing: "border-box",
-                }}
-              >
-                <div
-                  style={{
-                    position: "relative",
-                    width: 144.53,
-                    height: 144.53,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "absolute",
-                      width: 120,
-                      height: 60,
-                      background: "#71DF14",
-                      opacity: 0.12,
-                      transform: index % 2 === 0 ? "rotate(-40deg)" : "rotate(140deg)",
-                      left: "50%",
-                      top: "50%",
-                      marginLeft: -60,
-                      marginTop: -30,
-                    }}
-                  />
-                  <div
-                    style={{
-                      position: "relative",
-                      width: 120,
-                      height: 120,
-                      borderRadius: 60,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      zIndex: 1,
-                    }}
-                  >
-                    {iconElement}
-                  </div>
-                </div>
-
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                    padding: "0 10px",
-                    width: "100%",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <h3
-                    style={{
-                      fontFamily: "Poppins, sans-serif",
-                      fontWeight: 600,
-                      fontSize: 24,
-                      lineHeight: "22px",
-                      color: "#2B2B2F",
-                      textAlign: "center",
-                      width: "100%",
-                      margin: "0 0 8px",
-                    }}
-                  >
-                    {step.title}
-                  </h3>
-                  <p
-                    style={{
-                      fontFamily: "Inter, sans-serif",
-                      fontWeight: 500,
-                      fontSize: 18,
-                      lineHeight: "34px",
-                      textAlign: "center",
-                      color: "#7A777E",
-                      margin: 0,
-                      width: "100%",
-                    }}
-                  >
-                    {step.description}
-                  </p>
-                </div>
-              </div>
+                step={step}
+                index={index}
+                isTopRow={isTopRow}
+              />
             );
           })}
         </div>

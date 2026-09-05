@@ -191,7 +191,10 @@ export default function PartnerFormSection() {
                     margin: 0,
                   }}
                 >
-                  Have questions about partnership opportunities or our global network? Fill out the form below and our team will get back to you shortly.
+                  Are you an enterprise recruiter or a talent network? Let us discuss the incredible opportunities we can bring to both ends of the recruitment process.
+                  <br></br>
+                  Ask questions about partnership opportunities or our global network. Fill out the form below, and our team will get back to you shortly.
+
                 </p>
               </div>
 

@@ -18,14 +18,15 @@
   position: relative;
   width: 100%;
   max-width: 1440px;
-  height: 626px;
+  min-height: 626px;
+  height: auto;
   background: #ffffff;
   padding: 4px 0 40px 64px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* ─────────────────────────────────────────
@@ -33,7 +34,8 @@
 ───────────────────────────────────────── */
 .container {
   width: 100%;
-  height: 582px;
+  min-height: 582px;
+  height: auto;
   display: flex;
   flex-direction: column;
 }
@@ -47,7 +49,8 @@
   flex-direction: row;
   align-items: center;
   width: 100%;
-  height: 504px;
+  min-height: 504px;
+  height: auto;
   margin: -33px 0;
   position: relative;
   isolation: isolate;
@@ -64,7 +67,9 @@
   align-items: flex-start;
   gap: 32px;
   max-width: 752px;
-  height: 362px;
+  min-height: 362px;
+  height: auto;
+  padding-bottom: 40px;
   z-index: 1;
   position: relative;
   flex-shrink: 0;
@@ -83,8 +88,10 @@
   display: inline-flex;
   align-items: center;
   padding: 8px 16px;
-  width: 249.3px;
-  height: 34px;
+  width: max-content;
+  max-width: 100%;
+  min-height: 34px;
+  height: auto;
   background: rgba(253, 171, 12, 0.1);
   border: 1px solid rgba(253, 171, 12, 0.2);
   border-radius: 9999px;
@@ -96,7 +103,7 @@
   letter-spacing: 1.2px;
   text-transform: uppercase;
   color: #F39308;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 /* ─────────────────────────────────────────
@@ -109,11 +116,12 @@
 .heading {
   margin: 0;
   width: 100%;
-  height: 180px;
+  min-height: 180px;
+  height: auto;
   font-family: 'Inter', sans-serif;
   font-style: normal;
   font-weight: 800;
-  font-size: 60px;
+  font-size: 50px;
   line-height: 60px;
   letter-spacing: -0.96px;
   color: #004CA5;
@@ -133,7 +141,8 @@
   margin: 0;
   width: 100%;
   max-width: 576px;
-  height: 84px;
+  min-height: 84px;
+  height: auto;
   font-family: 'Source Sans 3', sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -220,12 +229,13 @@
   width: 100%;
   max-width: 952px;
   margin: 0 auto;
-  height: 110px;
+  min-height: 110px;
+  height: auto;
   background: #ffffff;
   border: 1px solid rgba(195, 198, 212, 0.3);
   border-radius: 16px;
   box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1),
-              0px 4px 6px -4px rgba(0, 0, 0, 0.1);
+    0px 4px 6px -4px rgba(0, 0, 0, 0.1);
   padding: 32px;
   box-sizing: border-box;
   display: flex;
@@ -244,7 +254,8 @@
   align-items: center;
   gap: 16px;
   width: 197.5px;
-  height: 44px;
+  min-height: 44px;
+  height: auto;
   flex: 1 1 0;
 }
 
@@ -313,11 +324,13 @@
 
   .container {
     width: 100%;
+    min-height: auto;
     height: auto;
   }
 
   .innerContainer {
     width: 100%;
+    min-height: auto;
     height: auto;
     flex-direction: column;
     gap: 40px;
@@ -328,13 +341,16 @@
   .leftText {
     width: 100%;
     max-width: 100%;
+    min-height: auto;
     height: auto;
     position: static;
     z-index: auto;
+    padding-bottom: 0;
   }
 
   .heading {
     width: 100%;
+    min-height: auto;
     height: auto;
     font-size: 42px;
     line-height: 1.15;
@@ -343,6 +359,7 @@
   .body {
     width: 100%;
     max-width: 100%;
+    min-height: auto;
     height: auto;
   }
 
@@ -368,10 +385,12 @@
     width: 100%;
     margin-top: -24px;
     padding: 24px;
+    min-height: auto;
   }
 
   .statItem {
     width: auto;
+    min-height: auto;
   }
 }
 
@@ -386,6 +405,7 @@
   }
 
   .container {
+    min-height: auto;
     height: auto;
   }
 
@@ -393,6 +413,7 @@
     flex-direction: column;
     gap: 28px;
     margin: 0;
+    min-height: auto;
     height: auto;
     isolation: auto;
   }
@@ -400,13 +421,16 @@
   .leftText {
     width: 100%;
     max-width: 100%;
+    min-height: auto;
     height: auto;
     position: static;
     z-index: auto;
+    padding-bottom: 0;
   }
 
   .heading {
     width: 100%;
+    min-height: auto;
     height: auto;
     font-size: 32px;
     line-height: 1.15;
@@ -414,6 +438,7 @@
 
   .body {
     width: 100%;
+    min-height: auto;
     height: auto;
   }
 

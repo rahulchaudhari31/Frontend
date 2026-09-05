@@ -4,6 +4,7 @@ import { getBridgingSection } from "../../services/about/bridgingService";
 const BridgingGap = () => {
   const [sectionData, setSectionData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,8 +76,8 @@ const BridgingGap = () => {
           <div
             className="about-whoweare-image-box"
             style={{
-              width: "500px",
-              height: "420px",
+              width: "520px",
+              height: "500px",
               borderRadius: "24px",
               overflow: "hidden",
               boxShadow: "0px 4px 20px rgba(0,0,0,0.06)",
@@ -121,19 +122,61 @@ const BridgingGap = () => {
           <div style={{ width: "64px", height: "4px", background: "#00458D" }} />
 
           {/* Description */}
-          <p
+          <div
             style={{
-              margin: 0,
-              fontFamily: "Inter, sans-serif",
-              fontWeight: 400,
-              fontSize: "18px",
-              lineHeight: "28px",
-              color: "#424752",
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              gap: "12px",
               marginTop: "8px",
             }}
           >
-            {description}
-          </p>
+            <div
+              className="whoweare-description-scroll"
+              style={{
+                width: "100%",
+                maxHeight: "118px",
+                overflowY: isExpanded ? "auto" : "hidden",
+                overflowX: "hidden",
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+                WebkitOverflowScrolling: "touch",
+              }}
+            >
+              <p
+                style={{
+                  margin: 0,
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: 400,
+                  fontSize: "18px",
+                  lineHeight: "28px",
+                  color: "#424752",
+                }}
+              >
+                {description}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setIsExpanded((prev) => !prev)}
+              style={{
+                margin: 0,
+                padding: 0,
+                border: "none",
+                background: "transparent",
+                color: "#00458D",
+                fontFamily: "Inter, sans-serif",
+                fontWeight: 600,
+                fontSize: "16px",
+                lineHeight: "24px",
+                cursor: "pointer",
+                alignSelf: "flex-start",
+              }}
+            >
+              {isExpanded ? "Read Less" : "Read More"}
+            </button>
+          </div>
 
           {/* Feature bullets */}
 
@@ -165,6 +208,12 @@ const BridgingGap = () => {
 
         </div>
       </div>
+
+      <style>{`
+        .whoweare-description-scroll::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </section>
   );
 };
