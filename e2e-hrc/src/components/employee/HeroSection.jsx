@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './HeroSection.css';
 import { getEmployeeHero } from '../../services/employee/employeeHeroService';
 
@@ -12,47 +12,16 @@ const getImageUrl = (path) => {
 
 // Static fallback values (shown while loading or on error)
 const FALLBACKS = {
-  badgeText: 'Find Jobs That Match Your Skills',
-  titleLine1: 'Connecting Talent with Opportunity',
-  description: 'Find your ideal role, upload your CV, and connect with leading employers across multiple industries.',
-  leftTopImage: '/images/employee/girl-employee.png',
-  leftBottomImage: '/images/employee/man-employee.png',
-  rightImage: '/images/employee/office-girl.png',
+  badgeText: 'FIND JOBS THAT MATCH YOUR SKILLS',
+  titleLine1: 'Find Opportunities that Your Talent Deserves',
+  description: 'Based in Birmingham and serving the West Midlands, e2e HRC is a specialised recruitment consultancy that connects you with employers who are actively recruiting across key industries. You could be the next find that helps them build a stronger team. If you are already working in the UK, searching for UK jobs from overseas, or looking to recruit skilled professionals, our team can help you navigate the process.',
+  leftTopImage: '/images/employee/hero-man-1.jpg',
+  leftBottomImage: '/images/employee/hero-woman-2.jpg',
 };
 
 export default function HeroSection() {
-  const containerRef = useRef(null);
   const [hero, setHero] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  // ── Scale animation (unchanged from original) ───────────────────────────
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const updateScale = () => {
-      const wrapper = container.parentElement;
-      if (!wrapper) return;
-      if (window.innerWidth < 768) {
-        container.style.transform = '';
-        container.style.marginBottom = '';
-        return;
-      }
-      const wrapperWidth = wrapper.clientWidth;
-      const scale = Math.min(1, wrapperWidth / 1440);
-      if (scale < 1) {
-        container.style.transform = `scale(${scale})`;
-        container.style.marginBottom = `${-520 * (1 - scale)}px`;
-      } else {
-        container.style.transform = '';
-        container.style.marginBottom = '';
-      }
-    };
-
-    updateScale();
-    window.addEventListener('resize', updateScale);
-    return () => window.removeEventListener('resize', updateScale);
-  }, []);
 
   // ── Fetch hero data ──────────────────────────────────────────────────────
   useEffect(() => {
@@ -71,64 +40,63 @@ export default function HeroSection() {
   }, []);
 
   // Resolve field values — backend data takes priority, static fallbacks used while loading or if field is empty
-  const badgeText   = hero?.badgeText   || FALLBACKS.badgeText;
-  const titleLine1  = hero?.titleLine1  || FALLBACKS.titleLine1;
+  const badgeText = hero?.badgeText || FALLBACKS.badgeText;
+  const titleLine1 = hero?.titleLine1 || FALLBACKS.titleLine1;
   const description = hero?.description || FALLBACKS.description;
 
   // Images: if backend provides a URL use it, otherwise fall back to the original static paths
-  const img1 = hero?.leftTopImage    ? getImageUrl(hero.leftTopImage)    : FALLBACKS.leftTopImage;
+  const img1 = hero?.leftTopImage ? getImageUrl(hero.leftTopImage) : FALLBACKS.leftTopImage;
   const img2 = hero?.leftBottomImage ? getImageUrl(hero.leftBottomImage) : FALLBACKS.leftBottomImage;
-  const img3 = hero?.rightImage      ? getImageUrl(hero.rightImage)      : FALLBACKS.rightImage;
 
   return (
     <section className="hero-wrapper">
-      <div className="hero-scroll-wrap">
-        <div className="hero-container" ref={containerRef}>
+      <div className="hero-container">
 
-          {/* Dashed Brackets (L-shaped, behind hexagons) */}
+        {/* ── Left Column: Employee Images & Decorative Elements ── */}
+        <div className="hero-left">
+
+          {/* Orange dashed corner bracket — behind all hexagons */}
           <div className="dash-bracket-left"></div>
-          <div className="dash-bracket-right"></div>
 
-          {/* Left-Top Hexagon Cluster (small, woman) */}
+          {/* Small hexagon — upper-left (man) */}
           <div className="hex-bg-1"></div>
-          <img src={img1} alt="" className="hero-img-1" loading="lazy" />
+          <img src={img1} alt="Employee" className="hero-img-1" loading="lazy" />
 
-          {/* Center-Left Hexagon Cluster (large, man) */}
+          {/* Large hexagon — lower-right (woman) */}
           <div className="hex-bg-2"></div>
-          <img src={img2} alt="" className="hero-img-2" loading="lazy" />
+          <img src={img2} alt="Employee" className="hero-img-2" loading="lazy" />
 
-          {/* Right Hexagon Cluster (large, woman) */}
-          <div className="hex-bg-3"></div>
-          <img src={img3} alt="" className="hero-img-3" loading="lazy" />
-
-          {/* Solid Green Hexagon Dots (left) */}
+          {/* Lime-green decorative hex dots */}
           <div className="hex-dot hex-dot-1"></div>
           <div className="hex-dot hex-dot-2"></div>
 
-          {/* Gradient Hexagon Dots (bottom-right) */}
-          <div className="hex-dot-gradient hex-dot-gradient-1"></div>
-          <div className="hex-dot-gradient hex-dot-gradient-2"></div>
+        </div>
 
-          {/* Center Text Content */}
-          <div className="hero-eyebrow">
-            {/* backend field: badgeText */}
-            {badgeText}
+        {/* ── Right Column: Text Content ── */}
+        <div className="flex flex-col space-y-6">
+
+          {/* Eyebrow / Badge - blue uppercase label */}
+          <div className="inline-flex">
+            <span className="text-xs font-bold tracking-widest text-blue-600 uppercase">
+              {badgeText}
+            </span>
           </div>
 
-          <div className="hero-heading-wrap">
-            <h1 className="hero-heading">
-              {/* backend field: titleLine1 */}
-              {titleLine1}
-            </h1>
-          </div>
+          {/* Main Heading - large, bold, dark navy */}
+          <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+            {titleLine1}
+          </h1>
 
-          <p className="hero-subtext">
-            {/* backend field: description */}
+          {/* Body paragraph - full description, naturally wrapping */}
+          <p className="text-base lg:text-lg text-gray-700 leading-snug max-w-2xl">
             {description}
           </p>
 
         </div>
       </div>
+
+      {/* Thin lime/yellow-green accent line at the bottom of the hero */}
+      <div className="hero-bottom-line" aria-hidden="true"></div>
     </section>
   );
 }

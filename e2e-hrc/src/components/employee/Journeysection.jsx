@@ -213,14 +213,14 @@ export default function Journeysection() {
     <section className="emp-journey" style={{ background: 'linear-gradient(135deg, #E6BA67 0%, #EAD47A 14.28%, #C9C456 28.57%, #DDCA6A 42.85%, #AEBD54 57.14%, #D0D66B 71.42%, #D5DE80 85.71%, #95B755 100%)' }}>
       <div className="emp-journey-inner mx-auto flex flex-col items-center" style={{ maxWidth: '1220px', minHeight: '566px', padding: '0px 15px 40px', gap: '20px' }}>
         <div className="emp-journey-header flex flex-col items-center" style={{ width: '100%', height: '160px', padding: '20px 0px 0px' }}>
-          <p className="font-['DM_Sans'] font-medium text-[17px] leading-[30px] text-center tracking-[1px] uppercase text-[#7A777E] m-0" style={{ width: '446px' }}>
-            {/* backend field: section.badgeText */}
-            {badgeText}
-          </p>
           <h2 className="font-['DM_Sans'] font-semibold text-center text-[#2B2B2F] m-0" style={{ fontSize: '45.008px', lineHeight: '50px', letterSpacing: '-1px', padding: '0px 0px 1px', width: '682px' }}>
             {/* backend field: section.sectionTitle */}
             {sectionTitle}
           </h2>
+          <p className="  font-medium text-[16px]  text-center  text-[#7A777E] m-0" style={{ width: '700px', height: '40px', padding: '15px 10px 1px' }}>
+            {/* backend field: section.badgeText */}
+            {badgeText}
+          </p>
         </div>
 
         <div className="emp-journey-grid grid grid-cols-1 md:grid-cols-2" style={{ width: '100%' }}>

@@ -187,6 +187,21 @@ const MissionVision = () => {
         </div>
       )}
 
+      <div style={{ textAlign: "center", marginBottom: "40px" }}>
+        <h2
+          style={{
+            margin: 0,
+            fontFamily: "'Poppins', sans-serif",
+            fontWeight: 800,
+            fontSize: "36px",
+            lineHeight: "40px",
+            color: "#16213E",
+          }}
+        >
+          Our Mission and Vision
+        </h2>
+      </div>
+
       <div
         className="about-mv-container"
         style={{

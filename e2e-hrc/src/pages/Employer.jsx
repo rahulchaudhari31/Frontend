@@ -3,7 +3,7 @@ import SEO from '../components/SEO/SEO';
 import Navbar from "../components/shared/Navbar.jsx"
 import Hero from '../components/employer/Hero';
 import HowWeWork from '../components/employer/HowWeWork';
-import Sectors from '../components/home/Sectors';
+import Sectors from '../components/sectors.jsx';
 import FAQAndCTA from '../components/employer/FAQAndCTA.jsx';
 import Testimonials from '../components/employer/Testimonials';
 import Footer from "../components/shared/Footer.jsx"

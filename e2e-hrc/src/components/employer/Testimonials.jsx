@@ -32,60 +32,64 @@ function TestimonialCard({ t }) {
       style={{
         position: "relative",
         width: 530,
-        height: 388,
+        minHeight: 388,
         background: "#FFFFFF",
         borderRadius: 12,
         flexShrink: 0,
+        padding: "55px 65px 40px",
+        display: "flex",
+        flexDirection: "column",
+        gap: 30,
+        boxSizing: "border-box",
       }}
     >
-      <div
+      {/* Title */}
+      <h3
         style={{
-          position: "absolute",
-          width: 400,
-          left: "calc(50% - 400px/2)",
-          top: 55,
-          display: "flex",
-          flexDirection: "column",
-          gap: 30,
+          fontFamily: "Poppins, sans-serif",
+          fontWeight: 500,
+          fontSize: 20,
+          lineHeight: "30px",
+          color: "#000000",
+          margin: 0,
+          width: "100%",
         }}
       >
-        <div style={{ display: "flex", flexDirection: "column", gap: 30, width: 368, height: 170 }}>
-          <h3
-            style={{
-              fontFamily: "Poppins, sans-serif",
-              fontWeight: 500,
-              fontSize: 20,
-              lineHeight: "30px",
-              color: "#000000",
-              margin: 0,
-            }}
-          >
-            {/* backend field: title */}
-            {t.title}
-          </h3>
-          <p
-            style={{
-              fontFamily: "Inter, sans-serif",
-              fontWeight: 400,
-              fontSize: 16,
-              lineHeight: "19px",
-              color: "#000000",
-              margin: 0,
-              maxWidth: 362,
-            }}
-          >
-            {/* backend field: reviewText */}
-            {t.reviewText}
-          </p>
-        </div>
-        <div
-          style={{
-            width: 400,
-            height: 0,
-            border: "1px solid rgba(0,0,0,0.25)",
-            transform: "rotate(0.27deg)",
-          }}
-        />
+        {/* backend field: title */}
+        {t.title}
+      </h3>
+
+      {/* Testimonial Content */}
+      <p
+        style={{
+          fontFamily: "Inter, sans-serif",
+          fontWeight: 400,
+          fontSize: 16,
+          lineHeight: "24px",
+          color: "#000000",
+          margin: 0,
+          width: "100%",
+          wordWrap: "break-word",
+          overflowWrap: "break-word",
+        }}
+      >
+        {/* backend field: reviewText */}
+        {t.reviewText}
+      </p>
+
+      {/* Decorative Line */}
+      <div
+        style={{
+          width: "100%",
+          height: 0,
+          border: "1px solid rgba(0,0,0,0.25)",
+          transform: "rotate(0.27deg)",
+        }}
+      />
+
+      {/* Client Info Section */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {/* Company Logo or Name */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start" }}>
           {logoSrc ? (
             <img
@@ -106,6 +110,40 @@ function TestimonialCard({ t }) {
             </span>
           ) : null}
         </div>
+
+        {/* Reviewer Name and Designation */}
+        {(t.reviewerName || t.reviewerDesignation) && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            {t.reviewerName && (
+              <p
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: 600,
+                  fontSize: 14,
+                  lineHeight: "17px",
+                  color: "#000000",
+                  margin: 0,
+                }}
+              >
+                {t.reviewerName}
+              </p>
+            )}
+            {t.reviewerDesignation && (
+              <p
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: 400,
+                  fontSize: 14,
+                  lineHeight: "17px",
+                  color: "#666666",
+                  margin: 0,
+                }}
+              >
+                {t.reviewerDesignation}
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -205,7 +243,7 @@ export default function Testimonials() {
   const sectionTitle = section?.sectionTitle || "Trusted by Businesses Worldwide";
   const sectionDescription =
     section?.sectionDescription ||
-    "Discover the stories and experiences of individuals and companies who have found success and excellence through E2E HRC";
+    "";
 
   return (
     <section
@@ -249,7 +287,7 @@ export default function Testimonials() {
                 {badgeText}
               </span>
             </div>
-            <h2
+           <h2
               style={{
                 fontFamily: "Poppins, sans-serif",
                 fontWeight: 600,
@@ -260,7 +298,7 @@ export default function Testimonials() {
               }}
             >
               {/* backend field: section.sectionTitle */}
-              {sectionTitle}
+              {}
             </h2>
           </div>
 

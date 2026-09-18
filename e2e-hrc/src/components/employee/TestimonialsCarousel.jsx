@@ -51,6 +51,7 @@ export default function TestimonialsCarousel({ speed = 30 }) {
 
         // Normalize response data
         const payload = response?.data ?? response;
+        console.log(payload)
         const sectionData =
           payload?.section ||
           payload?.testimonialSection ||
@@ -173,28 +174,12 @@ export default function TestimonialsCarousel({ speed = 30 }) {
                 letterSpacing: '0%',
               }}
             >
-              {section?.sectionTitle || 'What our candidates say'}
+              {section?.sectionTitle || 'What Our Candidates Say'}
             </h2>
           </div>
 
           {/* Description */}
-          <div className="emp-testimonials-controls flex items-start" style={{ width: '100%', gap: '568px' }}>
-            <p
-              className="emp-testimonials-desc font-[Inter] text-white m-0"
-              style={{
-                width: '100%',
-                maxWidth: '580px',
-                fontSize: '16px',
-                lineHeight: '19px',
-                fontWeight: 400,
-                display: 'flex',
-                alignItems: 'flex-end',
-              }}
-            >
-              {section?.sectionDescription ||
-                'Discover the stories and experiences of individuals and companies who have found success and excellence through Applyfier'}
-            </p>
-          </div>
+          
         </div>
 
         {/* Testimonial Cards Carousel */}
@@ -250,6 +235,8 @@ export default function TestimonialsCarousel({ speed = 30 }) {
                 const title = item?.title || '';
                 const reviewText = item?.reviewText || item?.description || item?.quote || '';
                 const companyName = item?.companyName || item?.reviewerCompany || '';
+                const reviewerDesignation = item?.reviewerDesignation || ""
+                const reviewerName = item?.reviewerName || ""
                 const companyLogo = getImageUrl(item?.companyLogo || item?.image || '');
 
                 // Generate unique key
@@ -258,66 +245,106 @@ export default function TestimonialsCarousel({ speed = 30 }) {
                 return (
                   <motion.div
                     key={uniqueKey}
-                    whileHover={{ scale: 1.12, boxShadow: '0 24px 56px rgba(0,0,0,0.18)' }}
+                    whileHover={{
+                      scale: 1.12,
+                      boxShadow: "0 24px 56px rgba(0,0,0,0.18)",
+                    }}
                     className="bg-white shrink-0 flex flex-col items-center testimonials-card"
                     style={{
-                      width: 'min(85vw, 530px)',
-                      minHeight: '388px',
-                      borderRadius: '12px',
-                      padding: '0px',
+                      width: "min(85vw, 530px)",
+                      minHeight: "388px",
+                      borderRadius: "12px",
+                      padding: "0px",
                     }}
                   >
                     <div
                       className="flex flex-col items-center testimonials-card-inner"
-                      style={{ width: 'min(75vw, 400px)', gap: '30px', paddingTop: '55px' }}
+                      style={{
+                        width: "min(75vw, 400px)",
+                        gap: "30px",
+                        paddingTop: "55px",
+                      }}
                     >
+                      {/* Title + Review */}
                       <div
                         className="flex flex-col testimonials-card-text"
-                        style={{ width: 'min(70vw, 368px)', gap: '30px' }}
+                        style={{
+                          width: "min(70vw, 368px)",
+                          gap: "30px",
+                        }}
                       >
                         <h3
                           className="font-[Poppins] font-medium text-black m-0 testimonials-card-title"
                           style={{
-                            fontSize: '20px',
-                            lineHeight: '30px',
-                            letterSpacing: '0%',
+                            fontSize: "20px",
+                            lineHeight: "30px",
+                            letterSpacing: "0%",
                           }}
                         >
                           {title}
                         </h3>
+
                         <p
                           className="font-[Inter] text-black m-0 testimonials-card-quote"
                           style={{
-                            width: 'min(68vw, 362px)',
-                            fontSize: '16px',
-                            lineHeight: '19px',
+                            width: "min(68vw, 362px)",
+                            fontSize: "16px",
+                            lineHeight: "19px",
                             fontWeight: 400,
                           }}
                         >
                           {reviewText}
                         </p>
                       </div>
+
+                      {/* Divider */}
                       <div
                         className="testimonials-card-divider"
                         style={{
-                          width: 'min(75vw, 400px)',
-                          borderTop: '1px solid rgba(0,0,0,0.25)',
-                          transform: 'rotate(0.27deg)',
+                          width: "min(75vw, 400px)",
+                          borderTop: "1px solid rgba(0,0,0,0.25)",
+                          transform: "rotate(0.27deg)",
                         }}
                       />
+
+                      {/* Reviewer Name + Designation - LEFT */}
+                      <div
+                        className="w-full text-left"
+                        style={{
+                          marginTop: "-10px",
+                        }}
+                      >
+                        <h4 className="text-sm font-semibold text-black m-0">
+                          {reviewerName}
+                        </h4>
+
+                        <p className="text-sm font-semibold text-black m-0">
+                          {reviewerDesignation}
+                        </p>
+                      </div>
+
+                      {/* Company Logo */}
                       {companyLogo ? (
                         <img
                           src={companyLogo}
-                          alt={companyName || 'Company logo'}
+                          alt={companyName || "Company logo"}
                           className="h-auto object-contain"
-                          style={{ width: '128.65px', maxHeight: '45.95px' }}
+                          style={{
+                            width: "128.65px",
+                            maxHeight: "45.95px",
+                          }}
                           loading="lazy"
                           onError={(e) => {
-                            e.target.style.display = 'none';
+                            e.target.style.display = "none";
                           }}
                         />
                       ) : (
-                        <div style={{ width: '128.65px', height: '45.95px' }} />
+                        <div
+                          style={{
+                            width: "128.65px",
+                            height: "45.95px",
+                          }}
+                        />
                       )}
                     </div>
                   </motion.div>

@@ -138,7 +138,7 @@ export default function HeroSection() {
               {description || "We are more than a recruitment agency; we are strategic partners in your growth."}
             </p>
 
-            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+           {/* <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
               {button1Text ? (
                 <a
                   href={button1Link || "#"}
@@ -159,7 +159,7 @@ export default function HeroSection() {
                   <Search className="w-[15px] h-[15px] text-[#00458D]" strokeWidth={2} />
                 </a>
               ) : null}
-            </div>
+            </div> */}
           </>
         )}
       </div>

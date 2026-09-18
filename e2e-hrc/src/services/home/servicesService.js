@@ -18,3 +18,17 @@ export const getServices = async () => {
     throw error;
   }
 };
+
+/**
+ * Fetch the public Sectors section content
+ * GET /api/sectors
+ */
+export const getSectors = async () => {
+  try {
+    const response = await apiClient.get('/api/sectors');
+    return response.data?.data || response.data || null;
+  } catch (error) {
+    console.error('Error fetching Sectors section:', error);
+    throw error;
+  }
+};

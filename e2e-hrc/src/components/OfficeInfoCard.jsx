@@ -17,6 +17,12 @@ const defaultData = {
    styling is completely unaffected.
    ─────────────────────────────────────────────────────────────────────────── */
 const mobileStyles = `
+@media (min-width: 1024px) {
+  .oic-card:not(.custom-scrollbar) {
+    padding: 28px 32px !important;
+  }
+}
+
 @media (max-width: 768px) {
   .oic-card {
     position: fixed !important;

@@ -44,14 +44,14 @@ function CardEven({ card, isExpanded, onToggle, cardKey }) {
   const imgSrc = card.image ? getImageUrl(card.image) : '';
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
       {/* Image column */}
-      <div>
+      <div className=''>
         {imgSrc && (
           <img
             src={imgSrc}
             alt={card.title}
-            className="w-full h-[250px] lg:h-[420px] object-cover rounded-[16px]"
+            className="w-full h-[250px] lg:h-[480px] object-cover rounded-[16px]"
             loading="lazy"
           />
         )}
@@ -71,29 +71,29 @@ function CardEven({ card, isExpanded, onToggle, cardKey }) {
         </h3>
 
         <div
-  className="description-scroll-container"
-  style={{
-    height: '104px',
-    maxHeight: '104px',
-    overflowY: isExpanded ? 'scroll' : 'hidden',
-    overflowX: 'hidden',
-    scrollbarWidth: 'none',
-    msOverflowStyle: 'none',
-    marginBottom: '18px',
-    display: 'block',
-    flexShrink: 0,
-  }}
->
-  <p
-    className="font-[Inter] text-base text-[#43474F] leading-relaxed m-0"
-    style={{
-      margin: 0,
-      padding: 0,
-    }}
-  >
-    {card.description}
-  </p>
-</div>
+          className="description-scroll-container"
+          style={{
+            height: '104px',
+            maxHeight: '104px',
+            overflowY: isExpanded ? 'scroll' : 'hidden',
+            overflowX: 'hidden',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            marginBottom: '18px',
+            display: 'block',
+            flexShrink: 0,
+          }}
+        >
+          <p
+            className="font-[Inter] text-base text-[#43474F] leading-relaxed m-0"
+            style={{
+              margin: 0,
+              padding: 0,
+            }}
+          >
+            {card.description}
+          </p>
+        </div>
 
         <button
           type="button"
@@ -109,8 +109,8 @@ function CardEven({ card, isExpanded, onToggle, cardKey }) {
         </button>
 
         {/* Stats row — only rendered when values exist */}
-        {(card.stat1Value || card.stat2Value) && (
-          <div className="flex gap-6 sm:gap-12 mt-6">
+        {(card.stat1Value || card.stat2Value || card.stat3Value || card.stat4Value) && (
+          <div className="flex flex-wrap gap-6 sm:gap-12 mt-6">
             {card.stat1Value && (
               <div>
                 <p className="font-['Hanken_Grotesk'] font-bold text-[24px] sm:text-[30px] text-[#F39308]">
@@ -135,8 +135,33 @@ function CardEven({ card, isExpanded, onToggle, cardKey }) {
                 </p>
               </div>
             )}
+
           </div>
+
         )}
+        <div className="flex flex-wrap gap-6 sm:gap-12 mt-6">
+          <div>
+            <p className="font-['Hanken_Grotesk'] font-bold text-[24px] sm:text-[30px] text-[#F39308]">
+              {/* backend field: stat3Value */}
+              {card.stat3Value}
+            </p>
+            <p className="font-[Inter] text-xs uppercase text-[#43474F] mt-0.5">
+              {/* backend field: stat3Label */}
+              {card.stat3Label}
+            </p>
+          </div>
+          <div>
+            <p className="font-['Hanken_Grotesk'] font-bold text-[24px] sm:text-[30px] text-[#F39308]">
+              {/* backend field: stat3Value */}
+              {card.stat4Value}
+            </p>
+            <p className="font-[Inter] text-xs uppercase text-[#43474F] mt-0.5">
+              {/* backend field: stat3Label */}
+              {card.stat4Label}
+            </p>
+          </div>
+
+        </div>
       </div>
     </div>
   );
@@ -147,7 +172,7 @@ function CardOdd({ card, isExpanded, onToggle, cardKey }) {
   const imgSrc = card.image ? getImageUrl(card.image) : '';
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
       {/* Text panel — mirrored: order-2 on mobile, order-1 on desktop */}
       <div className="order-2 lg:order-1 bg-[#F8FAFC] rounded-[16px] p-8 sm:p-14 flex flex-col justify-center relative overflow-hidden">
         {/* Decorative watermark letter — first char of title, matches original "R" for "A Career..." */}
@@ -201,8 +226,8 @@ function CardOdd({ card, isExpanded, onToggle, cardKey }) {
         </button>
 
         {/* Stats row — only rendered when values exist */}
-        {(card.stat1Value || card.stat2Value) && (
-          <div className="flex gap-6 sm:gap-12 mt-6">
+        {(card.stat1Value || card.stat2Value || card.stat3Value || card.stat4Value) && (
+          <div className="flex flex-wrap gap-6 sm:gap-12 mt-6">
             {card.stat1Value && (
               <div>
                 <p className="font-[Poppins] font-bold text-[24px] sm:text-[30px] text-[#004CA5]">
@@ -227,8 +252,32 @@ function CardOdd({ card, isExpanded, onToggle, cardKey }) {
                 </p>
               </div>
             )}
+
           </div>
         )}
+        <div className="flex flex-wrap gap-6 sm:gap-12 mt-6">
+          <div>
+            <p className="font-['Hanken_Grotesk'] font-bold text-[24px] sm:text-[30px] text-[#004CA5]">
+              {/* backend field: stat3Value */}
+              {card.stat3Value}
+            </p>
+            <p className="font-[Inter] text-xs uppercase text-[#43474F] mt-0.5">
+              {/* backend field: stat3Label */}
+              {card.stat3Label}
+            </p>
+          </div>
+          <div>
+            <p className="font-['Hanken_Grotesk'] font-bold text-[24px] sm:text-[30px] text-[#004CA5]">
+              {/* backend field: stat3Value */}
+              {card.stat4Value}
+            </p>
+            <p className="font-[Inter] text-xs uppercase text-[#43474F] mt-0.5">
+              {/* backend field: stat3Label */}
+              {card.stat4Label}
+            </p>
+          </div>
+
+        </div>
       </div>
 
       {/* Image column — order-1 on mobile, order-2 on desktop */}
@@ -279,7 +328,7 @@ export default function WhyChooseE2E() {
   };
 
   // Resolve display values — API data takes priority, fallbacks used while loading / on error
-  const badgeText    = section?.badgeText    || FALLBACK_SECTION.badgeText;
+  const badgeText = section?.badgeText || FALLBACK_SECTION.badgeText;
   const sectionTitle = section?.sectionTitle || FALLBACK_SECTION.sectionTitle;
   const displayCards = cards.length > 0 ? cards : FALLBACK_CARDS;
 

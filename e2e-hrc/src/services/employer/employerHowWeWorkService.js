@@ -1,6 +1,20 @@
 import apiClient from '../../config/api';
 
 /**
+ * Fetch employer how we work intro section data from the backend
+ * GET /api/employer/how-we-work
+ */
+export const getEmployerHowWeWorkSection = async () => {
+  try {
+    const response = await apiClient.get('/api/employer/how-we-work');
+    return response.data?.data ?? response.data ?? null;
+  } catch (error) {
+    console.error('Error fetching employer how we work section data:', error);
+    throw error;
+  }
+};
+
+/**
  * Fetch employer how we work steps data from the backend
  * GET /api/employer-how-we-work-steps
  */

@@ -1,12 +1,52 @@
-import { useState, useEffect, useRef } from "react";
+import { useRef } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { getServices, getSectors } from "../../services/home/servicesService";
 
-const ArrowIcon = () => (
-  <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-    <path d="M3.125 7.5H11.875M11.875 7.5L7.5 3.125M11.875 7.5L7.5 11.875" stroke="#FFFFFF" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
+import manufacturingImg from "../assets/Manufacturingg.png";
+import healthcareImg from "../assets/healthcare.webp";
+import engineeringImg from "../assets/Logistics vertical..png";
+import constructionImg from "../assets/construction-DhPxqzzm.jpg";
+import logisticsImg from "../assets/Logistics vertical..png";
+import hospitality from "../assets/photo-1666101040767-d276f74e377c.avif";
+import Fmcg from "../assets/1000_F_2176211286_mS6loNNzXBAXTr6McvlUwAmzIBt0CT7c.jpg";
+
+const industries = [
+  {
+    name: "Manufacturing",
+    image: manufacturingImg,
+    description:
+      "From production operatives and quality engineers to shift supervisors and maintenance specialists, we place skilled professionals into manufacturing roles across the UK Midlands and internationally.",
+  },
+  {
+    name: "Healthcare",
+    image: healthcareImg,
+    description:
+      "We place nurses, allied health professionals, care managers, and clinical and non-clinical support staff into NHS trusts, private hospitals, and palliative care settings across the UK.",
+  },
+  {
+    name: "Construction",
+    image: constructionImg,
+    description:
+      "We bring essential personnel like site managers, skilled trade professionals, quantity surveyors, project management professionals and other sector-experienced professionals into construction and infrastructure projects across the UK.",
+  },
+  {
+    name: "Logistics",
+    image: logisticsImg,
+    description:
+      "Our network includes background-checked warehouse operatives, distribution managers, HGV drivers, supply chain analysts, and logistics coordinators who can work across operations of every scale.",
+  },
+  {
+    name: "Hospitality",
+    image: hospitality,
+    description:
+      "e2e HRC places hospitality professionals across restaurants, hotels, and event venues. Professionals placed in the industry include chefs, housekeeping staff, security personnel, and hospitality management professionals across Birmingham, UK.",
+  },
+  {
+    name: "FMCG",
+    image: Fmcg,
+    description:
+      "Since the FMCG industry faces heavy competition and turnover, we understand the need for consistency and quality in recruitment. For the FMCG sector, we assure placement of uniquely capable merchandisers, sales representatives, customer support executives, and packaging managers.",
+  },
+];
 
 function SectorCard({ name, image, description }) {
   return (
@@ -45,52 +85,8 @@ function SectorCard({ name, image, description }) {
   );
 }
 
-function SectorSkeleton() {
-  return (
-    <div className="w-[280px] h-[420px] min-w-[280px] rounded-[20px] bg-gray-200 animate-pulse" />
-  );
-}
-
 function Sectors() {
   const scrollRef = useRef(null);
-  const [services, setServices] = useState([]);
-  const [sectionData, setSectionData] = useState({
-    sectionTitle: '',
-    sectionDescription: '',
-  });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchSection = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const [sectionResponse, cardsResponse] = await Promise.all([
-          getSectors().catch(() => null),
-          getServices().catch(() => []),
-        ]);
-
-        const sectionPayload = sectionResponse?.data || sectionResponse || {};
-
-        setSectionData({
-          sectionTitle: sectionPayload.sectionTitle || '',
-          sectionDescription: sectionPayload.sectionDescription || '',
-        });
-        setServices(Array.isArray(cardsResponse) ? cardsResponse : []);
-      } catch (error) {
-        console.error('Failed to fetch sectors section:', error);
-        setSectionData({ sectionTitle: '', sectionDescription: '' });
-        setServices([]);
-        setError('Unable to load sectors right now.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSection();
-  }, []);
 
   const scrollLeft = () => {
     const el = scrollRef.current;
@@ -108,39 +104,21 @@ function Sectors() {
     }
   };
 
-  const hasSectionData = Boolean(sectionData.sectionTitle || sectionData.sectionDescription);
-
   return (
     <section className="py-10 lg:py-20 px-4 bg-white">
       <div className="max-w-[1440px] mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-8 lg:mb-10 lg:pl-[51px] lg:pr-[32px] gap-4">
           <div className="lg:w-[629.76px]">
-            <span className="inline-flex items-center bg-[#C8D96F] text-[#004CA5] font-body font-semibold text-[12px] px-3 py-[6px] rounded-full mb-3">
-              UK INDUSTRIES WE SERVE
+            <span className="inline-flex items-center bg-[#C8D96F] text-[#004CA5] font-body font-semibold text-[12px] px-3 py-[6px] rounded-full mb-2">
+              Industries We Serve
             </span>
-
-            {loading ? (
-              <div className="space-y-2">
-                <div className="h-8 w-64 rounded bg-gray-200 animate-pulse" />
-                <div className="h-5 w-full max-w-[520px] rounded bg-gray-200 animate-pulse" />
-              </div>
-            ) : error ? (
-              <div className="text-sm text-red-600">{error}</div>
-            ) : hasSectionData ? (
-              <>
-                <h2 className="font-heading font-[800] text-2xl sm:text-3xl lg:text-[26px] lg:leading-[40px] tracking-[0px] text-[#004CA5] mb-2">
-                  {sectionData.sectionTitle}
-                </h2>
-
-                <p className="font-body text-[16px] leading-[24px] text-[#46638A] m-0">
-                  {sectionData.sectionDescription}
-                </p>
-              </>
-            ) : (
-              <div className="text-sm text-gray-500">No sectors content available yet.</div>
-            )}
+            <h2 className="font-heading font-[800] text-2xl sm:text-3xl lg:text-[26px] lg:leading-[40px] tracking-[0px] text-[#004CA5] mb-2">
+              Deep Expertise Across the Sectors That Matter
+            </h2>
+            < p className=" mt-5 font-body text-[16px] leading-[24px] text-[#46638A] m-0">
+              e2e HRC concentrates on the sectors where our recruitment consultants excel in knowledge, live candidate networks, and established employer relationships. Where the domestic talent pool falls short, we source internationally through our Dubai and Delhi offices, with complete in-house support for skilled worker visas. Our network has been built over nearly two decades of creating an indelible footprint as a specialist recruitment consultant across these sectors:
+            </p> 
           </div>
-
           <div className="hidden sm:flex items-center gap-[8px] lg:w-[96px]">
             <button
               onClick={scrollLeft}
@@ -163,20 +141,14 @@ function Sectors() {
           ref={scrollRef}
           className="flex gap-5 overflow-x-auto no-scrollbar pb-4 -mx-4 px-4 snap-x snap-mandatory"
         >
-          {loading
-            ? [1, 2, 3].map((i) => <SectorSkeleton key={i} />)
-            : error
-              ? null
-              : services.length > 0
-                ? services.map((service) => (
-                    <SectorCard
-                      key={service._id || service.id || `${service.title}-${service.image}`}
-                      name={service.title || service.name || ""}
-                      image={service.image || ""}
-                      description={service.shortDescription || service.description || ""}
-                    />
-                  ))
-                : null}
+          {industries.map((industry) => (
+            <SectorCard
+              key={industry.name}
+              name={industry.name}
+              image={industry.image}
+              description={industry.description}
+            />
+          ))}
         </div>
       </div>
 

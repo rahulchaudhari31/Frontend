@@ -162,50 +162,107 @@ export default function WorkforceFAQAndCTA() {
                 </div>
 
                 {/* RIGHT — CTA Card */}
-                <motion.div
-                    ref={ctaRef}
-                    initial={{ opacity: 0, x: 40 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.6, ease: 'easeOut' }}
-                    className="rounded-[32px] relative overflow-hidden flex"
-                    style={{
-                        background: 'linear-gradient(128.18deg, #004CA5 0%, #003375 100%)',
-                        boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)',
-                        minHeight: isMobile ? 'auto' : 414,
-                    }}
-                >
-                    {/* Content */}
-                    <div className="flex flex-col gap-6 p-6 md:p-10 flex-1 z-10 justify-center items-center md:items-start text-center md:text-left">
-                        <div className="flex flex-col gap-4">
-                            <h3
+       
+
+                   <motion.div
+                          ref={ctaRef}
+                          initial={{ opacity: 0, x: 40 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true, amount: 0.3 }}
+                          transition={{ duration: 0.6, ease: 'easeOut' }}
+                          className="rounded-[32px] relative overflow-hidden flex"
+                          style={{
+                            // backend field: no backgroundImage in schema — use gradient always
+                            background: 'linear-gradient(128.18deg, #004CA5 0%, #003375 100%)',
+                            boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)',
+                            minHeight: isMobile ? 'auto' : 414,
+                          }}
+                        >
+                          {/* Content */}
+                          <div className="flex flex-col gap-6 p-6 md:p-10 flex-1 z-10 justify-center items-center md:items-start text-center md:text-left">
+                            <div className="flex flex-col gap-4">
+                              <h3
                                 className="text-white text-[28px] md:text-[36px]"
                                 style={{
-                                    fontFamily: '"Hanken Grotesk", sans-serif',
-                                    fontWeight: 400,
-                                    lineHeight: '1.25',
+                                  fontFamily: '"Hanken Grotesk", sans-serif',
+                                  fontWeight: 400,
+                                  lineHeight: '1.25',
                                 }}
-                            >
-                                {title}
-                            </h3>
-                            <p
-                                style={{
-                                    fontFamily: '"Source Sans 3", sans-serif',
-                                    fontWeight: 400,
-                                    fontSize: 14,
-                                    lineHeight: '22.75px',
-                                    color: '#FFFFFFE5',
-                                    maxWidth: 448,
-                                }}
-                            >
-                                {description}
-                            </p>
-                        </div>
-
-                        <a
-                            href={btnLink}
-                            className="self-center md:self-start inline-flex items-center gap-2"
-                            style={{
+                              >
+                                {/* backend field: ctaTitle */}
+                                {ctaData?.ctaTitle || ''}
+                              </h3>
+                              {/* backend field: ctaDescription — rendered with newline + bullet preservation */}
+                              {(() => {
+                                const raw = ctaData?.ctaDescription || '';
+                                if (!raw.trim()) return null;
+                
+                                // Shared text style (matches the original <p> exactly)
+                                const textStyle = {
+                                  fontFamily: '"Source Sans 3", sans-serif',
+                                  fontWeight: 400,
+                                  fontSize: 14,
+                                  lineHeight: '22.75px',
+                                  color: '#FFFFFFE5',
+                                  maxWidth: 448,
+                                };
+                
+                                // Split on any newline sequence, keeping blank lines as visual gaps
+                                const lines = raw.split(/\r?\n/);
+                
+                                // Detect whether a line starts with a bullet prefix (•, -, *)
+                                const isBullet = (line) => /^[\u2022\-\*]\s*/.test(line.trimStart());
+                
+                                return (
+                                  <div style={{ ...textStyle, display: 'flex', flexDirection: 'column', gap: 0 }}>
+                                    {lines.map((line, idx) => {
+                                      const trimmed = line.trim();
+                
+                                      // Empty line → small spacer preserving paragraph breaks
+                                      if (!trimmed) {
+                                        return <span key={idx} style={{ display: 'block', height: '0.6em' }} />;
+                                      }
+                
+                                      // Bullet line → keep character, indent wrapped text
+                                      if (isBullet(trimmed)) {
+                                        // Separate the bullet character from the rest of the text
+                                        const match = trimmed.match(/^([\u2022\-\*])\s*(.*)/s);
+                                        const bullet = match ? match[1] : '•';
+                                        const text   = match ? match[2] : trimmed;
+                
+                                        return (
+                                          <div
+                                            key={idx}
+                                            style={{
+                                              display: 'flex',
+                                              alignItems: 'flex-start',
+                                              gap: 6,
+                                              lineHeight: '22.75px',
+                                            }}
+                                          >
+                                            {/* Bullet glyph — fixed width so text always aligns */}
+                                            <span style={{ flexShrink: 0, userSelect: 'none' }}>{bullet}</span>
+                                            <span style={{ flex: 1, wordBreak: 'break-word' }}>{text}</span>
+                                          </div>
+                                        );
+                                      }
+                
+                                      // Normal text line
+                                      return (
+                                        <span key={idx} style={{ display: 'block', wordBreak: 'break-word' }}>
+                                          {trimmed}
+                                        </span>
+                                      );
+                                    })}
+                                  </div>
+                                );
+                              })()}
+                            </div>
+                
+                            <a
+                              href={ctaData?.buttonLink || '#'}
+                              className="self-center md:self-start inline-flex items-center gap-2"
+                              style={{
                                 borderRadius: 9999,
                                 border: '1px solid rgba(255,255,255,0.3)',
                                 background: 'rgba(255,255,255,0.1)',
@@ -216,56 +273,57 @@ export default function WorkforceFAQAndCTA() {
                                 color: '#FFFFFF',
                                 lineHeight: '20px',
                                 transition: 'background 0.2s, border-color 0.2s',
-                            }}
-                            onMouseEnter={(e) => {
+                              }}
+                              onMouseEnter={(e) => {
                                 e.currentTarget.style.background = 'rgba(255,255,255,0.25)';
                                 e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)';
-                            }}
-                            onMouseLeave={(e) => {
+                              }}
+                              onMouseLeave={(e) => {
                                 e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
                                 e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+                              }}
+                            >
+                              {/* backend field: buttonText */}
+                              {ctaData?.buttonText || ''}
+                              <FiArrowRight size={14} />
+                            </a>
+                          </div>
+                
+                          {/* Gradient overlay - hidden on mobile */}
+                          <div
+                            aria-hidden="true"
+                            className="absolute top-0 bottom-0 hidden md:block"
+                            style={{
+                              right: 0,
+                              width: 100,
+                              background: 'linear-gradient(90deg, #003679 0%, rgba(0, 54, 121, 0) 100%)',
+                              zIndex: 1,
                             }}
-                        >
-                            {btnText}
-                            <FiArrowRight size={14} />
-                        </a>
-                    </div>
-
-                    {/* Gradient overlay - hidden on mobile */}
-                    <div
-                        aria-hidden="true"
-                        className="absolute top-0 bottom-0 hidden md:block"
-                        style={{
-                            right: 0,
-                            width: 100,
-                            background: 'linear-gradient(90deg, #003679 0%, rgba(0, 54, 121, 0) 100%)',
-                            zIndex: 1,
-                        }}
-                    />
-
-                    {/* Icon stack - hidden on mobile */}
-                    <div
-                        className="absolute flex-col hidden md:flex"
-                        aria-hidden="true"
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'flex-start',
-                            padding: 0,
-                            gap: 16,
-                            position: 'absolute',
-                            width: 36,
-                            height: 110,
-                            right: 39.5,
-                            top: 40,
-                            zIndex: 1,
-                        }}
-                    >
-                        <img src={browseIcon} alt="" style={{ width: 36, height: 18 }} />
-                        <img src={communityIcon} alt="" style={{ width: 36, height: 30 }} />
-                        <img src={searchIcon} alt="" style={{ width: 28.51764678955078, height: 30 }} />
-                    </div>
-                </motion.div>
+                          />
+                
+                          {/* Icon stack — schema has no image field, always show static icons */}
+                          <div
+                            className="absolute flex-col hidden md:flex"
+                            aria-hidden="true"
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'flex-start',
+                              padding: 0,
+                              gap: 16,
+                              position: 'absolute',
+                              width: 36,
+                              height: 110,
+                              right: 39.5,
+                              top: 40,
+                              zIndex: 1,
+                            }}
+                          >
+                            <img src={browseIcon} alt="" style={{ width: 36, height: 18 }} />
+                            <img src={communityIcon} alt="" style={{ width: 36, height: 30 }} />
+                            <img src={searchIcon} alt="" style={{ width: 28.51764678955078, height: 30 }} />
+                          </div>
+                        </motion.div>
 
             </div>
         </section>

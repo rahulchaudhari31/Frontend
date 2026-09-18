@@ -39,7 +39,7 @@ export default function HeroSection() {
       style={{
         position: 'relative',
         width: '100%',
-        height: '515px',
+        height: '520px',
         padding: '55px 64px',
         borderTop: '1px solid #EAE8E7',
         display: 'flex',
@@ -60,7 +60,7 @@ export default function HeroSection() {
           top: 0,
           left: 0,
           width: '100%',
-          height: '100%',
+          height: 'auto',
           objectFit: 'cover',
           objectPosition: 'center',
         }}

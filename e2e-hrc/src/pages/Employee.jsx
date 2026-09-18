@@ -3,6 +3,7 @@ import Navbar from '../components/shared/Navbar';
 import Footer from '../components/shared/Footer';
 import HeroSection from '../components/employee/HeroSection';
 import Journeysection from '../components/employee/Journeysection';
+import Trustedbyclients from "../components/employee/TrustedClients"
 import TestimonialsCarousel from '../components/employee/TestimonialsCarousel';
 import WhyChooseE2E from '../components/employee/WhyChooseE2E';
 import './Employee.css';
@@ -31,6 +32,8 @@ export default function Employee() {
       <IndustriesSection />
 
       <FAQAndCTA />
+
+      <Trustedbyclients></Trustedbyclients>
 
       {/* ===== LATEST INSIGHTS ===== */}
       <LatestInsights />

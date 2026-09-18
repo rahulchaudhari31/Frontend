@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import discoveryIcon from "../../assets/images/Career Growth imgs/DISCOVERY.png";
-import { getEmployerHowWeWorkSteps } from '../../services/employer/employerHowWeWorkService';
+import { getEmployerHowWeWorkSection, getEmployerHowWeWorkSteps } from '../../services/employer/employerHowWeWorkService';
 
 const getImageUrl = (path) => {
   if (!path || path.trim() === "") return "";
@@ -240,35 +240,74 @@ function StepCard({ step, index, isTopRow }) {
 
 export default function HowWeWork() {
   const [steps, setSteps] = useState([]);
+  const [sectionData, setSectionData] = useState({
+    sectionTitle: 'How We Work',
+    sectionDescription: '',
+    isActive: true,
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
+
+    const fetchSection = async () => {
+      try {
+        const section = await getEmployerHowWeWorkSection();
+        if (mounted) {
+          const normalizedSection = section && typeof section === 'object' ? section : null;
+          if (normalizedSection && normalizedSection.isActive !== false) {
+            setSectionData({
+              sectionTitle: normalizedSection.sectionTitle || 'How We Work',
+              sectionDescription: normalizedSection.sectionDescription || '',
+              isActive: normalizedSection.isActive !== false,
+            });
+          } else {
+            setSectionData({
+              sectionTitle: 'How We Work',
+              sectionDescription: '',
+              isActive: false,
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch employer how we work section:', error);
+        if (mounted) {
+          setSectionData({
+            sectionTitle: 'How We Work',
+            sectionDescription: '',
+            isActive: false,
+          });
+        }
+      }
+    };
+
     const fetchSteps = async () => {
       try {
         const data = await getEmployerHowWeWorkSteps();
         if (mounted) {
           if (Array.isArray(data) && data.length > 0) {
-            // Sort by order/displayOrder if available
             const sortedData = [...data].sort((a, b) => {
-               const orderA = a.order ?? a.displayOrder ?? 0;
-               const orderB = b.order ?? b.displayOrder ?? 0;
-               return orderA - orderB;
+              const orderA = a.order ?? a.displayOrder ?? 0;
+              const orderB = b.order ?? b.displayOrder ?? 0;
+              return orderA - orderB;
             });
             setSteps(sortedData);
           }
         }
       } catch (error) {
-        console.error("Failed to fetch how we work steps:", error);
+        console.error('Failed to fetch how we work steps:', error);
       } finally {
         if (mounted) setIsLoading(false);
       }
     };
+
+    fetchSection();
     fetchSteps();
     return () => { mounted = false; };
   }, []);
 
   if (isLoading) return null;
+  if (!sectionData.isActive) return null;
   if (steps.length === 0) return null;
 
   return (
@@ -283,21 +322,7 @@ export default function HowWeWork() {
             marginBottom: 30,
           }}
         >
-          <p
-            style={{
-              fontFamily: "Inter, sans-serif",
-              fontWeight: 500,
-              fontSize: 20,
-              lineHeight: "30px",
-              letterSpacing: 1,
-              textTransform: "uppercase",
-              color: "#7A777E",
-              textAlign: "center",
-              margin: "0 0 8px",
-            }}
-          >
-            From brief to successful hire
-          </p>
+         
           <h2
             style={{
               fontFamily: "Poppins, sans-serif",
@@ -310,8 +335,23 @@ export default function HowWeWork() {
               margin: 0,
             }}
           >
-            How We Work
+            {sectionData.sectionTitle}
           </h2>
+           {sectionData.sectionDescription && (
+            <p
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontWeight: 200,
+                fontSize: 18,
+                lineHeight: "30px",
+                color: "#7A777E",
+                textAlign: "center",
+                margin: "0 0 8px",
+              }}
+            >
+              {sectionData.sectionDescription}
+            </p>
+          )}
         </div>
 
         <div

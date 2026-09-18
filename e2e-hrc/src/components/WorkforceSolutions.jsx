@@ -165,9 +165,7 @@ export default function WorkforceSolutions() {
 
         {/* Header */}
         <div className="text-center mb-12">
-          <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-3">
-            {badgeText}
-          </p>
+          
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-primary">
             {titleLine1 ? (
               <>
@@ -180,11 +178,6 @@ export default function WorkforceSolutions() {
               "Our Workforce Solutions"
             )}
           </h2>
-          {sectionDescription && (
-            <p className="text-text-body text-base max-w-2xl mx-auto mt-3">
-              {sectionDescription}
-            </p>
-          )}
         </div>
 
         {/* Grid */}

@@ -385,11 +385,13 @@ export default function NetworkMapSection() {
             {selectedStats.map((stat, i) => (
               <div key={i} className="text-center" style={{ flex: '1 1 40%', maxWidth: '244px' }}>
                 <p className="font-['Hanken_Grotesk'] font-bold text-[32px] leading-[38px] md:text-[48px] md:leading-[56px] tracking-[-0.64px] md:tracking-[-0.96px] text-[#004CA5]">
-                  <AnimatedStat 
-                    value={stat.value} 
-                    label={stat.label}
-                    animationKey={`${selectedLocation?._id}-${animationTrigger}`}
-                  />
+                  {i === 0 ? stat.value : (
+                    <AnimatedStat 
+                      value={stat.value} 
+                      label={stat.label}
+                      animationKey={`${selectedLocation?._id}-${animationTrigger}`}
+                    />
+                  )}
                 </p>
                 <p className="font-['Hanken_Grotesk'] font-normal text-base leading-6 text-[#424752]">
                   {stat.label}

@@ -24,6 +24,13 @@ const HowWeWorkStepItem = ({ icon: Icon, step, title, description, i, stepsVisib
     <div
       className={`relative z-10 flex flex-col items-center text-center gap-3
                   reveal ${delayClass[i % delayClass.length]} ${stepsVisible ? 'visible' : ''}`}
+      onPointerEnter={(event) => {
+        if (event.pointerType === 'mouse' && hasDescription) setIsExpanded(true);
+      }}
+      onPointerLeave={(event) => {
+        if (event.pointerType === 'mouse' && hasDescription) setIsExpanded(false);
+      }}
+      onClick={() => { if (hasDescription) setIsExpanded((prev) => !prev); }}
     >
       <span className="w-11 h-11 rounded-full bg-primary flex items-center justify-center shadow-card
                        hover:bg-primary-dark transition-colors duration-200 shrink-0">
@@ -33,8 +40,7 @@ const HowWeWorkStepItem = ({ icon: Icon, step, title, description, i, stepsVisib
         <span className="text-text-body text-xs font-medium">{step}</span>
         <span 
           className={`font-heading font-semibold text-sm text-primary leading-snug ${hasDescription ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
-          onClick={() => { if (hasDescription) setIsExpanded(!isExpanded); }}
-          title={hasDescription ? "Click to expand/collapse description" : ""}
+          title={hasDescription ? "Hover to expand description" : ""}
         >
           {title}
         </span>
@@ -110,9 +116,6 @@ export default function HowWeWork() {
           ref={headerRef}
           className={`text-center mb-16 reveal ${headerVisible ? 'visible' : ''}`}
         >
-          <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-3">
-            {badgeText}
-          </p>
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-primary">
             {sectionTitle}
           </h2>

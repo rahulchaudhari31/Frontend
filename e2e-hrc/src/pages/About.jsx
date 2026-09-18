@@ -8,6 +8,7 @@ import WhoWeAre from "../components/aboutus/WhoWeAre.jsx";
 import OurJourney from "../components/aboutus/OurJourney.jsx";
 import WhyChooseUs from "../components/aboutus/WhyChooseUs.jsx";
 import MissionVision from "../components/aboutus/MissionVision.jsx";
+import PeopleBehindMagic from "../components/aboutus/PeopleBehindMagic.jsx";
 import Testimonials from "../components/aboutus/Testimonials.jsx";
 import GlobalFootprint from "../components/becomepartner/NetworkMapSection.jsx";
 import CallToAction from "../components/aboutus/CallToAction.jsx";
@@ -24,6 +25,7 @@ const About = () => {
       <OurJourney />
       <WhyChooseUs />
       <MissionVision />
+      <PeopleBehindMagic />
       <Testimonials />
       <GlobalFootprint />
       <CallToAction />

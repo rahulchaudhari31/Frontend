@@ -38,7 +38,7 @@ export default function Hero() {
 
   if (isLoading) return null;
 
-  const bgImage = heroData?.backgroundImage ? getImageUrl(heroData.backgroundImage) : defaultBackgroundImage;
+  const bgImage = heroData?.heroImage ? getImageUrl(heroData.heroImage) : defaultBackgroundImage;
   const title = heroData?.title || "Employer Recruitment";
   const description = heroData?.subtitle || "Helping businesses hire the right talent.";
 

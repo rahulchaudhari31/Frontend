@@ -71,6 +71,7 @@ const BridgingGap = () => {
           style={{
             width: "500px",
             flexShrink: 0,
+            position: "relative",
           }}
         >
           <div
@@ -90,6 +91,39 @@ const BridgingGap = () => {
               style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
             />
           </div>
+
+          {/* Location stat card overlay */}
+          {(sectionData?.locationLabel || sectionData?.locationValue) && (
+
+            <div
+            className="absolute bg-white/85 backdrop-blur-md rounded-3xl flex flex-col gap-1 z-20 max-lg:-left-4 max-lg:-bottom-4 max-lg:p-5 max-lg:w-[180px]"
+            style={{
+              left: "-32px",
+              bottom: "-32px",
+              width: "220px",
+              padding: "32px",
+              border: "1px solid rgba(226, 232, 240, 0.8)",
+              boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.05)",
+            }}
+          >
+            <span
+              className="font-poppins font-semibold"
+              style={{
+                fontSize: "32px",
+                lineHeight: "40px",
+                color: "#00458D",
+              }}
+            >
+               {sectionData.locationLabel || ""}
+            </span>
+            <span
+              className="font-inter font-semibold text-sm uppercase"
+              style={{ letterSpacing: "0.7px", color: "#424752" }}
+            >
+             {sectionData.locationValue || ""}
+            </span>
+          </div>
+          )}
         </div>
 
         {/* Right side - Content */}

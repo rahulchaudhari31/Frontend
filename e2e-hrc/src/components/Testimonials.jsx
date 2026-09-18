@@ -81,7 +81,7 @@ export default function Testimonials() {
           viewport={{ once: true, amount: 0.5 }}
           className="text-center mb-12"
         >
-          <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-3">{badgeText}</p>
+          
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-primary">{sectionTitle}</h2>
         </motion.div>
 

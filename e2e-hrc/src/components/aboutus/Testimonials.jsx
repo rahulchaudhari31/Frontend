@@ -64,20 +64,7 @@ function TestimonialCard({ t }) {
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: 0, width: 368, height: 170 }}>
-          {t.title && (
-            <h3
-              style={{
-                fontFamily: "Poppins, sans-serif",
-                fontWeight: 500,
-                fontSize: 20,
-                lineHeight: "30px",
-                color: "#000000",
-                margin: 0,
-              }}
-            >
-              {t.title}
-            </h3>
-          )}
+          
           {t.description && (
             <p
               style={{
@@ -235,42 +222,13 @@ const Testimonials = () => {
               </div>
             )}
 
-            {sectionData?.sectionTitle && (
-              <h2
-                style={{
-                  fontFamily: "Poppins, sans-serif",
-                  fontWeight: 600,
-                  fontSize: "30px",
-                  lineHeight: "38px",
-                  color: "#000",
-                  margin: 0,
-                  width: "100%",
-                  height: "auto",
-                }}
-              >
-                {sectionData.sectionTitle}
-              </h2>
-            )}
+            
 
           </div>
 
           <div style={{ display: "flex", flexDirection: "row", alignItems: "flex-start", gap: 568, width: "100%", minHeight: 40.97 }}>
-            <div style={{ maxWidth: 580, display: "flex", alignItems: "flex-end", flex: 1 }}>
-              {sectionData?.sectionDescription && (
-                <p
-                  style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontWeight: 400,
-                    fontSize: 20,
-                    lineHeight: "19px",
-                    color: "#2A2A2A",
-                    margin: 0,
-                    lineHeight: "20px",
-                  }}
-                >
-                  {sectionData.sectionDescription}
-                </p>
-              )}
+            <div style={{ maxWidth: 580, display: "flex", alignItems: "flex-end", flex: 1 , marginbottom: 20}}>
+              
             </div>
             <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 10, width: 91.93, height: 40.97, flexShrink: 0 }}>
               <button

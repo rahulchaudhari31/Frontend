@@ -1,63 +1,125 @@
-﻿import bciLogo from '../../assets/employee/LOGO BCI.png';
-import ecoLogo from '../../assets/employee/LOGO ECO.png';
-import icoLogo from '../../assets/employee/LOGO ICO.png';
-import recLogo from '../../assets/employee/logo REC.png';
-import bsiLogo from '../../assets/employee/LOGOI bsi.png';
+﻿import { useState, useEffect } from 'react';
+import { getTrustedBy } from '../../services/employee/trustedByService';
 
-const defaultLogos = [
-  { name: 'BCI', tagline: 'British Columbia Institute', image: bciLogo },
-  { name: 'ECO', tagline: 'Ecology Certified Org', image: ecoLogo },
-  { name: 'ICO', tagline: 'Information Commissioner', image: icoLogo },
-  { name: 'REC', tagline: 'Recruitment & Employment', image: recLogo },
-  { name: 'BSI', tagline: 'British Standards Institution', image: bsiLogo },
-];
+function TrustedClients() {
+  const [section, setSection] = useState(null);
+  const [logos, setLogos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-function LogoPill({ name, tagline, image }) {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        const response = await getTrustedBy();
+        const data = response?.data || response || null;
+
+        if (!data || data.isActive === false) {
+          setSection(null);
+          setLogos([]);
+          return;
+        }
+
+        const activeLogos = (data.logos || [])
+          .filter((logo) => logo?.isActive !== false)
+          .sort((a, b) => (a.order || 0) - (b.order || 0));
+
+        setSection(data);
+        setLogos(activeLogos);
+      } catch (error) {
+        console.error('Error loading trusted by data:', error);
+        setSection(null);
+        setLogos([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const allLogos = loading || logos.length === 0 ? [] : [...logos, ...logos, ...logos, ...logos];
+
+  if (!loading && !section) {
+    return null;
+  }
+
   return (
-    <div className="inline-flex items-center gap-3 h-[68px] rounded-[40px] border border-[#E5E5E5] bg-white px-5 pr-5 pl-1 shrink-0" style={{ padding: '4px 20px 4px 4px' }}>
-      <div className="w-[60px] h-[60px] rounded-full bg-[#F5F5F5] border border-[#E5E5E5] flex items-center justify-center overflow-hidden shrink-0">
-        {image ? (
-          <img src={image} alt={`${name} logo`} className="w-full h-full object-contain p-2" />
-        ) : (
-          <span className="font-body font-semibold text-sm text-[#475569]">{name.slice(0, 3)}</span>
-        )}
-      </div>
-      <div className="flex flex-col">
-        <span className="font-body font-semibold text-sm text-[#004CA5] leading-tight">{name}</span>
-        {tagline && (
-          <span className="font-body text-[10px] text-[#64748B] leading-tight mt-0.5">{tagline}</span>
-        )}
-      </div>
-    </div>
-  );
-}
-
-export default function TrustedClients({ logos = defaultLogos }) {
-  return (
-    <section className="w-full bg-white border-y border-[#EAEAEA] py-10 px-4 lg:px-[38px]">
-      <div
-        className="mx-auto flex flex-col items-start gap-10"
-        style={{ maxWidth: '1364px' }}
-      >
-        <div className="flex flex-col lg:flex-row items-start lg:items-center gap-10 w-full">
-          <div className="shrink-0 w-full lg:w-[224px]">
-            <p
-              className="font-body font-semibold text-[12px] leading-[16px] tracking-[1.2px] uppercase text-[#004CA5] mb-2"
-            >
-              Trusted By
-            </p>
-            <p className="font-body font-normal text-[14px] leading-[22.75px] text-[#004CA5]">
-              Leading organisations across the UK choose E2E HRC.
-            </p>
-          </div>
-
-          <div className="flex flex-nowrap gap-4 min-w-0 overflow-x-auto pb-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            {logos.map((logo) => (
-              <LogoPill key={logo.name} {...logo} />
+    <section className="w-full bg-white py-6 lg:py-0 lg:h-[226px] mb-28">
+      <div className="text-center mt-10 lg:mb-0 md:mb-10 px-20">
+          <span
+            className="uppercase text-[#004CA5] block"
+            style={{
+              fontFamily: 'Inter',
+              fontWeight: 600,
+              fontSize: '12px',
+              lineHeight: '16px',
+              letterSpacing: '1.2px',
+            }}
+          >
+            {section?.eyebrowText || 'Trusted By'}
+          </span>
+          <p
+            className="text-[#004CA5] mt-2 lg:mt-0"
+            style={{
+              fontFamily: 'Inter',
+              fontWeight: 400,
+              fontSize: '14px',
+              
+            }}
+          >
+            {section?.description || 'Leading organisations across the UK choose E2E HRC.'}
+          </p>
+        </div>
+      <div className="max-w-[1440px] mx-auto h-full flex flex-col lg:flex-row items-center gap-4 lg:gap-0 px-5 sm:px-8 lg:px-[92px]">
+      
+        <div className="overflow-hidden flex-1 w-full" style={{ height: '69px' }}>
+          <div className="trusted-clients-track flex items-center" style={{ gap: '12px' }}>
+            {allLogos.map((logo, index) => (
+              <div
+                key={`${logo._id || logo.image || 'trusted-by'}-${index}`}
+                className="flex items-center flex-shrink-0 bg-[#F5F5F5] border border-[#E5E5E5]"
+                style={{
+                  width: '116px',
+                  height: '68px',
+                  borderRadius: '40px',
+                  padding: '4px 20px',
+                  gap: '4px',
+                }}
+              >
+                <img
+                  src={logo.image}
+                  alt={logo.altText || 'Trusted accreditation'}
+                  style={{
+                    width: 'auto',
+                    height: '60px',
+                    objectFit: 'contain',
+                    maxWidth: '100%',
+                  }}
+                />
+              </div>
             ))}
           </div>
         </div>
       </div>
+
+      <style>{`
+        .trusted-clients-track {
+          display: flex;
+          gap: 12px;
+          animation: scrollLogos 25s linear infinite;
+          width: max-content;
+        }
+        .trusted-clients-track:hover {
+          animation-play-state: paused;
+        }
+        @keyframes scrollLogos {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
     </section>
   );
 }
+
+export default TrustedClients;
