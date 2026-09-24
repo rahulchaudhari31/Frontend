@@ -19,7 +19,7 @@ const navLinks = [
   { label: 'Employee', to: '/employee' },
   { label: 'Workforce Solutions', to: '/workforce-solutions' },
   { label: 'Become a Partner', to: '/become-a-partner' },
-  { label: 'Blogs', to: '/blogs' },
+  // { label: 'Blogs', to: '/blogs' },
   { label: 'Contact Us', to: '/contact-us' },
 ];
 
@@ -177,8 +177,13 @@ export default function Navbar({ variant = 'home', onCtaAction }) {
             </button>
 
             <button
-              className="xl:hidden p-2 rounded-md transition-colors"
-              style={{ color: '#0F2A52', minWidth: '44px', minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: mobileOpen ? '#f3f4f6' : 'transparent' }}
+              className="flex xl:hidden items-center justify-center p-2 rounded-md transition-colors"
+              style={{
+                color: '#0F2A52',
+                minWidth: '44px',
+                minHeight: '44px',
+                background: mobileOpen ? '#f3f4f6' : 'transparent',
+              }}
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileOpen}

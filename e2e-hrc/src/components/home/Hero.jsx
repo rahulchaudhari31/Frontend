@@ -35,13 +35,15 @@ function HeroSkeleton() {
 function AnimatedStat({
   target,
   suffix = "+",
+  prefix = "",
   label,
   duration = 1500,
   delay = 0,
+  isStatic = false,
 }) {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
-  const { count, done } = useCountUp(target, duration, delay, inView);
+  const { count, done } = useCountUp(target, duration, delay, inView && !isStatic);
   const [visible, setVisible] = useState(false);
 
   // Trigger count-up when the element enters the viewport on any screen size
@@ -68,25 +70,30 @@ function AnimatedStat({
     return () => clearTimeout(t);
   }, [inView, delay]);
 
+  // For static stats, display the target value directly
+  const displayValue = isStatic ? target : count;
+
   return (
     <div
       ref={ref}
-      className="flex flex-col items-center text-center px-2 py-4 min-w-0 flex-1"
+     className="flex flex-col items-center text-center px-2 py-4 min-w-0 flex-1"
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(10px)",
         transition: "opacity 0.4s ease-out, transform 0.4s ease-out",
       }}
     >
-      <div className="font-inter font-bold text-2xl sm:text-3xl text-[#004CA5] leading-tight">
+      <div className="font-inter font-bold text-2xl sm:text-3xl text-[#004CA5] leading-tight whitespace-nowrap">
         <span
+          className="whitespace-nowrap"
           style={{
-            transform: done ? "scale(1.12)" : "scale(1)",
+            transform: done && !isStatic ? "scale(1.12)" : "scale(1)",
             transition: "transform 0.3s ease-out",
             display: "inline-block",
           }}
         >
-          {count}
+          {prefix}
+          {displayValue}
           {suffix}
         </span>
       </div>
@@ -98,18 +105,33 @@ function AnimatedStat({
 }
 
 const parseStatValue = (value) => {
-  const stringValue = String(value ?? "");
+  const stringValue = String(value ?? "").trim();
+
+  // Handle values like "Nearly 2"
+  if (/^nearly\s+\d+$/i.test(stringValue)) {
+    const match = stringValue.match(/^nearly\s+(\d+)$/i);
+
+    return {
+      numeric: parseInt(match[1], 10),
+      prefix: "Nearly ",
+      suffix: "",
+    };
+  }
+
+  // Handle normal values like "150+", "5000+", "4"
   const match = stringValue.match(/^(\d+)(.*)$/);
 
   if (match) {
     return {
       numeric: parseInt(match[1], 10),
-      suffix: match[2],
+      prefix: "",
+      suffix: match[2] || "",
     };
   }
 
   return {
     numeric: 0,
+    prefix: "",
     suffix: stringValue,
   };
 };
@@ -207,26 +229,30 @@ function Hero({ onHireTalent, onFindOpportunities }) {
               </button>
             </div>
 
-            {/* Stats */}
-            {stats.length > 0 && (
+        
+          {/*  {stats.length > 0 && (
               <div className="w-full pt-6 mt-2 border-t border-gray-200 min-w-0">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-6 min-w-0">
                   {stats.map((stat, index) => {
-                    const { numeric, suffix } = parseStatValue(stat.value);
+                    const { numeric, prefix, suffix } = parseStatValue(stat.value);
+                    const isLastStat = index === stats.length - 1;
+
                     return (
                       <AnimatedStat
                         key={`${stat.label}-${index}`}
                         target={numeric}
+                        prefix={prefix}
                         suffix={suffix}
                         label={stat.label}
                         duration={1500}
                         delay={index * 200}
+                        isStatic={isLastStat}
                       />
                     );
                   })}
                 </div>
               </div>
-            )}
+            )}  */}
           </div>
 
           {/* Right column: Image Content */}
@@ -237,8 +263,8 @@ function Hero({ onHireTalent, onFindOpportunities }) {
                 <div className="absolute w-64 h-64 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] lg:w-[519px] lg:h-[519px] bg-[#C2D760] rounded-full opacity-30 blur-sm" />
 
                 <div className="absolute w-52 h-52 sm:w-64 sm:h-64 md:w-[330px] md:h-[330px] lg:w-[419px] lg:h-[419px] border-2 border-dashed border-[#C2D760] rounded-full" />
-              </div> */} 
-              <div className="relative w-full h-full flex items-center justify-center z-10">
+              </div> */}
+              <div className="relative w-full h-full flex items-center justify-center z-10 lg:mt-20">
                 {heroImage ? (
                   <img
                     src={heroImage}

@@ -12,7 +12,7 @@ const getImageUrl = (path) => {
 // ─── Static fallbacks (original hardcoded values) ────────────────────────────
 // Used while loading or when the API has no content yet, so the UI is never blank.
 const FALLBACK_SECTION = {
-  badgeText: 'WHY CHOOSE E2E HRC',
+  badgeText: 'Why Choose e2e HRC',
   sectionTitle: 'What makes us different',
 };
 
@@ -44,28 +44,28 @@ function CardEven({ card, isExpanded, onToggle, cardKey }) {
   const imgSrc = card.image ? getImageUrl(card.image) : '';
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-10 md:mb-12 lg:mb-10">
       {/* Image column */}
-      <div className=''>
+      <div className="w-full min-h-0 ">
         {imgSrc && (
           <img
             src={imgSrc}
             alt={card.title}
-            className="w-full h-[250px] lg:h-[480px] object-cover rounded-[16px]"
+            className="w-full h-[250px] sm:h-[300px] md:h-[380px] lg:h-[480px] object-cover rounded-[16px]"
             loading="lazy"
           />
         )}
       </div>
 
       {/* Text panel */}
-      <div className="bg-[#F8FAFC] rounded-[16px] p-8 sm:p-14 flex flex-col justify-center">
+      <div className="bg-[#F8FAFC] rounded-[16px] p-6 sm:p-8 md:p-12 lg:p-14 flex flex-col justify-center w-full">
         {card.eyebrowText && (
-          <p className="font-[Poppins] text-base uppercase tracking-[1.6px] text-[#F39308] mb-2">
+          <p className="font-[Poppins] text-xs sm:text-base uppercase tracking-[1.6px] text-[#F39308] mb-2">
             {/* backend field: eyebrowText */}
             {card.eyebrowText}
           </p>
         )}
-        <h3 className="font-[Poppins] font-bold text-[26px] sm:text-[36px] text-[#00264B] mb-4 leading-tight">
+        <h3 className="font-[Poppins] font-bold text-[20px] sm:text-[26px] md:text-[32px] lg:text-[36px] text-[#00264B] mb-4 leading-tight">
           {/* backend field: title */}
           {card.title}
         </h3>
@@ -73,9 +73,9 @@ function CardEven({ card, isExpanded, onToggle, cardKey }) {
         <div
           className="description-scroll-container"
           style={{
-            height: '104px',
-            maxHeight: '104px',
-            overflowY: isExpanded ? 'scroll' : 'hidden',
+            height: 'auto',
+            maxHeight: isExpanded ? 'none' : '104px',
+            overflowY: isExpanded ? 'auto' : 'hidden',
             overflowX: 'hidden',
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
@@ -85,7 +85,7 @@ function CardEven({ card, isExpanded, onToggle, cardKey }) {
           }}
         >
           <p
-            className="font-[Inter] text-base text-[#43474F] leading-relaxed m-0"
+            className="font-[Inter] text-sm sm:text-base text-[#43474F] leading-relaxed m-0"
             style={{
               margin: 0,
               padding: 0,
@@ -98,7 +98,7 @@ function CardEven({ card, isExpanded, onToggle, cardKey }) {
         <button
           type="button"
           onClick={() => onToggle(cardKey)}
-          className="font-[Inter] text-sm font-semibold text-[#004CA5] bg-transparent border-0 p-0 text-left cursor-pointer"
+          className="font-[Inter] text-xs sm:text-sm font-semibold text-[#004CA5] bg-transparent border-0 p-0 text-left cursor-pointer"
           style={{
             width: 'fit-content',
             lineHeight: '20px',
@@ -110,10 +110,10 @@ function CardEven({ card, isExpanded, onToggle, cardKey }) {
 
         {/* Stats row — only rendered when values exist */}
         {(card.stat1Value || card.stat2Value || card.stat3Value || card.stat4Value) && (
-          <div className="flex flex-wrap gap-6 sm:gap-12 mt-6">
+          <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 lg:gap-12 mt-6">
             {card.stat1Value && (
               <div>
-                <p className="font-['Hanken_Grotesk'] font-bold text-[24px] sm:text-[30px] text-[#F39308]">
+                <p className="font-['Hanken_Grotesk'] font-bold text-[20px] sm:text-[24px] md:text-[28px] lg:text-[30px] text-[#F39308]">
                   {/* backend field: stat1Value */}
                   {card.stat1Value}
                 </p>
@@ -125,7 +125,7 @@ function CardEven({ card, isExpanded, onToggle, cardKey }) {
             )}
             {card.stat2Value && (
               <div>
-                <p className="font-['Hanken_Grotesk'] font-bold text-[24px] sm:text-[30px] text-[#F39308]">
+                <p className="font-['Hanken_Grotesk'] font-bold text-[20px] sm:text-[24px] md:text-[28px] lg:text-[30px] text-[#F39308]">
                   {/* backend field: stat2Value */}
                   {card.stat2Value}
                 </p>
@@ -139,9 +139,9 @@ function CardEven({ card, isExpanded, onToggle, cardKey }) {
           </div>
 
         )}
-        <div className="flex flex-wrap gap-6 sm:gap-12 mt-6">
+        <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 lg:gap-12 mt-6">
           <div>
-            <p className="font-['Hanken_Grotesk'] font-bold text-[24px] sm:text-[30px] text-[#F39308]">
+            <p className="font-['Hanken_Grotesk'] font-bold text-[20px] sm:text-[24px] md:text-[28px] lg:text-[30px] text-[#F39308]">
               {/* backend field: stat3Value */}
               {card.stat3Value}
             </p>
@@ -151,7 +151,7 @@ function CardEven({ card, isExpanded, onToggle, cardKey }) {
             </p>
           </div>
           <div>
-            <p className="font-['Hanken_Grotesk'] font-bold text-[24px] sm:text-[30px] text-[#F39308]">
+            <p className="font-['Hanken_Grotesk'] font-bold text-[20px] sm:text-[24px] md:text-[28px] lg:text-[30px] text-[#F39308]">
               {/* backend field: stat3Value */}
               {card.stat4Value}
             </p>
@@ -172,24 +172,24 @@ function CardOdd({ card, isExpanded, onToggle, cardKey }) {
   const imgSrc = card.image ? getImageUrl(card.image) : '';
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-10 md:mb-12 lg:mb-10">
       {/* Text panel — mirrored: order-2 on mobile, order-1 on desktop */}
-      <div className="order-2 lg:order-1 bg-[#F8FAFC] rounded-[16px] p-8 sm:p-14 flex flex-col justify-center relative overflow-hidden">
+      <div className="order-2 lg:order-1 bg-[#F8FAFC] rounded-[16px] p-6 sm:p-8 md:p-12 lg:p-14 flex flex-col justify-center relative overflow-hidden w-full">
         {/* Decorative watermark letter — first char of title, matches original "R" for "A Career..." */}
         <span
-          className="absolute font-[Poppins] font-extrabold text-[233px] text-[#F39308] opacity-5 leading-none pointer-events-none"
+          className="absolute font-[Poppins] font-extrabold text-[200px] sm:text-[233px] text-[#F39308] opacity-5 leading-none pointer-events-none"
           style={{ bottom: '-20px', right: '-20px' }}
         >
           {card.title ? card.title.charAt(0) : 'R'}
         </span>
 
         {card.eyebrowText && (
-          <p className="font-[Poppins] text-base uppercase tracking-[1.6px] text-[#004CA5] mb-2">
+          <p className="font-[Poppins] text-xs sm:text-base uppercase tracking-[1.6px] text-[#004CA5] mb-2">
             {/* backend field: eyebrowText */}
             {card.eyebrowText}
           </p>
         )}
-        <h3 className="font-[Poppins] font-bold text-[26px] sm:text-[36px] text-[#00264B] mb-4 leading-tight">
+        <h3 className="font-[Poppins] font-bold text-[20px] sm:text-[26px] md:text-[32px] lg:text-[36px] text-[#00264B] mb-4 leading-tight">
           {/* backend field: title */}
           {card.title}
         </h3>
@@ -197,7 +197,8 @@ function CardOdd({ card, isExpanded, onToggle, cardKey }) {
         <div
           className="description-scroll-container"
           style={{
-            height: '104px',
+            height: 'auto',
+            maxHeight: isExpanded ? 'none' : '104px',
             overflowY: isExpanded ? 'auto' : 'hidden',
             overflowX: 'hidden',
             scrollbarWidth: 'none',
@@ -206,7 +207,7 @@ function CardOdd({ card, isExpanded, onToggle, cardKey }) {
             display: 'block',
           }}
         >
-          <p className="font-[Inter] text-base text-[#43474F] leading-relaxed m-0">
+          <p className="font-[Inter] text-sm sm:text-base text-[#43474F] leading-relaxed m-0">
             {/* backend field: description */}
             {card.description}
           </p>
@@ -215,7 +216,7 @@ function CardOdd({ card, isExpanded, onToggle, cardKey }) {
         <button
           type="button"
           onClick={() => onToggle(cardKey)}
-          className="font-[Inter] text-sm font-semibold text-[#004CA5] bg-transparent border-0 p-0 text-left cursor-pointer"
+          className="font-[Inter] text-xs sm:text-sm font-semibold text-[#004CA5] bg-transparent border-0 p-0 text-left cursor-pointer"
           style={{
             width: 'fit-content',
             lineHeight: '20px',
@@ -227,10 +228,10 @@ function CardOdd({ card, isExpanded, onToggle, cardKey }) {
 
         {/* Stats row — only rendered when values exist */}
         {(card.stat1Value || card.stat2Value || card.stat3Value || card.stat4Value) && (
-          <div className="flex flex-wrap gap-6 sm:gap-12 mt-6">
+          <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 lg:gap-12 mt-6">
             {card.stat1Value && (
               <div>
-                <p className="font-[Poppins] font-bold text-[24px] sm:text-[30px] text-[#004CA5]">
+                <p className="font-[Poppins] font-bold text-[20px] sm:text-[24px] md:text-[28px] lg:text-[30px] text-[#004CA5]">
                   {/* backend field: stat1Value */}
                   {card.stat1Value}
                 </p>
@@ -242,7 +243,7 @@ function CardOdd({ card, isExpanded, onToggle, cardKey }) {
             )}
             {card.stat2Value && (
               <div>
-                <p className="font-[Poppins] font-bold text-[24px] sm:text-[30px] text-[#004CA5]">
+                <p className="font-[Poppins] font-bold text-[20px] sm:text-[24px] md:text-[28px] lg:text-[30px] text-[#004CA5]">
                   {/* backend field: stat2Value */}
                   {card.stat2Value}
                 </p>
@@ -255,9 +256,9 @@ function CardOdd({ card, isExpanded, onToggle, cardKey }) {
 
           </div>
         )}
-        <div className="flex flex-wrap gap-6 sm:gap-12 mt-6">
+        <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 lg:gap-12 mt-6">
           <div>
-            <p className="font-['Hanken_Grotesk'] font-bold text-[24px] sm:text-[30px] text-[#004CA5]">
+            <p className="font-['Hanken_Grotesk'] font-bold text-[20px] sm:text-[24px] md:text-[28px] lg:text-[30px] text-[#004CA5]">
               {/* backend field: stat3Value */}
               {card.stat3Value}
             </p>
@@ -267,7 +268,7 @@ function CardOdd({ card, isExpanded, onToggle, cardKey }) {
             </p>
           </div>
           <div>
-            <p className="font-['Hanken_Grotesk'] font-bold text-[24px] sm:text-[30px] text-[#004CA5]">
+            <p className="font-['Hanken_Grotesk'] font-bold text-[20px] sm:text-[24px] md:text-[28px] lg:text-[30px] text-[#004CA5]">
               {/* backend field: stat3Value */}
               {card.stat4Value}
             </p>
@@ -281,12 +282,12 @@ function CardOdd({ card, isExpanded, onToggle, cardKey }) {
       </div>
 
       {/* Image column — order-1 on mobile, order-2 on desktop */}
-      <div className="order-1 lg:order-2">
+      <div className="order-1 lg:order-2 w-full min-h-0">
         {imgSrc && (
           <img
             src={imgSrc}
             alt={card.title}
-            className="w-full h-[250px] lg:h-[420px] object-cover rounded-[16px]"
+            className="w-full h-[250px] sm:h-[300px] md:h-[380px] lg:h-[420px] object-cover rounded-[16px]"
             loading="lazy"
           />
         )}
@@ -347,10 +348,10 @@ export default function WhyChooseE2E() {
           display: none;
         }
       `}</style>
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
+      <div className="max-w-[1280px]  px-4 sm:px-8 lg:mt-42vh">
         {/* Section badge */}
         <p
-          className="text-center font-[Poppins] text-base uppercase tracking-[1.6px] mb-2"
+          className="text-center font-[Poppins] text-base tracking-[1.6px] mb-2"
           style={{
             background: 'linear-gradient(49.52deg, #1295D4 -4.12%, #7EC443 85.04%)',
             WebkitBackgroundClip: 'text',

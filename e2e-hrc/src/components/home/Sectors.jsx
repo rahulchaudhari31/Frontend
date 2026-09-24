@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from "react";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { useState, useEffect } from "react";
 import { getServices, getSectors } from "../../services/home/servicesService";
 
 const ArrowIcon = () => (
@@ -10,7 +9,7 @@ const ArrowIcon = () => (
 
 function SectorCard({ name, image, description }) {
   return (
-    <div className="sector-card group relative w-[280px] h-[420px] min-w-[280px] rounded-[20px] overflow-hidden cursor-pointer snap-start shadow-[0px_4px_20px_0px_rgba(0,0,0,0.08)]">
+    <div className="sector-card group relative w-[280px] h-[420px] min-w-[280px] rounded-[20px] overflow-hidden cursor-pointer shadow-[0px_4px_20px_0px_rgba(0,0,0,0.08)] flex-shrink-0">
       {image ? (
         <img
           src={image}
@@ -52,7 +51,6 @@ function SectorSkeleton() {
 }
 
 function Sectors() {
-  const scrollRef = useRef(null);
   const [services, setServices] = useState([]);
   const [sectionData, setSectionData] = useState({
     sectionTitle: '',
@@ -60,6 +58,8 @@ function Sectors() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [displayServices, setDisplayServices] = useState([]);
+  const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
     const fetchSection = async () => {
@@ -78,11 +78,18 @@ function Sectors() {
           sectionTitle: sectionPayload.sectionTitle || '',
           sectionDescription: sectionPayload.sectionDescription || '',
         });
-        setServices(Array.isArray(cardsResponse) ? cardsResponse : []);
+        const servicesList = Array.isArray(cardsResponse) ? cardsResponse : [];
+        setServices(servicesList);
+        
+        // Create infinite loop by duplicating the list
+        if (servicesList.length > 0) {
+          setDisplayServices([...servicesList, ...servicesList]);
+        }
       } catch (error) {
         console.error('Failed to fetch sectors section:', error);
         setSectionData({ sectionTitle: '', sectionDescription: '' });
         setServices([]);
+        setDisplayServices([]);
         setError('Unable to load sectors right now.');
       } finally {
         setLoading(false);
@@ -92,20 +99,12 @@ function Sectors() {
     fetchSection();
   }, []);
 
-  const scrollLeft = () => {
-    const el = scrollRef.current;
-    if (el) {
-      const amount = el.clientWidth * 0.5;
-      el.scrollBy({ left: -amount, behavior: "smooth" });
-    }
+  const handleMouseEnter = () => {
+    setIsHovering(true);
   };
 
-  const scrollRight = () => {
-    const el = scrollRef.current;
-    if (el) {
-      const amount = el.clientWidth * 0.5;
-      el.scrollBy({ left: amount, behavior: "smooth" });
-    }
+  const handleMouseLeave = () => {
+    setIsHovering(false);
   };
 
   const hasSectionData = Boolean(sectionData.sectionTitle || sectionData.sectionDescription);
@@ -140,47 +139,63 @@ function Sectors() {
               <div className="text-sm text-gray-500">No sectors content available yet.</div>
             )}
           </div>
-
-          <div className="hidden sm:flex items-center gap-[8px] lg:w-[96px]">
-            <button
-              onClick={scrollLeft}
-              className="w-[44px] h-[44px] rounded-full border-[1.6px] border-[#004CA5] bg-transparent flex items-center justify-center hover:bg-gray-50 transition-colors"
-              aria-label="Scroll left"
-            >
-              <FiChevronLeft size={18} strokeWidth={1.5} className="text-[#004CA5]" />
-            </button>
-            <button
-              onClick={scrollRight}
-              className="w-[44px] h-[44px] rounded-full border-[1.6px] border-[#004CA5] bg-transparent flex items-center justify-center hover:bg-gray-50 transition-colors"
-              aria-label="Scroll right"
-            >
-              <FiChevronRight size={18} strokeWidth={1.5} className="text-[#004CA5]" />
-            </button>
-          </div>
         </div>
 
         <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto no-scrollbar pb-4 -mx-4 px-4 snap-x snap-mandatory"
+          className="carousel-wrapper overflow-hidden"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
-          {loading
-            ? [1, 2, 3].map((i) => <SectorSkeleton key={i} />)
-            : error
-              ? null
-              : services.length > 0
-                ? services.map((service) => (
-                    <SectorCard
-                      key={service._id || service.id || `${service.title}-${service.image}`}
-                      name={service.title || service.name || ""}
-                      image={service.image || ""}
-                      description={service.shortDescription || service.description || ""}
-                    />
-                  ))
-                : null}
+          <div className={`carousel-track flex gap-5 pb-4 ${isHovering ? "carousel-paused" : "carousel-running"}`}>
+            {loading
+              ? [1, 2, 3].map((i) => <SectorSkeleton key={i} />)
+              : error
+                ? null
+                : displayServices.length > 0
+                  ? displayServices.map((service, index) => (
+                      <SectorCard
+                        key={`${service._id || service.id || `${service.title}-${service.image}`}-${index}`}
+                        name={service.title || service.name || ""}
+                        image={service.image || ""}
+                        description={service.shortDescription || service.description || ""}
+                      />
+                    ))
+                  : null}
+          </div>
         </div>
       </div>
 
       <style>{`
+        .carousel-wrapper {
+          width: 100%;
+          overflow: hidden;
+          position: relative;
+        }
+
+        .carousel-track {
+          display: flex;
+          gap: 20px;
+          animation: scroll-left 35s linear infinite;
+          will-change: transform;
+        }
+
+        .carousel-track.carousel-paused {
+          animation-play-state: paused;
+        }
+
+        .carousel-track.carousel-running {
+          animation-play-state: running;
+        }
+
+        @keyframes scroll-left {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(calc(-100% / 2));
+          }
+        }
+
         .sector-card .sector-desc {
           max-height: 0;
           opacity: 0;
@@ -198,6 +213,47 @@ function Sectors() {
             max-height: 200px !important;
             opacity: 1 !important;
             margin-bottom: 12px !important;
+          }
+        }
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+          .carousel-track {
+            gap: 16px;
+          }
+          .sector-card {
+            width: 240px;
+            height: 360px;
+            min-width: 240px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .carousel-track {
+            gap: 12px;
+          }
+          .sector-card {
+            width: 200px;
+            height: 300px;
+            min-width: 200px;
+          }
+          .sector-card .sector-desc {
+            font-size: 11px !important;
+            line-height: 13px !important;
+          }
+        }
+
+        /* Prevent horizontal scroll on mobile */
+        .carousel-wrapper {
+          overflow-x: hidden;
+          margin: 0 -16px;
+          padding: 0 16px;
+        }
+
+        @media (max-width: 640px) {
+          .carousel-wrapper {
+            margin: 0 -8px;
+            padding: 0 8px;
           }
         }
       `}</style>

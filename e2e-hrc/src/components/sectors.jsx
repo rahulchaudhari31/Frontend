@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { useRef, useState } from "react";
 
 import manufacturingImg from "../assets/Manufacturingg.png";
 import healthcareImg from "../assets/healthcare.webp";
@@ -50,7 +49,7 @@ const industries = [
 
 function SectorCard({ name, image, description }) {
   return (
-    <div className="sector-card group relative w-[280px] h-[420px] min-w-[280px] rounded-[20px] overflow-hidden cursor-pointer snap-start shadow-[0px_4px_20px_0px_rgba(0,0,0,0.08)]">
+    <div className="sector-card group relative w-[280px] h-[420px] min-w-[280px] rounded-[20px] overflow-hidden cursor-pointer shadow-[0px_4px_20px_0px_rgba(0,0,0,0.08)] flex-shrink-0">
       {image ? (
         <img
           src={image}
@@ -86,22 +85,15 @@ function SectorCard({ name, image, description }) {
 }
 
 function Sectors() {
-  const scrollRef = useRef(null);
+  const carouselRef = useRef(null);
+  const [isHovering, setIsHovering] = useState(false);
 
-  const scrollLeft = () => {
-    const el = scrollRef.current;
-    if (el) {
-      const amount = el.clientWidth * 0.5;
-      el.scrollBy({ left: -amount, behavior: "smooth" });
-    }
+  const handleMouseEnter = () => {
+    setIsHovering(true);
   };
 
-  const scrollRight = () => {
-    const el = scrollRef.current;
-    if (el) {
-      const amount = el.clientWidth * 0.5;
-      el.scrollBy({ left: amount, behavior: "smooth" });
-    }
+  const handleMouseLeave = () => {
+    setIsHovering(false);
   };
 
   return (
@@ -119,40 +111,70 @@ function Sectors() {
               e2e HRC concentrates on the sectors where our recruitment consultants excel in knowledge, live candidate networks, and established employer relationships. Where the domestic talent pool falls short, we source internationally through our Dubai and Delhi offices, with complete in-house support for skilled worker visas. Our network has been built over nearly two decades of creating an indelible footprint as a specialist recruitment consultant across these sectors:
             </p> 
           </div>
-          <div className="hidden sm:flex items-center gap-[8px] lg:w-[96px]">
-            <button
-              onClick={scrollLeft}
-              className="w-[44px] h-[44px] rounded-full border-[1.6px] border-[#004CA5] bg-transparent flex items-center justify-center hover:bg-gray-50 transition-colors"
-              aria-label="Scroll left"
-            >
-              <FiChevronLeft size={18} strokeWidth={1.5} className="text-[#004CA5]" />
-            </button>
-            <button
-              onClick={scrollRight}
-              className="w-[44px] h-[44px] rounded-full border-[1.6px] border-[#004CA5] bg-transparent flex items-center justify-center hover:bg-gray-50 transition-colors"
-              aria-label="Scroll right"
-            >
-              <FiChevronRight size={18} strokeWidth={1.5} className="text-[#004CA5]" />
-            </button>
-          </div>
         </div>
 
         <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto no-scrollbar pb-4 -mx-4 px-4 snap-x snap-mandatory"
+          className="carousel-wrapper overflow-hidden"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
-          {industries.map((industry) => (
-            <SectorCard
-              key={industry.name}
-              name={industry.name}
-              image={industry.image}
-              description={industry.description}
-            />
-          ))}
+          <div
+            ref={carouselRef}
+            className={`carousel-track flex gap-5 ${isHovering ? "carousel-paused" : "carousel-running"}`}
+          >
+            {/* Original industries */}
+            {industries.map((industry) => (
+              <SectorCard
+                key={industry.name}
+                name={industry.name}
+                image={industry.image}
+                description={industry.description}
+              />
+            ))}
+            {/* Duplicate industries for seamless loop */}
+            {industries.map((industry) => (
+              <SectorCard
+                key={`${industry.name}-duplicate`}
+                name={industry.name}
+                image={industry.image}
+                description={industry.description}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
       <style>{`
+        .carousel-wrapper {
+          width: 100%;
+          overflow: hidden;
+          position: relative;
+        }
+
+        .carousel-track {
+          display: flex;
+          gap: 20px;
+          animation: scroll-left 35s linear infinite;
+          will-change: transform;
+        }
+
+        .carousel-track.carousel-paused {
+          animation-play-state: paused;
+        }
+
+        .carousel-track.carousel-running {
+          animation-play-state: running;
+        }
+
+        @keyframes scroll-left {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(calc(-100% / 2));
+          }
+        }
+
         .sector-card .sector-desc {
           max-height: 0;
           opacity: 0;
@@ -170,6 +192,47 @@ function Sectors() {
             max-height: 200px !important;
             opacity: 1 !important;
             margin-bottom: 12px !important;
+          }
+        }
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+          .carousel-track {
+            gap: 16px;
+          }
+          .sector-card {
+            width: 240px;
+            height: 360px;
+            min-width: 240px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .carousel-track {
+            gap: 12px;
+          }
+          .sector-card {
+            width: 200px;
+            height: 300px;
+            min-width: 200px;
+          }
+          .sector-card .sector-desc {
+            font-size: 11px !important;
+            line-height: 13px !important;
+          }
+        }
+
+        /* Prevent horizontal scroll on mobile */
+        .carousel-wrapper {
+          overflow-x: hidden;
+          margin: 0 -16px;
+          padding: 0 16px;
+        }
+
+        @media (max-width: 640px) {
+          .carousel-wrapper {
+            margin: 0 -8px;
+            padding: 0 8px;
           }
         }
       `}</style>

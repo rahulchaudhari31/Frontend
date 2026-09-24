@@ -616,7 +616,7 @@ export default function WhatMakesUsDifferent() {
                 whiteSpace: "nowrap",
               }}
             >
-              Why Choose E2E HRC
+              Why Choose e2e HRC
             </span>
           </div>
 

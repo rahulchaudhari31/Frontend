@@ -9,7 +9,7 @@ import WhyChooseE2E from '../components/employee/WhyChooseE2E';
 import './Employee.css';
 
 import FAQAndCTA from '../components/employee/FAQAndCTA';
-import LatestInsights from '../components/home/BlogSection';
+//import LatestInsights from '../components/home/BlogSection';
 import IndustriesSection from '../components/home/Sectors';
 
 
@@ -35,8 +35,8 @@ export default function Employee() {
 
       <Trustedbyclients></Trustedbyclients>
 
-      {/* ===== LATEST INSIGHTS ===== */}
-      <LatestInsights />
+      {/* ===== LATEST INSIGHTS ===== 
+      <LatestInsights /> */}
 
       {/* ===== G. TESTIMONIALS ===== */}
       <TestimonialsCarousel speed={30} />

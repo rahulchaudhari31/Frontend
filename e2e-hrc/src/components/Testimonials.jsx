@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { getTestimonials } from '../services/workforceSolution/workforceTestimonialsService';
 
@@ -8,27 +9,6 @@ import talentManager from '../assets/icons of field/talent manager.jpg';
 import hrManager from '../assets/icons of field/hr manager.jpg';
 
 const fallbackIcons = [hrDirector, talentManager, hrManager];
-
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: 'easeOut',
-    },
-  },
-};
 
 const headerVariants = {
   hidden: { opacity: 0, y: -20 },
@@ -39,22 +19,82 @@ const headerVariants = {
   },
 };
 
+const TestimonialCard = ({ testimonial, index, isCenter, isVisible }) => {
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: isVisible ? 1 : 0.4, scale: isCenter ? 1 : 0.85 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.4, ease: 'easeInOut' }}
+      className="flex-shrink-0"
+      style={{
+        width: 'clamp(280px, 90vw, 420px)',
+      }}
+    >
+      <motion.div
+        whileHover={isCenter ? { y: -8, boxShadow: '0 20px 48px rgba(0,0,0,0.15)' } : {}}
+        className={`border rounded-2xl p-8 flex flex-col gap-6 transition-all duration-300 ${
+          isCenter
+            ? 'border-gray-200 bg-white shadow-lg'
+            : 'border-gray-100 bg-white shadow-md opacity-75'
+        }`}
+      >
+        {/* Testimonial Title */}
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1">
+            <p className="font-heading font-bold text-primary text-lg leading-tight">
+              {testimonial.title || ''}
+            </p>
+          </div>
+        </div>
+
+        {/* Testimonial Description */}
+        <p className="text-text-body text-base leading-relaxed flex-1 font-normal">
+          {testimonial.reviewText || testimonial.description || ''}
+        </p>
+
+        {/* Divider */}
+        <div className="h-px bg-gray-200" />
+
+        {/* Reviewer Info */}
+        <div className="flex items-center gap-4 pt-2">
+          <img
+            src={fallbackIcons[index % fallbackIcons.length]}
+            alt={testimonial.reviewerName}
+            className="w-14 h-14 rounded-full object-cover flex-shrink-0 border border-gray-100"
+          />
+          <div className="flex-1 min-w-0">
+            <p className="font-heading font-semibold text-primary text-sm leading-tight">
+              {testimonial.reviewerName}
+            </p>
+            <p className="text-text-body text-xs mt-1 leading-tight">
+              {testimonial.reviewerDesignation}
+              {testimonial.reviewerCompany && ` at ${testimonial.reviewerCompany}`}
+            </p>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 export default function Testimonials() {
   const [active, setActive] = useState(0);
   const [testimonialsData, setTestimonialsData] = useState({ section: null, cards: [] });
   const [loading, setLoading] = useState(true);
+  const [direction, setDirection] = useState(0);
+  const touchStartX = useRef(null);
+  const autoPlayInterval = useRef(null);
 
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
         const response = await getTestimonials();
-        console.log(response)
         if (response.success && response.data) {
           setTestimonialsData(response.data);
         }
       } catch (error) {
-        // 404 means no active testimonial section has been created yet — silent, expected state.
-        // Only log genuine server errors.
         if (error?.response?.status !== 404) {
           console.error("Failed to fetch testimonials:", error);
         }
@@ -66,88 +106,195 @@ export default function Testimonials() {
     fetchTestimonials();
   }, []);
 
-  const badgeText = testimonialsData.section?.badgeText || "What Our Clients Say";
   const sectionTitle = testimonialsData.section?.sectionTitle || "Trusted by Businesses Worldwide";
   const cards = testimonialsData.cards || [];
 
-  return (
-    <section id="testimonials" className="bg-white py-16 md:py-20 px-4">
-      <div className="max-w-7xl mx-auto">
+  // Auto-play carousel
+  useEffect(() => {
+    if (loading || cards.length === 0) return;
 
+    const startAutoPlay = () => {
+      autoPlayInterval.current = setInterval(() => {
+        setDirection(1);
+        setActive((prev) => (prev + 1) % cards.length);
+      }, 6000); // Auto-advance every 6 seconds
+    };
+
+    const stopAutoPlay = () => {
+      if (autoPlayInterval.current) {
+        clearInterval(autoPlayInterval.current);
+      }
+    };
+
+    startAutoPlay();
+
+    return stopAutoPlay;
+  }, [loading, cards.length]);
+
+  const handlePrevious = () => {
+    setDirection(-1);
+    setActive((prev) => (prev - 1 + cards.length) % cards.length);
+    // Reset auto-play
+    if (autoPlayInterval.current) clearInterval(autoPlayInterval.current);
+  };
+
+  const handleNext = () => {
+    setDirection(1);
+    setActive((prev) => (prev + 1) % cards.length);
+    // Reset auto-play
+    if (autoPlayInterval.current) clearInterval(autoPlayInterval.current);
+  };
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (!touchStartX.current) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX;
+
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        handleNext();
+      } else {
+        handlePrevious();
+      }
+    }
+    touchStartX.current = null;
+  };
+
+  if (loading) {
+    return (
+      <section id="testimonials" className="bg-white py-16 md:py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-center items-center py-20">
+            <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (cards.length === 0) {
+    return null;
+  }
+
+  const getPrevious = (active - 1 + cards.length) % cards.length;
+  const getNext = (active + 1) % cards.length;
+
+  return (
+    <section id="testimonials" className="bg-white py-16 md:py-20 px-4 overflow-x-hidden">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
         <motion.div
           variants={headerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.5 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          
-          <h2 className="font-heading font-bold text-3xl md:text-4xl text-primary">{sectionTitle}</h2>
+          <h2 className="font-heading font-bold text-3xl md:text-4xl lg:text-5xl text-primary">
+            {sectionTitle}
+          </h2>
         </motion.div>
 
-        {loading ? (
-          <div className="flex justify-center items-center py-20">
-            <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
+        {/* Carousel Container */}
+        <div
+          className="relative flex items-center justify-center"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Previous Card (Hidden on Mobile) */}
+          <div className="hidden lg:block absolute left-0 w-1/4 pointer-events-none">
+            <TestimonialCard
+              testimonial={cards[getPrevious]}
+              index={getPrevious}
+              isCenter={false}
+              isVisible={true}
+            />
           </div>
-        ) : (
-          <>
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              className="grid grid-cols-1 md:grid-cols-3 gap-6"
-            >
-              {cards.map((testimonial, i) => (
-                <motion.div
-                  key={testimonial._id || i}
-                  variants={cardVariants}
-                  whileHover={{ scale: 1.08, boxShadow: '0 20px 48px rgba(0,0,0,0.15)' }}
-                  className="border border-gray-100 rounded-xl p-6 flex flex-col gap-5 shadow-sm transition-colors duration-200"
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="font-heading font-bold text-primary text-lg leading-none">{testimonial.companyName}</p>
-                      <p className="text-text-body text-xs tracking-widest uppercase mt-1">{testimonial.companyCategory}</p>
-                    </div>
-                    <span className="text-7xl font-serif leading-none text-gray-100 select-none -mt-2" aria-hidden="true">"</span>
-                  </div>
 
-                  <p className="text-text-body text-sm leading-relaxed flex-1">"{testimonial.reviewText}"</p>
+          {/* Center Active Card */}
+          <div className="w-full px-4 md:px-8 lg:w-1/2 z-10">
+            <AnimatePresence mode="wait">
+              <TestimonialCard
+                key={active}
+                testimonial={cards[active]}
+                index={active}
+                isCenter={true}
+                isVisible={true}
+              />
+            </AnimatePresence>
+          </div>
 
-                  <div className="flex items-center gap-4 pt-6 border-t border-[rgba(195,198,212,0.2)]">
-                    <img
-                      src={fallbackIcons[i % fallbackIcons.length]}
-                      alt={testimonial.reviewerName}
-                      className="w-12 h-12 rounded-full object-cover shrink-0"
-                    />
-                    <div>
-                      <p className="font-heading font-semibold text-primary text-sm leading-none">{testimonial.reviewerName}</p>
-                      <p className="text-text-body text-xs mt-1">{testimonial.reviewerDesignation} {testimonial.reviewerCompany ? `at ${testimonial.reviewerCompany}` : ''}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
+          {/* Next Card (Hidden on Mobile) */}
+          <div className="hidden lg:block absolute right-0 w-1/4 pointer-events-none">
+            <TestimonialCard
+              testimonial={cards[getNext]}
+              index={getNext}
+              isCenter={false}
+              isVisible={true}
+            />
+          </div>
+        </div>
 
-            {/* Pagination dots */}
-            <div className="flex justify-center gap-2 mt-10" role="tablist" aria-label="Testimonial navigation">
-              {cards.map((_, i) => (
-                <button
-                  key={i}
-                  role="tab"
-                  aria-selected={active === i}
-                  aria-label={`Go to testimonial ${i + 1}`}
-                  onClick={() => setActive(i)}
-                  className={`rounded-full transition-all duration-200 ${active === i ? 'bg-accent w-6 h-3' : 'bg-gray-300 w-3 h-3 hover:bg-gray-400'
-                    }`}
-                />
-              ))}
-            </div>
-          </>
-        )}
+        {/* Navigation Controls */}
+        <div className="flex items-center justify-center gap-6 mt-12">
+          {/* Previous Button */}
+          <button
+            onClick={handlePrevious}
+            className="p-3 rounded-full border border-gray-300 text-primary hover:bg-gray-50 hover:border-primary transition-all duration-200 flex items-center justify-center"
+            aria-label="Previous testimonial"
+          >
+            <ChevronLeft size={20} />
+          </button>
 
+          {/* Pagination Dots */}
+          <div className="flex gap-2" role="tablist" aria-label="Testimonial navigation">
+            {cards.map((_, i) => (
+              <button
+                key={i}
+                role="tab"
+                aria-selected={active === i}
+                aria-label={`Go to testimonial ${i + 1}`}
+                onClick={() => {
+                  setDirection(i > active ? 1 : -1);
+                  setActive(i);
+                  if (autoPlayInterval.current) clearInterval(autoPlayInterval.current);
+                }}
+                className={`rounded-full transition-all duration-300 ${
+                  active === i
+                    ? 'bg-primary w-3 h-3'
+                    : 'bg-gray-300 w-2 h-2 hover:bg-gray-400'
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Next Button */}
+          <button
+            onClick={handleNext}
+            className="p-3 rounded-full border border-gray-300 text-primary hover:bg-gray-50 hover:border-primary transition-all duration-200 flex items-center justify-center"
+            aria-label="Next testimonial"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
+
+        {/* Counter */}
+        <div className="text-center mt-8 text-text-body text-sm">
+          <span className="font-semibold text-primary">{active + 1}</span> / {cards.length}
+        </div>
       </div>
+
+      <style>{`
+        @media (max-width: 1024px) {
+          #testimonials [class*="absolute"] {
+            display: none !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

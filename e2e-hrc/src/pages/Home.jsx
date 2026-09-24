@@ -14,7 +14,7 @@ const Sectors = lazy(() => import("../components/home/Sectors"));
 const Process = lazy(() => import("../components/home/Process"));
 const TrustedClients = lazy(() => import("../components/home/TrustedClients"));
 const Locations = lazy(() => import("../components/home/Locations"));
-const BlogSection = lazy(() => import("../components/home/BlogSection"));
+//const BlogSection = lazy(() => import("../components/home/BlogSection"));
 const ContactSection = lazy(() => import("../components/home/ContactSection"));
 
 function Home() {
@@ -67,11 +67,11 @@ function Home() {
         </Suspense>
       </LazySection>
 
-      <LazySection height={500}>
+    {/*  <LazySection height={500}>
         <Suspense fallback={<Loading />}>
           <BlogSection />
         </Suspense>
-      </LazySection>
+      </LazySection> */}
 
       <div style={{ height: "80px", background: "#FFFFFF" }} />
 
